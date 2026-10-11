@@ -5,10 +5,11 @@ const dbPath=process.env.IWAY_LEADS_FILE??'data/early-access.json';
 let pool;
 let register;
 if(process.env.DATABASE_URL){
+ if(!process.env.IWAY_CONSENT_VERSION)throw new Error('IWAY_CONSENT_VERSION required with PostgreSQL');
  const {Pool}=await import('pg');
  pool=new Pool({connectionString:process.env.DATABASE_URL,ssl:process.env.PGSSL==='require'?{rejectUnauthorized:true}:undefined});
- await pool.query('SELECT 1');
- register=lead=>registerPgLead(pool,lead);
+ await pool.query('SELECT 1 FROM iway_private.early_access_leads LIMIT 0');
+ register=lead=>registerPgLead(pool,lead,{consentVersion:process.env.IWAY_CONSENT_VERSION});
  console.log('I-way PostgreSQL registration backend ready');
 }else if(process.env.NODE_ENV==='production'){
  throw new Error('DATABASE_URL required in production; refusing ephemeral file storage');
