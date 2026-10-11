@@ -116,7 +116,7 @@ export function claimJob(ops,{tenantId,kind,jobId,workerId,leaseMs=30000,adapter
   if(authority.error){writeJob(ops,job,{status:'blocked',lastError:authority.error,leaseOwner:null,leaseUntil:null,fence:job.fence+1},'runtime:blocked',authority.error);return null;}
   if(job.attempts>=3){writeJob(ops,job,{status:'dead_letter',lastError:'ATTEMPTS_EXHAUSTED',leaseOwner:null,leaseUntil:null,fence:job.fence+1},'runtime:deadletter','ATTEMPTS_EXHAUSTED');return null;}
   let adapterBinding=null;if(job.kind==='connectorjob')try{adapterBinding=connectorBinding(job.capability,job.input.source,adapters)}catch{}
-  job=writeJob(ops,job,{adapterBinding,status:'running',attempts:job.attempts+1,totalAttempts:job.totalAttempts+1,leaseOwner:workerId,leaseUntil:new Date(ops.now().getTime()+leaseMs).toISOString(),fence:job.fence+1,policyVersion:authority.policyVersion},'runtime:claim');
+  job=writeJob(ops,job,{adapterBinding,status:'running',attempts:job.attempts+1,totalAttempts:job.totalAttempts+1,leaseOwner:workerId,leaseStartedAt:now,heartbeatAt:now,heartbeatCount:0,leaseDeadlineAt:new Date(ops.now().getTime()+runtimeLeasePolicy.maxLifetimeMs).toISOString(),leaseUntil:new Date(ops.now().getTime()+leaseMs).toISOString(),fence:job.fence+1,policyVersion:authority.policyVersion},'runtime:claim');
   return {tenantId:job.tenantId,kind:job.kind,jobId:job.id,workerId,fence:job.fence,checkpoint:job.checkpoint,runNumber:job.runNumber};
  });
 }
@@ -125,6 +125,27 @@ function held(ops,claim){
  if(job.status!=='running'||job.leaseOwner!==claim.workerId||job.fence!==claim.fence||job.checkpoint!==claim.checkpoint||job.runNumber!==claim.runNumber||job.leaseUntil<=ops.now().toISOString())return {error:'LEASE_STALE'};
  const authority=authorized(ops,job);return {job,...authority};
 }
+// Heartbeats cannot revive an expired lease or extend one indefinitely. Reclaim gets a new fence.
+export const runtimeLeasePolicy=Object.freeze({minLeaseMs:100,maxLeaseMs:60000,maxLifetimeMs:120000});
+export function heartbeatJob(ops,claim,{extendMs=30000}={}){
+ integer(extendMs,runtimeLeasePolicy.minLeaseMs,runtimeLeasePolicy.maxLeaseMs);
+ return ops.store.transaction(()=>{
+  const current=held(ops,claim);
+  if(current.error==='LEASE_STALE')return {accepted:false,reason:'LEASE_STALE'};
+  const {job}=current;
+  if(current.error){
+   writeJob(ops,job,{status:'blocked',lastError:current.error,leaseOwner:null,leaseUntil:null,fence:job.fence+1},'runtime:blocked',current.error);
+   return {accepted:false,reason:current.error};
+  }
+  const now=ops.now(),deadline=Date.parse(job.leaseDeadlineAt);
+  // Pre-heartbeat-schema jobs must expire and be reclaimed; do not invent a fresh lifetime.
+  if(!Number.isFinite(deadline)||deadline<=now.getTime())return {accepted:false,reason:'LEASE_LIMIT'};
+  const until=Math.min(deadline,Math.max(Date.parse(job.leaseUntil),now.getTime()+extendMs));
+  const next=writeJob(ops,job,{leaseUntil:new Date(until).toISOString(),heartbeatAt:now.toISOString(),heartbeatCount:(job.heartbeatCount??0)+1},'runtime:heartbeat');
+  return {accepted:true,leaseUntil:next.leaseUntil,leaseDeadlineAt:next.leaseDeadlineAt,fence:next.fence,heartbeatCount:next.heartbeatCount};
+ });
+}
+
 function analyze(ops,job,actor,load){
  const step=job.plan[job.checkpoint],registry=agentRegistry[step.role];requireValue(registry?.tool===step.tool,'TOOL_DENIED','The requested tool is outside this agent scope.',403);
  const resources=kind=>ops.store.list(kind,job.tenantId).filter(r=>r.loadId===load.id);
@@ -194,14 +215,18 @@ export function failJob(ops,claim,error){
   return {accepted:true,job:next};
  });
 }
-export async function runRuntimeTick(ops,{workerId='local-'+randomUUID(),adapters,fault,timeoutMs=2000}={}){
+export async function runRuntimeTick(ops,{workerId='local-'+randomUUID(),adapters,fault,timeoutMs=2000,leaseMs=30000,heartbeatMs=10000}={}){
+ integer(leaseMs,100,60000);integer(heartbeatMs,25,Math.floor(leaseMs/2));
  let completed=0;
  for(const tenant of ops.store.db.prepare('SELECT id FROM tenants').all()){
   for(const kind of jobKinds){
    const now=ops.now().toISOString();
    const candidates=ops.store.list(kind,tenant.id).filter(j=>j.status==='pending'||j.status==='retry'&&j.nextAttemptAt<=now||j.status==='running'&&j.leaseUntil<=now).slice(0,20);
    for(const candidate of candidates){
-    const claim=claimJob(ops,{tenantId:tenant.id,kind,jobId:candidate.id,workerId,adapters});if(!claim)continue;
+    const claim=claimJob(ops,{tenantId:tenant.id,kind,jobId:candidate.id,workerId,adapters,leaseMs});if(!claim)continue;
+    let heartbeatError;
+    const heartbeat=setInterval(()=>{try{const result=heartbeatJob(ops,claim,{extendMs:leaseMs});if(!result.accepted){heartbeatError=result.reason;clearInterval(heartbeat)}}catch{heartbeatError='HEARTBEAT_FAILURE';clearInterval(heartbeat)}},heartbeatMs);
+    heartbeat.unref();
     try{
      if(fault)await fault({stage:'after_claim',jobId:claim.jobId,checkpoint:claim.checkpoint});
      const current=held(ops,claim);requireValue(!current.error,'JOB_AUTHORITY','Job authority changed.',409);
@@ -211,9 +236,10 @@ export async function runRuntimeTick(ops,{workerId='local-'+randomUUID(),adapter
       const context=connectorSnapshot(ops,current.actor,current.load,current.job);
       output={...await invokeConnector(current.job.capability,{...context,idempotencyKey:current.job.id+':'+current.job.runNumber},{adapters,timeoutMs}),snapshot:context.snapshot};
      }
+     requireValue(!heartbeatError,'JOB_AUTHORITY','Worker heartbeat authority changed.',409);
      if(fault)await fault({stage:'before_complete',jobId:claim.jobId,checkpoint:claim.checkpoint});
      if(completeJob(ops,claim,output).accepted)completed++;
-    }catch(error){failJob(ops,claim,error)}
+    }catch(error){failJob(ops,claim,error)}finally{clearInterval(heartbeat)}
    }
   }
  }

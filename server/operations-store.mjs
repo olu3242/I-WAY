@@ -1,3 +1,7 @@
+import{identitySQL}from'./operations-identity.mjs';
+import{integrationIntegritySQL}from'../domain/operations-integration.mjs';
+import{providerIntegritySQL}from'../domain/operations-provider.mjs';
+import{complianceIntegritySQL}from'../domain/operations-compliance.mjs';
 import {measurementIntegritySQL} from '../domain/operations-measurement.mjs';
 import {intelligenceIntegritySQL} from '../domain/operations-intelligence.mjs';
 import {runtimeIntegritySQL} from '../domain/operations-runtime.mjs';
@@ -30,6 +34,10 @@ export class OperationsStore{
   this.db.exec(intelligenceIntegritySQL);
   this.db.exec(runtimeIntegritySQL);
   this.db.exec(measurementIntegritySQL);
+  this.db.exec(complianceIntegritySQL);
+  this.db.exec(identitySQL);
+  this.db.exec(integrationIntegritySQL);
+  this.db.exec(providerIntegritySQL);
  }
  transaction(fn){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){this.db.exec('ROLLBACK');throw e}}
  principal(id){const row=this.db.prepare('SELECT data FROM users WHERE id=?').get(id);return row?JSON.parse(row.data):undefined}

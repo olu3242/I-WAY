@@ -4,7 +4,8 @@ import {join} from 'node:path';
 import {readFile,writeFile,mkdir,lstat} from 'node:fs/promises';
 import {spawn} from 'node:child_process';
 import {DatabaseSync} from 'node:sqlite';
-import {fixture} from './helpers/operations-fixture.mjs';
+import {fixture,password} from './helpers/operations-fixture.mjs';
+import {authenticate} from '../server/operations-auth.mjs';
 import {backupOperations,restoreOperations} from '../server/operations-recovery.mjs';
 import {rehearseRecovery} from '../scripts/operations-recovery-rehearsal.mjs';
 
@@ -58,8 +59,12 @@ test('unsupported database backups fail closed and command-line tools emit only 
   const child=spawn(process.execPath,args,{windowsHide:true,stdio:['ignore','pipe','pipe']});let output='',errors='';
   child.stdout.on('data',d=>output+=d);child.stderr.on('data',d=>errors+=d);child.on('error',reject);child.on('close',code=>accept({code,output,errors}));
  });
+ authenticate(f.store,f.manager.username,password);
  const backup=await run(['scripts/operations-backup.mjs',f.path,join(f.root,'cli-backup')]);assert.equal(backup.code,0);
  const result=JSON.parse(backup.output);assert.equal(result.status,'PASS');assert.ok(!backup.output.includes(f.manager.username));assert.ok(!backup.output.includes(f.path));
  const restore=await run(['scripts/operations-restore.mjs',join(f.root,'cli-backup'),join(f.root,'cli-restored'),result.manifestSha256]);
  assert.equal(restore.code,0);assert.equal(JSON.parse(restore.output).status,'PASS');assert.equal(restore.errors,'');
+ const restored=new DatabaseSync(join(f.root,'cli-restored','operations.sqlite'),{readOnly:true});
+ try{assert.equal(restored.prepare('SELECT count(*) AS n FROM sessions').get().n,0);assert.equal(restored.prepare('SELECT count(*) AS n FROM session_security').get().n,0);assert.deepEqual(restored.prepare('PRAGMA foreign_key_check').all(),[])}finally{restored.close()}
+ assert.equal(f.store.db.prepare('SELECT count(*) AS n FROM session_security').get().n,1);
 });

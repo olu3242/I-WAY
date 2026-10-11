@@ -75,3 +75,7 @@ Remaining manual checks: incomplete contrast results; NVDA or another screen rea
 Carrier desktop, driver mobile, customer documents and control-tower screenshots have been visually inspected. Official branding is unmodified; orange actions use navy text. Historical route/risk evidence displays its timestamp/version and a warning after the shipment changes. No model inference, independently verified GPS, real payment, measured savings or hosted-release success is claimed.
 
 The automated workflow follows the official [Playwright accessibility guidance](https://playwright.dev/docs/accessibility-testing) and the official [axe Playwright integration](https://github.com/dequelabs/axe-core-npm/tree/develop/packages/playwright). Both tooling and this evidence distinguish automated checks from manual accessibility assessment.
+
+## Wave 6 regression checkpoint
+
+The final Wave 6 source passed the unchanged complete 11-test Chromium suite in 52.85 seconds, with 0 failures/skips and 54 axe scans reporting 0 violations. Session lifecycle changes are included in the real HTTP journeys. Dedicated identity signature/MFA/revocation and provider contracts are covered by automated local tests, not claimed as hosted browser journeys. The same manual accessibility limitations remain. See EVIDENCE_WAVE6.json and CERTIFICATION_WAVE6.json.

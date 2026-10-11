@@ -16,3 +16,11 @@ export function authorize({actor,action,resource}){
  if(actor.role==='dispatcher'&&resource.dispatcherId&&resource.dispatcherId!==actor.id)return false;
  return true;
 }
+
+/** Existing role-specific delegation stays bounded by the current manager's matching operational authority. */
+export function canDelegatePermission(actor,targetRole,permission){
+ if(actor.role!=='carrier'||!actor.active||!actor.permissions?.includes('user:manage')||!rolePermissions[targetRole]?.includes(permission))return false;
+ if(actor.permissions.includes(permission))return true;
+ const prerequisite=({driver:{'load:execute':'load:dispatch','pod:record':'load:dispatch'},dispatcher:{'pod:record':'load:dispatch'},fleet:{'employment:manage':'fleet:manage'}})[targetRole]?.[permission];
+ return !!prerequisite&&actor.permissions.includes(prerequisite);
+}

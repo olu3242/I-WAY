@@ -1,7 +1,7 @@
-import {randomBytes,scryptSync,timingSafeEqual,createHash,randomUUID} from 'node:crypto';
+import {randomBytes,scryptSync,timingSafeEqual,randomUUID} from 'node:crypto';
 import {rolePermissions} from '../domain/authorization.mjs';
 import {OpsError,text,requireValue} from '../domain/operations-errors.mjs';
-const digest=s=>createHash('sha256').update(s).digest('hex');
+import {issueSession,readSession,revokeSession} from './operations-identity.mjs';
 export function passwordHash(password){
  requireValue(typeof password==='string'&&password.length>=12&&password.length<=256,'PASSWORD','Use a password between 12 and 256 characters.');
  const salt=randomBytes(16).toString('hex');
@@ -41,18 +41,7 @@ export function authenticate(store,username,password,now=Date.now()){
  const row=store.db.prepare('SELECT id,data,password FROM users WHERE username=?').get(String(username??'').trim().toLowerCase());
  const matches=passwordMatches(password,row?.password??dummy);
  if(!row||!matches||!JSON.parse(row.data).active)throw new OpsError(401,'LOGIN','Sign-in failed.');
- const token=randomBytes(32).toString('base64url'),csrf=randomBytes(32).toString('base64url');
- store.db.prepare('INSERT INTO sessions VALUES(?,?,?,?)').run(digest(token),row.id,csrf,now+8*3600000);
- const actor=JSON.parse(row.data);store.audit(actor,'session:create',actor.id,'success');
- return {token,csrf,actor};
+ return issueSession(store,JSON.parse(row.data),{now});
 }
-export function session(store,token,now=Date.now()){
- if(typeof token!=='string'||token.length>128)return null;
- const row=store.db.prepare('SELECT user_id,csrf FROM sessions WHERE token=? AND expires_at>?').get(digest(token),now);
- if(!row)return null;
- const actor=store.principal(row.user_id);
- return actor?.active?{actor,csrf:row.csrf}:null;
-}
-export function logout(store,token,actor){
- store.db.prepare('DELETE FROM sessions WHERE token=?').run(digest(token));store.audit(actor,'session:revoke',actor.id,'success');
-}
+export function session(store,token,now=Date.now()){return readSession(store,token,now);}
+export function logout(store,token,actor){return revokeSession(store,token,actor);}

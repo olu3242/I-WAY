@@ -25,7 +25,10 @@
     "ops:evaluate": "node scripts/evaluate-operations.mjs",
     "ops:certify": "node scripts/certify-operations.mjs",
     "ops:certify:validate": "node scripts/certify-operations.mjs validate",
-    "verify:public-target": "node scripts/verify-public-release.mjs"
+    "verify:public-target": "node scripts/verify-public-release.mjs",
+    "ops:hosted:plan": "node scripts/operations-release-readiness.mjs hosted-plan",
+    "ops:release:check": "node scripts/operations-release-readiness.mjs",
+    "ops:release:validate": "node scripts/operations-release-readiness.mjs validate"
   },
   "dependencies": {
     "pg": "^8.16.3"

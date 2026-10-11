@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-11T18:28:50.461Z",
+  "sourceHash": "eb08fc7c219f9ec7e05ec4729bd7c7dfb6fde90f5028acffc09fb484601e2d63",
+  "certificationSha256": "bbc63b4354a011ff8b4bc4a44bbbf710350bd06e33db63d4193dbd69f9e011c3",
+  "scope": "local evidence and offline production-readiness assessment",
+  "localDecision": "PARTIAL",
+  "hostedDecision": "NO-GO",
+  "deploymentExecuted": false,
+  "gates": {
+    "functionalCorrectness": {
+      "status": "PASS",
+      "evidence": "3e2a1a3551ec96638059949a9aca7272a605602b9ed88ed8e3437b8ca50b3f47",
+      "remaining": "Local fixture behavior only."
+    },
+    "tenantIsolationAndAuthorization": {
+      "status": "PARTIAL",
+      "evidence": "3e2a1a3551ec96638059949a9aca7272a605602b9ed88ed8e3437b8ca50b3f47",
+      "remaining": "PostgreSQL RLS execution and hosted identity remain unverified."
+    },
+    "workflowReliability": {
+      "status": "PARTIAL",
+      "evidence": "3e2a1a3551ec96638059949a9aca7272a605602b9ed88ed8e3437b8ca50b3f47",
+      "remaining": "Independent local workers pass; hosted queue persistence remains unverified."
+    },
+    "accessibility": {
+      "status": "PARTIAL",
+      "evidence": "1ab62a9f59d878f6822aa1bb3168e0e9b4a0f2cd46721de446eed983720e6299",
+      "remaining": "Manual WCAG 2.2 AA and assistive-technology assessment remain pending."
+    },
+    "performance": {
+      "status": "PASS",
+      "evidence": "1f30f7022e3123cf65f63cd75ea23bd25ed5efd5fc2d1616cfe9842c206ad4bd",
+      "remaining": "Measured local regression scenarios only; hosted SLO is not certified."
+    },
+    "aiGovernance": {
+      "status": "PARTIAL",
+      "evidence": "a9e4121283abe2192fd280c41c3c54dab7338da39291bf8027eba663d6104861",
+      "remaining": "Local policy/fallback contracts pass; approved model execution is blocked."
+    },
+    "credentialSecurity": {
+      "status": "BLOCKED",
+      "evidence": null,
+      "remaining": "Restricted login authentication and exposed credential rotation require secure authorized verification."
+    },
+    "consentApproval": {
+      "status": "BLOCKED",
+      "evidence": null,
+      "remaining": "No approved consent version is activated."
+    },
+    "hostedPersistence": {
+      "status": "BLOCKED",
+      "evidence": null,
+      "remaining": "Offline migration and recording-pool contracts do not prove PostgreSQL execution or RLS."
+    },
+    "deploymentAndRollback": {
+      "status": "BLOCKED",
+      "evidence": "93167cffe663df0236f7480e20ffad2398df90a1613e422f17d409ac0f08f3c9",
+      "remaining": "Local restore measured; authorized deployment and hosted rollback rehearsal are absent."
+    }
+  },
+  "hosted": {
+    "schemaVersion": 1,
+    "status": "BLOCKED",
+    "executed": false,
+    "networkCalls": 0,
+    "reason": "Hosted authorization, credentials, consent and deployment evidence remain unresolved.",
+    "prerequisites": {
+      "explicitHostedTestAuthorization": "BLOCKED",
+      "restrictedPostgresAuthentication": "BLOCKED",
+      "approvedConsent": "BLOCKED",
+      "exposedCredentialRotation": "BLOCKED",
+      "approvedHostedIdentity": "BLOCKED",
+      "dedicatedOperationsPersistence": "BLOCKED",
+      "approvedIntegrationFixtures": "BLOCKED",
+      "approvedDeploymentAndRollback": "BLOCKED"
+    },
+    "scenarios": [
+      {
+        "id": "identity",
+        "steps": [
+          "authenticate approved fixture identity",
+          "verify MFA and server-owned tenant binding",
+          "revoke session and retry"
+        ],
+        "checks": [
+          "verifiedMfa",
+          "tenantBound",
+          "revokedSessionDenied"
+        ],
+        "status": "NOT_EXECUTED"
+      },
+      {
+        "id": "registration",
+        "steps": [
+          "use separately approved consent and restricted registration login",
+          "create authorized synthetic registration",
+          "read back only its receipt"
+        ],
+        "checks": [
+          "restrictedIdentity",
+          "approvedConsent",
+          "receiptPersisted"
+        ],
+        "status": "NOT_EXECUTED"
+      },
+      {
+        "id": "persistence",
+        "steps": [
+          "commit authorized synthetic operation",
+          "restart application connection",
+          "read back same operation"
+        ],
+        "checks": [
+          "commitPersisted",
+          "restartReadMatched"
+        ],
+        "status": "NOT_EXECUTED"
+      },
+      {
+        "id": "isolation",
+        "steps": [
+          "read own synthetic tenant",
+          "attempt foreign tenant read and write",
+          "verify audit remains unchanged by rejected write"
+        ],
+        "checks": [
+          "ownReadAllowed",
+          "foreignReadDenied",
+          "foreignWriteDenied",
+          "noForeignMutation"
+        ],
+        "status": "NOT_EXECUTED"
+      },
+      {
+        "id": "workflow",
+        "steps": [
+          "claim authorized synthetic queue item",
+          "renew lease",
+          "restart worker after expiry",
+          "reject stale completion"
+        ],
+        "checks": [
+          "heartbeatPersisted",
+          "restartRecovered",
+          "staleFenceDenied",
+          "exactlyOneCompletion"
+        ],
+        "status": "NOT_EXECUTED"
+      },
+      {
+        "id": "integrations",
+        "steps": [
+          "deliver approved signed fixture",
+          "repeat the identical fixture",
+          "exercise failure and dead letter without real recipient delivery"
+        ],
+        "checks": [
+          "signatureVerified",
+          "duplicateSuppressed",
+          "retryBounded",
+          "deadLetterVisible"
+        ],
+        "status": "NOT_EXECUTED"
+      },
+      {
+        "id": "rollback",
+        "steps": [
+          "validate previous artifact and trusted backup",
+          "rehearse rollback in isolated approved environment",
+          "verify health and audit continuity"
+        ],
+        "checks": [
+          "artifactVerified",
+          "restoreIntegrity",
+          "healthPassed",
+          "auditContinuity"
+        ],
+        "status": "NOT_EXECUTED"
+      }
+    ]
+  },
+  "publicRelease": {
+    "referenceUrl": "http://localhost:4174/early-access.html",
+    "evidence": "21ea8805331ba41ca59718bb2839bb23e7b199d21c042cfddf546eb77a648b95",
+    "scope": "canonical entry fingerprint; full-site deployment acceptance is separate"
+  },
+  "limitations": [
+    "Hashes bind local evidence; they are not independent signed attestations.",
+    "Contract assertions and successful local tests cannot promote a hosted gate."
+  ]
+}

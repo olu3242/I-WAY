@@ -12,3 +12,9 @@ test('governance receipt cannot return protected policy after the requester lose
  assert.throws(()=>f.command(f.manager,'governance:update',null,p,'security-replay-governance'),e=>e.code==='FORBIDDEN');
  assert.deepEqual(f.ops.state(f.manager.id).governancepolicies,[]);
 });
+test('restricted account managers cannot recover withdrawn authority by provisioning a new privileged account',async t=>{
+ const f=await fixture(t,createOperationsFeatures());withdraw(f,f.manager,'governance:manage');
+ const payload={name:'Illustrative delegated manager',username:'delegate@illustrative.invalid',role:'carrier',password:'illustrative-delegation-only'};
+ assert.throws(()=>f.command(f.manager,'user:create',null,payload),e=>e.code==='DELEGATION');
+ const reduced=f.command(f.manager,'user:create',null,{...payload,permissions:['load:view']});assert.deepEqual(reduced.permissions,['load:view']);
+});

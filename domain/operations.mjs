@@ -1,5 +1,5 @@
 import {createHash} from 'node:crypto';
-import {authorize,rolePermissions} from './authorization.mjs';
+import {authorize,rolePermissions,canDelegatePermission} from './authorization.mjs';
 import {OpsError,reject,requireValue,fields,text,integer,utc} from './operations-errors.mjs';
 import {projectResult} from './operations-projection.mjs';
 import {addUser} from '../server/operations-auth.mjs';
@@ -93,7 +93,9 @@ export class Operations{
   if(c.action==='user:create'){
    fields(p,['username','name','role','fleetId','customerId','password','permissions']);this.guard(actor,'user:manage',scope);
    requireValue(p.role!=='driver'||!p.fleetId,'EMPLOYMENT','Fleet administrators manage their own driver employment.',403);
-   const user=addUser(this.store,{...p,tenantId:actor.tenantId});
+   const grants=p.permissions??rolePermissions[p.role];
+   requireValue(Array.isArray(grants)&&grants.every(permission=>canDelegatePermission(actor,p.role,permission)),'DELEGATION','Account grants exceed your current delegation authority.',403);
+   const user=addUser(this.store,{...p,permissions:grants,tenantId:actor.tenantId});
    this.store.audit(actor,c.action,user.id,'success',{role:user.role,fleetId:user.fleetId},this.now().toISOString());return user;
   }
   if(c.action==='driver:create'){

@@ -4,7 +4,14 @@ const pick=(object,keys)=>Object.fromEntries(keys.filter(k=>object[k]!==undefine
 export function projectResult(ops,actor,value){
  if(Array.isArray(value))return value.map(v=>projectResult(ops,actor,v));
  if(!value||typeof value!=='object')return value;
- if(value.kind&&value.loadId){const related=ops.read('load',value.loadId,actor,'load:view');ops.guard(actor,({document:'document:view',pod:'document:view',invoice:actor.role==='customer'?'invoice:view':'finance:manage',payment:'billing:manage',operationcost:'cost:manage',measurement:'cost:manage',routeevaluation:'intelligence:view',risk:'intelligence:view',capacityproposal:'intelligence:view',orchestration:'orchestration:manage',connectorjob:'connector:request'})[value.kind]??'load:view',related);}
+ if(value.kind&&value.loadId){const related=ops.read('load',value.loadId,actor,'load:view');ops.guard(actor,({document:'document:view',pod:'document:view',invoice:actor.role==='customer'?'invoice:view':'finance:manage',payment:'billing:manage',operationcost:'cost:manage',measurement:'cost:manage',routeevaluation:'intelligence:view',risk:'intelligence:view',capacityproposal:'intelligence:view',orchestration:'orchestration:manage',connectorjob:'connector:request',integrationreceipt:'connector:request',integrationjob:'connector:request',providerrecommendation:'intelligence:view'})[value.kind]??'load:view',related);}
+ if(['retentionpolicy','retentionpreview','governanceexport'].includes(value.kind))ops.guard(actor,'governance:manage',{tenantId:value.tenantId});
+ if(value.kind==='governanceexport')ops.guard(actor,'audit:view',{tenantId:value.tenantId});
+ if(['privacyexport','consentrecord'].includes(value.kind))requireValue(value.tenantId===actor.tenantId&&value.userId===actor.id,'FORBIDDEN','Own account evidence only.',403);
+ if(value.kind==='integrationcircuit')ops.guard(actor,'governance:manage',{tenantId:value.tenantId});
+ if(['integrationreceipt','integrationjob'].includes(value.kind)&&value.event?.type==='document')ops.guard(actor,'document:view',ops.read('load',value.loadId,actor));
+ if(value.kind==='providerrecommendation'&&['document','finance'].includes(value.purpose))ops.guard(actor,'document:view',ops.read('load',value.loadId,actor));
+ if(value.kind==='providerrecommendation'&&value.purpose==='finance')ops.guard(actor,'billing:manage',ops.read('load',value.loadId,actor));
  if(value.kind==='governancepolicy')ops.guard(actor,'governance:manage',{tenantId:value.tenantId});
  if(value.kind==='customer')ops.guard(actor,'customer:manage',{tenantId:value.tenantId});
  if(value.kind==='load'||value.kind==='shipment'){
