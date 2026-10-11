@@ -13,3 +13,8 @@ test('cross tenant evidence blocked',()=>assert.equal(run({evidence:{...evidence
 test('consequential evidence blocked',()=>assert.equal(run({evidence:{...evidence,consequentialAction:true}}).status,'BLOCKED'));
 test('unrecognized evidence kind blocked',()=>assert.equal(run({evidence:{...evidence,kind:'invoice'}}).status,'BLOCKED'));
 test('missing persisted identity blocked',()=>assert.equal(run({evidence:{...evidence,jobId:''}}).status,'BLOCKED'));
+
+test('blank persisted evidence identity blocked',()=>assert.equal(run({evidence:{...evidence,id:'   '}}).status,'BLOCKED'));
+test('whitespace persisted job identity blocked',()=>assert.equal(run({evidence:{...evidence,jobId:'  '}}).status,'BLOCKED'));
+test('missing persisted evidence identity blocked',()=>assert.equal(run({evidence:{...evidence,id:undefined}}).status,'BLOCKED'));
+test('missing persisted job identity blocked',()=>assert.equal(run({evidence:{...evidence,jobId:undefined}}).status,'BLOCKED'));
