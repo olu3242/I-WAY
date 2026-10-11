@@ -17,12 +17,21 @@
     "probe:postgres": "node scripts/probe-postgres.mjs",
     "ops:start": "node scripts/operations-start.mjs",
     "ops:init": "node scripts/operations-init.mjs",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "ops:backup": "node scripts/operations-backup.mjs",
+    "ops:restore": "node scripts/operations-restore.mjs",
+    "ops:benchmark": "node scripts/operations-benchmark.mjs",
+    "ops:recovery:verify": "node scripts/operations-recovery-rehearsal.mjs",
+    "ops:evaluate": "node scripts/evaluate-operations.mjs",
+    "ops:certify": "node scripts/certify-operations.mjs",
+    "ops:certify:validate": "node scripts/certify-operations.mjs validate",
+    "verify:public-target": "node scripts/verify-public-release.mjs"
   },
   "dependencies": {
     "pg": "^8.16.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.64.0"
   }
 }

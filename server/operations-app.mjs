@@ -1,3 +1,4 @@
+import {observeRequest} from './operations-observability.mjs';
 import {createServer} from 'node:http';
 import {readFile} from 'node:fs/promises';
 import {extname} from 'node:path';
@@ -6,9 +7,10 @@ import {authenticate,session,logout} from './operations-auth.mjs';
 import {readDocument} from '../domain/operations-documents.mjs';
 import {OpsError,fields} from '../domain/operations-errors.mjs';
 const assets=new Map([['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
-export function makeOperationsApp({store,operations}){
+export function makeOperationsApp({store,operations,logSink=()=>{}}){
  const loginAttempts=new Map();
  const server=createServer(async(req,res)=>{
+  observeRequest(req,res,{sink:logSink});
   const origin='http://127.0.0.1:'+server.address().port;
   const send=(status,data)=>{res.writeHead(status,{...securityHeaders(),'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(data));};
   if(req.headers.host!=='127.0.0.1:'+server.address().port)return send(403,{error:'Local host required.'});
@@ -40,6 +42,8 @@ export function makeOperationsApp({store,operations}){
     return send(404,{error:'Not found.'});
    }
    if(req.method!=='GET'&&req.method!=='HEAD')return send(405,{error:'Method not allowed.'});
+   if(path==='/health'){store.db.prepare('SELECT 1').get();return send(200,{status:'ok',storage:'ready',scope:'local'});}
+   if(path==='/api/ops/health'){if(!auth)return send(401,{error:'Sign in required.'});const health=operations.state(auth.actor.id).workflowHealth;if(!health)return send(403,{error:'Health access is not permitted.'});return send(200,health);}
    if(path.startsWith('/api/ops/documents/')){if(!auth)return send(401,{error:'Sign in required.'});return send(200,readDocument(operations,auth.actor,path.slice('/api/ops/documents/'.length)));}
    if(path==='/api/ops/state'){if(!auth)return send(401,{error:'Sign in required.'});return send(200,{...operations.state(auth.actor.id),csrf:auth.csrf});}
    if(path==='/'){res.writeHead(302,{Location:auth?'/app':'/login',...securityHeaders()});return res.end();}

@@ -86,6 +86,10 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await driver.getByRole('button',{name:'Accept assignment',exact:true}).click();
   await driver.getByRole('button',{name:'Complete pickup',exact:true}).click();
   await driver.getByRole('button',{name:'Start transit',exact:true}).click();
+  await driver.getByLabel('Current location',{exact:true}).fill('Illustrative driver-reported waypoint');
+  await driver.getByLabel('Milestone note',{exact:true}).fill('Illustrative recorded progress, no live GPS');
+  await driver.getByRole('button',{name:'Record update',exact:true}).click();
+  await expect(driver.locator('#view')).toContainText('Illustrative driver-reported waypoint');
   await driver.getByLabel('What needs attention?',{exact:true}).fill('Illustrative weather needs human review');
   await driver.locator('#exception').getByLabel('Type',{exact:true}).selectOption('weather');
   await driver.getByRole('button',{name:'Report exception',exact:true}).click();
@@ -156,8 +160,17 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await pages.customer.reload();
   await pages.customer.getByRole('button',{name:'Invoices',exact:true}).click();
   await expect(pages.customer.locator('#view')).toContainText('paid');
+  await carrier.getByRole('button',{name:'Cost intelligence',exact:true}).click();
+  await carrier.getByLabel('Delivered shipment',{exact:true}).selectOption(load.id);
+  await carrier.getByLabel('Reported distance (miles)',{exact:true}).fill('165.5');
+  await carrier.getByLabel('Distance evidence identifier',{exact:true}).fill('ILL-BROWSER-DISTANCE');
+  await carrier.getByRole('button',{name:'Record distance evidence',exact:true}).click();
+  await expect(carrier.getByRole('status')).toContainText('Saved.');
+  expect(workspace.store.list('measurement',workspace.manager.tenantId)[0].source).toBe('user_reported');
   await carrier.getByRole('button',{name:'Operations analytics',exact:true}).click();
   await expect(carrier.getByRole('heading',{name:'Operations analytics',exact:true})).toBeVisible();
+  await expect(carrier.locator('#view')).toContainText('165.5 reported miles');
+  await expect(carrier.locator('#view')).toContainText('ROI and savings are unavailable');
   await expect(carrier.locator('#view')).toContainText('Based on 1 records.');
   await basicAccessibility(carrier);
   expect(errors).toEqual([]);
@@ -170,7 +183,7 @@ test('browser rejects unauthorized sessions and preserves tenant isolation',asyn
  await page.getByLabel('Username',{exact:true}).fill(workspace.manager.username);
  await page.getByLabel('Password',{exact:true}).fill('incorrect illustrative password');
  await page.getByRole('button',{name:'Sign in',exact:true}).click();
- await expect(page.getByRole('status')).toContainText('Sign-in failed.');
+ await expect(page.getByRole('alert')).toContainText('Sign-in failed.');
  const own=workspace.createLoad();
  await signIn(page,workspace,workspace.outsider);
  await expect(page.locator('#view')).not.toContainText(own.reference);
@@ -200,7 +213,7 @@ test('customer portal exposes only its latest reviewed BOL and protects revision
   await expect(carrier.locator('#view')).toContainText('low confidence');
   carrier.once('dialog',d=>d.accept('Attempted review detects wrong reference'));
   await carrier.getByRole('button',{name:'Validate document',exact:true}).click();
-  await expect(carrier.getByRole('status')).toContainText('Correct required or mismatched shipping fields');
+  await expect(carrier.getByRole('alert')).toContainText('Correct required or mismatched shipping fields');
   await carrier.getByLabel('Revise existing document',{exact:true}).selectOption({label:'BOL revision 1'});
   await carrier.getByLabel('Document text',{exact:true}).fill(JSON.stringify(ship));
   await carrier.getByRole('button',{name:'Ingest document',exact:true}).click();
@@ -296,6 +309,8 @@ test('Wave 4 browser joins advisory analysis, human assignment approval and boun
   await carrier.getByRole('button',{name:'Workflow runtime',exact:true}).click();
   await expect(carrier.locator('#view')).toContainText('completed');
   await expect(carrier.locator('#view')).toContainText('Checkpoint 5');
+  await expect(carrier.getByRole('heading',{name:'Workflow health',exact:true})).toBeVisible();
+  await expect(carrier.locator('#view')).toContainText('No current workflow alerts');
   expect(workspace.store.list('agentdecision',workspace.manager.tenantId)).toHaveLength(5);
   await basicAccessibility(carrier);
 
@@ -307,7 +322,7 @@ test('Wave 4 browser joins advisory analysis, human assignment approval and boun
   await carrier.getByRole('button',{name:'Loads',exact:true}).click();
   await carrier.getByRole('button',{name:'Open',exact:true}).click();
   await carrier.getByRole('button',{name:'Start coordinated review',exact:true}).click();
-  await expect(carrier.getByRole('status')).toContainText('Automation is disabled');
+  await expect(carrier.getByRole('alert')).toContainText('Automation is disabled');
   await carrier.getByRole('button',{name:'Governance',exact:true}).click();
   await carrier.getByLabel('Runtime policy',{exact:true}).selectOption('yes');
   await carrier.getByLabel('Policy change reason',{exact:true}).fill('Illustrative human authorizes advisory resumption');

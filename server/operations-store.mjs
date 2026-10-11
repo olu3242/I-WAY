@@ -1,3 +1,4 @@
+import {measurementIntegritySQL} from '../domain/operations-measurement.mjs';
 import {intelligenceIntegritySQL} from '../domain/operations-intelligence.mjs';
 import {runtimeIntegritySQL} from '../domain/operations-runtime.mjs';
 import {documentIntegritySQL} from '../domain/operations-documents.mjs';
@@ -28,6 +29,7 @@ export class OperationsStore{
   this.db.exec(documentIntegritySQL);
   this.db.exec(intelligenceIntegritySQL);
   this.db.exec(runtimeIntegritySQL);
+  this.db.exec(measurementIntegritySQL);
  }
  transaction(fn){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){this.db.exec('ROLLBACK');throw e}}
  principal(id){const row=this.db.prepare('SELECT data FROM users WHERE id=?').get(id);return row?JSON.parse(row.data):undefined}

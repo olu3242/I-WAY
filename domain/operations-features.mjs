@@ -1,5 +1,8 @@
+import {createDocumentAdapterExtensions} from './operations-document-adapters.mjs';
+import {createMeasurementExtensions,measurementState} from './operations-measurement.mjs';
+import {workflowHealth} from '../server/operations-observability.mjs';
 import {createAutomation,runWorkflowTick} from './operations-automation.mjs';
-import {createDocumentExtensions,documentMetadata} from './operations-documents.mjs';
+import {documentMetadata} from './operations-documents.mjs';
 import {createBusinessExtensions,businessState,businessSummary,runNotificationTick} from './operations-business.mjs';
 import {createIntelligenceExtensions,intelligenceState} from './operations-intelligence.mjs';
 import {createRuntimeExtensions,runtimeState,runRuntimeTick} from './operations-runtime.mjs';
@@ -14,5 +17,5 @@ export function documentState(ops,actor,loads){
   documentexceptions:['carrier','dispatcher'].includes(actor.role)&&actor.permissions.includes('document:review')?ops.store.list('documentexception',actor.tenantId).filter(e=>visible.has(e.loadId)):[],
  };
 }
-export function createOperationsFeatures(){return {extensions:{...createAutomation(),...createDocumentExtensions(),...createBusinessExtensions(),...createIntelligenceExtensions(),...createRuntimeExtensions()},views:[portalState,documentState,intelligenceState,(ops,actor,loads)=>{const state=runtimeState(ops,actor,loads);return {...state,connectorJobs:state.connectorjobs,agentDecisions:state.agentdecisions,connectorResults:state.connectorresults,governancePolicy:state.governancepolicies[0]??null}},(ops,actor,loads)=>{const state=businessState(ops,actor,loads);return {...state,notificationpreference:state.preferences[0]??null,analytics:businessSummary(ops,actor,loads)}}]};}
+export function createOperationsFeatures(){return {extensions:{...createAutomation(),...createDocumentAdapterExtensions(),...createBusinessExtensions(),...createIntelligenceExtensions(),...createRuntimeExtensions(),...createMeasurementExtensions()},views:[measurementState,workflowHealth,portalState,documentState,intelligenceState,(ops,actor,loads)=>{const state=runtimeState(ops,actor,loads);return {...state,connectorJobs:state.connectorjobs,agentDecisions:state.agentdecisions,connectorResults:state.connectorresults,governancePolicy:state.governancepolicies[0]??null}},(ops,actor,loads)=>{const state=businessState(ops,actor,loads);return {...state,notificationpreference:state.preferences[0]??null,analytics:businessSummary(ops,actor,loads)}}]};}
 export async function runFeatureTick(ops){return runWorkflowTick(ops)+runNotificationTick(ops)+await runRuntimeTick(ops);}

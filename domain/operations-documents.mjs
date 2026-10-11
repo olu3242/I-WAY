@@ -5,7 +5,7 @@ const requiredFields=['loadReference','shipper','consignee','commodity','weightL
 const fieldKeys=Object.fromEntries(requiredFields.map(key=>[key.toLowerCase(),key]));
 const fingerprint=value=>createHash('sha256').update(value).digest('hex');
 const normalized=value=>String(value??'').trim().replace(/\s+/g,' ').toLowerCase();
-function parseContent(content,mimeType,requestedType,load){
+export function parseDocumentContent(content,mimeType,requestedType,load){
  const values=Object.create(null);
  if(mimeType==='application/json'){
   let parsed;
@@ -38,7 +38,7 @@ function parseContent(content,mimeType,requestedType,load){
 export function documentMetadata(record){
  return {kind:record.kind,id:record.id,tenantId:record.tenantId,version:record.version,loadId:record.loadId,type:record.type,mimeType:record.mimeType,status:record.status,
   contentHash:record.contentHash,byteLength:record.byteLength,lineageId:record.lineageId,revision:record.revision,previousDocId:record.previousDocId,
-  classification:record.classification,extraction:{source:record.extraction.source,version:record.extraction.version,confidence:record.extraction.confidence,fieldNames:Object.keys(record.extraction.fields),missing:record.extraction.missing,mismatches:record.extraction.mismatches},
+  processing:record.processing??null,classification:record.classification,extraction:{source:record.extraction.source,version:record.extraction.version,confidence:record.extraction.confidence,fieldNames:Object.keys(record.extraction.fields),missing:record.extraction.missing,mismatches:record.extraction.mismatches},
   createdAt:record.createdAt,reviewedAt:record.reviewedAt??null,reviewedBy:record.reviewedBy??null,reviewNeeded:record.status==='pending_review'};
 }
 function latestDocuments(ops,actor,loadId){
@@ -80,7 +80,7 @@ function scan(ops,actor,load){
  }
  return ops.create(actor,'documentexception',{loadId:load.id,status:'open',issueCodes:issues,escalation,createdAt:at,resolvedAt:null},'documentexception:create');
 }
-export function createDocumentExtensions(){
+export function createDocumentExtensions({extract=parseDocumentContent}={}){
  return {
   'document:ingest':(ops,actor,c)=>{
    const p=c.payload??{};fields(p,['type','mimeType','content','previousDocId']);
@@ -89,7 +89,7 @@ export function createDocumentExtensions(){
    requireValue(['BOL','other','auto'].includes(p.type),'DOCUMENT_TYPE','Select a supported document type.');
    requireValue(['text/plain','application/json'].includes(p.mimeType),'DOCUMENT_MIME','Use plain text or JSON; binary OCR is not configured.');
    requireValue(typeof p.content==='string'&&p.content.trim().length>0&&Buffer.byteLength(p.content,'utf8')<=32768&&!/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(p.content),'DOCUMENT_CONTENT','Use a nonempty text document of at most 32 KiB without control characters.');
-   const parsed=parseContent(p.content,p.mimeType,p.type,load),latest=latestDocuments(ops,actor,load.id).find(d=>d.type===parsed.type);
+   const parsed=extract(p.content,p.mimeType,p.type,load),latest=latestDocuments(ops,actor,load.id).find(d=>d.type===parsed.type);
    let previous=null;
    if(p.previousDocId!==undefined){
     previous=ops.read('document',p.previousDocId,actor);

@@ -1,4 +1,5 @@
 import {test as base,expect} from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 import {fixture,password} from '../helpers/operations-fixture.mjs';
 import {makeOperationsApp} from '../../server/operations-app.mjs';
 import {createOperationsFeatures} from '../../domain/operations-features.mjs';
@@ -44,8 +45,17 @@ export async function basicAccessibility(page){
   return problems;
  });
  expect(issues).toEqual([]);
+ await axeAccessibility(page);
 }
 export async function noConsoleErrors(page,run){
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
  await run();expect(errors).toEqual([]);
+}
+
+export async function axeAccessibility(page,label='accessibility'){
+ const results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']).analyze();
+ const report={engine:results.testEngine,tags:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa'],page:await page.title(),viewport:page.viewportSize(),violations:results.violations,incomplete:results.incomplete,passedRules:results.passes.map(rule=>rule.id)};
+ await test.info().attach(label,{body:JSON.stringify(report,null,2),contentType:'application/json'});
+ expect(results.violations.map(({id,impact,nodes})=>({id,impact,targets:nodes.map(n=>n.target),messages:nodes.map(n=>n.failureSummary)}))).toEqual([]);
+ return report;
 }

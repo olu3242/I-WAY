@@ -4,7 +4,9 @@ const pick=(object,keys)=>Object.fromEntries(keys.filter(k=>object[k]!==undefine
 export function projectResult(ops,actor,value){
  if(Array.isArray(value))return value.map(v=>projectResult(ops,actor,v));
  if(!value||typeof value!=='object')return value;
- if(value.kind&&value.loadId){const related=ops.read('load',value.loadId,actor);ops.guard(actor,({document:'document:view',pod:'document:view',invoice:actor.role==='customer'?'invoice:view':'finance:manage',payment:'billing:manage',operationcost:'cost:manage',routeevaluation:'intelligence:view',risk:'intelligence:view',capacityproposal:'intelligence:view',orchestration:'orchestration:manage',connectorjob:'connector:request'})[value.kind]??'load:view',related);}
+ if(value.kind&&value.loadId){const related=ops.read('load',value.loadId,actor,'load:view');ops.guard(actor,({document:'document:view',pod:'document:view',invoice:actor.role==='customer'?'invoice:view':'finance:manage',payment:'billing:manage',operationcost:'cost:manage',measurement:'cost:manage',routeevaluation:'intelligence:view',risk:'intelligence:view',capacityproposal:'intelligence:view',orchestration:'orchestration:manage',connectorjob:'connector:request'})[value.kind]??'load:view',related);}
+ if(value.kind==='governancepolicy')ops.guard(actor,'governance:manage',{tenantId:value.tenantId});
+ if(value.kind==='customer')ops.guard(actor,'customer:manage',{tenantId:value.tenantId});
  if(value.kind==='load'||value.kind==='shipment'){
   const load=value.kind==='load'?ops.store.get('load',value.id,actor.tenantId):ops.store.get('load',value.loadId,actor.tenantId);
   ops.guard(actor,'load:view',load);

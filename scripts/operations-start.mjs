@@ -11,7 +11,7 @@ export async function startLocalOperations({databasePath,port=4180,intervalMs=10
  if(!Number.isInteger(intervalMs)||intervalMs<10||intervalMs>60000)throw new Error('Invalid local checkpoint interval');
  if(typeof databasePath!=='string'||!databasePath)throw new Error('A local operations database path is required');
  const store=new OperationsStore(resolve(databasePath));
- const operations=new Operations(store,createOperationsFeatures()),server=makeOperationsApp({store,operations});
+ const operations=new Operations(store,createOperationsFeatures()),server=makeOperationsApp({store,operations,logSink:event=>logger.info?.(JSON.stringify(event))});
  let currentTick=null,stopping=false,worker=null,shutdownPromise=null;
  const triggerTick=()=>{
   if(stopping||currentTick)return;

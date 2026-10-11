@@ -1,0 +1,76 @@
+{
+  "format": "iway-performance-baseline",
+  "version": 1,
+  "runId": "e2230bc0-415e-47fd-b68d-bbada5386c38",
+  "capturedAt": "2026-10-11T17:33:36.331Z",
+  "configuration": {
+    "workers": 4,
+    "rounds": 6
+  },
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64",
+    "logicalCpus": 12,
+    "cpuModel": "Intel(R) Core(TM) 7 150U"
+  },
+  "policy": "Local regression limits: p95 at most 4× measured calibration with a 750ms floor; throughput at least 1/5 calibration; peak worker RSS at most 2× calibration with a 192MiB floor. These are regression budgets, not production promises.",
+  "scenarios": [
+    {
+      "scenario": "dispatch",
+      "measured": {
+        "p95Ms": 65.25719999999998,
+        "throughputPerSecond": 53.930111967900864,
+        "maxWorkerRssBytes": 67133440
+      },
+      "budgets": {
+        "p95Ms": 750,
+        "minThroughputPerSecond": 10.786022393580172,
+        "maxWorkerRssBytes": 201326592,
+        "maxUnexpectedErrors": 0
+      }
+    },
+    {
+      "scenario": "workflow",
+      "measured": {
+        "p95Ms": 85.2808,
+        "throughputPerSecond": 139.07883451936678,
+        "maxWorkerRssBytes": 67170304
+      },
+      "budgets": {
+        "p95Ms": 750,
+        "minThroughputPerSecond": 27.815766903873357,
+        "maxWorkerRssBytes": 201326592,
+        "maxUnexpectedErrors": 0
+      }
+    },
+    {
+      "scenario": "documents",
+      "measured": {
+        "p95Ms": 78.9875,
+        "throughputPerSecond": 155.69270929965535,
+        "maxWorkerRssBytes": 67358720
+      },
+      "budgets": {
+        "p95Ms": 750,
+        "minThroughputPerSecond": 31.13854185993107,
+        "maxWorkerRssBytes": 201326592,
+        "maxUnexpectedErrors": 0
+      }
+    },
+    {
+      "scenario": "tenant_isolation",
+      "measured": {
+        "p95Ms": 51.48110000000001,
+        "throughputPerSecond": 213.5582813897306,
+        "maxWorkerRssBytes": 67186688
+      },
+      "budgets": {
+        "p95Ms": 750,
+        "minThroughputPerSecond": 42.71165627794612,
+        "maxWorkerRssBytes": 201326592,
+        "maxUnexpectedErrors": 0
+      }
+    }
+  ]
+}

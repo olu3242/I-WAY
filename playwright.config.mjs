@@ -9,7 +9,7 @@ export default defineConfig({
  expect:{timeout:10000},
  retries:0,
  forbidOnly:!!process.env.CI,
- reporter:[['list'],['html',{outputFolder:'dist/browser-report',open:'never'}]],
+ reporter:[['./tests/browser/evidence-reporter.mjs'],['list'],['html',{outputFolder:'dist/browser-report',open:'never'}]],
  outputDir:'dist/browser-results',
  use:{browserName:'chromium',headless:true,trace:'retain-on-failure',screenshot:'only-on-failure'},
 });

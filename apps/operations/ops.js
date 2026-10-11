@@ -9,7 +9,8 @@ const select=(name,label,rows,selected='')=>'<div><label for="'+name+'">'+esc(la
 const can=action=>state.actor.permissions.includes(action);
 const button=(label,action,id,extra='')=>'<button type="button" data-action="'+action+'" data-id="'+esc(id)+'" '+extra+'>'+esc(label)+'</button>';
 const pageHead=(title,description,action='')=>'<div class="page-head"><div><p class="eyebrow">'+esc(human(state.actor.role))+' WORKSPACE</p><h1>'+esc(title)+'</h1><p class="muted">'+esc(description)+'</p></div>'+action+'</div>';
-function alertMessage(text,error=false){message.className=error?'error-message':'success-message';message.textContent=text;message.scrollIntoView({block:'nearest'});}
+function alertMessage(text,error=false){message.className=error?'error-message':'success-message';message.role=error?'alert':'status';message.ariaLive=error?'assertive':'polite';message.ariaAtomic='true';message.tabIndex=-1;message.textContent=text;message.focus?.({preventScroll:true});message.scrollIntoView({block:'nearest'});}
+function showView(){message.textContent='';message.className='';message.role='status';message.ariaLive='polite';render();const heading=view.querySelector('h1');if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});heading.scrollIntoView({block:'nearest'});}}
 async function request(path,options={}){
  const response=await fetch(path,{...options,headers:{'Content-Type':'application/json','X-CSRF-Token':state?.csrf??'',...options.headers}});
  const data=await response.json();if(response.status===401){location.assign('/login');throw new Error('Sign in required.');}if(!response.ok)throw new Error(data.error??'Request failed.');return data;
@@ -24,7 +25,7 @@ async function command(action,record,payload={}){
 }
 function loadTable(loads=state.loads){
  if(!loads.length)return '<p class="empty">No loads here yet. Your next move starts with a load.</p>';
- return '<div class="table-wrap"><table><thead><tr><th>Load</th><th>Route</th><th>Status</th><th>Pickup</th><th></th></tr></thead><tbody>'+loads.map(load=>'<tr><td><strong>'+esc(load.reference)+'</strong><br><span class="muted">'+esc(load.commodity)+'</span></td><td>'+esc(load.stops[0].location)+' → '+esc(load.stops.at(-1).location)+'</td><td>'+chip(load.status)+'</td><td>'+esc(date(load.stops[0].at))+'</td><td>'+button('Open','open',load.id)+'</td></tr>').join('')+'</tbody></table></div>';
+ return '<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Load</th><th>Route</th><th>Status</th><th>Pickup</th><th></th></tr></thead><tbody>'+loads.map(load=>'<tr><td><strong>'+esc(load.reference)+'</strong><br><span class="muted">'+esc(load.commodity)+'</span></td><td>'+esc(load.stops[0].location)+' → '+esc(load.stops.at(-1).location)+'</td><td>'+chip(load.status)+'</td><td>'+esc(date(load.stops[0].at))+'</td><td>'+button('Open','open',load.id)+'</td></tr>').join('')+'</tbody></table></div>';
 }
 function overview(){
  const active=state.loads.filter(l=>!['delivered','void'].includes(l.status));
@@ -60,7 +61,7 @@ function loadDetail(){
   assignment='<form id="assign" class="card"><h2>Assign driver and vehicle</h2><p class="muted">Availability, ownership and carrier approval are checked when you assign.</p><div class="grid">'+
    select('driverId','Driver',state.drivers.filter(d=>d.active).map(d=>[d.id,d.name+' · '+(d.approved?'Approved':'Approval needed')]))+
    select('vehicleId','Vehicle',state.vehicles.filter(v=>v.active).map(v=>[v.id,v.name+' · '+human(v.maintenance)]))+
-   field('reason','Assignment reason')+'</div><div class="actions"><button class="primary">Save assignment</button></div></form>';
+   field('assignmentReason','Assignment reason')+'</div><div class="actions"><button class="primary">Save assignment</button></div></form>';
  }
  return pageHead(load.reference,'Load detail · '+human(load.status),button('All loads','back'))+
  '<div class="split"><section class="card"><h2>Route & milestones</h2>'+load.stops.map(s=>'<div class="detail-line"><span class="stop-dot"></span><div><strong>'+esc(s.location)+'</strong><p>'+esc(human(s.type))+' · '+esc(date(s.at))+'</p><p class="muted small">'+(s.completedAt?'Completed '+esc(date(s.completedAt)):'Awaiting completion')+'</p></div></div>').join('')+
@@ -92,8 +93,8 @@ function assets(){
 function people(){
  if(state.actor.role==='fleet')return pageHead('Fleet employment','Manage your fleet drivers. Carrier approval remains a separate dispatch requirement.')+'<section class="card"><h2>Your drivers</h2>'+state.users.map(u=>'<div class="inline-record"><div><strong>'+esc(u.name)+'</strong><p>'+chip(u.active?'active':'inactive')+'</p></div>'+(u.active?button('Deactivate account','user:deactivate',u.id):'')+'</div>').join('')+'</section><form id="fleet-driver" class="card"><h2>Add a fleet driver</h2><div class="grid">'+field('name','Display name')+field('username','Username')+field('password','Initial local password','password','','minlength="12" maxlength="256" autocomplete="new-password"')+'</div><div class="actions"><button class="primary">Create driver account</button></div></form>';
  return pageHead('Workspace access','Accounts and relationships are managed by the carrier.')+
- '<section class="card"><h2>Accounts</h2><div class="table-wrap"><table><thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Access</th></tr></thead><tbody>'+state.users.map(u=>'<tr><td>'+esc(u.name)+'</td><td>'+esc(human(u.role))+'</td><td>'+chip(u.active?'active':'inactive')+'</td><td>'+(u.active&&u.id!==state.actor.id?button('Deactivate','user:deactivate',u.id):'—')+'</td></tr>').join('')+'</tbody></table></div></section>'+
- '<div class="split"><form id="user" class="card"><h2>Add a local account</h2><div class="grid">'+field('name','Display name')+field('username','Username')+select('role','Role',[['dispatcher','Dispatcher'],['driver','Driver'],['fleet','Fleet administrator'],['carrier','Carrier manager'],['customer','Customer portal']])+select('fleetId','Fleet relationship',[['','Carrier employee'],...state.fleets.map(f=>[f.id,f.name])])+select('customerId','Customer account relationship',[['','No customer relationship'],...(state.customers??[]).map(c=>[c.id,c.name])])+field('password','Initial local password','password','','minlength="12" maxlength="256" autocomplete="new-password"')+'</div><div class="actions"><button class="primary">Create account</button></div></form><form id="fleet" class="card"><h2>Add a fleet company</h2>'+field('name','Fleet company name')+'<div class="actions"><button>Add fleet</button></div></form></div>';
+ '<section class="card"><h2>Accounts</h2><div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Access</th></tr></thead><tbody>'+state.users.map(u=>'<tr><td>'+esc(u.name)+'</td><td>'+esc(human(u.role))+'</td><td>'+chip(u.active?'active':'inactive')+'</td><td>'+(u.active&&u.id!==state.actor.id?button('Deactivate','user:deactivate',u.id):'—')+'</td></tr>').join('')+'</tbody></table></div></section>'+
+ '<div class="split"><form id="user" class="card"><h2>Add a local account</h2><div class="grid">'+field('name','Display name')+field('username','Username')+select('role','Role',[['dispatcher','Dispatcher'],['driver','Driver'],['fleet','Fleet administrator'],['carrier','Carrier manager'],['customer','Customer portal']])+select('fleetId','Fleet relationship',[['','Carrier employee'],...state.fleets.map(f=>[f.id,f.name])])+select('customerId','Customer account relationship',[['','No customer relationship'],...(state.customers??[]).map(c=>[c.id,c.name])])+field('password','Initial local password','password','','minlength="12" maxlength="256" autocomplete="new-password"')+'</div><div class="actions"><button class="primary">Create account</button></div></form><form id="fleet" class="card"><h2>Add a fleet company</h2>'+field('fleetName','Fleet company name')+'<div class="actions"><button>Add fleet</button></div></form></div>';
 }
 function workflows(){
  return pageHead('Review & recovery','Recommendations stay advisory until a carrier manager approves them.')+
@@ -111,7 +112,7 @@ function finance(){
  (invoice?invoice.status==='ready'?button('Approve record','finance:approve',invoice.id):'':button('Prepare invoice','finance:prepare',l.id))+'</div>';}).join('')+'</section>';
 }
 function audit(){
- return pageHead('Activity trail','An append-only record of operational decisions.')+'<section class="card"><div class="table-wrap"><table><thead><tr><th>Time</th><th>Action</th><th>Outcome</th><th>Record</th></tr></thead><tbody>'+state.audit.map(a=>'<tr><td>'+esc(date(a.at))+'</td><td>'+esc(human(a.action))+'</td><td>'+chip(a.outcome)+'</td><td>'+esc(a.resourceId?.slice(0,8)??'Workspace')+'</td></tr>').join('')+'</tbody></table></div></section>';
+ return pageHead('Activity trail','An append-only record of operational decisions.')+'<section class="card"><div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Time</th><th>Action</th><th>Outcome</th><th>Record</th></tr></thead><tbody>'+state.audit.map(a=>'<tr><td>'+esc(date(a.at))+'</td><td>'+esc(human(a.action))+'</td><td>'+chip(a.outcome)+'</td><td>'+esc(a.resourceId?.slice(0,8)??'Workspace')+'</td></tr>').join('')+'</tbody></table></div></section>';
 }
 function render(){
  document.querySelector('#tenant').textContent=state.tenant.name;
@@ -127,16 +128,16 @@ function render(){
  const extension=typeof extendedView==='function'?extendedView(tab):null;
  view.innerHTML=extension??(creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+'<section class="card">'+loadTable()+'</section>':tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview());
 }
-document.querySelector('#nav').addEventListener('click',event=>{const btn=event.target.closest('[data-tab]');if(btn){tab=btn.dataset.tab;selected=null;creating=false;render();}});
-document.querySelector('#logout').addEventListener('click',async()=>{await request('/api/ops/logout',{method:'POST'});location.assign('/login');});
+document.querySelector('#nav').addEventListener('click',event=>{const btn=event.target.closest('[data-tab]');if(btn){tab=btn.dataset.tab;selected=null;creating=false;showView();}});
+document.querySelector('#logout').addEventListener('click',async()=>{try{await request('/api/ops/logout',{method:'POST'});location.assign('/login');}catch(error){alertMessage(error.message,true)}});
 view.addEventListener('click',async event=>{
  if(typeof handleExtendedClick==='function'&&await handleExtendedClick(event))return;
  const btn=event.target.closest('[data-action]');if(!btn)return;
  const action=btn.dataset.action,id=btn.dataset.id;
- if(action==='open'){tab='loads';selected=id;creating=false;return render();}
- if(action==='new-load'){tab='loads';creating=true;return render();}
- if(action==='back'){selected=null;creating=false;return render();}
- if(action.startsWith('edit-')){selected=action.slice(5)+':'+id;return render();}
+ if(action==='open'){tab='loads';selected=id;creating=false;return showView();}
+ if(action==='new-load'){tab='loads';creating=true;return showView();}
+ if(action==='back'){selected=null;creating=false;return showView();}
+ if(action.startsWith('edit-')){selected=action.slice(5)+':'+id;return showView();}
  btn.disabled=true;
  try{
   let record=state.loads.find(l=>l.id===id),payload={};
@@ -157,10 +158,10 @@ view.addEventListener('submit',async event=>{
  const values=Object.fromEntries(new FormData(form)),load=state.loads.find(l=>l.id===selected);
  try{
   if(form.id==='create-load'){const payload={reference:values.reference,customer:values.customer,customerId:values.customerId||null,dispatcherId:values.dispatcherId,commodity:values.commodity,weightLb:Number(values.weightLb),rateCents:Number(values.rateCents),charges:values.chargeLabel.trim()?[{label:values.chargeLabel,amountCents:Number(values.chargeCents)}]:[],factored:values.factored==='yes',factorName:values.factorName,stops:[{type:'pickup',location:values.pickup,at:new Date(values.pickupAt+'Z').toISOString()},{type:'delivery',location:values.delivery,at:new Date(values.deliveryAt+'Z').toISOString()}]};const record=await command('load:create',null,payload);creating=false;selected=record.id;tab='loads';render();}
-  if(form.id==='assign')await command('load:assign',load,values);
+  if(form.id==='assign')await command('load:assign',load,{driverId:values.driverId,vehicleId:values.vehicleId,reason:values.assignmentReason});
   if(form.id==='deliver')await command('load:deliver',load,{stopId:load.stops.find(s=>!s.completedAt).id,proofReference:values.proofReference});
   if(form.id==='vehicle')await command('vehicle:create',null,{name:values.name,capacityLb:Number(values.capacityLb),fleetId:values.fleetId||null});
-  if(form.id==='fleet')await command('fleet:create',null,values);
+  if(form.id==='fleet')await command('fleet:create',null,{name:values.fleetName});
   if(form.id==='fleet-driver'){await command('driver:create',null,values);form.reset();}
   if(form.id==='user'){await command('user:create',null,{...values,fleetId:values.fleetId||null,customerId:values.customerId||null});form.reset();}
   if(form.id==='asset-edit'){const [kind,id]=selected.split(':'),record=state[kind+'s'].find(r=>r.id===id);await command(kind+':update',record,{...values,available:values.available==='yes',active:values.active==='yes'});}
