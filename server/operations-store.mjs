@@ -1,3 +1,4 @@
+import {aiPolicyIntegritySQL} from '../domain/operations-ai-policy.mjs';
 import{identitySQL}from'./operations-identity.mjs';
 import{integrationIntegritySQL}from'../domain/operations-integration.mjs';
 import{providerIntegritySQL}from'../domain/operations-provider.mjs';
@@ -33,6 +34,7 @@ export class OperationsStore{
   this.db.exec(documentIntegritySQL);
   this.db.exec(intelligenceIntegritySQL);
   this.db.exec(runtimeIntegritySQL);
+  this.db.exec(aiPolicyIntegritySQL);
   this.db.exec(measurementIntegritySQL);
   this.db.exec(complianceIntegritySQL);
   this.db.exec(identitySQL);
