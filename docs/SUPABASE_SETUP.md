@@ -127,3 +127,80 @@ Human gate:
 4. Obtain legal/product approval of the consent notice version and populate both consent-version variables. Only then enable certification opt-in for isolated illustrative test records and rerun hosted tests.
 
 Final hosted decision: **NO-GO**. Local code/test readiness does not certify the hosted identity or deployment.
+
+## TLS trust remediation and read-only probe (2026-10-11)
+
+The application uses Node's bundled root store by default. The observed Supabase
+Session Pooler chain ends at Supabase Root 2021 CA, which was absent from both
+Node's bundled store and this machine's Windows store. No extra CA bundle,
+OpenSSL trust override, or HTTP proxy environment variable was configured.
+The error was `SELF_SIGNED_CERT_IN_CHAIN`, before authentication or SQL.
+
+The public CA was fetched over verified HTTPS from the production download URL
+specified by Supabase's official dashboard configuration:
+- [Official dashboard configuration, pinned revision](https://github.com/supabase/supabase/blob/8617532ae1a41571d5d557cd24c6f5f2565d9230/apps/studio/hooks/custom-content/custom-content.json)
+- [Official CA download](https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt)
+- [Supabase SSL requirements](https://supabase.com/docs/guides/platform/ssl-enforcement)
+
+The downloaded root exactly matched the presented root. All chain signatures and
+validity periods, SSL server purpose, and the actual hostname were verified.
+This supports a missing provider CA diagnosis; there was no evidence of a
+substituted TLS-inspection certificate on this connection.
+
+| Certificate | Issuer | Validity (UTC) |
+| --- | --- | --- |
+| `*.pooler.supabase.com` | Supabase Intermediate 2021 CA | 2025-03-12 to 2030-03-11 |
+| Supabase Intermediate 2021 CA | Supabase Root 2021 CA | 2023-10-24 to 2033-10-21 |
+| Supabase Root 2021 CA | Self-issued authenticated root | 2021-04-28 to 2031-04-26 |
+
+Root SHA-256 fingerprint:
+`80:70:25:AD:50:D4:ED:21:9D:2C:9C:7D:29:9C:00:4F:82:4E:B0:0C:F7:F6:5A:FE:F6:07:D0:7B:72:E6:CA:FA`.
+
+The public certificate is stored at `server/certs/supabase-prod-ca-2021.crt`.
+`server/postgres-tls.mjs` checks its fingerprint, CA status, self-signature, and
+validity before returning connection-scoped `ssl.ca` with
+`rejectUnauthorized: true`. Node's default hostname verification is unchanged.
+This applies only to the authorized direct Supabase hostname and Supabase pooler
+hostnames. Other database hosts retain their existing trust configuration.
+No system root store, TLS bypass flag, or environment credential was changed.
+Never replace this root with a certificate merely copied from an untrusted peer.
+For rotation, independently reauthenticate the provider's official source, verify
+the new chain, and review the certificate and fingerprint changes together.
+
+`postgresConfig` shares the existing database security validation between startup
+and a new read-only probe. `serverConfig` still requires the approved consent
+version before application startup. Certification's TLS configuration shares the
+same CA helper; its existing explicit opt-in and consent gates remain intact.
+
+Run `npm run probe:postgres` to load the exact project-root `.env.local` through
+the existing allowlisted loader into an isolated environment. The probe requires
+the approved Session Pooler hostname, port 5432, database `postgres`, and
+`iway_registration_login.vnoxdinldneeczxibicp`. It executes only:
+
+```sql
+SELECT current_user, current_database(), 1;
+```
+
+It requires a certificate-verified TLS session and the effective identity
+`iway_registration_login`, closes the connection, and emits only sanitized
+results. A failure exits nonzero without retries. It does not start the HTTP
+server, supply a consent version, query registration data, or enable certification.
+Connection success alone does not satisfy the separate consent and hosted
+registration release gates.
+
+Verification results for this remediation:
+
+- Live credential-free TLS verification against the configured Session Pooler:
+  PASS, with the independently authenticated Supabase root and exact hostname.
+- Deliberately incorrect hostname: rejected. No TLS verification bypass was used.
+- Restricted read-only probe: CONNECTION BLOCKED, authentication SQLSTATE
+  `28P01`. TLS trust no longer blocks the connection; password authentication
+  failed before the requested query could execute. No effective identity or
+  database query result was obtained. No retry or administrator fallback occurred.
+- The next operator action is to confirm the existing dedicated login credential
+  through its approved secure source and update it locally if necessary. Do not
+  substitute the owner password. No password or permission was changed here.
+- Consent remains a separate release gate; no consent value was supplied.
+- No migrations, registration writes, hosted certification, or system trust-store
+  changes were performed.
+- Final `npm run verify`: PASS, 39 tests with zero failures or skips, plus IP and site checks. `git diff --check` passed.

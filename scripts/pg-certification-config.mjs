@@ -1,3 +1,4 @@
+import {postgresTlsOptions} from '../server/postgres-tls.mjs';
 export function certificationConfig(mode,env=process.env){
  if(!['hosted','local'].includes(mode))throw new Error('Choose hosted or local certification explicitly');
  if(env.IWAY_PG_TEST_OPT_IN!=='1')throw new Error('IWAY_PG_TEST_OPT_IN=1 required; certification NOT RUN');
@@ -22,5 +23,5 @@ export function certificationConfig(mode,env=process.env){
   if(!direct&&!pooled)throw new Error('Hosted certification requires the authorized Supabase project');
  }
  return {connectionString:env.IWAY_PG_TEST_URL,consentVersion:env.IWAY_PG_TEST_CONSENT_VERSION,
-  ssl:mode==='hosted'?{rejectUnauthorized:true}:false};
+  ssl:mode==='hosted'?postgresTlsOptions(url.hostname):false};
 }

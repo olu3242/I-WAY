@@ -13,7 +13,8 @@
     "verify": "npm run test && npm run scan:ip && npm run check:site",
     "check:site": "node scripts/check-site.mjs",
     "test:hosted": "node scripts/certify-postgres.mjs hosted",
-    "test:pg:local": "node scripts/certify-postgres.mjs local"
+    "test:pg:local": "node scripts/certify-postgres.mjs local",
+    "probe:postgres": "node scripts/probe-postgres.mjs"
   },
   "dependencies": {
     "pg": "^8.16.3"

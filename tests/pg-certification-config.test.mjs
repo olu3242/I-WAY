@@ -30,7 +30,8 @@ test('startup connection probe never reads the private table',async()=>{
 test('hosted certification is pinned to the authorized Supabase project',()=>{
  const remote=new URL(connection);remote.hostname='db.vnoxdinldneeczxibicp.supabase.co';
  const configured={...env,IWAY_PG_TEST_URL:remote.href,IWAY_PG_TEST_HOST:remote.hostname};
- assert.deepEqual(certificationConfig('hosted',configured).ssl,{rejectUnauthorized:true});
+ assert.equal(certificationConfig('hosted',configured).ssl.rejectUnauthorized,true);
+ assert.match(certificationConfig('hosted',configured).ssl.ca,/BEGIN CERTIFICATE/);
  remote.hostname='db.another-project.supabase.co';
  assert.throws(()=>certificationConfig('hosted',{...configured,IWAY_PG_TEST_URL:remote.href,IWAY_PG_TEST_HOST:remote.hostname}),/authorized Supabase project/);
  remote.hostname='aws-0-us-east-1.pooler.supabase.com';remote.username='iway_registration_login.vnoxdinldneeczxibicp';
