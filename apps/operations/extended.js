@@ -1,6 +1,6 @@
 // Private local operational views. Content is escaped; documents never enter public assets.
 function extendedTabs(){
- const tabs=[];
+ const tabs=typeof intelligenceTabs==='function'?intelligenceTabs():[];
  if(can('billing:manage'))tabs.push(['billing','Billing & receivables']);
  if(can('document:review'))tabs.push(['documents','Document review']);
  if(can('analytics:view'))tabs.push(['analytics','Operations analytics']);
@@ -19,9 +19,10 @@ function extendedLoadPanels(load){
   if(pending.length)html+='<form id="pod-record" class="card"><h2>Recipient acknowledgment</h2><p>Record a confirmed acknowledgment and an evidence reference. Do not enter signature images or precise GPS.</p><div class="grid">'+select('stopId','Delivery stop',pending.map(s=>[s.id,s.location]))+field('evidenceReference','Acknowledgment evidence reference')+'<div class="wide"><label class="check-label"><input type="checkbox" name="recipientAcknowledged" required> Recipient has acknowledged receipt</label></div></div><div class="actions"><button>Record acknowledgment</button></div></form>';
  }
  if(pods.length)html+='<section class="card"><h2>Delivery acknowledgments</h2>'+pods.map(p=>'<p>'+esc(p.stopId)+' · Recipient acknowledged · '+esc(date(p.recordedAt))+'</p>').join('')+'</section>';
- return html;
+ return html+(typeof intelligenceLoadPanels==='function'?intelligenceLoadPanels(load):'');
 }
 function extendedView(name){
+ const intelligence=typeof intelligenceView==='function'?intelligenceView(name):null;if(intelligence!==null)return intelligence;
  if(name==='billing')return billingView();
  if(name==='documents')return pageHead('Document review','Review extracted shipping fields and resolve document exceptions.')+'<section class="notice">Classification uses deterministic local parsing. PDF/image OCR and model extraction are not configured.</section><section class="card"><h2>Exception queue</h2>'+(state.documentexceptions??[]).filter(e=>e.status==='open').map(e=>'<div class="inline-record"><div><strong>'+esc(state.loads.find(l=>l.id===e.loadId)?.reference)+'</strong><p>'+esc(e.issueCodes.join(', '))+' · '+esc(e.escalation)+'</p></div>'+button('Open shipment','open',e.loadId)+'</div>').join('')+'</section>'+loadTable(state.loads.filter(l=>(state.documents??[]).some(d=>d.loadId===l.id&&d.reviewNeeded)));
  if(name==='notifications')return pageHead('Notifications','Local delivery records; no external messages are sent.')+'<form id="notification-preference" class="card"><h2>Your preferences</h2>'+select('enabled','Shipment notifications',[['yes','Enabled'],['no','Suppressed']],state.notificationpreference?.enabled===false?'no':'yes')+'<div class="actions"><button>Save preferences</button></div></form><section class="card"><h2>Delivery records</h2>'+(state.notifications??[]).map(n=>'<p>'+esc(human(n.template))+' · '+chip(n.status)+'</p>').join('')+'</section>';
@@ -31,6 +32,7 @@ function extendedView(name){
  return null;
 }
 async function handleExtendedClick(event){
+ if(typeof handleIntelligenceClick==='function'&&await handleIntelligenceClick(event))return true;
  const b=event.target.closest('[data-action]');if(!b||!['document','billing','payment'].includes(b.dataset.action.split(':')[0]))return false;
  b.disabled=true;try{
   const a=b.dataset.action;
@@ -41,6 +43,7 @@ async function handleExtendedClick(event){
  }catch(e){alertMessage(e.message,true)}finally{b.disabled=false}return true;
 }
 async function handleExtendedSubmit(event){
+ if(typeof handleIntelligenceSubmit==='function'&&await handleIntelligenceSubmit(event))return true;
  const form=event.target;if(!['document-ingest','pod-record','notification-preference','payment-record','customer-create'].includes(form.id))return false;
  event.preventDefault();const b=form.querySelector('button'),v=Object.fromEntries(new FormData(form));b.disabled=true;
  try{

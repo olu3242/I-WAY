@@ -56,9 +56,9 @@ export class Operations{
   else result.users=[];
   if(actor.permissions.includes('audit:view')){
    const visible=new Set(result.loads.map(l=>l.id));
-   result.audit=this.store.db.prepare('SELECT sequence,actor_id AS actorId,action,resource_id AS resourceId,at,outcome,detail FROM audit WHERE tenant_id=? ORDER BY sequence DESC LIMIT 200').all(actor.tenantId)
-    .filter(row=>actor.role==='carrier'||row.actorId===actor.id||visible.has(row.resourceId))
-    .map(row=>({...row,detail:JSON.parse(row.detail)}));
+   result.audit=this.store.db.prepare('SELECT sequence,actor_id AS actorId,action,resource_id AS resourceId,at,outcome FROM audit WHERE tenant_id=? ORDER BY sequence DESC LIMIT 200').all(actor.tenantId)
+    // Audit payloads remain in the append-only store, never in general workspace state.
+    .filter(row=>actor.role==='carrier'||row.actorId===actor.id||visible.has(row.resourceId));
   }else result.audit=[];
   for(const view of this.views)Object.assign(result,view(this,actor,result.loads));
   return result;

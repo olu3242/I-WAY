@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {spawn} from 'node:child_process';
-import {fixture} from './helpers/operations-fixture.mjs';
+import {fixture,password} from './helpers/operations-fixture.mjs';
+import {addUser} from '../server/operations-auth.mjs';
 import {OperationsStore} from '../server/operations-store.mjs';
 import {Operations} from '../domain/operations.mjs';
 import {createAutomation,runWorkflowTick,payWeek} from '../domain/operations-automation.mjs';
@@ -157,4 +158,32 @@ test('open exception prevents starting transit and expired approved work cannot 
  runWorkflowTick(f.ops);f.command(f.manager,'approval:decide',approval(f),{decision:'approved',reason:'Reviewed'});
  clock=new Date(clock.getTime()+31*60000);runWorkflowTick(f.ops);
  assert.equal(workflow(f).status,'failed');assert.equal(approval(f).status,'expired');assert.equal(f.store.list('exception',f.manager.tenantId)[0].status,'open');
+});
+
+test('approved exception work fails closed when the persisted reviewer loses approval authority',async t=>{
+ const f=await fixture(t),load=transit(f),exception=report(f,load);runWorkflowTick(f.ops);
+ const approved=f.command(f.manager,'approval:decide',approval(f),{decision:'approved',reason:'Independent review while authorized'});
+ const reviewer=f.store.principal(f.manager.id);
+ f.store.db.prepare('UPDATE users SET data=? WHERE id=? AND tenant_id=?').run(JSON.stringify({...reviewer,permissions:reviewer.permissions.filter(permission=>permission!=='approval:decide')}),reviewer.id,reviewer.tenantId);
+ assert.equal(runWorkflowTick(f.ops),1);
+ assert.equal(workflow(f).status,'failed');assert.equal(workflow(f).lastError,'APPROVAL_AUTHORITY');
+ assert.equal(fresh(f,'approval',approved.id).status,'stale');assert.equal(fresh(f,'exception',exception.id).status,'open');
+ assert.equal(f.store.db.prepare("SELECT count(*) AS n FROM audit WHERE action='exception:resolve' AND resource_id=?").get(exception.id).n,0);
+ // Restoring permission cannot revive consumed/stale evidence; a new human review is required.
+ f.store.db.prepare('UPDATE users SET data=? WHERE id=? AND tenant_id=?').run(JSON.stringify(reviewer),reviewer.id,reviewer.tenantId);
+ assert.equal(runWorkflowTick(f.ops),0);assert.equal(fresh(f,'exception',exception.id).status,'open');
+ f.command(f.dispatcher,'workflow:restart',workflow(f),{reason:'Reviewer authority restored; request a fresh decision'});runWorkflowTick(f.ops);
+ assert.notEqual(approval(f).id,approved.id);
+ f.command(f.manager,'approval:decide',approval(f),{decision:'approved',reason:'Fresh independent review under current authority'});runWorkflowTick(f.ops);
+ assert.equal(fresh(f,'exception',exception.id).status,'resolved');
+});
+test('approved exception work fails closed when the reviewer is deactivated before application',async t=>{
+ const f=await fixture(t),load=transit(f),exception=report(f,load);runWorkflowTick(f.ops);
+ f.command(f.manager,'approval:decide',approval(f),{decision:'approved',reason:'Independent review before account deactivation'});
+ const secondManager=addUser(f.store,{tenantId:f.manager.tenantId,username:'reviewer-admin@illustrative.invalid',name:'Illustrative second carrier manager',role:'carrier',password});
+ f.command(secondManager,'user:deactivate',f.manager,{reason:'Reviewer no longer has carrier employment authority'});
+ assert.equal(runWorkflowTick(f.ops),1);
+ assert.equal(workflow(f).status,'failed');assert.equal(workflow(f).lastError,'APPROVAL_AUTHORITY');assert.equal(approval(f).status,'stale');
+ assert.equal(fresh(f,'exception',exception.id).status,'open');
+ assert.equal(f.store.db.prepare("SELECT count(*) AS n FROM audit WHERE action='approval:apply' AND resource_id=?").get(approval(f).id).n,0);
 });

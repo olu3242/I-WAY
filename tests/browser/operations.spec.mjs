@@ -132,7 +132,7 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   carrier.off('dialog',answer);
   const invoice=workspace.store.list('invoice',workspace.manager.tenantId).find(i=>i.loadId===load.id);
   expect(invoice.status).toBe('issued');
-  runFeatureTick(workspace.ops);
+  await runFeatureTick(workspace.ops);
   await pages.customer.reload();
   await pages.customer.getByRole('button',{name:'Invoices',exact:true}).click();
   await expect(pages.customer.locator('#view')).toContainText('issued');
@@ -234,4 +234,123 @@ test('customer portal exposes only its latest reviewed BOL and protects revision
   expect((await portal.request.get(workspace.baseURL+'/api/ops/documents/'+unauthorized.id)).status()).toBe(403);
   expect(errors).toEqual([]);
  }finally{await carrierContext.close();await customerContext.close();}
+});
+
+test('Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery',async({browser,workspace},testInfo)=>{
+ let load=workspace.createLoad();load=workspace.command(workspace.dispatcher,'load:validate',load);
+ const contexts=[],pages={},errors=[];
+ for(const [name,actor] of Object.entries({carrier:workspace.manager,dispatcher:workspace.dispatcher,driver:workspace.driver})){
+  const context=await browser.newContext({viewport:{width:name==='driver'?390:1440,height:1000}});contexts.push(context);
+  pages[name]=await context.newPage();pages[name].on('pageerror',error=>errors.push(error.message));
+  await signIn(pages[name],workspace,actor);
+ }
+ try{
+  const {carrier,dispatcher,driver}=pages;
+  await dispatcher.getByRole('button',{name:'Loads',exact:true}).click();
+  await dispatcher.getByRole('button',{name:'Open',exact:true}).click();
+  await dispatcher.getByLabel('Estimated route miles',{exact:true}).fill('150');
+  await dispatcher.getByLabel('Assumed average speed (mph)',{exact:true}).fill('50');
+  await dispatcher.getByLabel('Expected handling (minutes)',{exact:true}).fill('30');
+  await dispatcher.getByLabel('Estimate source',{exact:true}).selectOption('local_fixture');
+  await dispatcher.getByRole('button',{name:'Evaluate arrival estimate',exact:true}).click();
+  await expect(dispatcher.getByRole('status')).toContainText('Saved.');
+  await dispatcher.getByRole('button',{name:'Analyze risk',exact:true}).click();
+  await dispatcher.getByRole('button',{name:'Recommend capacity',exact:true}).click();
+  expect(workspace.store.get('load',load.id,workspace.manager.tenantId).status).toBe('validated');
+  await carrier.reload();
+  await carrier.getByRole('button',{name:'Control tower',exact:true}).click();
+  await expect(carrier.locator('#view')).toContainText('Rules-based analysis only');
+  await expect(carrier.getByRole('heading',{name:'Arrival estimates',exact:true})).toBeVisible();
+  await expect(carrier.getByRole('heading',{name:'Shipment risk evidence',exact:true})).toBeVisible();
+  const originalRisk=carrier.locator('section').filter({has:carrier.getByRole('heading',{name:'Shipment risk evidence',exact:true})});
+  await expect(originalRisk).toContainText('Shipment version '+load.version);
+  await expect(originalRisk).not.toContainText('Shipment changed since this evidence was recorded');
+  carrier.once('dialog',dialog=>dialog.accept('Carrier reviewed eligibility and proposed assignment'));
+  await carrier.getByRole('button',{name:'Approve capacity proposal',exact:true}).click();
+  expect(workspace.store.get('load',load.id,workspace.manager.tenantId).status).toBe('validated');
+  await dispatcher.reload();
+  await dispatcher.getByRole('button',{name:'Control tower',exact:true}).click();
+  dispatcher.once('dialog',dialog=>dialog.accept('Dispatcher applies carrier-approved assignment'));
+  await dispatcher.getByRole('button',{name:'Apply approved assignment',exact:true}).click();
+  await expect(dispatcher.locator('#view')).toContainText('applied');
+  for(const heading of ['Shipment risk evidence','Arrival estimates']){
+   const previousEvidence=dispatcher.locator('section').filter({has:dispatcher.getByRole('heading',{name:heading,exact:true})});
+   await expect(previousEvidence).toContainText('Shipment version '+load.version);
+   await expect(previousEvidence).toContainText('Shipment changed since this evidence was recorded; rerun the analysis or review before relying on it.');
+  }
+  expect(workspace.store.get('load',load.id,workspace.manager.tenantId).status).toBe('assigned');
+  expect(workspace.store.list('assignment',workspace.manager.tenantId).filter(a=>a.status==='active')).toHaveLength(1);
+  await driver.reload();
+  await expect(driver.getByRole('button',{name:'Control tower',exact:true})).toHaveCount(0);
+  await driver.getByRole('button',{name:'My assignments',exact:true}).click();
+  await driver.getByRole('button',{name:'Open',exact:true}).click();
+  await expect(driver.getByRole('button',{name:'Analyze risk',exact:true})).toHaveCount(0);
+  await expect(driver.getByRole('button',{name:'Recommend capacity',exact:true})).toHaveCount(0);
+
+  await carrier.reload();
+  await carrier.getByRole('button',{name:'Loads',exact:true}).click();
+  await carrier.getByRole('button',{name:'Open',exact:true}).click();
+  await carrier.getByRole('button',{name:'Start coordinated review',exact:true}).click();
+  for(let i=0;i<5;i++)await runFeatureTick(workspace.ops);
+  await carrier.reload();
+  await carrier.getByRole('button',{name:'Workflow runtime',exact:true}).click();
+  await expect(carrier.locator('#view')).toContainText('completed');
+  await expect(carrier.locator('#view')).toContainText('Checkpoint 5');
+  expect(workspace.store.list('agentdecision',workspace.manager.tenantId)).toHaveLength(5);
+  await basicAccessibility(carrier);
+
+  await carrier.getByRole('button',{name:'Governance',exact:true}).click();
+  await carrier.getByLabel('Runtime policy',{exact:true}).selectOption('no');
+  await carrier.getByLabel('Policy change reason',{exact:true}).fill('Illustrative human pause for review');
+  await carrier.getByRole('button',{name:'Save advisory policy',exact:true}).click();
+  await expect(carrier.getByRole('status')).toContainText('Saved.');
+  await carrier.getByRole('button',{name:'Loads',exact:true}).click();
+  await carrier.getByRole('button',{name:'Open',exact:true}).click();
+  await carrier.getByRole('button',{name:'Start coordinated review',exact:true}).click();
+  await expect(carrier.getByRole('status')).toContainText('Automation is disabled');
+  await carrier.getByRole('button',{name:'Governance',exact:true}).click();
+  await carrier.getByLabel('Runtime policy',{exact:true}).selectOption('yes');
+  await carrier.getByLabel('Policy change reason',{exact:true}).fill('Illustrative human authorizes advisory resumption');
+  await carrier.getByRole('button',{name:'Save advisory policy',exact:true}).click();
+  await expect(carrier.getByRole('status')).toContainText('Saved.');
+
+  await carrier.getByRole('button',{name:'Local adapters',exact:true}).click();
+  await carrier.getByLabel('Shipment',{exact:true}).selectOption(load.id);
+  await carrier.getByLabel('Capability',{exact:true}).selectOption('mapping');
+  await carrier.getByLabel('Local evidence (JSON)',{exact:true}).fill(JSON.stringify({source:'user_estimate',distanceMiles:150,averageMph:50,handlingMinutes:30,departureAt:new Date().toISOString()}));
+  await carrier.getByRole('button',{name:'Queue local adapter',exact:true}).click();
+  await expect(carrier.getByRole('status')).toContainText('Saved.');
+  await runFeatureTick(workspace.ops);
+  await carrier.reload();
+  await carrier.getByRole('button',{name:'Local adapters',exact:true}).click();
+  await expect(carrier.locator('#view')).toContainText('completed');
+  const result=workspace.store.list('connectorresult',workspace.manager.tenantId)[0];
+  expect(result.provenance.live).toBe(false);
+  expect(result.provenance.model).toBe(null);
+  await basicAccessibility(carrier);
+
+  await carrier.getByRole('button',{name:'Cost intelligence',exact:true}).click();
+  await carrier.getByLabel('Shipment',{exact:true}).selectOption(load.id);
+  await carrier.getByLabel('Category',{exact:true}).selectOption('fuel');
+  await carrier.getByLabel('Cost (cents, USD)',{exact:true}).fill('10000');
+  await carrier.getByLabel('Basis',{exact:true}).selectOption('recorded');
+  await carrier.getByLabel('Cost evidence reference',{exact:true}).fill('ILL-COST-RECORDED');
+  await carrier.getByRole('button',{name:'Record cost',exact:true}).click();
+  await expect(carrier.getByRole('status')).toContainText('Saved.');
+  await carrier.getByLabel('Cost (cents, USD)',{exact:true}).fill('2500');
+  await carrier.getByLabel('Basis',{exact:true}).selectOption('estimate');
+  await carrier.getByLabel('Cost evidence reference',{exact:true}).fill('ILL-COST-ESTIMATE');
+  await carrier.getByRole('button',{name:'Record cost',exact:true}).click();
+  await expect(carrier.getByRole('status')).toContainText('Saved.');
+  await expect(carrier.locator('#view')).toContainText('Savings are unmeasured.');
+  await expect(carrier.locator('#cost-summary')).toContainText('10000');
+  await expect(carrier.locator('#cost-summary')).toContainText('2500');
+  await expect(carrier.locator('#cost-summary')).toContainText('Unmeasured');
+  await basicAccessibility(carrier);
+  await carrier.getByRole('button',{name:'Control tower',exact:true}).click();
+  const image=testInfo.outputPath('control-tower-1440.png');
+  await carrier.screenshot({path:image,fullPage:true});
+  await testInfo.attach('control-tower-1440',{path:image,contentType:'image/png'});
+  expect(errors).toEqual([]);
+ }finally{for(const context of contexts)await context.close();}
 });

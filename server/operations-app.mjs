@@ -5,7 +5,7 @@ import {securityHeaders} from './security-headers.mjs';
 import {authenticate,session,logout} from './operations-auth.mjs';
 import {readDocument} from '../domain/operations-documents.mjs';
 import {OpsError,fields} from '../domain/operations-errors.mjs';
-const assets=new Map([['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/extended.js','extended.js'],['/assets/login.js','login.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
+const assets=new Map([['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
 export function makeOperationsApp({store,operations}){
  const loginAttempts=new Map();
  const server=createServer(async(req,res)=>{

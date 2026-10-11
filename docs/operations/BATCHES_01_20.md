@@ -2,6 +2,8 @@
 
 Date: 2026-10-11. Branch: work/wave0-reconciliation-20261011.
 
+Historical checkpoint: bec1ea9. For the current B01–40 matrix, 134-test gate and 8 real Chromium tests, see [BATCHES_21_40.md](BATCHES_21_40.md) and [BROWSER_EVIDENCE.md](BROWSER_EVIDENCE.md). The browser limitation below describes that historical checkpoint and is now closed for the tested local scope.
+
 **Certification: PARTIAL.** The durable local API journey is verified. Hosted certification remains BLOCKED. A live AI provider and browser verification are also BLOCKED. These limitations prevent whole-batch certification; the table does not promote local test results into hosted PASS claims.
 
 ## Baseline and boundaries

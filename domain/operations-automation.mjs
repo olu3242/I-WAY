@@ -1,3 +1,4 @@
+import {authorize} from './authorization.mjs';
 import {fields,text,requireValue,integer,OpsError} from './operations-errors.mjs';
 
 const activeStatuses=['accepted','picked_up','in_transit'];
@@ -26,6 +27,8 @@ export function createAutomation({step=()=>{}}={}){
   if(w.status==='approved'){
    const a=ops.store.list('approval',actor.tenantId).find(a=>a.id===w.approvalId&&a.status==='approved');
    if(!a||a.loadVersion!==load.version||a.expiresAt<=now)return failReview(ops,actor,w,a?.expiresAt<=now?'EXPIRED':'STALE');
+   const reviewer=ops.store.principal(a.decidedBy);
+   if(!reviewer?.active||reviewer.tenantId!==actor.tenantId||reviewer.role!=='carrier'||!authorize({actor:reviewer,action:'approval:decide',resource:load}))return failReview(ops,actor,w,'APPROVAL_AUTHORITY');
    const recommendation=ops.read('recommendation',a.recommendationId,actor);
    const exception=ops.read('exception',w.exceptionId,actor);
    if(recommendation.action==='resume_after_review'){
