@@ -1,0 +1,11 @@
+import {resolve} from 'node:path';
+import {OperationsStore} from '../server/operations-store.mjs';
+import {Operations} from '../domain/operations.mjs';
+import {makeOperationsApp} from '../server/operations-app.mjs';
+const port=Number(process.env.IWAY_OPS_PORT??4180);
+if(!Number.isInteger(port)||port<0||port>65535)throw new Error('Invalid local operations port');
+const store=new OperationsStore(resolve(process.env.IWAY_OPS_DB??'data/operations.sqlite'));
+const operations=new Operations(store);
+const server=makeOperationsApp({store,operations});
+server.listen(port,'127.0.0.1',()=>console.log('I-way local operations: http://127.0.0.1:'+server.address().port+' (not hosted-certified)'));
+for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>server.close(()=>{store.close();process.exit(0)}));

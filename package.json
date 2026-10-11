@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=20.12.0"
+    "node": ">=24.13.0"
   },
   "scripts": {
     "start": "node server/start.mjs",
@@ -14,7 +14,9 @@
     "check:site": "node scripts/check-site.mjs",
     "test:hosted": "node scripts/certify-postgres.mjs hosted",
     "test:pg:local": "node scripts/certify-postgres.mjs local",
-    "probe:postgres": "node scripts/probe-postgres.mjs"
+    "probe:postgres": "node scripts/probe-postgres.mjs",
+    "ops:start": "node scripts/operations-start.mjs",
+    "ops:init": "node scripts/operations-init.mjs"
   },
   "dependencies": {
     "pg": "^8.16.3"

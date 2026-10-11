@@ -1,0 +1,32 @@
+import {mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join,resolve,sep} from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {OperationsStore} from '../../server/operations-store.mjs';
+import {bootstrap,addUser} from '../../server/operations-auth.mjs';
+import {Operations} from '../../domain/operations.mjs';
+export const password='illustrative-fixture-only-47';
+export async function fixture(t,options={}){
+ const root=await mkdtemp(join(tmpdir(),'iway-ops-test-'));
+ if(!resolve(root).startsWith(resolve(tmpdir())+sep+'iway-ops-test-'))throw new Error('Unexpected fixture path');
+ const path=join(root,'operations.sqlite');
+ const store=new OperationsStore(path),ops=new Operations(store,options);
+ t.after(async()=>{try{store.close()}catch{}await rm(root,{recursive:true,force:true})});
+ const manager=bootstrap(store,{tenantName:'Illustrative Carrier A',timezone:'America/Chicago',username:'carrier@illustrative.invalid',name:'Illustrative Carrier',password});
+ const dispatcher=addUser(store,{tenantId:manager.tenantId,username:'dispatcher@illustrative.invalid',name:'Illustrative Dispatcher',role:'dispatcher',password});
+ const driver=addUser(store,{tenantId:manager.tenantId,username:'driver@illustrative.invalid',name:'Illustrative Driver',role:'driver',password});
+ const otherDispatcher=addUser(store,{tenantId:manager.tenantId,username:'dispatcher2@illustrative.invalid',name:'Other Dispatcher',role:'dispatcher',password});
+ const command=(actor,action,resource,payload={},key=randomUUID())=>ops.execute(actor.id,{action,resourceId:resource?.id,expectedVersion:resource?.version,payload,idempotencyKey:key});
+ const fleet=command(manager,'fleet:create',null,{name:'Illustrative Fleet A'});
+ const fleetUser=addUser(store,{tenantId:manager.tenantId,username:'fleet@illustrative.invalid',name:'Illustrative Fleet',role:'fleet',fleetId:fleet.id,password});
+ let driverRecord=store.get('driver',driver.id,manager.tenantId);
+ driverRecord=command(manager,'driver:update',driverRecord,{expiresOn:'2099-12-31',reason:'Illustrative test compliance verification'});
+ command(manager,'driver:approve',driverRecord,{approved:true,reason:'Illustrative carrier approval'});
+ let vehicle=command(manager,'vehicle:create',null,{name:'Illustrative Truck 01',capacityLb:45000});
+ vehicle=command(manager,'vehicle:approve',vehicle,{approved:true,reason:'Illustrative carrier approval'});
+ const tenantB=randomUUID();store.db.prepare('INSERT INTO tenants VALUES(?,?,?)').run(tenantB,'Illustrative Carrier B','America/New_York');
+ const outsider=addUser(store,{tenantId:tenantB,username:'outside@illustrative.invalid',name:'Other carrier',role:'carrier',password});
+ const createLoad=()=>command(manager,'load:create',null,{reference:'ILL-'+randomUUID().slice(0,6),customer:'Illustrative Customer',dispatcherId:dispatcher.id,commodity:'Illustrative packaged goods',weightLb:1000,rateCents:250000,charges:[{label:'Illustrative fuel charge',amountCents:25000}],factored:false,stops:[{type:'pickup',location:'Illustrative Chicago pickup',at:'2026-11-02T14:00:00.000Z'},{type:'delivery',location:'Illustrative Madison delivery',at:'2026-11-03T16:00:00.000Z'}]});
+ const assign=()=>{let load=createLoad();load=command(dispatcher,'load:validate',load);return command(dispatcher,'load:assign',load,{driverId:driver.id,vehicleId:vehicle.id,reason:'Illustrative dispatch'});};
+ return {root,path,store,ops,manager,dispatcher,otherDispatcher,driver,vehicle,fleet,fleetUser,outsider,command,createLoad,assign};
+}

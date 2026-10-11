@@ -1,0 +1,183 @@
+import {createHash} from 'node:crypto';
+import {authorize,rolePermissions} from './authorization.mjs';
+import {OpsError,reject,requireValue,fields,text,integer,utc} from './operations-errors.mjs';
+import {addUser} from '../server/operations-auth.mjs';
+
+const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])):value;
+const digest=value=>createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex');
+export class Operations{
+ constructor(store,{now=()=>new Date(),extensions={}}={}){this.store=store;this.now=now;this.extensions=extensions;}
+ actor(id){const a=this.store.principal(id);if(!a?.active)reject(401,'SESSION','Sign in required.');return a;}
+ guard(actor,action,resource){if(!authorize({actor,action,resource}))reject(403,'FORBIDDEN','This action is not permitted.');}
+ read(kind,id,actor,action){const r=this.store.get(kind,id,actor.tenantId);if(action)this.guard(actor,action,r);return r;}
+ change(actor,resource,patch,action,reason=''){
+  const next=this.store.update(resource.kind,resource.id,actor.tenantId,resource.version,patch);
+  this.store.audit(actor,action,resource.id,'success',{before:resource,after:next,reason},this.now().toISOString());return next;
+ }
+ create(actor,kind,values,action){
+  const result=this.store.insert(kind,actor.tenantId,values);
+  this.store.audit(actor,action,result.id,'success',{after:result},this.now().toISOString());return result;
+ }
+ version(resource,expected){requireValue(Number.isInteger(expected)&&expected===resource.version,'STALE','Refresh this record before trying again.',409);}
+ localDate(actor,value=this.now()){
+  return new Intl.DateTimeFormat('en-CA',{timeZone:this.store.tenant(actor.tenantId).timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(value);
+ }
+ eligibility(actor,driverId,vehicleId,load,ignoreLoadId=null){
+  const driver=this.read('driver',driverId,actor),vehicle=this.read('vehicle',vehicleId,actor);
+  const user=this.store.principal(driverId);
+  const today=this.localDate(actor);
+  const free=kind=>!this.store.list('assignment',actor.tenantId).some(a=>a.status==='active'&&a.loadId!==ignoreLoadId&&a[kind+'Id']===(kind==='driver'?driverId:vehicleId));
+  const reasons=[];
+  if(!user?.active||!driver.active||!driver.available||!driver.approved||driver.compliance!=='valid'||!driver.expiresOn||driver.expiresOn<today)reasons.push('Driver is unavailable or not compliant and carrier-approved.');
+  if(!vehicle.active||!vehicle.available||!vehicle.approved||vehicle.maintenance!=='ready')reasons.push('Vehicle is unavailable, needs maintenance, or lacks carrier approval.');
+  if(vehicle.capacityLb<load.weightLb)reasons.push('Vehicle capacity is insufficient.');
+  if((driver.fleetId??null)!==(vehicle.fleetId??null))reasons.push('Driver and vehicle ownership relationships differ.');
+  if(!free('driver')||!free('vehicle'))reasons.push('Driver or vehicle already has an active assignment.');
+  return {driver,vehicle,reasons,eligible:reasons.length===0};
+ }
+ state(userId){
+  const actor=this.actor(userId),result={actor,tenant:this.store.tenant(actor.tenantId),mode:'Local persistence; hosted behavior is not certified',capabilities:Object.keys(this.extensions)};
+  for(const kind of ['load','shipment','assignment','driver','vehicle','fleet','tracking','exception','workflow','recommendation','approval','invoice']){
+   result[kind+'s']=this.store.list(kind,actor.tenantId).filter(record=>{
+    if(kind==='fleet')return actor.role==='carrier'||record.id===actor.fleetId;
+    if(kind==='driver'||kind==='vehicle'){
+     const assignment=kind==='vehicle'?this.store.list('assignment',actor.tenantId).find(a=>a.vehicleId===record.id&&a.status==='active'):null;
+     return authorize({actor,action:'asset:view',resource:assignment?{...record,driverId:assignment.driverId}:record});
+    }
+    if(['driver','fleet'].includes(actor.role)&&['workflow','recommendation','approval'].includes(kind))return false;
+    let load=record;
+    if(kind!=='load')try{load=this.read('load',record.loadId,actor)}catch{return false}
+    return authorize({actor,action:'load:view',resource:load})&&(kind!=='invoice'||actor.role==='carrier');
+   }).map(record=>{
+    if(['driver','fleet'].includes(actor.role)&&['load','shipment'].includes(kind)){
+     const {rateCents,charges,customer,factorName,factored,...safe}=record;return safe;
+    }
+    return record;
+   });
+  }
+  if(actor.role==='carrier')result.users=this.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(actor.tenantId).map(r=>JSON.parse(r.data));
+  else result.users=[];
+  if(actor.permissions.includes('audit:view')){
+   const visible=new Set(result.loads.map(l=>l.id));
+   result.audit=this.store.db.prepare('SELECT sequence,actor_id AS actorId,action,resource_id AS resourceId,at,outcome,detail FROM audit WHERE tenant_id=? ORDER BY sequence DESC LIMIT 200').all(actor.tenantId)
+    .filter(row=>actor.role==='carrier'||row.actorId===actor.id||visible.has(row.resourceId))
+    .map(row=>({...row,detail:JSON.parse(row.detail)}));
+  }else result.audit=[];
+  return result;
+ }
+ execute(userId,command){
+  const actor=this.actor(userId);
+  fields(command,['action','resourceId','expectedVersion','idempotencyKey','payload']);
+  const action=text(command.action,60),key=text(command.idempotencyKey,100);
+  requireValue(/^[a-z]+:[a-z]+$/.test(action)&&/^[a-zA-Z0-9_-]{8,100}$/.test(key),'COMMAND','Invalid command metadata.');
+  const hash=digest(command);
+  try{return this.store.transaction(()=>{
+   const fresh=this.actor(userId);
+   const previous=this.store.db.prepare('SELECT digest,result FROM commands WHERE tenant_id=? AND actor_id=? AND key=?').get(fresh.tenantId,fresh.id,key);
+   if(previous){requireValue(previous.digest===hash,'IDEMPOTENCY','This request key was used for different input.',409);return JSON.parse(previous.result);}
+   const result=this.perform(fresh,command);
+   this.store.db.prepare('INSERT INTO commands VALUES(?,?,?,?,?)').run(fresh.tenantId,fresh.id,key,hash,JSON.stringify(result));
+   return result;
+  });}catch(e){
+   const error=e instanceof OpsError?e:new OpsError(String(e.code).includes('CONSTRAINT')?409:503,'STORAGE','Operation could not be committed.');
+   this.store.audit(actor,action,typeof command.resourceId==='string'?command.resourceId.slice(0,100):null,'denied',{code:error.code},this.now().toISOString());
+   throw error;
+  }
+ }
+ perform(actor,c){
+  const p=c.payload??{},scope={tenantId:actor.tenantId,fleetId:actor.fleetId};
+  if(c.action==='fleet:create'){
+   fields(p,['name']);this.guard(actor,'fleet:manage',scope);return this.create(actor,'fleet',{name:text(p.name),active:true},c.action);
+  }
+  if(c.action==='user:create'){
+   fields(p,['username','name','role','fleetId','password','permissions']);this.guard(actor,'user:manage',scope);
+   const user=addUser(this.store,{...p,tenantId:actor.tenantId});
+   this.store.audit(actor,c.action,user.id,'success',{role:user.role,fleetId:user.fleetId},this.now().toISOString());return user;
+  }
+  if(c.action==='user:deactivate'){
+   fields(p,['reason']);this.guard(actor,'user:manage',scope);const reason=text(p.reason,300);
+   const user=this.store.principal(c.resourceId);
+   requireValue(user?.tenantId===actor.tenantId&&user.id!==actor.id,'USER','Account cannot be deactivated.',403);
+   const updated={...user,active:false};this.store.db.prepare('UPDATE users SET data=? WHERE id=? AND tenant_id=?').run(JSON.stringify(updated),user.id,actor.tenantId);
+   this.store.audit(actor,c.action,user.id,'success',{before:{active:user.active},after:{active:false},reason},this.now().toISOString());return updated;
+  }
+  if(c.action==='vehicle:create'){
+   fields(p,['name','capacityLb','fleetId']);const fleetId=actor.role==='fleet'?actor.fleetId:(p.fleetId||null);
+   this.guard(actor,'asset:manage',{...scope,fleetId});
+   if(fleetId)requireValue(this.read('fleet',fleetId,actor).active,'FLEET','Fleet is inactive.');
+   return this.create(actor,'vehicle',{name:text(p.name),capacityLb:integer(p.capacityLb,1,200000),fleetId,ownerType:fleetId?'fleet':'carrier',ownerId:fleetId??actor.tenantId,approved:false,maintenance:'ready',active:true,available:true},c.action);
+  }
+  if(['driver:update','vehicle:update','driver:approve','vehicle:approve'].includes(c.action)){
+   const kind=c.action.split(':')[0],approval=c.action.endsWith(':approve');
+   fields(p,approval?['approved','reason']:kind==='driver'?['available','active','compliance','expiresOn','reason']:['available','active','maintenance','reason']);
+   const r=this.read(kind,c.resourceId,actor,approval?c.action:'asset:manage');this.version(r,c.expectedVersion);
+   const patch={};const reason=text(p.reason,300);
+   if(approval){requireValue(typeof p.approved==='boolean','APPROVAL','Choose an approval decision.');patch.approved=p.approved;}
+   else{
+    for(const field of ['available','active'])if(p[field]!==undefined){requireValue(typeof p[field]==='boolean','BOOLEAN','Expected true or false.');patch[field]=p[field];}
+    if(kind==='driver'){
+     if(p.compliance!==undefined){requireValue(actor.role==='carrier','COMPLIANCE','Only the carrier changes compliance.',403);requireValue(['valid','critical'].includes(p.compliance),'COMPLIANCE','Invalid compliance state.');patch.compliance=p.compliance;}
+     if(p.expiresOn!==undefined){requireValue(actor.role==='carrier','COMPLIANCE','Only the carrier records verified expiry.',403);requireValue(/^\d{4}-\d{2}-\d{2}$/.test(p.expiresOn)&&Number.isFinite(Date.parse(p.expiresOn)),'EXPIRY','Enter a valid expiry date.');patch.expiresOn=p.expiresOn;}
+    }else if(p.maintenance!==undefined){requireValue(['ready','due','out_of_service'].includes(p.maintenance),'MAINTENANCE','Invalid maintenance state.');patch.maintenance=p.maintenance;}
+   }
+   return this.change(actor,r,patch,c.action,reason);
+  }
+  if(c.action==='load:create'){
+   fields(p,['reference','customer','dispatcherId','commodity','weightLb','stops','rateCents','charges','factored','factorName']);
+   this.guard(actor,'load:create',scope);
+   const dispatcher=this.store.principal(p.dispatcherId);
+   requireValue(dispatcher?.tenantId===actor.tenantId&&dispatcher.role==='dispatcher'&&dispatcher.active,'DISPATCHER','Select an active carrier dispatcher.');
+   requireValue(Array.isArray(p.stops)&&p.stops.length>=2&&p.stops.length<=20,'STOPS','Provide pickup and delivery stops.');
+   const stops=p.stops.map((s,index)=>{fields(s,['type','location','at']);requireValue(['pickup','delivery'].includes(s.type),'STOP','Invalid stop type.');return {id:'stop-'+index,type:s.type,location:text(s.location),at:utc(s.at),completedAt:null};});
+   requireValue(stops[0].type==='pickup'&&stops.at(-1).type==='delivery'&&stops.every((s,i)=>i===0||s.at>=stops[i-1].at),'STOPS','Stops must be ordered from pickup to delivery.');
+   requireValue(stops.every((s,i)=>s.type!=='pickup'||!stops.slice(0,i).some(previous=>previous.type==='delivery')),'STOPS','Complete all pickups before delivery stops.');
+   const charges=(p.charges??[]);requireValue(Array.isArray(charges)&&charges.length<=20,'CHARGES','Invalid charges.');
+   const normalizedCharges=charges.map(x=>{fields(x,['label','amountCents']);return {label:text(x.label,80),amountCents:integer(x.amountCents)};});
+   requireValue(p.factored===undefined||typeof p.factored==='boolean','BILLING','Invalid factoring value.');
+   const load=this.create(actor,'load',{reference:text(p.reference,40),customer:text(p.customer),dispatcherId:dispatcher.id,commodity:text(p.commodity),weightLb:integer(p.weightLb,1,200000),stops,rateCents:integer(p.rateCents),charges:normalizedCharges,factored:p.factored===true,factorName:p.factored?text(p.factorName):null,status:'draft',driverId:null,vehicleId:null,fleetId:null,createdAt:this.now().toISOString()},c.action);
+   this.create(actor,'shipment',{loadId:load.id,dispatcherId:dispatcher.id,driverId:null,fleetId:null,commodity:load.commodity,weightLb:load.weightLb,stops,status:'draft'},'shipment:create');
+   return load;
+  }
+  if(['load:validate','load:assign','load:accept','load:pickup','load:transit','load:deliver','load:void'].includes(c.action)){
+   const permission=c.action==='load:validate'?'load:validate':['load:assign','load:void'].includes(c.action)?'load:dispatch':'load:execute';
+   const load=this.read('load',c.resourceId,actor,permission);this.version(load,c.expectedVersion);
+   let patch={},reason='';
+   if(['load:pickup','load:transit'].includes(c.action)){const check=this.eligibility(actor,load.driverId,load.vehicleId,load,load.id);requireValue(check.eligible,'INELIGIBLE',check.reasons.join(' '),409);}
+   if(c.action==='load:validate'){fields(p,[]);requireValue(load.status==='draft','TRANSITION','Only draft loads can be validated.',409);patch.status='validated';}
+   if(c.action==='load:assign'){
+    fields(p,['driverId','vehicleId','reason']);reason=text(p.reason,300);
+    requireValue(['validated','assigned','accepted'].includes(load.status),'TRANSITION','Assignment cannot change after pickup.',409);
+    const eligible=this.eligibility(actor,p.driverId,p.vehicleId,load,load.id);requireValue(eligible.eligible,'INELIGIBLE',eligible.reasons.join(' '),409);
+    for(const a of this.store.list('assignment',actor.tenantId).filter(x=>x.loadId===load.id&&x.status==='active'))this.change(actor,a,{status:'ended',endedAt:this.now().toISOString()},'assignment:end',reason);
+    this.create(actor,'assignment',{loadId:load.id,driverId:p.driverId,vehicleId:p.vehicleId,fleetId:eligible.driver.fleetId,status:'active',acceptedAt:null,createdAt:this.now().toISOString()},'assignment:create');
+    patch={status:'assigned',driverId:p.driverId,vehicleId:p.vehicleId,fleetId:eligible.driver.fleetId};
+   }
+   if(c.action==='load:accept'){
+    fields(p,[]);requireValue(load.status==='assigned','TRANSITION','Only assigned loads can be accepted.',409);
+    const eligible=this.eligibility(actor,load.driverId,load.vehicleId,load,load.id);requireValue(eligible.eligible,'INELIGIBLE',eligible.reasons.join(' '),409);patch.status='accepted';
+    const a=this.store.list('assignment',actor.tenantId).find(a=>a.loadId===load.id&&a.status==='active');this.change(actor,a,{acceptedAt:this.now().toISOString()},'assignment:accept');
+   }
+   if(c.action==='load:pickup'||c.action==='load:deliver'){
+    fields(p,c.action==='load:pickup'?['stopId']:['stopId','proofReference']);
+    const pickup=c.action==='load:pickup';requireValue(pickup?load.status==='accepted':load.status==='in_transit','TRANSITION','This stop cannot be completed in the current state.',409);
+    const open=this.store.list('exception',actor.tenantId).some(e=>e.loadId===load.id&&e.status==='open');
+    requireValue(!open,'EXCEPTION','Resolve open exceptions before completing the stop.',409);
+    const next=load.stops.find(s=>!s.completedAt);
+    requireValue(next?.id===p.stopId&&next.type===(pickup?'pickup':'delivery'),'STOP_ORDER','Complete the next scheduled stop.',409);
+    const stops=load.stops.map(s=>s.id===next.id?{...s,completedAt:this.now().toISOString(),...(!pickup?{proofReference:text(p.proofReference,120)}:{})}:s);
+    patch.stops=stops;
+    if(pickup&&stops.filter(s=>s.type==='pickup').every(s=>s.completedAt))patch.status='picked_up';
+    if(!pickup&&stops.every(s=>s.completedAt)){patch.status='delivered';patch.deliveredAt=this.now().toISOString();}
+   }
+   if(c.action==='load:transit'){fields(p,[]);requireValue(load.status==='picked_up','TRANSITION','Pickup must be completed first.',409);patch.status='in_transit';}
+   if(c.action==='load:void'){fields(p,['reason']);requireValue(['draft','validated','assigned','accepted'].includes(load.status),'TRANSITION','Started or completed loads cannot be voided.',409);reason=text(p.reason,300);patch.status='void';}
+   const updated=this.change(actor,load,patch,c.action,reason);
+   const shipment=this.store.list('shipment',actor.tenantId).find(s=>s.loadId===load.id);
+   this.change(actor,shipment,{status:updated.status,stops:updated.stops,driverId:updated.driverId,fleetId:updated.fleetId},'shipment:transition',reason);
+   if(['delivered','void'].includes(updated.status))for(const a of this.store.list('assignment',actor.tenantId).filter(a=>a.loadId===load.id&&a.status==='active'))this.change(actor,a,{status:'ended',endedAt:this.now().toISOString()},'assignment:end');
+   return updated;
+  }
+  if(this.extensions[c.action])return this.extensions[c.action](this,actor,c);
+  reject(404,'ACTION','Unknown operation.');
+ }
+}
