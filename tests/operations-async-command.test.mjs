@@ -46,11 +46,24 @@ test('command rejects cross-tenant result before recording idempotency',async()=
  await assert.rejects(execute({store:f.store,scope,command,authorize:auth,perform:async()=>({id:'created',tenantId:'another-tenant'})}),{code:'RESULT_TENANT_MISMATCH'});
  assert.equal(f.counts().commits,0);
 });
-test('replay rejects stored cross-tenant result',async()=>{
- const records=new Map();
+test('replay rejects stored cross-tenant result even with matching digest',async()=>{
+ const {createHash}=await import('node:crypto');
+ const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])):value;
+ const digest=createHash('sha256').update(JSON.stringify(canonical(command))).digest('hex');
+ let performed=false;
  const store={transaction:async(_scope,work)=>work({
   principal:async()=>({id:scope.actorId,tenantId:scope.tenantId,active:true}),
-  command:async()=>({digest:'not-matching',result:{tenantId:'another-tenant'}})
+  command:async()=>({digest,result:{tenantId:'another-tenant'}})
  })};
- await assert.rejects(execute({store,scope,command,authorize:auth,perform:async()=>({})}),{code:'IDEMPOTENCY_CONFLICT'});
+ await assert.rejects(execute({store,scope,command,authorize:auth,perform:async()=>{performed=true;return {}}}),{code:'REPLAY_RESULT_INVALID'});
+ assert.equal(performed,false);
+});
+test('invalid stored replay result cannot be returned',async()=>{
+ const {createHash}=await import('node:crypto');
+ const digest=createHash('sha256').update(JSON.stringify({action:command.action,idempotencyKey:command.idempotencyKey,payload:{name:'Sample'}})).digest('hex');
+ const store={transaction:async(_scope,work)=>work({
+  principal:async()=>({id:scope.actorId,tenantId:scope.tenantId,active:true}),
+  command:async()=>({digest,result:null})
+ })};
+ await assert.rejects(execute({store,scope,command,authorize:auth,perform:async()=>({})}),{code:'REPLAY_RESULT_INVALID'});
 });
