@@ -40,3 +40,17 @@ test('failed command is not recorded',async()=>{
  await assert.rejects(execute({store:f.store,scope,command,authorize:auth,perform:async()=>{throw new Error('failed')}}));
  assert.equal(f.counts().commits,0);
 });
+
+test('command rejects cross-tenant result before recording idempotency',async()=>{
+ const f=fixture();
+ await assert.rejects(execute({store:f.store,scope,command,authorize:auth,perform:async()=>({id:'created',tenantId:'another-tenant'})}),{code:'RESULT_TENANT_MISMATCH'});
+ assert.equal(f.counts().commits,0);
+});
+test('replay rejects stored cross-tenant result',async()=>{
+ const records=new Map();
+ const store={transaction:async(_scope,work)=>work({
+  principal:async()=>({id:scope.actorId,tenantId:scope.tenantId,active:true}),
+  command:async()=>({digest:'not-matching',result:{tenantId:'another-tenant'}})
+ })};
+ await assert.rejects(execute({store,scope,command,authorize:auth,perform:async()=>({})}),{code:'IDEMPOTENCY_CONFLICT'});
+});
