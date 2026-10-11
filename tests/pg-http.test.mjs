@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {once} from 'node:events';import {makeApp} from '../server/app.mjs';import {registerPgLead} from '../server/pg-lead-store.mjs';
-test('HTTP form submission calls database adapter and deduplicates',async()=>{
- const rows=new Set();const pool={query:async(sql,params)=>{assert.match(sql,/INSERT INTO early_access_leads/);const key=params[3];if(rows.has(key))return {rowCount:0};rows.add(key);return {rowCount:1}}};
- const app=makeApp({register:lead=>registerPgLead(pool,lead)});app.listen(0,'127.0.0.1');await once(app,'listening');const url='http://127.0.0.1:'+app.address().port;
+test('HTTP registration calls private-schema database adapter and deduplicates',async()=>{
+ const rows=new Set();const pool={query:async(sql,params)=>{assert.match(sql,/INSERT INTO iway_private\.early_access_leads/);assert.equal(params[7],'2026-10-reviewed');const key=params[3];if(rows.has(key))return {rowCount:0};rows.add(key);return {rowCount:1}}};
+ const app=makeApp({register:lead=>registerPgLead(pool,lead,{consentVersion:'2026-10-reviewed'})});app.listen(0,'127.0.0.1');await once(app,'listening');const url='http://127.0.0.1:'+app.address().port;
  try{const body=JSON.stringify({name:'Sam Driver',email:'sam@example.com',role:'driver',consent:true});const post=()=>fetch(url+'/api/early-access',{method:'POST',headers:{'content-type':'application/json'},body});assert.equal((await post()).status,201);assert.equal((await post()).status,200);assert.equal(rows.size,1);assert.equal((await fetch(url+'/api/health')).status,200)}finally{app.close()}
 });
 test('database outage is not reported as success',async()=>{const app=makeApp({register:async()=>{throw Error('database offline')}});app.listen(0,'127.0.0.1');await once(app,'listening');try{const res=await fetch('http://127.0.0.1:'+app.address().port+'/api/early-access',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:'Sam Driver',email:'sam@example.com',role:'driver',consent:true})});assert.equal(res.status,503)}finally{app.close()}});
