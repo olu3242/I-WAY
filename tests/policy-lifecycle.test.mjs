@@ -1,0 +1,15 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {transitionAIPolicy} from '../lib/intelligence/policy-lifecycle.mjs';
+const owner={id:'owner',tenantId:'t1',role:'carrier',active:true,permissions:['governance:manage']};
+const approver={...owner,id:'approver'};
+const policy={tenantId:'t1',enabled:true,allowedActions:['review_tracking'],autonomyLevel:4,minimumConfidence:0.9,maximumCost:0};
+const propose=()=>transitionAIPolicy(null,{action:'propose',policy},owner);
+test('proposal is inert pending approval',()=>{const r=propose();assert.equal(r.accepted,true);assert.equal(r.policy.enabled,false);assert.equal(r.policy.lifecycle,'PENDING_APPROVAL')});
+test('same proposer cannot approve',()=>{const p=propose().policy;assert.equal(transitionAIPolicy(p,{action:'approve',expectedVersion:p.version},owner).accepted,false)});
+test('independent carrier approval enables versioned policy',()=>{const p=propose().policy;const r=transitionAIPolicy(p,{action:'approve',expectedVersion:p.version},approver);assert.equal(r.policy.enabled,true);assert.equal(r.policy.version,2)});
+test('revocation disables approved policy',()=>{const p=propose().policy;const a=transitionAIPolicy(p,{action:'approve',expectedVersion:1},approver).policy;assert.equal(transitionAIPolicy(a,{action:'revoke',expectedVersion:2},owner).policy.enabled,false)});
+test('stale approval blocked',()=>assert.equal(transitionAIPolicy(propose().policy,{action:'approve',expectedVersion:0},approver).reason,'STALE_POLICY'));
+test('cross-tenant policy rejected',()=>assert.equal(transitionAIPolicy(null,{action:'propose',policy:{...policy,tenantId:'t2'}},owner).accepted,false));
+test('non-carrier rejected',()=>assert.equal(transitionAIPolicy(null,{action:'propose',policy},{...owner,role:'dispatcher'}).accepted,false));
+test('unknown actions rejected',()=>assert.equal(transitionAIPolicy(null,{action:'propose',policy:{...policy,allowedActions:['dispatch:assign']}},owner).accepted,false));
