@@ -10,7 +10,8 @@
     "start": "node server/start.mjs",
     "test": "node --test tests/*.test.mjs",
     "scan:ip": "node scripts/scan-ip.mjs",
-    "verify": "npm run test && npm run scan:ip"
+    "verify": "npm run test && npm run scan:ip && npm run check:site",
+    "check:site": "node scripts/check-site.mjs"
   },
   "dependencies": {
     "pg": "^8.16.3"
