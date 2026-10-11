@@ -5,11 +5,13 @@ export async function registerPgLead(pool,input,{consentVersion}={}){
  const lead=normalizeLead(input);
  if(!consentVersion || !/^[a-zA-Z0-9._-]{1,30}$/.test(consentVersion)) throw new Error('Registration unavailable: approved consent version not configured');
  const emailHash=createHash('sha256').update(lead.email).digest('hex');
+ // An explicit conflict target would require SELECT on email_hash.
+ // No RETURNING: the insert-only role uses the command rowCount instead.
  const result=await pool.query(
   `INSERT INTO iway_private.early_access_leads
     (id,name,email,email_hash,company,role,consent,consent_version,created_at)
     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,NOW())
-    ON CONFLICT (email_hash) DO NOTHING`,
+    ON CONFLICT DO NOTHING`,
   [randomUUID(),lead.name,lead.email,emailHash,lead.company,lead.role,true,consentVersion]
  );
  return {created:result.rowCount===1};

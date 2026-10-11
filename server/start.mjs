@@ -15,5 +15,5 @@ if(process.env.DATABASE_URL){
  throw new Error('DATABASE_URL required in production; refusing ephemeral file storage');
 }
 const app=makeApp({dbPath,register});
-app.listen(port,()=>console.log('I-way listening on port '+port));
+app.listen(port,()=>console.log('I-way listening on port '+app.address().port));
 for(const signal of ['SIGTERM','SIGINT'])process.on(signal,async()=>{app.close();if(pool)await pool.end();process.exit(0)});
