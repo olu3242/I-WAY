@@ -9,7 +9,7 @@ export async function registerPgLead(pool,input,{consentVersion}={}){
   `INSERT INTO iway_private.early_access_leads
     (id,name,email,email_hash,company,role,consent,consent_version,created_at)
     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,NOW())
-    ON CONFLICT (email_hash) DO NOTHING RETURNING id`,
+    ON CONFLICT (email_hash) DO NOTHING`,
   [randomUUID(),lead.name,lead.email,emailHash,lead.company,lead.role,true,consentVersion]
  );
  return {created:result.rowCount===1};
