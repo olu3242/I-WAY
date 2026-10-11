@@ -21,10 +21,15 @@ export async function executeAsyncOperationsCommand({store,scope,command,authori
   const previous=await tx.command(command.idempotencyKey);
   if(previous){
    if(previous.digest!==digest)throw new AsyncCommandError('IDEMPOTENCY_CONFLICT');
+   if(!previous.result||typeof previous.result!=='object'||Array.isArray(previous.result)||
+      (Object.hasOwn(previous.result,'tenantId')&&previous.result.tenantId!==scope.tenantId))throw new AsyncCommandError('REPLAY_RESULT_INVALID');
    return previous.result;
   }
   const result=await perform({principal,command,tx});
   if(!result||typeof result!=='object'||Array.isArray(result))throw new AsyncCommandError('INVALID_RESULT');
+  // Never persist a result whose claimed ownership disagrees with the trusted
+  // transaction scope. Replay must not become a cross-tenant read channel.
+  if(Object.hasOwn(result,'tenantId')&&result.tenantId!==scope.tenantId)throw new AsyncCommandError('RESULT_TENANT_MISMATCH');
   await tx.recordCommand(command.idempotencyKey,digest,result);
   await tx.audit({action:command.action,resourceId:null,outcome:'success',detail:{}});
   return result;
