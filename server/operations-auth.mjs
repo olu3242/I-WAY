@@ -12,14 +12,16 @@ function passwordMatches(value,stored){
  const actual=scryptSync(typeof value==='string'&&value.length<=256?value:'invalid',salt,64);
  return expected.length===actual.length&&timingSafeEqual(expected,actual);
 }
-export function addUser(store,{tenantId,username,name,role,fleetId=null,password,permissions}){
- requireValue(store.tenant(tenantId)&&['carrier','dispatcher','driver','fleet'].includes(role),'ACCOUNT','Invalid account relationship.');
+export function addUser(store,{tenantId,username,name,role,fleetId=null,customerId=null,password,permissions}){
+ requireValue(store.tenant(tenantId)&&['carrier','dispatcher','driver','fleet','customer'].includes(role),'ACCOUNT','Invalid account relationship.');
  requireValue(!fleetId||['driver','fleet'].includes(role),'FLEET','Only fleet personnel may have a fleet employment relationship.');
  if(fleetId)requireValue(store.get('fleet',fleetId,tenantId).active,'FLEET','Fleet is inactive.');
  requireValue(role!=='fleet'||!!fleetId,'FLEET','Fleet account requires an owning fleet.');
+ requireValue(role==='customer'?!!customerId:!customerId,'CUSTOMER','A customer account requires its own customer relationship.');
+ if(customerId)requireValue(store.get('customer',customerId,tenantId).active,'CUSTOMER','Customer is inactive.');
  const grants=permissions??rolePermissions[role];
  requireValue(Array.isArray(grants)&&grants.every(p=>rolePermissions[role].includes(p)),'PERMISSIONS','Invalid permissions.');
- const actor={id:randomUUID(),tenantId,username:text(username).toLowerCase(),name:text(name),role,fleetId,permissions:[...new Set(grants)],active:true};
+ const actor={id:randomUUID(),tenantId,username:text(username).toLowerCase(),name:text(name),role,fleetId,customerId,permissions:[...new Set(grants)],active:true};
  store.db.prepare('INSERT INTO users(id,tenant_id,username,data,password) VALUES(?,?,?,?,?)').run(actor.id,tenantId,actor.username,JSON.stringify(actor),passwordHash(password));
  if(role==='driver')store.insert('driver',tenantId,{id:actor.id,name:actor.name,fleetId,driverId:actor.id,active:true,available:true,approved:false,compliance:'valid',expiresOn:'',status:'active'});
  return actor;

@@ -3,8 +3,9 @@ import {readFile} from 'node:fs/promises';
 import {extname} from 'node:path';
 import {securityHeaders} from './security-headers.mjs';
 import {authenticate,session,logout} from './operations-auth.mjs';
+import {readDocument} from '../domain/operations-documents.mjs';
 import {OpsError,fields} from '../domain/operations-errors.mjs';
-const assets=new Map([['/login','login.html'],['/app','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/login.js','login.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
+const assets=new Map([['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/extended.js','extended.js'],['/assets/login.js','login.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
 export function makeOperationsApp({store,operations}){
  const loginAttempts=new Map();
  const server=createServer(async(req,res)=>{
@@ -39,8 +40,11 @@ export function makeOperationsApp({store,operations}){
     return send(404,{error:'Not found.'});
    }
    if(req.method!=='GET'&&req.method!=='HEAD')return send(405,{error:'Method not allowed.'});
+   if(path.startsWith('/api/ops/documents/')){if(!auth)return send(401,{error:'Sign in required.'});return send(200,readDocument(operations,auth.actor,path.slice('/api/ops/documents/'.length)));}
    if(path==='/api/ops/state'){if(!auth)return send(401,{error:'Sign in required.'});return send(200,{...operations.state(auth.actor.id),csrf:auth.csrf});}
    if(path==='/'){res.writeHead(302,{Location:auth?'/app':'/login',...securityHeaders()});return res.end();}
+   if(path==='/portal'&&auth?.actor.role!=='customer')return send(auth?403:401,{error:'Customer access required.'});
+   if(path==='/app'&&auth?.actor.role==='customer'){res.writeHead(302,{Location:'/portal',...securityHeaders()});return res.end();}
    if(path==='/app'&&!auth){res.writeHead(302,{Location:'/login',...securityHeaders()});return res.end();}
    const asset=assets.get(path);if(!asset)return send(404,{error:'Not found.'});
    const body=await readFile(new URL('../apps/operations/'+asset,import.meta.url));

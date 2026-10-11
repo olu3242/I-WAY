@@ -1,12 +1,13 @@
 import {createHash} from 'node:crypto';
 import {authorize,rolePermissions} from './authorization.mjs';
 import {OpsError,reject,requireValue,fields,text,integer,utc} from './operations-errors.mjs';
+import {projectResult} from './operations-projection.mjs';
 import {addUser} from '../server/operations-auth.mjs';
 
 const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])):value;
 const digest=value=>createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex');
 export class Operations{
- constructor(store,{now=()=>new Date(),extensions={}}={}){this.store=store;this.now=now;this.extensions=extensions;}
+ constructor(store,{now=()=>new Date(),extensions={},views=[]}={}){this.store=store;this.now=now;this.extensions=extensions;this.views=views;}
  actor(id){const a=this.store.principal(id);if(!a?.active)reject(401,'SESSION','Sign in required.');return a;}
  guard(actor,action,resource){if(!authorize({actor,action,resource}))reject(403,'FORBIDDEN','This action is not permitted.');}
  read(kind,id,actor,action){const r=this.store.get(kind,id,actor.tenantId);if(action)this.guard(actor,action,r);return r;}
@@ -39,24 +40,19 @@ export class Operations{
   const actor=this.actor(userId),result={actor,tenant:this.store.tenant(actor.tenantId),mode:'Local persistence; hosted behavior is not certified',capabilities:Object.keys(this.extensions)};
   for(const kind of ['load','shipment','assignment','driver','vehicle','fleet','tracking','exception','workflow','recommendation','approval','invoice']){
    result[kind+'s']=this.store.list(kind,actor.tenantId).filter(record=>{
-    if(kind==='fleet')return actor.role==='carrier'||record.id===actor.fleetId;
+    if(kind==='fleet')return actor.permissions.includes('fleet:manage')||actor.role==='fleet'&&record.id===actor.fleetId;
     if(kind==='driver'||kind==='vehicle'){
      const assignment=kind==='vehicle'?this.store.list('assignment',actor.tenantId).find(a=>a.vehicleId===record.id&&a.status==='active'):null;
      return authorize({actor,action:'asset:view',resource:assignment?{...record,driverId:assignment.driverId}:record});
     }
-    if(['driver','fleet'].includes(actor.role)&&['workflow','recommendation','approval'].includes(kind))return false;
+    if(['driver','fleet','customer'].includes(actor.role)&&['workflow','recommendation','approval'].includes(kind))return false;
     let load=record;
     if(kind!=='load')try{load=this.read('load',record.loadId,actor)}catch{return false}
-    return authorize({actor,action:'load:view',resource:load})&&(kind!=='invoice'||actor.role==='carrier');
-   }).map(record=>{
-    if(['driver','fleet'].includes(actor.role)&&['load','shipment'].includes(kind)){
-     const {rateCents,charges,customer,factorName,factored,...safe}=record;return safe;
-    }
-    return record;
-   });
+    return authorize({actor,action:'load:view',resource:load})&&(kind!=='invoice'||authorize({actor,action:actor.role==='customer'?'invoice:view':'finance:manage',resource:load}));
+   }).map(record=>projectResult(this,actor,record));
   }
-  if(actor.role==='carrier')result.users=this.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(actor.tenantId).map(r=>JSON.parse(r.data));
-  else if(actor.role==='fleet')result.users=this.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(actor.tenantId).map(r=>JSON.parse(r.data)).filter(u=>u.fleetId===actor.fleetId&&u.role==='driver');
+  if(actor.role==='carrier'&&actor.permissions.includes('user:manage'))result.users=this.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(actor.tenantId).map(r=>JSON.parse(r.data));
+  else if(actor.role==='fleet'&&actor.permissions.includes('employment:manage'))result.users=this.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(actor.tenantId).map(r=>JSON.parse(r.data)).filter(u=>u.fleetId===actor.fleetId&&u.role==='driver');
   else result.users=[];
   if(actor.permissions.includes('audit:view')){
    const visible=new Set(result.loads.map(l=>l.id));
@@ -64,6 +60,7 @@ export class Operations{
     .filter(row=>actor.role==='carrier'||row.actorId===actor.id||visible.has(row.resourceId))
     .map(row=>({...row,detail:JSON.parse(row.detail)}));
   }else result.audit=[];
+  for(const view of this.views)Object.assign(result,view(this,actor,result.loads));
   return result;
  }
  execute(userId,command){
@@ -75,8 +72,8 @@ export class Operations{
   try{return this.store.transaction(()=>{
    const fresh=this.actor(userId);
    const previous=this.store.db.prepare('SELECT digest,result FROM commands WHERE tenant_id=? AND actor_id=? AND key=?').get(fresh.tenantId,fresh.id,key);
-   if(previous){requireValue(previous.digest===hash,'IDEMPOTENCY','This request key was used for different input.',409);return JSON.parse(previous.result);}
-   const result=this.perform(fresh,command);
+   if(previous){requireValue(previous.digest===hash,'IDEMPOTENCY','This request key was used for different input.',409);return projectResult(this,fresh,JSON.parse(previous.result));}
+   const result=projectResult(this,fresh,this.perform(fresh,command));
    this.store.db.prepare('INSERT INTO commands VALUES(?,?,?,?,?)').run(fresh.tenantId,fresh.id,key,hash,JSON.stringify(result));
    return result;
   });}catch(e){
@@ -87,11 +84,14 @@ export class Operations{
  }
  perform(actor,c){
   const p=c.payload??{},scope={tenantId:actor.tenantId,fleetId:actor.fleetId};
+  if(c.action==='customer:create'){
+   fields(p,['name']);this.guard(actor,'customer:manage',scope);return this.create(actor,'customer',{name:text(p.name),active:true},c.action);
+  }
   if(c.action==='fleet:create'){
    fields(p,['name']);this.guard(actor,'fleet:manage',scope);return this.create(actor,'fleet',{name:text(p.name),active:true},c.action);
   }
   if(c.action==='user:create'){
-   fields(p,['username','name','role','fleetId','password','permissions']);this.guard(actor,'user:manage',scope);
+   fields(p,['username','name','role','fleetId','customerId','password','permissions']);this.guard(actor,'user:manage',scope);
    requireValue(p.role!=='driver'||!p.fleetId,'EMPLOYMENT','Fleet administrators manage their own driver employment.',403);
    const user=addUser(this.store,{...p,tenantId:actor.tenantId});
    this.store.audit(actor,c.action,user.id,'success',{role:user.role,fleetId:user.fleetId},this.now().toISOString());return user;
@@ -131,8 +131,9 @@ export class Operations{
    return this.change(actor,r,patch,c.action,reason);
   }
   if(c.action==='load:create'){
-   fields(p,['reference','customer','dispatcherId','commodity','weightLb','stops','rateCents','charges','factored','factorName']);
+   fields(p,['reference','customer','customerId','dispatcherId','commodity','weightLb','stops','rateCents','charges','factored','factorName']);
    this.guard(actor,'load:create',scope);
+   if(p.customerId)requireValue(this.read('customer',p.customerId,actor).active,'CUSTOMER','Select an active customer.');
    const dispatcher=this.store.principal(p.dispatcherId);
    requireValue(dispatcher?.tenantId===actor.tenantId&&dispatcher.role==='dispatcher'&&dispatcher.active,'DISPATCHER','Select an active carrier dispatcher.');
    requireValue(Array.isArray(p.stops)&&p.stops.length>=2&&p.stops.length<=20,'STOPS','Provide pickup and delivery stops.');
@@ -142,7 +143,7 @@ export class Operations{
    const charges=(p.charges??[]);requireValue(Array.isArray(charges)&&charges.length<=20,'CHARGES','Invalid charges.');
    const normalizedCharges=charges.map(x=>{fields(x,['label','amountCents']);return {label:text(x.label,80),amountCents:integer(x.amountCents)};});
    requireValue(p.factored===undefined||typeof p.factored==='boolean','BILLING','Invalid factoring value.');
-   const load=this.create(actor,'load',{reference:text(p.reference,40),customer:text(p.customer),dispatcherId:dispatcher.id,commodity:text(p.commodity),weightLb:integer(p.weightLb,1,200000),stops,rateCents:integer(p.rateCents),charges:normalizedCharges,factored:p.factored===true,factorName:p.factored?text(p.factorName):null,status:'draft',driverId:null,vehicleId:null,fleetId:null,createdAt:this.now().toISOString()},c.action);
+   const load=this.create(actor,'load',{reference:text(p.reference,40),customer:text(p.customer),customerId:p.customerId||null,dispatcherId:dispatcher.id,commodity:text(p.commodity),weightLb:integer(p.weightLb,1,200000),stops,rateCents:integer(p.rateCents),charges:normalizedCharges,factored:p.factored===true,factorName:p.factored?text(p.factorName):null,status:'draft',driverId:null,vehicleId:null,fleetId:null,createdAt:this.now().toISOString()},c.action);
    this.create(actor,'shipment',{loadId:load.id,dispatcherId:dispatcher.id,driverId:null,fleetId:null,commodity:load.commodity,weightLb:load.weightLb,stops,status:'draft'},'shipment:create');
    return load;
   }

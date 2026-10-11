@@ -1,3 +1,4 @@
+import {documentIntegritySQL} from '../domain/operations-documents.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
@@ -22,6 +23,7 @@ export class OperationsStore{
    CREATE TRIGGER IF NOT EXISTS audit_no_update BEFORE UPDATE ON audit BEGIN SELECT RAISE(ABORT,'Audit is append only'); END;
    CREATE TRIGGER IF NOT EXISTS audit_no_delete BEFORE DELETE ON audit BEGIN SELECT RAISE(ABORT,'Audit is append only'); END;
   `);
+  this.db.exec(documentIntegritySQL);
  }
  transaction(fn){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){this.db.exec('ROLLBACK');throw e}}
  principal(id){const row=this.db.prepare('SELECT data FROM users WHERE id=?').get(id);return row?JSON.parse(row.data):undefined}

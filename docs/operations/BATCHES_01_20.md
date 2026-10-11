@@ -92,3 +92,6 @@ Money values are user-entered USD cents. Invoice readiness is not payment, settl
 28. Approved settlement/deduction/escrow business rules and audited financial controls.
 29. Approved tracking/POD integration, notifications and operational observability.
 30. Consent approval, hosted registration certification and production release review.
+
+## Subsequent convergence
+The historical table above describes bec1ea9. Wave 3 re-ran its 73-test baseline, closed command-response and explicit-permission gaps, and established real Chromium browser tests. See BATCHES_21_40.md and BROWSER_EVIDENCE.md for current evidence. Hosted and model-provider gates remain unresolved.

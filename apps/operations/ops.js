@@ -35,6 +35,7 @@ function createLoad(){
  const tomorrow=new Date(Date.now()+86400000).toISOString().slice(0,16),later=new Date(Date.now()+2*86400000).toISOString().slice(0,16);
  return pageHead('Create a load','Commercial details stay within the carrier workspace.',button('Back to loads','back'))+
  '<form id="create-load" class="card"><div class="grid">'+field('reference','Load reference')+field('customer','Customer / broker')+
+ (can('customer:manage')?select('customerId','Customer portal access',[['','No linked portal'],...(state.customers??[]).map(c=>[c.id,c.name])]):'')+
  select('dispatcherId','Responsible dispatcher',state.users.filter(u=>u.role==='dispatcher'&&u.active).map(u=>[u.id,u.name]))+
  field('commodity','Commodity')+field('weightLb','Weight (lb)','number','1000','min="1" max="200000" step="1"')+
  field('rateCents','Base charge (cents, USD)','number','0','min="0" step="1"')+'<div><label for="chargeLabel">Additional charge label (optional)</label><input name="chargeLabel" id="chargeLabel" maxlength="80"></div><div><label for="chargeCents">Additional charge (cents, USD)</label><input name="chargeCents" id="chargeCents" type="number" min="0" step="1" value="0"></div>'+field('pickup','Pickup location')+field('pickupAt','Pickup time (UTC)','datetime-local',tomorrow)+field('delivery','Delivery location')+field('deliveryAt','Delivery time (UTC)','datetime-local',later)+
@@ -71,7 +72,7 @@ function extraLoadPanels(load){
  if(state.capabilities.includes('tracking:record')&&can('tracking:create')&&['accepted','picked_up','in_transit'].includes(load.status))html+='<div class="split"><form id="tracking" class="card"><h2>Record a milestone</h2><div class="grid">'+field('location','Current location')+field('note','Milestone note')+'</div><div class="actions"><button>Record update</button></div></form><form id="exception" class="card"><h2>Report an exception</h2><div class="grid">'+select('type','Type',[['delay','Delay'],['breakdown','Breakdown'],['cargo','Cargo'],['weather','Weather']])+field('reason','What needs attention?')+'</div><div class="actions"><button>Report exception</button></div></form></div>';
  const tracks=state.trackings.filter(t=>t.loadId===load.id),exceptions=state.exceptions.filter(e=>e.loadId===load.id);
  if(tracks.length||exceptions.length)html+='<section class="card"><h2>Tracking & exceptions</h2><ul class="timeline">'+tracks.map(t=>'<li>'+esc(t.location)+' · '+esc(t.note)+'<small>'+esc(date(t.at))+'</small></li>').join('')+exceptions.map(e=>'<li>'+chip(e.status)+' '+esc(e.type)+' · '+esc(e.reason)+'</li>').join('')+'</ul></section>';
- return html;
+ return html+(typeof extendedLoadPanels==='function'?extendedLoadPanels(load):'');
 }
 function assets(){
  const editKind=selected?.startsWith('driver:')?'driver':selected?.startsWith('vehicle:')?'vehicle':null;
@@ -92,7 +93,7 @@ function people(){
  if(state.actor.role==='fleet')return pageHead('Fleet employment','Manage your fleet drivers. Carrier approval remains a separate dispatch requirement.')+'<section class="card"><h2>Your drivers</h2>'+state.users.map(u=>'<div class="inline-record"><div><strong>'+esc(u.name)+'</strong><p>'+chip(u.active?'active':'inactive')+'</p></div>'+(u.active?button('Deactivate account','user:deactivate',u.id):'')+'</div>').join('')+'</section><form id="fleet-driver" class="card"><h2>Add a fleet driver</h2><div class="grid">'+field('name','Display name')+field('username','Username')+field('password','Initial local password','password','','minlength="12" maxlength="256" autocomplete="new-password"')+'</div><div class="actions"><button class="primary">Create driver account</button></div></form>';
  return pageHead('Workspace access','Accounts and relationships are managed by the carrier.')+
  '<section class="card"><h2>Accounts</h2><div class="table-wrap"><table><thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Access</th></tr></thead><tbody>'+state.users.map(u=>'<tr><td>'+esc(u.name)+'</td><td>'+esc(human(u.role))+'</td><td>'+chip(u.active?'active':'inactive')+'</td><td>'+(u.active&&u.id!==state.actor.id?button('Deactivate','user:deactivate',u.id):'—')+'</td></tr>').join('')+'</tbody></table></div></section>'+
- '<div class="split"><form id="user" class="card"><h2>Add a local account</h2><div class="grid">'+field('name','Display name')+field('username','Username')+select('role','Role',[['dispatcher','Dispatcher'],['driver','Driver'],['fleet','Fleet administrator'],['carrier','Carrier manager']])+select('fleetId','Fleet relationship',[['','Carrier employee'],...state.fleets.map(f=>[f.id,f.name])])+field('password','Initial local password','password','','minlength="12" maxlength="256" autocomplete="new-password"')+'</div><div class="actions"><button class="primary">Create account</button></div></form><form id="fleet" class="card"><h2>Add a fleet company</h2>'+field('name','Fleet company name')+'<div class="actions"><button>Add fleet</button></div></form></div>';
+ '<div class="split"><form id="user" class="card"><h2>Add a local account</h2><div class="grid">'+field('name','Display name')+field('username','Username')+select('role','Role',[['dispatcher','Dispatcher'],['driver','Driver'],['fleet','Fleet administrator'],['carrier','Carrier manager'],['customer','Customer portal']])+select('fleetId','Fleet relationship',[['','Carrier employee'],...state.fleets.map(f=>[f.id,f.name])])+select('customerId','Customer account relationship',[['','No customer relationship'],...(state.customers??[]).map(c=>[c.id,c.name])])+field('password','Initial local password','password','','minlength="12" maxlength="256" autocomplete="new-password"')+'</div><div class="actions"><button class="primary">Create account</button></div></form><form id="fleet" class="card"><h2>Add a fleet company</h2>'+field('name','Fleet company name')+'<div class="actions"><button>Add fleet</button></div></form></div>';
 }
 function workflows(){
  return pageHead('Review & recovery','Recommendations stay advisory until a carrier manager approves them.')+
@@ -115,17 +116,21 @@ function audit(){
 function render(){
  document.querySelector('#tenant').textContent=state.tenant.name;
  document.querySelector('#identity').textContent=state.actor.name+' · '+human(state.actor.role);
- const tabs=[['overview','Overview'],['loads',state.actor.role==='driver'?'My assignments':'Loads'],['assets','People & equipment']];
+ const tabs=[['overview','Overview'],['loads',state.actor.role==='driver'?'My assignments':'Loads']];
+ if(can('asset:view'))tabs.push(['assets','People & equipment']);
+ if(typeof extendedTabs==='function')tabs.push(...extendedTabs());
  if(state.capabilities.includes('workflow:advance')&&(can('workflow:run')||can('approval:decide')))tabs.push(['workflows','Review & recovery']);
  if(state.capabilities.includes('finance:prepare')&&can('finance:manage'))tabs.push(['finance','Invoice readiness']);
  if(can('user:manage')||can('employment:manage'))tabs.push(['people','Workspace access']);
  if(can('audit:view'))tabs.push(['audit','Activity']);
  document.querySelector('#nav').innerHTML=tabs.map(([id,label])=>'<button data-tab="'+id+'" aria-current="'+(tab===id?'page':'false')+'">'+label+'</button>').join('');
- view.innerHTML=creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+'<section class="card">'+loadTable()+'</section>':tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview();
+ const extension=typeof extendedView==='function'?extendedView(tab):null;
+ view.innerHTML=extension??(creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+'<section class="card">'+loadTable()+'</section>':tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview());
 }
 document.querySelector('#nav').addEventListener('click',event=>{const btn=event.target.closest('[data-tab]');if(btn){tab=btn.dataset.tab;selected=null;creating=false;render();}});
 document.querySelector('#logout').addEventListener('click',async()=>{await request('/api/ops/logout',{method:'POST'});location.assign('/login');});
 view.addEventListener('click',async event=>{
+ if(typeof handleExtendedClick==='function'&&await handleExtendedClick(event))return;
  const btn=event.target.closest('[data-action]');if(!btn)return;
  const action=btn.dataset.action,id=btn.dataset.id;
  if(action==='open'){tab='loads';selected=id;creating=false;return render();}
@@ -147,16 +152,17 @@ view.addEventListener('click',async event=>{
  }catch(error){alertMessage(error.message,true);}finally{btn.disabled=false;}
 });
 view.addEventListener('submit',async event=>{
+ event.preventDefault();if(typeof handleExtendedSubmit==='function'&&await handleExtendedSubmit(event))return;
  event.preventDefault();const form=event.target,button=form.querySelector('button[type=submit],button');button.disabled=true;
  const values=Object.fromEntries(new FormData(form)),load=state.loads.find(l=>l.id===selected);
  try{
-  if(form.id==='create-load'){const payload={reference:values.reference,customer:values.customer,dispatcherId:values.dispatcherId,commodity:values.commodity,weightLb:Number(values.weightLb),rateCents:Number(values.rateCents),charges:values.chargeLabel.trim()?[{label:values.chargeLabel,amountCents:Number(values.chargeCents)}]:[],factored:values.factored==='yes',factorName:values.factorName,stops:[{type:'pickup',location:values.pickup,at:new Date(values.pickupAt+'Z').toISOString()},{type:'delivery',location:values.delivery,at:new Date(values.deliveryAt+'Z').toISOString()}]};const record=await command('load:create',null,payload);creating=false;selected=record.id;tab='loads';render();}
+  if(form.id==='create-load'){const payload={reference:values.reference,customer:values.customer,customerId:values.customerId||null,dispatcherId:values.dispatcherId,commodity:values.commodity,weightLb:Number(values.weightLb),rateCents:Number(values.rateCents),charges:values.chargeLabel.trim()?[{label:values.chargeLabel,amountCents:Number(values.chargeCents)}]:[],factored:values.factored==='yes',factorName:values.factorName,stops:[{type:'pickup',location:values.pickup,at:new Date(values.pickupAt+'Z').toISOString()},{type:'delivery',location:values.delivery,at:new Date(values.deliveryAt+'Z').toISOString()}]};const record=await command('load:create',null,payload);creating=false;selected=record.id;tab='loads';render();}
   if(form.id==='assign')await command('load:assign',load,values);
   if(form.id==='deliver')await command('load:deliver',load,{stopId:load.stops.find(s=>!s.completedAt).id,proofReference:values.proofReference});
   if(form.id==='vehicle')await command('vehicle:create',null,{name:values.name,capacityLb:Number(values.capacityLb),fleetId:values.fleetId||null});
   if(form.id==='fleet')await command('fleet:create',null,values);
   if(form.id==='fleet-driver'){await command('driver:create',null,values);form.reset();}
-  if(form.id==='user'){await command('user:create',null,{...values,fleetId:values.fleetId||null});form.reset();}
+  if(form.id==='user'){await command('user:create',null,{...values,fleetId:values.fleetId||null,customerId:values.customerId||null});form.reset();}
   if(form.id==='asset-edit'){const [kind,id]=selected.split(':'),record=state[kind+'s'].find(r=>r.id===id);await command(kind+':update',record,{...values,available:values.available==='yes',active:values.active==='yes'});}
   if(form.id==='tracking')await command('tracking:record',load,values);
   if(form.id==='exception')await command('exception:report',load,values);
