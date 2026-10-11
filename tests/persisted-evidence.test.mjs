@@ -1,0 +1,15 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { classifyPersistedAgentDecision } from '../lib/intelligence/persisted-evidence.mjs';
+const principal={tenantId:'t1',active:true,permissions:['intelligence:analyze']};
+const load={id:'l1',tenantId:'t1',version:2};
+const evidence={kind:'agentdecision',id:'ev1',tenantId:'t1',loadId:'l1',jobId:'j1',checkpoint:0,runNumber:1,role:'tracking',consequentialAction:false,provenance:{live:false,model:null}};
+const policy={tenantId:'t1',enabled:true,allowedActions:['review_tracking'],autonomyLevel:4,minimumConfidence:0.9,maximumCost:0,version:'v1'};
+const run=(patch={})=>classifyPersistedAgentDecision({principal,load,evidence,policy,...patch});
+test('existing runtime evidence becomes approval-required classification',()=>assert.equal(run().status,'APPROVAL_REQUIRED'));
+test('evidence cannot claim a live provider',()=>assert.equal(run({evidence:{...evidence,provenance:{live:true,model:null}}}).status,'BLOCKED'));
+test('evidence cannot claim model execution',()=>assert.equal(run({evidence:{...evidence,provenance:{live:false,model:'fake'}}}).status,'BLOCKED'));
+test('cross tenant evidence blocked',()=>assert.equal(run({evidence:{...evidence,tenantId:'t2'}}).status,'BLOCKED'));
+test('consequential evidence blocked',()=>assert.equal(run({evidence:{...evidence,consequentialAction:true}}).status,'BLOCKED'));
+test('unrecognized evidence kind blocked',()=>assert.equal(run({evidence:{...evidence,kind:'invoice'}}).status,'BLOCKED'));
+test('missing persisted identity blocked',()=>assert.equal(run({evidence:{...evidence,jobId:''}}).status,'BLOCKED'));
