@@ -1,4 +1,4 @@
-import {createAIPolicyExtensions} from './operations-ai-policy.mjs';
+import {createAIPolicyExtensions,aiPolicyState} from './operations-ai-policy.mjs';
 import {createHash} from 'node:crypto';
 import {authorize,rolePermissions,canDelegatePermission} from './authorization.mjs';
 import {OpsError,reject,requireValue,fields,text,integer,utc} from './operations-errors.mjs';
@@ -8,7 +8,7 @@ import {addUser} from '../server/operations-auth.mjs';
 const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])):value;
 const digest=value=>createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex');
 export class Operations{
- constructor(store,{now=()=>new Date(),extensions={},views=[]}={}){this.store=store;this.now=now;this.extensions={...createAIPolicyExtensions(),...extensions};this.views=views;}
+ constructor(store,{now=()=>new Date(),extensions={},views=[]}={}){this.store=store;this.now=now;this.extensions={...createAIPolicyExtensions(),...extensions};this.views=[...views,aiPolicyState];}
  actor(id){const a=this.store.principal(id);if(!a?.active)reject(401,'SESSION','Sign in required.');return a;}
  guard(actor,action,resource){if(!authorize({actor,action,resource}))reject(403,'FORBIDDEN','This action is not permitted.');}
  read(kind,id,actor,action){const r=this.store.get(kind,id,actor.tenantId);if(action)this.guard(actor,action,r);return r;}
