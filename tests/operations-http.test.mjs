@@ -38,3 +38,28 @@ test('account deactivation invalidates an existing session on its next request',
  f.command(f.manager,'user:deactivate',f.driver,{reason:'Illustrative access revocation'});
  assert.equal((await fetch(f.base+'/api/ops/state',{headers:{Cookie:authenticated.cookie}})).status,401);
 });
+
+test('HTTP journey connects carrier, dispatcher, driver, approval and invoicing against real persistence',async t=>{
+ const f=await app(t),actors={};
+ for(const [name,actor] of Object.entries({carrier:f.manager,dispatcher:f.dispatcher,driver:f.driver}))actors[name]=await login(f,actor.username);
+ async function command(name,action,resource,payload={}){
+  const a=actors[name],response=await fetch(f.base+'/api/ops/commands',{method:'POST',headers:{Origin:f.base,'Content-Type':'application/json',Cookie:a.cookie,'X-CSRF-Token':a.data.csrf},body:JSON.stringify({action,resourceId:resource?.id,expectedVersion:resource?.version,idempotencyKey:randomUUID(),payload})});
+  const result=await response.json();assert.equal(response.status,200,JSON.stringify(result));return result;
+ }
+ let load=await command('carrier','load:create',null,{reference:'ILL-HTTP-E2E',customer:'Illustrative HTTP customer',dispatcherId:f.dispatcher.id,commodity:'Illustrative goods',weightLb:100,rateCents:12500,charges:[{label:'Approved illustrative charge',amountCents:750}],factored:true,factorName:'Illustrative Factor',stops:[{type:'pickup',location:'Illustrative origin',at:'2026-11-01T12:00:00Z'},{type:'delivery',location:'Illustrative destination',at:'2026-11-02T12:00:00Z'}]});
+ load=await command('dispatcher','load:validate',load);
+ load=await command('dispatcher','load:assign',load,{driverId:f.driver.id,vehicleId:f.vehicle.id,reason:'Verified eligible assignment'});
+ load=await command('driver','load:accept',load);
+ load=await command('driver','load:pickup',load,{stopId:load.stops[0].id});
+ load=await command('driver','load:transit',load);
+ await command('driver','tracking:record',load,{location:'Illustrative waypoint',note:'Milestone reached'});
+ await command('driver','exception:report',load,{type:'weather',reason:'Illustrative weather review'});
+ let workflow=f.store.list('workflow',f.manager.tenantId)[0];await command('dispatcher','workflow:advance',workflow);
+ const approval=f.store.list('approval',f.manager.tenantId)[0];await command('carrier','approval:decide',approval,{decision:'approved',reason:'Weather passed; verified safe to resume'});
+ workflow=f.store.get('workflow',workflow.id,f.manager.tenantId);await command('dispatcher','workflow:advance',workflow);
+ load=await command('driver','load:deliver',load,{stopId:load.stops[1].id,proofReference:'Illustrative proof'});
+ let invoice=await command('carrier','finance:prepare',load);assert.equal(invoice.totalCents,13250);assert.equal(invoice.billTo,'Illustrative Factor');
+ invoice=await command('carrier','finance:approve',invoice,{reason:'Reviewed approved commercial terms'});assert.equal(invoice.status,'approved');
+ const response=await fetch(f.base+'/api/ops/state',{headers:{Cookie:actors.carrier.cookie}});
+ const state=await response.json();assert.equal(state.loads[0].status,'delivered');assert.equal(state.invoices[0].status,'approved');assert.ok(state.audit.some(a=>a.action==='finance:approve'));
+});

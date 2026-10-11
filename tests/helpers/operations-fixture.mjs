@@ -4,13 +4,14 @@ import {join,resolve,sep} from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {OperationsStore} from '../../server/operations-store.mjs';
 import {bootstrap,addUser} from '../../server/operations-auth.mjs';
+import {createAutomation} from '../../domain/operations-automation.mjs';
 import {Operations} from '../../domain/operations.mjs';
 export const password='illustrative-fixture-only-47';
 export async function fixture(t,options={}){
  const root=await mkdtemp(join(tmpdir(),'iway-ops-test-'));
  if(!resolve(root).startsWith(resolve(tmpdir())+sep+'iway-ops-test-'))throw new Error('Unexpected fixture path');
  const path=join(root,'operations.sqlite');
- const store=new OperationsStore(path),ops=new Operations(store,options);
+ const store=new OperationsStore(path),ops=new Operations(store,{extensions:createAutomation(),...options});
  t.after(async()=>{try{store.close()}catch{}await rm(root,{recursive:true,force:true})});
  const manager=bootstrap(store,{tenantName:'Illustrative Carrier A',timezone:'America/Chicago',username:'carrier@illustrative.invalid',name:'Illustrative Carrier',password});
  const dispatcher=addUser(store,{tenantId:manager.tenantId,username:'dispatcher@illustrative.invalid',name:'Illustrative Dispatcher',role:'dispatcher',password});

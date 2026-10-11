@@ -13,7 +13,8 @@ function passwordMatches(value,stored){
  return expected.length===actual.length&&timingSafeEqual(expected,actual);
 }
 export function addUser(store,{tenantId,username,name,role,fleetId=null,password,permissions}){
- requireValue(store.tenant(tenantId)&&rolePermissions[role],'ACCOUNT','Invalid account relationship.');
+ requireValue(store.tenant(tenantId)&&['carrier','dispatcher','driver','fleet'].includes(role),'ACCOUNT','Invalid account relationship.');
+ requireValue(!fleetId||['driver','fleet'].includes(role),'FLEET','Only fleet personnel may have a fleet employment relationship.');
  if(fleetId)requireValue(store.get('fleet',fleetId,tenantId).active,'FLEET','Fleet is inactive.');
  requireValue(role!=='fleet'||!!fleetId,'FLEET','Fleet account requires an owning fleet.');
  const grants=permissions??rolePermissions[role];

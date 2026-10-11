@@ -3,7 +3,8 @@ export const rolePermissions=Object.freeze({
  carrier:['load:create','load:view','load:validate','load:dispatch','asset:view','asset:manage','driver:approve','vehicle:approve','user:manage','fleet:manage','workflow:run','approval:decide','finance:manage','audit:view','exception:create','tracking:create','recommendation:view'],
  dispatcher:['load:view','load:validate','load:dispatch','asset:view','workflow:run','audit:view','exception:create','tracking:create','recommendation:view'],
  driver:['load:view','load:execute','asset:view','exception:create','tracking:create','recommendation:view'],
- fleet:['load:view','asset:view','asset:manage']
+ fleet:['load:view','asset:view','asset:manage','employment:manage'],
+ automation:['workflow:run']
 });
 export function authorize({actor,action,resource}){
  if(!actor?.id||!actor.tenantId||actor.tenantId!==resource?.tenantId||actor.active===false)return false;

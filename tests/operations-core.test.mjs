@@ -82,3 +82,42 @@ test('master records deactivate and vehicle ownership cannot be silently overwri
  const inactive=f.command(f.manager,'vehicle:update',f.vehicle,{active:false,reason:'Illustrative retirement'});
  assert.equal(inactive.active,false);assert.equal(f.store.list('vehicle',f.manager.tenantId).length,1);
 });
+
+test('fleet administrators own employment and cannot manage another fleet or carrier employee',async t=>{
+ const f=await fixture(t),payload={name:'Illustrative fleet employee',username:'employee@illustrative.invalid',password:'illustrative-fixture-only-47'};
+ const driver=f.command(f.fleetUser,'driver:create',null,payload);
+ assert.equal(driver.fleetId,f.fleet.id);assert.equal(f.store.get('driver',driver.id,f.manager.tenantId).approved,false);
+ assert.throws(()=>f.command(f.manager,'user:create',null,{...payload,role:'driver',fleetId:f.fleet.id}),e=>e.code==='EMPLOYMENT');
+ assert.throws(()=>f.command(f.fleetUser,'user:deactivate',f.driver,{reason:'Not employed here'}),e=>e.code==='EMPLOYMENT');
+ assert.throws(()=>f.command(f.fleetUser,'driver:create',null,{...payload,tenantId:f.outsider.tenantId}),e=>e.code==='FIELDS');
+ const result=f.command(f.fleetUser,'user:deactivate',driver,{reason:'Illustrative employment ended'});
+ assert.equal(result.active,false);assert.equal(f.ops.state(f.fleetUser.id).users.length,1);
+ assert.equal(f.ops.state(f.outsider.id).users.length,1);
+});
+test('each compliance, capacity, maintenance and ownership failure independently blocks dispatch',async t=>{
+ const f=await fixture(t);let load=f.createLoad();load=f.command(f.dispatcher,'load:validate',load);
+ const attempt=()=>f.command(f.dispatcher,'load:assign',load,{driverId:f.driver.id,vehicleId:f.vehicle.id,reason:'Eligibility check'});
+ const get=kind=>f.store.get(kind,kind==='driver'?f.driver.id:f.vehicle.id,f.manager.tenantId);
+ for(const [kind,change,restore] of [
+  ['driver',{expiresOn:'2000-01-01'},{expiresOn:'2099-12-31'}],
+  ['driver',{available:false},{available:true}],
+  ['driver',{active:false},{active:true}],
+  ['vehicle',{maintenance:'due'},{maintenance:'ready'}],
+  ['vehicle',{available:false},{available:true}]
+ ]){
+  f.command(f.manager,kind+':update',get(kind),{...change,reason:'Illustrative failing eligibility'});
+  assert.throws(attempt,e=>e.code==='INELIGIBLE');
+  f.command(f.manager,kind+':update',get(kind),{...restore,reason:'Illustrative resolution'});
+ }
+ f.command(f.manager,'driver:approve',get('driver'),{approved:false,reason:'Review pending'});
+ assert.throws(attempt,e=>e.code==='INELIGIBLE');
+ f.command(f.manager,'driver:approve',get('driver'),{approved:true,reason:'Review completed'});
+ f.command(f.manager,'vehicle:approve',get('vehicle'),{approved:false,reason:'Review pending'});
+ assert.throws(attempt,e=>e.code==='INELIGIBLE');
+ const small=f.command(f.manager,'vehicle:create',null,{name:'Illustrative small truck',capacityLb:10});
+ f.command(f.manager,'vehicle:approve',small,{approved:true,reason:'Illustrative approved vehicle'});
+ assert.throws(()=>f.command(f.dispatcher,'load:assign',load,{driverId:f.driver.id,vehicleId:small.id,reason:'Too small'}),e=>e.code==='INELIGIBLE');
+ const fleetVehicle=f.command(f.fleetUser,'vehicle:create',null,{name:'Other owner',capacityLb:45000});
+ f.command(f.manager,'vehicle:approve',fleetVehicle,{approved:true,reason:'Illustrative approval'});
+ assert.throws(()=>f.command(f.dispatcher,'load:assign',load,{driverId:f.driver.id,vehicleId:fleetVehicle.id,reason:'Different owner'}),e=>e.code==='INELIGIBLE');
+});

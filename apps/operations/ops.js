@@ -5,7 +5,7 @@ const human=value=>String(value??'').replaceAll('_',' ').replaceAll(':',' · ');
 const date=value=>value?new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short',timeZone:state.tenant.timezone}).format(new Date(value)):'Not scheduled';
 const chip=value=>'<span class="chip '+(['delivered','approved','ready','completed','resolved'].includes(value)?'done':['draft','pending','assigned','open','waiting_approval','retry'].includes(value)?'warn':['void','critical','failed','out_of_service','rejected','expired'].includes(value)?'error':'')+'">'+esc(human(value))+'</span>';
 const field=(name,label,type='text',value='',extra='')=>'<div><label for="'+name+'">'+esc(label)+'</label><input id="'+name+'" name="'+name+'" type="'+type+'" value="'+esc(value)+'" '+extra+' required></div>';
-const select=(name,label,rows,selected='')=>'<div><label for="'+name+'">'+esc(label)+'</label><select id="'+name+'" name="'+name+'" required>'+rows.map(([value,label])=>'<option value="'+esc(value)+'" '+(value===selected?'selected':'')+'>'+esc(label)+'</option>').join('')+'</select></div>';
+const select=(name,label,rows,selected='')=>'<div><label for="'+name+'">'+esc(label)+'</label><select id="'+name+'" name="'+name+'" '+(rows.some(([value])=>value==='')?'':'required')+'>'+rows.map(([value,label])=>'<option value="'+esc(value)+'" '+(value===selected?'selected':'')+'>'+esc(label)+'</option>').join('')+'</select></div>';
 const can=action=>state.actor.permissions.includes(action);
 const button=(label,action,id,extra='')=>'<button type="button" data-action="'+action+'" data-id="'+esc(id)+'" '+extra+'>'+esc(label)+'</button>';
 const pageHead=(title,description,action='')=>'<div class="page-head"><div><p class="eyebrow">'+esc(human(state.actor.role))+' WORKSPACE</p><h1>'+esc(title)+'</h1><p class="muted">'+esc(description)+'</p></div>'+action+'</div>';
@@ -15,9 +15,12 @@ async function request(path,options={}){
  const data=await response.json();if(response.status===401){location.assign('/login');throw new Error('Sign in required.');}if(!response.ok)throw new Error(data.error??'Request failed.');return data;
 }
 async function refresh(){state=await request('/api/ops/state');render();}
+const pendingCommands=new Map();
 async function command(action,record,payload={}){
- const result=await request('/api/ops/commands',{method:'POST',body:JSON.stringify({action,resourceId:record?.id,expectedVersion:record?.version,payload,idempotencyKey:crypto.randomUUID()})});
- await refresh();return result;
+ const signature=JSON.stringify({action,id:record?.id,version:record?.version,payload});
+ if(!pendingCommands.has(signature))pendingCommands.set(signature,crypto.randomUUID());
+ const result=await request('/api/ops/commands',{method:'POST',body:JSON.stringify({action,resourceId:record?.id,expectedVersion:record?.version,payload,idempotencyKey:pendingCommands.get(signature)})});
+ await refresh();pendingCommands.delete(signature);return result;
 }
 function loadTable(loads=state.loads){
  if(!loads.length)return '<p class="empty">No loads here yet. Your next move starts with a load.</p>';
@@ -34,7 +37,7 @@ function createLoad(){
  '<form id="create-load" class="card"><div class="grid">'+field('reference','Load reference')+field('customer','Customer / broker')+
  select('dispatcherId','Responsible dispatcher',state.users.filter(u=>u.role==='dispatcher'&&u.active).map(u=>[u.id,u.name]))+
  field('commodity','Commodity')+field('weightLb','Weight (lb)','number','1000','min="1" max="200000" step="1"')+
- field('rateCents','Base charge (cents, USD)','number','0','min="0" step="1"')+field('pickup','Pickup location')+field('pickupAt','Pickup time (UTC)','datetime-local',tomorrow)+field('delivery','Delivery location')+field('deliveryAt','Delivery time (UTC)','datetime-local',later)+
+ field('rateCents','Base charge (cents, USD)','number','0','min="0" step="1"')+'<div><label for="chargeLabel">Additional charge label (optional)</label><input name="chargeLabel" id="chargeLabel" maxlength="80"></div><div><label for="chargeCents">Additional charge (cents, USD)</label><input name="chargeCents" id="chargeCents" type="number" min="0" step="1" value="0"></div>'+field('pickup','Pickup location')+field('pickupAt','Pickup time (UTC)','datetime-local',tomorrow)+field('delivery','Delivery location')+field('deliveryAt','Delivery time (UTC)','datetime-local',later)+
  select('factored','Bill to',[['no','Customer / broker'],['yes','Factoring company']])+
  '<div><label for="factorName">Factoring company (when selected)</label><input id="factorName" name="factorName"></div></div><div class="actions"><button class="primary" type="submit">Create draft load</button></div></form>';
 }
@@ -50,6 +53,7 @@ function loadDetail(){
   if(load.status==='picked_up')actions+=button('Start transit','load:transit',load.id,'class="primary"');
   if(load.status==='in_transit')actions+='<form id="deliver" class="grid">'+field('proofReference','Delivery proof reference')+'<div class="actions"><button class="primary">Confirm delivery</button></div></form>';
  }
+ if(can('load:dispatch')&&['draft','validated','assigned','accepted'].includes(load.status))actions+=button('Void load','load:void',load.id);
  let assignment='';
  if(can('load:dispatch')&&['validated','assigned','accepted'].includes(load.status)){
   assignment='<form id="assign" class="card"><h2>Assign driver and vehicle</h2><p class="muted">Availability, ownership and carrier approval are checked when you assign.</p><div class="grid">'+
@@ -85,17 +89,19 @@ function assets(){
  (state.actor.role==='carrier'?select('fleetId','Owner',[['','Carrier'],...state.fleets.map(f=>[f.id,f.name])]):'')+'</div><div class="actions"><button class="primary">Add vehicle</button></div></form>':'');
 }
 function people(){
+ if(state.actor.role==='fleet')return pageHead('Fleet employment','Manage your fleet drivers. Carrier approval remains a separate dispatch requirement.')+'<section class="card"><h2>Your drivers</h2>'+state.users.map(u=>'<div class="inline-record"><div><strong>'+esc(u.name)+'</strong><p>'+chip(u.active?'active':'inactive')+'</p></div>'+(u.active?button('Deactivate account','user:deactivate',u.id):'')+'</div>').join('')+'</section><form id="fleet-driver" class="card"><h2>Add a fleet driver</h2><div class="grid">'+field('name','Display name')+field('username','Username')+field('password','Initial local password','password','','minlength="12" maxlength="256" autocomplete="new-password"')+'</div><div class="actions"><button class="primary">Create driver account</button></div></form>';
  return pageHead('Workspace access','Accounts and relationships are managed by the carrier.')+
- '<section class="card"><h2>Accounts</h2><div class="table-wrap"><table><thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead><tbody>'+state.users.map(u=>'<tr><td>'+esc(u.name)+'</td><td>'+esc(human(u.role))+'</td><td>'+chip(u.active?'active':'inactive')+'</td></tr>').join('')+'</tbody></table></div></section>'+
+ '<section class="card"><h2>Accounts</h2><div class="table-wrap"><table><thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Access</th></tr></thead><tbody>'+state.users.map(u=>'<tr><td>'+esc(u.name)+'</td><td>'+esc(human(u.role))+'</td><td>'+chip(u.active?'active':'inactive')+'</td><td>'+(u.active&&u.id!==state.actor.id?button('Deactivate','user:deactivate',u.id):'—')+'</td></tr>').join('')+'</tbody></table></div></section>'+
  '<div class="split"><form id="user" class="card"><h2>Add a local account</h2><div class="grid">'+field('name','Display name')+field('username','Username')+select('role','Role',[['dispatcher','Dispatcher'],['driver','Driver'],['fleet','Fleet administrator'],['carrier','Carrier manager']])+select('fleetId','Fleet relationship',[['','Carrier employee'],...state.fleets.map(f=>[f.id,f.name])])+field('password','Initial local password','password','','minlength="12" maxlength="256" autocomplete="new-password"')+'</div><div class="actions"><button class="primary">Create account</button></div></form><form id="fleet" class="card"><h2>Add a fleet company</h2>'+field('name','Fleet company name')+'<div class="actions"><button>Add fleet</button></div></form></div>';
 }
 function workflows(){
  return pageHead('Review & recovery','Recommendations stay advisory until a carrier manager approves them.')+
  '<section class="notice"><strong>AI provider not configured.</strong> Current recommendations use explicit eligibility and exception rules. They are not model-generated.</section>'+
- state.workflows.map(w=>{const load=state.loads.find(l=>l.id===w.loadId),approval=state.approvals.find(a=>a.workflowId===w.id&&a.status==='pending'),r=state.recommendations.find(r=>r.workflowId===w.id);return '<article class="card"><h2>'+esc(load?.reference??'Load review')+'</h2><p>'+chip(w.status)+' · Checkpoint: '+esc(human(w.checkpoint))+' · Attempts: '+w.attempts+'</p>'+
+ state.workflows.map(w=>{const load=state.loads.find(l=>l.id===w.loadId),approval=state.approvals.find(a=>a.workflowId===w.id&&a.status==='pending'),r=state.recommendations.filter(r=>r.workflowId===w.id).at(-1);return '<article class="card"><h2>'+esc(load?.reference??'Load review')+'</h2><p>'+chip(w.status)+' · Checkpoint: '+esc(human(w.checkpoint))+' · Attempts: '+w.attempts+'</p>'+
  (r?'<p><strong>'+esc(human(r.action))+'</strong></p><p>'+esc(r.explanation)+'</p>':'')+
  (approval?'<p class="muted">Approval expires '+esc(date(approval.expiresAt))+'</p>':'')+
  '<div class="actions">'+(['pending','retry','approved'].includes(w.status)&&can('workflow:run')?button('Advance workflow','workflow:advance',w.id):'')+
+ (['failed','completed'].includes(w.status)&&state.exceptions.some(e=>e.id===w.exceptionId&&e.status==='open')&&can('workflow:run')?button('Restart review','workflow:restart',w.id):'')+
  (approval&&can('approval:decide')?button('Approve recommendation','approval:approve',approval.id)+button('Reject','approval:reject',approval.id):'')+'</div></article>';}).join('')+(state.workflows.length?'':'<section class="card"><p class="empty">No exception reviews are waiting.</p></section>');
 }
 function finance(){
@@ -112,7 +118,7 @@ function render(){
  const tabs=[['overview','Overview'],['loads',state.actor.role==='driver'?'My assignments':'Loads'],['assets','People & equipment']];
  if(state.capabilities.includes('workflow:advance')&&(can('workflow:run')||can('approval:decide')))tabs.push(['workflows','Review & recovery']);
  if(state.capabilities.includes('finance:prepare')&&can('finance:manage'))tabs.push(['finance','Invoice readiness']);
- if(can('user:manage'))tabs.push(['people','Workspace access']);
+ if(can('user:manage')||can('employment:manage'))tabs.push(['people','Workspace access']);
  if(can('audit:view'))tabs.push(['audit','Activity']);
  document.querySelector('#nav').innerHTML=tabs.map(([id,label])=>'<button data-tab="'+id+'" aria-current="'+(tab===id?'page':'false')+'">'+label+'</button>').join('');
  view.innerHTML=creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+'<section class="card">'+loadTable()+'</section>':tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview();
@@ -129,9 +135,12 @@ view.addEventListener('click',async event=>{
  btn.disabled=true;
  try{
   let record=state.loads.find(l=>l.id===id),payload={};
+  if(action==='user:deactivate'){record=state.users.find(u=>u.id===id);const reason=prompt('Reason for deactivating this account');if(!reason)return;payload={reason};}
+  if(action==='load:void'){const reason=prompt('Reason for voiding this load');if(!reason)return;payload={reason};}
   if(action==='load:pickup')payload={stopId:btn.dataset.stop};
   if(action.endsWith(':approve')&&['driver','vehicle'].includes(action.split(':')[0])){record=state[action.split(':')[0]+'s'].find(r=>r.id===id);const reason=prompt('Reason for the carrier approval decision');if(!reason)return;payload={approved:btn.dataset.approved==='true',reason};}
-  if(action==='workflow:advance')record=state.workflows.find(w=>w.id===id);
+  if(action.startsWith('workflow:'))record=state.workflows.find(w=>w.id===id);
+  if(action==='workflow:restart'){const reason=prompt('Reason for requesting a fresh review');if(!reason)return;payload={reason};}
   if(action.startsWith('approval:')){record=state.approvals.find(a=>a.id===id);const reason=prompt('Reason for this decision');if(!reason)return;await command('approval:decide',record,{decision:action.endsWith('approve')?'approved':'rejected',reason});alertMessage('Decision recorded.');return;}
   if(action==='finance:approve'){record=state.invoices.find(i=>i.id===id);const reason=prompt('Reason for approving this financial record');if(!reason)return;payload={reason};}
   await command(action,record,payload);alertMessage('Operation saved.');
@@ -141,11 +150,12 @@ view.addEventListener('submit',async event=>{
  event.preventDefault();const form=event.target,button=form.querySelector('button[type=submit],button');button.disabled=true;
  const values=Object.fromEntries(new FormData(form)),load=state.loads.find(l=>l.id===selected);
  try{
-  if(form.id==='create-load'){const payload={reference:values.reference,customer:values.customer,dispatcherId:values.dispatcherId,commodity:values.commodity,weightLb:Number(values.weightLb),rateCents:Number(values.rateCents),charges:[],factored:values.factored==='yes',factorName:values.factorName,stops:[{type:'pickup',location:values.pickup,at:new Date(values.pickupAt+'Z').toISOString()},{type:'delivery',location:values.delivery,at:new Date(values.deliveryAt+'Z').toISOString()}]};const record=await command('load:create',null,payload);creating=false;selected=record.id;tab='loads';render();}
+  if(form.id==='create-load'){const payload={reference:values.reference,customer:values.customer,dispatcherId:values.dispatcherId,commodity:values.commodity,weightLb:Number(values.weightLb),rateCents:Number(values.rateCents),charges:values.chargeLabel.trim()?[{label:values.chargeLabel,amountCents:Number(values.chargeCents)}]:[],factored:values.factored==='yes',factorName:values.factorName,stops:[{type:'pickup',location:values.pickup,at:new Date(values.pickupAt+'Z').toISOString()},{type:'delivery',location:values.delivery,at:new Date(values.deliveryAt+'Z').toISOString()}]};const record=await command('load:create',null,payload);creating=false;selected=record.id;tab='loads';render();}
   if(form.id==='assign')await command('load:assign',load,values);
   if(form.id==='deliver')await command('load:deliver',load,{stopId:load.stops.find(s=>!s.completedAt).id,proofReference:values.proofReference});
   if(form.id==='vehicle')await command('vehicle:create',null,{name:values.name,capacityLb:Number(values.capacityLb),fleetId:values.fleetId||null});
   if(form.id==='fleet')await command('fleet:create',null,values);
+  if(form.id==='fleet-driver'){await command('driver:create',null,values);form.reset();}
   if(form.id==='user'){await command('user:create',null,{...values,fleetId:values.fleetId||null});form.reset();}
   if(form.id==='asset-edit'){const [kind,id]=selected.split(':'),record=state[kind+'s'].find(r=>r.id===id);await command(kind+':update',record,{...values,available:values.available==='yes',active:values.active==='yes'});}
   if(form.id==='tracking')await command('tracking:record',load,values);

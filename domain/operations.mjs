@@ -56,6 +56,7 @@ export class Operations{
    });
   }
   if(actor.role==='carrier')result.users=this.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(actor.tenantId).map(r=>JSON.parse(r.data));
+  else if(actor.role==='fleet')result.users=this.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(actor.tenantId).map(r=>JSON.parse(r.data)).filter(u=>u.fleetId===actor.fleetId&&u.role==='driver');
   else result.users=[];
   if(actor.permissions.includes('audit:view')){
    const visible=new Set(result.loads.map(l=>l.id));
@@ -91,13 +92,20 @@ export class Operations{
   }
   if(c.action==='user:create'){
    fields(p,['username','name','role','fleetId','password','permissions']);this.guard(actor,'user:manage',scope);
+   requireValue(p.role!=='driver'||!p.fleetId,'EMPLOYMENT','Fleet administrators manage their own driver employment.',403);
    const user=addUser(this.store,{...p,tenantId:actor.tenantId});
    this.store.audit(actor,c.action,user.id,'success',{role:user.role,fleetId:user.fleetId},this.now().toISOString());return user;
   }
+  if(c.action==='driver:create'){
+   fields(p,['username','name','password']);this.guard(actor,'employment:manage',scope);
+   const user=addUser(this.store,{...p,role:'driver',fleetId:actor.fleetId,tenantId:actor.tenantId});
+   this.store.audit(actor,c.action,user.id,'success',{role:user.role,fleetId:user.fleetId},this.now().toISOString());return user;
+  }
   if(c.action==='user:deactivate'){
-   fields(p,['reason']);this.guard(actor,'user:manage',scope);const reason=text(p.reason,300);
+   fields(p,['reason']);this.guard(actor,actor.role==='fleet'?'employment:manage':'user:manage',scope);const reason=text(p.reason,300);
    const user=this.store.principal(c.resourceId);
    requireValue(user?.tenantId===actor.tenantId&&user.id!==actor.id,'USER','Account cannot be deactivated.',403);
+   if(actor.role==='fleet')requireValue(user.role==='driver'&&user.fleetId===actor.fleetId,'EMPLOYMENT','Only drivers employed by this fleet can be managed.',403);
    const updated={...user,active:false};this.store.db.prepare('UPDATE users SET data=? WHERE id=? AND tenant_id=?').run(JSON.stringify(updated),user.id,actor.tenantId);
    this.store.audit(actor,c.action,user.id,'success',{before:{active:user.active},after:{active:false},reason},this.now().toISOString());return updated;
   }
@@ -117,7 +125,7 @@ export class Operations{
     for(const field of ['available','active'])if(p[field]!==undefined){requireValue(typeof p[field]==='boolean','BOOLEAN','Expected true or false.');patch[field]=p[field];}
     if(kind==='driver'){
      if(p.compliance!==undefined){requireValue(actor.role==='carrier','COMPLIANCE','Only the carrier changes compliance.',403);requireValue(['valid','critical'].includes(p.compliance),'COMPLIANCE','Invalid compliance state.');patch.compliance=p.compliance;}
-     if(p.expiresOn!==undefined){requireValue(actor.role==='carrier','COMPLIANCE','Only the carrier records verified expiry.',403);requireValue(/^\d{4}-\d{2}-\d{2}$/.test(p.expiresOn)&&Number.isFinite(Date.parse(p.expiresOn)),'EXPIRY','Enter a valid expiry date.');patch.expiresOn=p.expiresOn;}
+     if(p.expiresOn!==undefined){requireValue(actor.role==='carrier','COMPLIANCE','Only the carrier records verified expiry.',403);requireValue(/^\d{4}-\d{2}-\d{2}$/.test(p.expiresOn)&&Number.isFinite(Date.parse(p.expiresOn))&&new Date(p.expiresOn).toISOString().slice(0,10)===p.expiresOn,'EXPIRY','Enter a valid expiry date.');patch.expiresOn=p.expiresOn;}
     }else if(p.maintenance!==undefined){requireValue(['ready','due','out_of_service'].includes(p.maintenance),'MAINTENANCE','Invalid maintenance state.');patch.maintenance=p.maintenance;}
    }
    return this.change(actor,r,patch,c.action,reason);
@@ -169,7 +177,7 @@ export class Operations{
     if(pickup&&stops.filter(s=>s.type==='pickup').every(s=>s.completedAt))patch.status='picked_up';
     if(!pickup&&stops.every(s=>s.completedAt)){patch.status='delivered';patch.deliveredAt=this.now().toISOString();}
    }
-   if(c.action==='load:transit'){fields(p,[]);requireValue(load.status==='picked_up','TRANSITION','Pickup must be completed first.',409);patch.status='in_transit';}
+   if(c.action==='load:transit'){fields(p,[]);requireValue(!this.store.list('exception',actor.tenantId).some(e=>e.loadId===load.id&&e.status==='open'),'EXCEPTION','Resolve open exceptions before starting transit.',409);requireValue(load.status==='picked_up','TRANSITION','Pickup must be completed first.',409);patch.status='in_transit';}
    if(c.action==='load:void'){fields(p,['reason']);requireValue(['draft','validated','assigned','accepted'].includes(load.status),'TRANSITION','Started or completed loads cannot be voided.',409);reason=text(p.reason,300);patch.status='void';}
    const updated=this.change(actor,load,patch,c.action,reason);
    const shipment=this.store.list('shipment',actor.tenantId).find(s=>s.loadId===load.id);
