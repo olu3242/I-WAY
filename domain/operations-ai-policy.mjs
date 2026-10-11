@@ -23,6 +23,11 @@ export function createAIPolicyExtensions(){
   'aipolicy:revoke':(ops,a,c)=>act(ops,a,c,'revoke')
  };
 }
+// Only tenant carrier governance principals may inspect policy configuration.
+export function aiPolicyState(ops,actor){
+ const permitted=actor?.active===true&&actor.role==='carrier'&&actor.permissions?.includes('governance:manage');
+ return {aiPolicies:permitted?ops.store.list('aipolicy',actor.tenantId):[]};
+}
 export const aiPolicyIntegritySQL=`
  CREATE UNIQUE INDEX IF NOT EXISTS one_tenant_ai_policy ON resources(tenant_id) WHERE kind='aipolicy';
 `;
