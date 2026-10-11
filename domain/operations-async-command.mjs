@@ -4,7 +4,7 @@
 import {createHash} from 'node:crypto';
 const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])):value;
 const hash=value=>createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex');
-const keyOK=value=>typeof value==='string'&&/^[a-f0-9]{8}-[a-f0-9-]{28,50}$/i.test(value);
+const keyOK=value=>typeof value==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(value);
 const uuid=value=>typeof value==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(value);
 export class AsyncCommandError extends Error{
  constructor(code){super('Asynchronous command rejected');this.name='AsyncCommandError';this.code=code;}
