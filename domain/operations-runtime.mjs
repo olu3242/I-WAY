@@ -46,7 +46,7 @@ function checkpointAIPolicy(ops,job,output){
  if(!configured)return {status:'BLOCKED',reason:'AI_POLICY_NOT_CONFIGURED'};
  try{
   const result=evaluateDecision(input,configured);
-  return {status:result.status,...(result.reason?{reason:result.reason}:{}),policyVersion:result.policyVersion??null};
+  return {status:result.status,...(result.reason?{reason:result.reason}:{}),policyVersion:result.policyVersion??null,policyId:configured.id};
  }catch{return {status:'BLOCKED',reason:'AI_POLICY_INVALID'};}
 }
 function writeJob(ops,job,patch,action,reason=''){
