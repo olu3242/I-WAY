@@ -59,3 +59,24 @@ npm run ops:certify:validate
 ```
 
 Hosted and browser checks are separate release gates; local success does not certify them.
+
+## Operations persistence architecture reconciliation
+
+The current `Operations` class and `OperationsStore` expose synchronous command and state methods. `AsyncOperationsPgStore` exposes an asynchronous transaction callback with scoped asynchronous methods and is **not** a drop-in replacement. The existing `operationsPostgresReadiness.engineIntegration` remains `BLOCKED`.
+
+### Migration boundary
+1. Retain the existing SQLite engine for local and existing certified behavior; preserve all uncommitted local transport/RLS work.
+2. Use `resolveBackendMode` to describe the intended deployment mode; do not treat a caller-provided `postgresCertified` flag as release evidence or permission to enable production.
+3. Extract asynchronous domain command handlers behind explicit scoped transactions; preserve tenant authorization, optimistic versions, idempotency, audit, and error mapping.
+4. Port identity/session and all operation resource projections before switching any hosted traffic.
+5. Certify migrations, least-privilege roles, PostgreSQL RLS, concurrent writes, worker lease fencing, rollback, and restart recovery.
+6. Only then connect the hosted application entry point to a server-controlled, evidence-backed backend selector. No silent SQLite fallback.
+
+### Evidence gates
+- Local: `node --test tests/operations-backend-mode.test.mjs` then `npm run verify`.
+- Database: `npm run test:pg:local` with an approved isolated database.
+- Hosted: `npm run test:hosted` with authorized restricted-role configuration.
+- Browser: `npm run test:browser` against the intended release environment.
+- Certification: `npm run ops:certify` and `npm run ops:certify:validate`.
+
+**Current decision:** PostgreSQL engine convergence and hosted release remain BLOCKED until executable evidence exists.
