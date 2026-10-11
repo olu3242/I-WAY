@@ -1,0 +1,15 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { classifyRuntimeCheckpoint } from '../lib/intelligence/runtime-checkpoint.mjs';
+const principal={active:true,tenantId:'t1',permissions:['intelligence:analyze']};
+const load={id:'l1',version:2,tenantId:'t1'};
+const checkpoint={id:'c1',tenantId:'t1',loadId:'l1',role:'tracking',evidenceId:'ev1'};
+const policy={tenantId:'t1',enabled:true,allowedActions:['review_tracking'],autonomyLevel:3,minimumConfidence:0.9,maximumCost:0,version:'v1'};
+const run=(patch={})=>classifyRuntimeCheckpoint({principal,load,checkpoint,policy,...patch});
+test('existing tracking checkpoint is advisory only',()=>{const result=run();assert.equal(result.status,'ADVISORY_READY');assert.equal(result.executionPerformed,false);assert.equal(result.requiresWorkflowAuthorization,true)});
+test('checkpoint digest stable for same evidence',()=>assert.equal(run().checkpointDigest,run().checkpointDigest));
+test('checkpoint digest changes with load version',()=>assert.notEqual(run().checkpointDigest,run({load:{...load,version:3}}).checkpointDigest));
+test('cross tenant checkpoint blocked',()=>assert.equal(run({checkpoint:{...checkpoint,tenantId:'t2'}}).status,'BLOCKED'));
+test('unknown agent role blocked',()=>assert.equal(run({checkpoint:{...checkpoint,role:'arbitrary'}}).status,'BLOCKED'));
+test('finance not allowed by tracking policy',()=>assert.equal(run({checkpoint:{...checkpoint,role:'finance'}}).status,'BLOCKED'));
+test('L4 routes to approval',()=>assert.equal(run({policy:{...policy,autonomyLevel:4}}).status,'APPROVAL_REQUIRED'));
