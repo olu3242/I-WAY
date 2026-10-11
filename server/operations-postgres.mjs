@@ -60,6 +60,7 @@ function scopedMethods(query,scope){
  const tenant=scope.tenantId,actor=scope.actorId;
  return Object.freeze({
   async principal(){const r=await query('SELECT data FROM operations_private.users WHERE tenant_id=$1 AND id=$2',[tenant,actor]);return r.rows[0]?.data??null;},
+  async user(id){ensure(uuid(id),'INPUT');const r=await query('SELECT data FROM operations_private.users WHERE tenant_id=$1 AND id=$2',[tenant,id]);return r.rows[0]?.data??null;},
   async tenant(){const r=await query('SELECT id,name,timezone FROM operations_private.tenants WHERE id=$1',[tenant]);return r.rows[0]??null;},
   async list(kindValue,{limit=200,afterId=null}={}){
    ensure(kind(kindValue)&&Number.isInteger(limit)&&limit>=1&&limit<=500&&(afterId===null||uuid(afterId)),'INPUT');
