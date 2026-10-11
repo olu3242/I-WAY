@@ -1,1 +1,21 @@
-const form=document.querySelector('#early-access');if(form)form.addEventListener('submit',async event=>{event.preventDefault();const status=document.querySelector('#form-status');const button=form.querySelector('button[type=submit]');if(!form.reportValidity())return;button.disabled=true;status.textContent='Submitting…';const fields=new FormData(form);try{const response=await fetch('/api/early-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:fields.get('name'),email:fields.get('email'),company:fields.get('company'),role:fields.get('role'),consent:fields.get('consent')==='on'})});if(!response.ok)throw new Error('Request failed');status.textContent='Your interest has been received.';form.reset()}catch{status.textContent='Unable to submit. Please try again.'}finally{button.disabled=false}});
+const form = document.querySelector('#early-access');
+const success = document.querySelector('#early-access-success');
+const restart = document.querySelector('#ea-restart');
+
+if (form && success && restart) {
+	form.addEventListener('submit', (event) => {
+		event.preventDefault();
+		if (!form.reportValidity()) return;
+
+		form.hidden = true;
+		success.hidden = false;
+		success.focus();
+	});
+
+	restart.addEventListener('click', () => {
+		form.reset();
+		success.hidden = true;
+		form.hidden = false;
+		form.querySelector('input').focus();
+	});
+}
