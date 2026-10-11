@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<!--@include head-->
+<title>Get Started | I-way early access</title>
+<meta name="description" content="Join I-way early access. Share a few details and we’ll follow up with next steps.">
+</head>
+<body>
+<!--@include sprite-->
+<!--@include header-->
+<main id="main">
+  <section class="ea-hero" aria-labelledby="ea-title">
+    <div class="wrap ea-hero-grid">
+      <div class="ea-intro">
+        <p class="eyebrow">I-way early access</p>
+        <h1 id="ea-title">Move Smarter.<span>Go Further.</span></h1>
+        <p class="lead">I-way helps businesses plan shipments, stay informed about progress, and keep delivery details organized. Tell us a little about your needs and we’ll follow up by email.</p>
+        <ul class="ea-highlights" aria-label="I-way benefits">
+          <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Plan shipments with less guesswork</li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Stay informed about progress</li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Keep delivery details together</li>
+        </ul>
+        <p class="ea-signin">Already have access? <a href="sign-in.html">Sign in</a></p>
+      </div>
+
+      <div class="form-card ea-form-card" id="join">
+      <ol class="progress" aria-label="Progress">
+        <li id="step-1" aria-current="step">1 · Your details</li>
+        <li id="step-2">2 · Confirmation</li>
+      </ol>
+
+      <div id="preview-banner" class="alert info" hidden role="note"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span><b>Preview build.</b> This version is not connected to a sign-up service, so nothing you enter is sent or stored.</span></div>
+      <div id="form-error" class="alert error" role="alert" hidden><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span id="form-error-text">Something went wrong. Your details are still here. Please try again.</span></div>
+
+      <noscript><div class="alert error"><span>This form needs JavaScript. Please enable it, or use the Contact page.</span></div></noscript>
+      <form id="ea-form" novalidate data-form="early_access">
+        <div class="field" data-field="name">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-err">
+          <p class="err" id="name-err">Enter your name.</p>
+        </div>
+        <div class="field" data-field="email">
+          <label for="email">Work email</label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="email-err">
+          <p class="err" id="email-err">Enter a valid email address, like name@company.com.</p>
+        </div>
+        <div class="field" data-field="company">
+          <label for="company">Company <span class="opt">(optional)</span></label>
+          <input id="company" name="company" type="text" autocomplete="organization">
+        </div>
+        <div class="field" data-field="role">
+          <label for="role">I’m joining as <span class="opt">(optional)</span></label>
+          <select id="role" name="role">
+            <option value="">Choose one</option>
+            <option value="shipper">A business that ships goods</option>
+            <option value="carrier">A carrier</option>
+            <option value="fleet">A fleet company</option>
+            <option value="driver">A driver</option>
+            <option value="other">Something else</option>
+          </select>
+        </div>
+        <div class="field" data-field="notes">
+          <label for="notes">What are you moving? <span class="opt">(optional)</span></label>
+          <textarea id="notes" name="notes" maxlength="600"></textarea>
+        </div>
+        <p class="consent">By continuing, you agree that I-way may contact you about early access. See our <a href="privacy.html">Privacy Policy</a>.</p>
+        <button class="btn btn-primary btn-lg" type="submit" id="ea-submit" style="width:100%"><span class="spinner" aria-hidden="true"></span><span id="ea-submit-label">Get Started</span></button>
+      </form>
+
+      <div id="ea-success" class="success-panel" hidden tabindex="-1">
+        <div id="ea-success-ok" class="alert ok" role="status"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span><b>You’re on the list.</b> Thanks, <span id="ea-name"></span>. We’ll email you at <b id="ea-email"></b>.</span></div>
+        <div id="ea-success-preview" class="alert info" role="status" hidden><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span><b>Preview only.</b> The form works, but this build is not connected to a sign-up service, so nothing was sent.</span></div>
+        <h2 style="font-size:22px;margin:8px 0 0">What happens next</h2>
+        <ul class="checklist">
+          <li><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg><span>We review your details and reply by email.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-route"/></svg><span>We confirm what is available for your needs and how to begin.</span></li>
+        </ul>
+        <p style="margin-top:24px"><a class="btn btn-secondary" href="index.html">Back to I-way</a> <button class="btn btn-ghost" type="button" id="ea-edit">Edit my details</button></p>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ea-audience" aria-labelledby="ea-audience-title">
+    <div class="wrap">
+      <div class="ea-section-head reveal">
+        <p class="eyebrow">Who it’s for</p>
+        <h2 id="ea-audience-title">Built for the teams behind every delivery</h2>
+        <p class="lead">I-way brings shipment plans and progress into a clearer experience for the people sending and moving goods.</p>
+      </div>
+      <div class="ea-role-grid">
+        <article class="ea-role ea-role-primary reveal">
+          <span class="ea-role-mark" aria-hidden="true"><svg class="ic"><use href="#i-box"/></svg></span>
+          <h3>Businesses that ship</h3>
+          <p>Keep shipment plans and delivery progress easier to follow.</p>
+        </article>
+        <article class="ea-role reveal">
+          <span class="ea-role-mark"><svg class="ic" aria-hidden="true"><use href="#i-truck"/></svg></span>
+          <h3>Carriers and dispatchers</h3>
+          <p>Coordinate shipment details and keep teams informed.</p>
+        </article>
+        <article class="ea-role reveal">
+          <span class="ea-role-mark"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg></span>
+          <h3>Drivers and fleets</h3>
+          <p>Stay connected to the shipment details that matter on the move.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="ea-next soft" aria-labelledby="ea-next-title">
+    <div class="wrap">
+      <div class="ea-section-head reveal">
+        <p class="eyebrow">What happens next</p>
+        <h2 id="ea-next-title">A clear next step, by email</h2>
+      </div>
+      <ol class="ea-journey">
+        <li class="reveal"><span>01</span><div><h3>Share your details</h3><p>Tell us who you are and what kind of work you do.</p></div></li>
+        <li class="reveal"><span>02</span><div><h3>We review your request</h3><p>We’ll use your details to understand what you’re looking for.</p></div></li>
+        <li class="reveal"><span>03</span><div><h3>We follow up</h3><p>We’ll email you with relevant next steps as access opens.</p></div></li>
+      </ol>
+      <p class="ea-bottom-cta"><a class="btn btn-primary btn-lg" href="#join" data-cta="get_started" data-loc="early_access_final">Join early access <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+    </div>
+  </section>
+</main>
+<!--@include footer-->
+</body>
+</html>
