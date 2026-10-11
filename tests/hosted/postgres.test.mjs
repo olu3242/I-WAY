@@ -2,6 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID,createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';
+import {once} from 'node:events';
+import {makeApp} from '../../server/app.mjs';
+import {registerPgLead} from '../../server/pg-lead-store.mjs';
 import {Pool} from 'pg';
 import {certificationConfig} from '../../scripts/pg-certification-config.mjs';
 const config=certificationConfig(process.env.IWAY_PG_TEST_MODE);
@@ -46,6 +49,24 @@ test(mode+' PostgreSQL registration certification',{timeout:90000},async t=>{
    const {rows:[p]}=await query('SELECT has_any_column_privilege(current_user,$1,$2) AS allowed',[table,privilege]);
    assert.equal(p.allowed,false,privilege+' columns');
   }
+  const {rows:[allowed]}=await query('SELECT has_table_privilege(current_user,$1,$2) AS insert',[table,'INSERT']);
+  assert.equal(allowed.insert,true);
+  const {rows:[schema]}=await query("SELECT has_schema_privilege(current_user,'iway_private','USAGE') AS usage, has_schema_privilege(current_user,'iway_private','CREATE') AS create");
+  assert.equal(schema.usage,true);assert.equal(schema.create,false);
+  for(const role of ['anon','authenticated']){
+   const {rows:[p]}=await query(`SELECT has_table_privilege($1,$2,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER')
+    OR has_any_column_privilege($1,$2,'SELECT,INSERT,UPDATE,REFERENCES')
+    OR has_schema_privilege($1,'iway_private','USAGE,CREATE') AS allowed`,[role,table]);
+   assert.equal(p.allowed,false,'Public API role must have no private access');
+  }
+  const {rows:[publicAcl]}=await query(`SELECT
+   (SELECT count(*) FROM pg_class c, LATERAL aclexplode(coalesce(c.relacl,acldefault('r',c.relowner))) a
+    WHERE c.oid=$1::regclass AND a.grantee=0)
+   + (SELECT count(*) FROM pg_namespace n, LATERAL aclexplode(coalesce(n.nspacl,acldefault('n',n.nspowner))) a
+    WHERE n.nspname='iway_private' AND a.grantee=0)
+   + (SELECT count(*) FROM pg_attribute att,LATERAL aclexplode(att.attacl) a
+    WHERE att.attrelid=$1::regclass AND a.grantee=0) AS grants`,[table]);
+  assert.equal(Number(publicAcl.grants),0,'PUBLIC must have no private grants');
   identityVerified=true;
  });
  assert.ok(identityVerified,'Refusing writes because database identity checks failed');
@@ -82,6 +103,20 @@ test(mode+' PostgreSQL registration certification',{timeout:90000},async t=>{
  ])await t.test(operation+' is denied (SQLSTATE 42501)',async()=>{
   // No real row is read or modified, even if permissions regress.
   await assert.rejects(query(sql),e=>e.code==='42501');
+ });
+ await t.test('unavailable connection pool returns 503 without recording a lead',async()=>{
+  const unavailable=new Pool({...config,max:1,connectionTimeoutMillis:10000});
+  try{await unavailable.query('SELECT 1')}finally{await unavailable.end()}
+  const app=makeApp({register:input=>registerPgLead(unavailable,input,{consentVersion:config.consentVersion})});
+  app.listen(0,'127.0.0.1');await once(app,'listening');
+  const candidate={...lead,email:'iway-cert-'+randomUUID()+'@example.invalid'};
+  try{
+   const response=await fetch('http://127.0.0.1:'+app.address().port+'/api/early-access',{
+    method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(candidate),signal:AbortSignal.timeout(10000)});
+   assert.equal(response.status,503);
+   assert.deepEqual(await response.json(),{error:'Registration unavailable'});
+   assert.equal((await post(server.url,candidate)).status,201);
+  }finally{await new Promise(resolve=>app.close(resolve))}
  });
  await t.test('committed registration persists after application process restart',async()=>{
   assert.ok(server);await stop(server.child);server=undefined;
