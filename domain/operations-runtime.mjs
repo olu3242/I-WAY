@@ -40,7 +40,7 @@ function authorized(ops,job){
 // Classify a checkpoint against an explicitly provisioned tenant AI policy.
 // Missing or malformed AI policy never inherits the legacy automation switch.
 function checkpointAIPolicy(ops,job,output){
- const configured=policy(ops,job.tenantId).aiDecisionPolicy;
+ const configured=ops.store.list('aipolicy',job.tenantId).find(p=>p.lifecycle==='APPROVED'&&p.enabled===true);
  const input={tenantId:job.tenantId,eventId:job.id+':'+job.runNumber+':'+job.checkpoint,
   action:'review_'+output.role,confidence:1,estimatedCost:0,evidence:[]};
  if(!configured)return {status:'BLOCKED',reason:'AI_POLICY_NOT_CONFIGURED'};
