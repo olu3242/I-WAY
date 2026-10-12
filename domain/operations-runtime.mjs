@@ -234,7 +234,8 @@ export async function runRuntimeTick(ops,{workerId='local-'+randomUUID(),adapter
  for(const tenant of ops.store.db.prepare('SELECT id FROM tenants').all()){
   for(const kind of jobKinds){
    const now=ops.now().toISOString();
-   const candidates=ops.store.list(kind,tenant.id).filter(j=>j.status==='pending'||j.status==='retry'&&j.nextAttemptAt<=now||j.status==='running'&&j.leaseUntil<=now).slice(0,20);
+   // Preserve rowid ordering and the 20-job bound, but avoid decoding terminal jobs.
+   const candidates=ops.store.db.prepare(`SELECT data FROM resources WHERE kind=? AND tenant_id=? AND (json_extract(data,'$.status')='pending' OR (json_extract(data,'$.status')='retry' AND json_extract(data,'$.nextAttemptAt')<=?) OR (json_extract(data,'$.status')='running' AND json_extract(data,'$.leaseUntil')<=?)) ORDER BY rowid LIMIT 20`).all(kind,tenant.id,now,now).map(row=>JSON.parse(row.data));
    for(const candidate of candidates){
     const claim=claimJob(ops,{tenantId:tenant.id,kind,jobId:candidate.id,workerId,adapters,leaseMs});if(!claim)continue;
     let heartbeatError;
