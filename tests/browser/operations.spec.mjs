@@ -39,6 +39,8 @@ for(const persona of [
 }
 
 test('browser journey creates, dispatches, executes and approves an invoice with real persistence',async({browser,workspace})=>{
+ // Full multi-view/persona journey includes repeated axe scans; assertion deadlines remain unchanged.
+ test.setTimeout(180000);
  const customer=workspace.command(workspace.manager,'customer:create',null,{name:'Illustrative journey customer'});
  const customerReader=workspace.command(workspace.manager,'user:create',null,{username:'journey-customer@illustrative.invalid',name:'Illustrative Journey Reader',role:'customer',customerId:customer.id,password});
  const pages={},contexts=[];
