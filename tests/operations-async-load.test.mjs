@@ -80,3 +80,60 @@ test('conflicting payload with reused key is rejected without duplicate load',as
  assert.equal(f.rows().filter(x=>x.kind==='load').length,1);
  assert.equal(f.rows().filter(x=>x.kind==='shipment').length,1);
 });
+
+test('concurrent identical requests serialize through transactional command record',async()=>{
+ const persisted=[],commands=new Map();let commits=0;
+ let queue=Promise.resolve();
+ const store={transaction(_scope,work){
+  const run=async()=>{
+   const staged=[];const pending=new Map(commands);
+   const tx={
+    principal:async()=>({id:actorId,tenantId,active:true,role:'carrier'}),
+    user:async()=>({id:dispatcherId,tenantId,role:'dispatcher',active:true}),
+    get:async()=>({id:customerId,tenantId,active:true}),
+    insert:async(kind,data)=>{const row={...data,id:randomUUID(),tenantId,kind,version:1};staged.push(row);return row;},
+    command:async key=>pending.get(key)??null,
+    recordCommand:async(key,digest,result)=>{pending.set(key,{digest,result})},
+    audit:async()=>{}
+   };
+   const result=await work(tx);
+   persisted.push(...staged);for(const [key,value] of pending)commands.set(key,value);
+   commits++;return result;
+  };
+  const result=queue.then(run);queue=result.then(()=>{},()=>{});return result;
+ }};
+ const args={store,scope,command,authorizeLoad:async()=>true};
+ const results=await Promise.all(Array.from({length:12},()=>createAsyncLoad(args)));
+ assert.ok(results.every(result=>result.id===results[0].id));
+ assert.equal(persisted.filter(row=>row.kind==='load').length,1);
+ assert.equal(persisted.filter(row=>row.kind==='shipment').length,1);
+ assert.equal(commits,12);
+});
+test('concurrent conflicting payloads sharing key cannot create two loads',async()=>{
+ const persisted=[],commands=new Map();let queue=Promise.resolve();
+ const store={transaction(_scope,work){
+  const run=async()=>{
+   const staged=[];
+   const tx={
+    principal:async()=>({id:actorId,tenantId,active:true}),
+    user:async()=>({id:dispatcherId,tenantId,role:'dispatcher',active:true}),
+    get:async()=>({id:customerId,tenantId,active:true}),
+    insert:async(kind,data)=>{const row={...data,id:randomUUID(),tenantId,kind,version:1};staged.push(row);return row;},
+    command:async key=>commands.get(key)??null,
+    recordCommand:async(key,digest,result)=>{commands.set(key,{digest,result})},
+    audit:async()=>{}
+   };
+   const result=await work(tx);persisted.push(...staged);return result;
+  };
+  const result=queue.then(run);queue=result.then(()=>{},()=>{});return result;
+ }};
+ const base={store,scope,authorizeLoad:async()=>true};
+ const results=await Promise.allSettled([
+  createAsyncLoad({...base,command}),
+  createAsyncLoad({...base,command:{...command,payload:{...command.payload,reference:'OTHER'}}})
+ ]);
+ assert.deepEqual(results.map(result=>result.status).sort(),['fulfilled','rejected']);
+ assert.equal(results.find(result=>result.status==='rejected').reason.code,'IDEMPOTENCY_CONFLICT');
+ assert.equal(persisted.filter(row=>row.kind==='load').length,1);
+ assert.equal(persisted.filter(row=>row.kind==='shipment').length,1);
+});
