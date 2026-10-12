@@ -9,7 +9,7 @@ const command={action:'load:create',idempotencyKey:randomUUID(),payload:{
  stops:[{type:'pickup',location:'Austin',at:'2026-11-01T10:00:00.000Z'},{type:'delivery',location:'Dallas',at:'2026-11-02T10:00:00.000Z'}],
  rateCents:100000,charges:[],factored:false
 }};
-function fixture({failShipment=false,dispatcherTenant=tenantId,customerTenant=tenantId,customerActive=true,dispatcherActive=true,authorized=true}={}){
+function fixture({failShipment=false,failAudit=false,dispatcherTenant=tenantId,customerTenant=tenantId,customerActive=true,dispatcherActive=true,authorized=true}={}){
  const persisted=[],commands=new Map();let auditCount=0;
  const store={async transaction(_scope,work){
   const staged=[],stagedCommands=new Map(commands);let stagedAudits=0;
@@ -20,7 +20,7 @@ function fixture({failShipment=false,dispatcherTenant=tenantId,customerTenant=te
    insert:async(kind,data)=>{if(kind==='shipment'&&failShipment)throw Error('shipment insert failed');const row={...data,id:randomUUID(),tenantId,kind,version:1};staged.push(row);return row;},
    command:async key=>stagedCommands.get(key)??null,
    recordCommand:async(key,digest,result)=>{stagedCommands.set(key,{digest,result})},
-   audit:async()=>{stagedAudits++}
+   audit:async()=>{if(failAudit)throw Error('audit insert failed');stagedAudits++}
   };
   const result=await work(tx);
   persisted.push(...staged);for(const [key,value] of stagedCommands)commands.set(key,value);
@@ -136,4 +136,39 @@ test('concurrent conflicting payloads sharing key cannot create two loads',async
  assert.equal(results.find(result=>result.status==='rejected').reason.code,'IDEMPOTENCY_CONFLICT');
  assert.equal(persisted.filter(row=>row.kind==='load').length,1);
  assert.equal(persisted.filter(row=>row.kind==='shipment').length,1);
+});
+
+test('audit failure rolls back load, shipment and idempotency record',async()=>{
+ const f=fixture({failAudit:true});
+ const args={store:f.store,scope,command,authorizeLoad:f.authorizeLoad};
+ await assert.rejects(createAsyncLoad(args),/audit insert failed/);
+ assert.equal(f.rows().length,0);
+ assert.equal(f.audits(),0);
+ await assert.rejects(createAsyncLoad(args),/audit insert failed/);
+ assert.equal(f.rows().length,0);
+});
+test('failed shipment transaction does not poison idempotency key for retry',async()=>{
+ let failShipment=true;const rows=[],commands=new Map();let audits=0;
+ const store={async transaction(_scope,work){
+  const staged=[],pending=new Map(commands);let pendingAudits=0;
+  const tx={
+   principal:async()=>({id:actorId,tenantId,active:true}),
+   user:async()=>({id:dispatcherId,tenantId,role:'dispatcher',active:true}),
+   get:async()=>({id:customerId,tenantId,active:true}),
+   insert:async(kind,data)=>{if(kind==='shipment'&&failShipment)throw Error('transient shipment failure');const row={...data,id:randomUUID(),tenantId,kind,version:1};staged.push(row);return row;},
+   command:async key=>pending.get(key)??null,
+   recordCommand:async(key,digest,result)=>{pending.set(key,{digest,result})},
+   audit:async()=>{pendingAudits++}
+  };
+  const result=await work(tx);
+  rows.push(...staged);for(const [key,value] of pending)commands.set(key,value);audits+=pendingAudits;
+  return result;
+ }};
+ const args={store,scope,command,authorizeLoad:async()=>true};
+ await assert.rejects(createAsyncLoad(args),/transient shipment failure/);
+ assert.equal(rows.length,0);assert.equal(commands.size,0);
+ failShipment=false;
+ const created=await createAsyncLoad(args);
+ assert.equal(rows.length,2);assert.equal(audits,1);
+ assert.equal(rows.find(x=>x.kind==='shipment').loadId,created.id);
 });
