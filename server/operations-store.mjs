@@ -11,9 +11,12 @@ import {DatabaseSync} from 'node:sqlite';
 import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
 import {randomUUID} from 'node:crypto';
+import {performance} from 'node:perf_hooks';
 import {OpsError} from '../domain/operations-errors.mjs';
 export class OperationsStore{
- constructor(path){
+ constructor(path,{onTransactionTiming}={}){
+  if(onTransactionTiming!==undefined&&typeof onTransactionTiming!=='function')throw new TypeError('onTransactionTiming must be a function');
+  this.onTransactionTiming=onTransactionTiming;
   mkdirSync(dirname(path),{recursive:true});
   this.db=new DatabaseSync(path);
   this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;
@@ -41,7 +44,22 @@ export class OperationsStore{
   this.db.exec(integrationIntegritySQL);
   this.db.exec(providerIntegritySQL);
  }
- transaction(fn){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){this.db.exec('ROLLBACK');throw e}}
+ transaction(fn){
+  if(!this.onTransactionTiming){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){this.db.exec('ROLLBACK');throw e}}
+  const start=performance.now();let acquired=start,executed=start,finished=start,committed=false;
+  try{
+   this.db.exec('BEGIN IMMEDIATE');acquired=performance.now();
+   const result=fn();executed=performance.now();
+   this.db.exec('COMMIT');committed=true;finished=performance.now();return result;
+  }catch(error){
+   executed=performance.now();
+   if(acquired!==start){try{this.db.exec('ROLLBACK')}catch{ /* Preserve the original transaction failure. */ }}
+   finished=performance.now();throw error;
+  }finally{
+   // Never allow optional diagnostics to change transaction success or failure.
+   try{this.onTransactionTiming({acquireMs:Math.max(0,acquired-start),executeMs:Math.max(0,executed-acquired),finalizeMs:Math.max(0,finished-executed),committed})}catch{}
+  }
+ }
  principal(id){const row=this.db.prepare('SELECT data FROM users WHERE id=?').get(id);return row?JSON.parse(row.data):undefined}
  tenant(id){return this.db.prepare('SELECT id,name,timezone FROM tenants WHERE id=?').get(id)}
  list(kind,tenantId){return this.db.prepare('SELECT data FROM resources WHERE kind=? AND tenant_id=? ORDER BY rowid').all(kind,tenantId).map(r=>JSON.parse(r.data))}
