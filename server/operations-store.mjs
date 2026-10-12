@@ -46,14 +46,14 @@ export class OperationsStore{
  }
  transaction(fn){
   if(!this.onTransactionTiming){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){this.db.exec('ROLLBACK');throw e}}
-  const start=performance.now();let acquired=start,executed=start,finished=start,committed=false;
+  const start=performance.now();let acquired=start,executed=start,finished=start,committed=false,began=false,bodyCompleted=false;
   try{
-   this.db.exec('BEGIN IMMEDIATE');acquired=performance.now();
-   const result=fn();executed=performance.now();
+   this.db.exec('BEGIN IMMEDIATE');began=true;acquired=performance.now();
+   const result=fn();executed=performance.now();bodyCompleted=true;
    this.db.exec('COMMIT');committed=true;finished=performance.now();return result;
   }catch(error){
-   executed=performance.now();
-   if(acquired!==start){try{this.db.exec('ROLLBACK')}catch{ /* Preserve the original transaction failure. */ }}
+   if(!bodyCompleted)executed=performance.now();
+   if(began){try{this.db.exec('ROLLBACK')}catch{ /* Preserve the original transaction failure. */ }}
    finished=performance.now();throw error;
   }finally{
    // Never allow optional diagnostics to change transaction success or failure.
