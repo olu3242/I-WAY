@@ -29,7 +29,13 @@ export class Operations{
   const driver=this.read('driver',driverId,actor),vehicle=this.read('vehicle',vehicleId,actor);
   const user=this.store.principal(driverId);
   const today=this.localDate(actor);
-  const free=kind=>!this.store.list('assignment',actor.tenantId).some(a=>a.status==='active'&&a.loadId!==ignoreLoadId&&a[kind+'Id']===(kind==='driver'?driverId:vehicleId));
+  // Check availability with a bounded indexed existence lookup, without loading all assignments.
+  const free=kind=>{
+   const column=kind==='driver'?'driverId':'vehicleId';
+   const resourceId=kind==='driver'?driverId:vehicleId;
+   const sql=`SELECT 1 FROM resources WHERE kind='assignment' AND tenant_id=? AND json_extract(data,'$.status')='active' AND json_extract(data,'$.loadId') IS NOT ? AND json_extract(data,'$.${column}')=? LIMIT 1`;
+   return !this.store.db.prepare(sql).get(actor.tenantId,ignoreLoadId,resourceId);
+  };
   const reasons=[];
   if(!user?.active||!driver.active||!driver.available||!driver.approved||driver.compliance!=='valid'||!driver.expiresOn||driver.expiresOn<today)reasons.push('Driver is unavailable or not compliant and carrier-approved.');
   if(!vehicle.active||!vehicle.available||!vehicle.approved||vehicle.maintenance!=='ready')reasons.push('Vehicle is unavailable, needs maintenance, or lacks carrier approval.');
