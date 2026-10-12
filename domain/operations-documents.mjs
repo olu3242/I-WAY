@@ -140,6 +140,9 @@ export function createDocumentExtensions({extract=parseDocumentContent}={}){
 }
 
 export const documentIntegritySQL = `
+ CREATE INDEX IF NOT EXISTS document_by_shipment ON resources(tenant_id,json_extract(data,'$.loadId')) WHERE kind='document';
+ CREATE INDEX IF NOT EXISTS pod_by_shipment ON resources(tenant_id,json_extract(data,'$.loadId')) WHERE kind='pod';
+ CREATE INDEX IF NOT EXISTS open_document_exception_by_shipment ON resources(tenant_id,json_extract(data,'$.loadId')) WHERE kind='documentexception' AND json_extract(data,'$.status')='open';
  CREATE TRIGGER IF NOT EXISTS delivery_evidence_no_update BEFORE UPDATE ON resources WHEN OLD.kind IN ('pod','deliveryevent') BEGIN SELECT RAISE(ABORT,'Delivery evidence is immutable'); END;
  CREATE TRIGGER IF NOT EXISTS delivery_evidence_no_delete BEFORE DELETE ON resources WHEN OLD.kind IN ('pod','deliveryevent','document') BEGIN SELECT RAISE(ABORT,'Document evidence cannot be deleted'); END;
  CREATE TRIGGER IF NOT EXISTS document_content_immutable BEFORE UPDATE ON resources WHEN OLD.kind='document' AND (NEW.kind<>OLD.kind OR NEW.id<>OLD.id OR NEW.tenant_id<>OLD.tenant_id OR json_remove(NEW.data,'$.version','$.status','$.reviewedAt','$.reviewedBy','$.reviewReason')<>json_remove(OLD.data,'$.version','$.status','$.reviewedAt','$.reviewedBy','$.reviewReason')) BEGIN SELECT RAISE(ABORT,'Document content is immutable; create a revision'); END;
