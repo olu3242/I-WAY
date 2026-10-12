@@ -25,7 +25,7 @@ export function signFixtureEnvelope(provider,event,{timestamp=Date.now(),keyId=O
  requireValue(Buffer.byteLength(envelope.body)<=16384,'INTEGRATION_BODY','Fixture message exceeds the supported bound.');
  return {...envelope,signature:createHmac('sha256',trusted.keys[keyId]).update(signatureInput(envelope)).digest('hex')};
 }
-function verifyEnvelope(providers,actor,envelope,now){
+export function verifyIntegrationEnvelope(providers,actor,envelope,now){
  fields(envelope,['providerId','keyId','timestamp','eventId','body','signature']);
  const provider=providerFor(providers,id(envelope.providerId),actor.tenantId);
  requireValue(Number.isSafeInteger(envelope.timestamp)&&Math.abs(now-envelope.timestamp)<=300000&&envelope.timestamp<=now+30000,'INTEGRATION_EXPIRED','Message signing time is outside the accepted window.',401);
@@ -39,7 +39,9 @@ function verifyEnvelope(providers,actor,envelope,now){
 }
 function audit(ops,actor,action,record,detail={}){ops.store.audit(actor,action,record.id,'success',{loadId:record.loadId??null,providerId:record.providerId,status:record.status,...detail},ops.now().toISOString());return record;}
 function change(ops,record,patch,action,detail={}){const next=ops.store.update(record.kind,record.id,record.tenantId,record.version,patch);return audit(ops,service(record.tenantId),action,next,detail);}
-function access(ops,actor,load){requireValue(['carrier','dispatcher'].includes(actor.role),'INTEGRATION_AUTHORITY','A human operations principal is required.',403);ops.guard(actor,'connector:request',load);ops.guard(actor,'load:view',load);}
+function access(ops,actor,load){policyGuard(ops,actor.tenantId);requireValue(['carrier','dispatcher'].includes(actor.role),'INTEGRATION_AUTHORITY','A human operations principal is required.',403);ops.guard(actor,'connector:request',load);ops.guard(actor,'load:view',load);}
+function policyAllows(ops,tenantId){const current=ops.store.list('governancepolicy',tenantId)[0];return !current||current.enabled===true&&!current.disabledTools.includes('connector:logistics');}
+function policyGuard(ops,tenantId){requireValue(policyAllows(ops,tenantId),'POLICY_BLOCKED','The carrier policy blocks logistics integrations.',409);}
 function authorized(ops,job){
  const actor=ops.store.principal(job.requestedBy),load=ops.store.list('load',job.tenantId).find(item=>item.id===job.loadId);
  if(!(actor?.active&&['carrier','dispatcher'].includes(actor.role)&&load&&authorize({actor,action:'connector:request',resource:load})&&authorize({actor,action:'load:view',resource:load})&&load.version===job.loadVersion))return null;
@@ -49,7 +51,7 @@ function circuit(ops,tenantId,providerId){return ops.store.list('integrationcirc
 export function createIntegrationExtensions({providers=[]}={}){return {
  'integration:ingest':(ops,actor,c)=>{
   fields(c.payload??{},['envelope']);const load=ops.read('load',c.resourceId,actor);access(ops,actor,load);ops.version(load,c.expectedVersion);
-  const verified=verifyEnvelope(providers,actor,c.payload.envelope,ops.now().getTime()),event=normalizeLogisticsEvent(ops,actor,load,verified.event);
+  const verified=verifyIntegrationEnvelope(providers,actor,c.payload.envelope,ops.now().getTime()),event=normalizeLogisticsEvent(ops,actor,load,verified.event);
   const existing=ops.store.list('integrationreceipt',actor.tenantId).find(item=>item.providerId===verified.provider.id&&item.eventId===event.externalId);
   if(existing){requireValue(existing.eventHash===verified.eventHash&&existing.loadId===load.id,'INTEGRATION_REPLAY','Event identifier was reused with different evidence.',409);return existing;}
   const receipt=ops.store.insert('integrationreceipt',actor.tenantId,{loadId:load.id,providerId:verified.provider.id,eventId:event.externalId,eventHash:verified.eventHash,event,status:'evidence_recorded',signatureVerified:true,signatureKeyId:c.payload.envelope.keyId,receivedAt:ops.now().toISOString(),live:false});
@@ -82,6 +84,7 @@ export function claimIntegration(ops,{tenantId,jobId,workerId,providers=[],lease
  return ops.store.transaction(()=>{
   let job=ops.store.get('integrationjob',jobId,tenantId);const now=ops.now().toISOString();
   if(['completed','blocked','dead_letter'].includes(job.status)||job.status==='running'&&job.leaseUntil>now||job.status==='retry'&&job.nextAttemptAt>now)return null;
+  if(!policyAllows(ops,job.tenantId)){change(ops,job,{status:'blocked',lastError:'POLICY_BLOCKED',fence:job.fence+1,leaseOwner:null,leaseUntil:null},'integration:blocked');return null;}
   if(!authorized(ops,job)){change(ops,job,{status:'blocked',lastError:'AUTHORITY_CHANGED',fence:job.fence+1,leaseOwner:null,leaseUntil:null},'integration:blocked');return null;}
   let provider;try{provider=providerFor(providers,job.providerId,tenantId)}catch{change(ops,job,{status:'blocked',lastError:'PROVIDER_UNAVAILABLE'},'integration:blocked');return null;}
   let breaker=circuit(ops,tenantId,provider.id);
@@ -97,6 +100,7 @@ function held(ops,claim){const job=ops.store.get('integrationjob',claim.jobId,cl
 export function completeIntegration(ops,claim,result,{providers=[]}={}){
  return ops.store.transaction(()=>{
   const job=held(ops,claim);if(!job)return {accepted:false,reason:'LEASE_STALE'};
+  if(!policyAllows(ops,job.tenantId)){change(ops,job,{status:'blocked',lastError:'POLICY_BLOCKED',fence:job.fence+1,leaseOwner:null,leaseUntil:null},'integration:blocked');return {accepted:false,reason:'POLICY_BLOCKED'};}
   if(!authorized(ops,job)){change(ops,job,{status:'blocked',lastError:'AUTHORITY_CHANGED',leaseOwner:null,leaseUntil:null,fence:job.fence+1},'integration:blocked');return {accepted:false,reason:'AUTHORITY_CHANGED'};}
   let provider;try{provider=providerFor(providers,job.providerId,job.tenantId)}catch{provider=null;}
   const valid=provider&&job.adapterBinding.provider===provider.adapter.provider&&job.adapterBinding.version===provider.adapter.version&&result&&Object.keys(result).length===2&&result.status==='local_recorded'&&result.externalDelivery===false;
@@ -109,6 +113,7 @@ export function completeIntegration(ops,claim,result,{providers=[]}={}){
 function failIntegration(ops,claim,error){
  return ops.store.transaction(()=>{
   const job=held(ops,claim);if(!job)return;
+  if(!policyAllows(ops,job.tenantId)){change(ops,job,{status:'blocked',lastError:'POLICY_BLOCKED',fence:job.fence+1,leaseOwner:null,leaseUntil:null},'integration:blocked');return null;}
   if(!authorized(ops,job)){change(ops,job,{status:'blocked',lastError:'AUTHORITY_CHANGED',fence:job.fence+1,leaseOwner:null,leaseUntil:null},'integration:blocked');return;}
   const breaker=circuit(ops,job.tenantId,job.providerId),failures=breaker.failures+1,open=failures>=3||breaker.status==='half_open';
   change(ops,breaker,{failures,status:open?'open':'closed',openUntil:open?new Date(ops.now().getTime()+30000).toISOString():null,probeJobId:null,probeUntil:null},'integration:failure');
@@ -119,13 +124,13 @@ export async function runIntegrationTick(ops,{providers=[],workerId='integration
  integer(timeoutMs,1,10000);let completed=0;
  for(const tenant of ops.store.db.prepare('SELECT id FROM tenants').all())for(const candidate of ops.store.list('integrationjob',tenant.id).filter(job=>['pending','retry','running'].includes(job.status)).slice(0,20)){
   const claim=claimIntegration(ops,{tenantId:tenant.id,jobId:candidate.id,workerId,providers});if(!claim)continue;
-  let timer;
+  let timer;const controller=new AbortController();
   try{
    const job=held(ops,claim),provider=providerFor(providers,job.providerId,tenant.id),envelope=signFixtureEnvelope(provider,{schemaVersion:job.event.schemaVersion,externalId:job.event.externalId,type:job.event.type,occurredAt:job.event.occurredAt,data:job.event.data},{timestamp:ops.now().getTime()});
    const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(new OpsError(503,'INTEGRATION_TIMEOUT','Local fixture delivery timed out.')),timeoutMs)});
-   const result=await Promise.race([Promise.resolve().then(()=>provider.adapter.deliver(Object.freeze({envelope:Object.freeze(envelope),idempotencyKey:job.id}))),timeout]);
+   const result=await Promise.race([Promise.resolve().then(()=>provider.adapter.deliver(Object.freeze({envelope:Object.freeze(envelope),idempotencyKey:job.id,signal:controller.signal}))),timeout]);
    if(completeIntegration(ops,claim,result,{providers}).accepted)completed++;
-  }catch(error){failIntegration(ops,claim,error)}finally{clearTimeout(timer)}
+  }catch(error){failIntegration(ops,claim,error)}finally{clearTimeout(timer);controller.abort()}
  }
  return completed;
 }

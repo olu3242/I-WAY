@@ -51,6 +51,7 @@ export function readDocument(ops,actor,id){
  actor=ops.actor(actor.id);
  const document=ops.read('document',id,actor),load=ops.read('load',document.loadId,actor,'document:view');
  if(actor.role==='customer')requireValue(document.type==='BOL'&&document.status==='validated'&&latestDocuments(ops,actor,load.id).some(d=>d.id===document.id),'DOCUMENT_ACCESS','This document is not available.',403);
+ requireValue(fingerprint(document.content)===document.contentHash,'DOCUMENT_INTEGRITY','Document integrity verification failed.',409);
  ops.store.audit(actor,'document:read',document.id,'success',{loadId:load.id,contentHash:document.contentHash},ops.now().toISOString());
  return {...documentMetadata(document),content:document.content,extractedFields:document.extraction.fields};
 }
@@ -58,6 +59,7 @@ export function shippingDocumentReadiness(ops,actor,load){
  ops.guard(actor,'load:view',load);
  const documents=latestDocuments(ops,actor,load.id).filter(d=>d.type==='BOL'),issues=[];
  if(!documents.length)issues.push('MISSING_BOL');
+ if(documents.some(d=>fingerprint(d.content)!==d.contentHash))issues.push('BOL_INTEGRITY');
  if(documents.some(d=>d.status!=='validated'))issues.push('BOL_REVIEW_REQUIRED');
  if(documents.some(d=>d.extraction.missing.length||d.extraction.mismatches.length))issues.push('BOL_INVALID');
  const pods=ops.store.db.prepare("SELECT data FROM resources WHERE kind='pod' AND tenant_id=? AND json_extract(data,'$.loadId')=? AND json_extract(data,'$.recipientAcknowledged')=1 ORDER BY rowid").all(actor.tenantId,load.id).map(row=>JSON.parse(row.data));
@@ -87,7 +89,7 @@ export function createDocumentExtensions({extract=parseDocumentContent}={}){
   'document:ingest':(ops,actor,c)=>{
    const p=c.payload??{};fields(p,['type','mimeType','content','previousDocId']);
    const load=ops.read('load',c.resourceId,actor,'document:manage');ops.version(load,c.expectedVersion);
-   requireValue(load.status!=='void','DOCUMENT_STATE','Voided shipments cannot accept documents.',409);
+   requireValue(load.status!=='void'&&!load.closedAt,'DOCUMENT_STATE','Voided shipments cannot accept documents.',409);
    requireValue(['BOL','other','auto'].includes(p.type),'DOCUMENT_TYPE','Select a supported document type.');
    requireValue(['text/plain','application/json'].includes(p.mimeType),'DOCUMENT_MIME','Use plain text or JSON; binary OCR is not configured.');
    requireValue(typeof p.content==='string'&&p.content.trim().length>0&&Buffer.byteLength(p.content,'utf8')<=32768&&!/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(p.content),'DOCUMENT_CONTENT','Use a nonempty text document of at most 32 KiB without control characters.');
