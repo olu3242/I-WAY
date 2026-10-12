@@ -9,14 +9,14 @@ const command={action:'load:create',idempotencyKey:randomUUID(),payload:{
  stops:[{type:'pickup',location:'Austin',at:'2026-11-01T10:00:00.000Z'},{type:'delivery',location:'Dallas',at:'2026-11-02T10:00:00.000Z'}],
  rateCents:100000,charges:[],factored:false
 }};
-function fixture({failShipment=false,dispatcherTenant=tenantId,authorized=true}={}){
+function fixture({failShipment=false,dispatcherTenant=tenantId,customerTenant=tenantId,customerActive=true,dispatcherActive=true,authorized=true}={}){
  const persisted=[],commands=new Map();let auditCount=0;
  const store={async transaction(_scope,work){
   const staged=[],stagedCommands=new Map(commands);let stagedAudits=0;
   const tx={
    principal:async()=>({id:actorId,tenantId,active:true,role:'carrier'}),
-   user:async()=>({id:dispatcherId,tenantId:dispatcherTenant,role:'dispatcher',active:true}),
-   get:async()=>({id:customerId,tenantId,active:true}),
+   user:async()=>({id:dispatcherId,tenantId:dispatcherTenant,role:'dispatcher',active:dispatcherActive}),
+   get:async()=>({id:customerId,tenantId:customerTenant,active:customerActive}),
    insert:async(kind,data)=>{if(kind==='shipment'&&failShipment)throw Error('shipment insert failed');const row={...data,id:randomUUID(),tenantId,kind,version:1};staged.push(row);return row;},
    command:async key=>stagedCommands.get(key)??null,
    recordCommand:async(key,digest,result)=>{stagedCommands.set(key,{digest,result})},
@@ -56,4 +56,27 @@ test('authorization denial prevents writes',async()=>{
 test('unsupported action fails closed',async()=>{
  const f=fixture();
  await assert.rejects(createAsyncLoad({store:f.store,scope,command:{...command,action:'load:assign'},authorizeLoad:f.authorizeLoad}),{code:'UNSUPPORTED_COMMAND'});
+});
+
+test('cross-tenant customer is rejected before creating load',async()=>{
+ const f=fixture({customerTenant:randomUUID()});
+ await assert.rejects(createAsyncLoad({store:f.store,scope,command,authorizeLoad:f.authorizeLoad}),{code:'INVALID_CUSTOMER'});
+ assert.equal(f.rows().length,0);assert.equal(f.audits(),0);
+});
+test('inactive customer is rejected before creating load',async()=>{
+ const f=fixture({customerActive:false});
+ await assert.rejects(createAsyncLoad({store:f.store,scope,command,authorizeLoad:f.authorizeLoad}),{code:'INVALID_CUSTOMER'});
+ assert.equal(f.rows().length,0);
+});
+test('inactive dispatcher is rejected before creating load',async()=>{
+ const f=fixture({dispatcherActive:false});
+ await assert.rejects(createAsyncLoad({store:f.store,scope,command,authorizeLoad:f.authorizeLoad}),{code:'INVALID_DISPATCHER'});
+ assert.equal(f.rows().length,0);
+});
+test('conflicting payload with reused key is rejected without duplicate load',async()=>{
+ const f=fixture();const args={store:f.store,scope,command,authorizeLoad:f.authorizeLoad};
+ await createAsyncLoad(args);
+ await assert.rejects(createAsyncLoad({...args,command:{...command,payload:{...command.payload,reference:'CHANGED'}}}),{code:'IDEMPOTENCY_CONFLICT'});
+ assert.equal(f.rows().filter(x=>x.kind==='load').length,1);
+ assert.equal(f.rows().filter(x=>x.kind==='shipment').length,1);
 });
