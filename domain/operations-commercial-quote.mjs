@@ -29,7 +29,7 @@ export function evaluateQuoteConversion({quote,actor,customer,now=new Date()}={}
  if(quote.status!=='approved'||quote.approvedBy===actor.id||!quote.approvedBy)fail('APPROVAL_REQUIRED');
  if(!date(quote.validUntil)||!Number.isFinite(now?.getTime?.())||Date.parse(quote.validUntil)<=now.getTime())fail('QUOTE_EXPIRED');
  if(!Number.isSafeInteger(quote.version)||quote.version<1)fail('INVALID_VERSION');
- const normalized=normalizeCommercialQuote(quote);
+ const normalized=normalizeCommercialQuote({customerId:quote.customerId,reference:quote.reference,currency:quote.currency,rateCents:quote.rateCents,charges:quote.charges,validUntil:quote.validUntil,notes:quote.notes});
  if(normalized.totalCents!==quote.totalCents)fail('TOTAL_MISMATCH');
  return Object.freeze({eligible:true,quoteId:quote.id,quoteVersion:quote.version,tenantId:actor.tenantId,
   customerId:quote.customerId,rateCents:quote.rateCents,charges:normalized.charges,totalCents:normalized.totalCents});
