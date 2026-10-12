@@ -8,6 +8,13 @@ import {addUser} from '../server/operations-auth.mjs';
 
 const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])):value;
 const digest=value=>createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex');
+// Date formatters are immutable for a given tenant timezone; reuse across eligibility checks.
+const localDateFormatters=new Map();
+function localDateFormatter(timeZone){
+ let formatter=localDateFormatters.get(timeZone);
+ if(!formatter){formatter=new Intl.DateTimeFormat('en-CA',{timeZone,year:'numeric',month:'2-digit',day:'2-digit'});localDateFormatters.set(timeZone,formatter)}
+ return formatter;
+}
 export class Operations{
  constructor(store,{now=()=>new Date(),extensions={},views=[]}={}){this.store=store;this.now=now;this.extensions={...createAIPolicyExtensions(),...extensions};this.views=[...views,aiPolicyState];}
  actor(id){const a=this.store.principal(id);if(!a?.active)reject(401,'SESSION','Sign in required.');return a;}
@@ -23,7 +30,7 @@ export class Operations{
  }
  version(resource,expected){requireValue(Number.isInteger(expected)&&expected===resource.version,'STALE','Refresh this record before trying again.',409);}
  localDate(actor,value=this.now()){
-  return new Intl.DateTimeFormat('en-CA',{timeZone:this.store.tenant(actor.tenantId).timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(value);
+  return localDateFormatter(this.store.tenant(actor.tenantId).timezone).format(value);
  }
  eligibility(actor,driverId,vehicleId,load,ignoreLoadId=null){
   const driver=this.read('driver',driverId,actor),vehicle=this.read('vehicle',vehicleId,actor);
