@@ -16,6 +16,7 @@ export async function runContentionExperiment({workers=4,iterations=20}={}){
   const dbPath=join(dir,'isolated.sqlite');
   const db=new DatabaseSync(dbPath);
   try{db.exec('PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; CREATE TABLE samples(id INTEGER PRIMARY KEY, value INTEGER NOT NULL); INSERT INTO samples(id,value) VALUES(1,0)')}finally{db.close()}
+  const started=performance.now();
   const children=Array.from({length:workers},()=>spawn(process.execPath,[resolve('scripts/operations-lock-experiment.mjs'),'--worker',dbPath,String(iterations)],{stdio:['ignore','pipe','pipe'],windowsHide:true}));
   const results=await Promise.all(children.map(child=>new Promise((accept,reject)=>{
    let stdout='',stderr='';
@@ -24,24 +25,26 @@ export async function runContentionExperiment({workers=4,iterations=20}={}){
    child.once('error',reject);
    child.once('close',code=>{if(code!==0)return reject(new Error('Isolated worker failed'));try{accept(JSON.parse(stdout))}catch{reject(new Error('Invalid isolated worker output'))}});
   })));
+  const elapsedMs=performance.now()-started;
   const verify=new DatabaseSync(dbPath,{readOnly:true});
   let actual;try{actual=verify.prepare('SELECT value FROM samples WHERE id=1').get().value}finally{verify.close()}
   if(actual!==workers*iterations)throw new Error('Experiment correctness invariant failed');
-  const acquisitions=results.flatMap(result=>result.acquireMs);
-  return {format:'iway-isolated-lock-experiment',version:1,diagnosticOnly:true,certified:false,hostedCertified:false,workers,iterations,committed:actual,acquireP50Ms:percentile(acquisitions,.5),acquireP95Ms:percentile(acquisitions,.95),acquireMaxMs:Math.max(...acquisitions),interpretation:'Separate isolated SQLite fixture; compare repeated 1-worker and 4-worker runs. Not proof of application bottleneck.'};
+  const acquisitions=results.flatMap(result=>result.acquireMs),executions=results.flatMap(result=>result.executeMs),finalizations=results.flatMap(result=>result.finalizeMs);
+  const phase=values=>({p50Ms:percentile(values,.5),p95Ms:percentile(values,.95),p99Ms:percentile(values,.99),maxMs:Math.max(...values)});
+  return {format:'iway-isolated-lock-experiment',version:1,diagnosticOnly:true,certified:false,hostedCertified:false,workers,iterations,committed:actual,acquireP50Ms:percentile(acquisitions,.5),acquireP95Ms:percentile(acquisitions,.95),acquireMaxMs:Math.max(...acquisitions),acquireP99Ms:percentile(acquisitions,.99),phases:{acquireMs:phase(acquisitions),executeMs:phase(executions),finalizeMs:phase(finalizations)},elapsedMs,throughputPerSecond:actual*1000/elapsedMs,rollbacks:0,lockTimeouts:0,allWorkersCompleted:results.every(r=>r.acquireMs.length===iterations),workerResults:results,measurement:'Diagnostic elapsed includes worker startup/close; acquisition includes lock and scheduler waits. Busy-handler retries are not separately observable. Raw samples contain numeric timings only.',interpretation:'Separate isolated SQLite fixture; compare repeated 1-worker and 4-worker runs. Not proof of application bottleneck.'};
  }finally{await rm(dir,{recursive:true,force:true})}
 }
 function worker(dbPath,iterations){
- const db=new DatabaseSync(dbPath),acquireMs=[];
+ const db=new DatabaseSync(dbPath),acquireMs=[],executeMs=[],finalizeMs=[],started=performance.now();
  try{
   db.exec('PRAGMA busy_timeout=5000; PRAGMA synchronous=FULL');
   const update=db.prepare('UPDATE samples SET value=value+1 WHERE id=1');
   for(let i=0;i<iterations;i++){
    const started=performance.now();db.exec('BEGIN IMMEDIATE');acquireMs.push(performance.now()-started);
-   try{update.run();db.exec('COMMIT')}catch(error){db.exec('ROLLBACK');throw error}
+   try{const execution=performance.now();update.run();executeMs.push(performance.now()-execution);const finalization=performance.now();db.exec('COMMIT');finalizeMs.push(performance.now()-finalization)}catch(error){db.exec('ROLLBACK');throw error}
   }
  }finally{db.close()}
- process.stdout.write(JSON.stringify({acquireMs})+'\n');
+ process.stdout.write(JSON.stringify({acquireMs,executeMs,finalizeMs,elapsedMs:performance.now()-started})+'\n');
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
  if(process.argv[2]==='--worker'){try{worker(process.argv[3],Number(process.argv[4]))}catch{process.exitCode=1}}

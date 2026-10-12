@@ -1,0 +1,14 @@
+{
+  "format": "iway-isolated-lock-experiment",
+  "version": 1,
+  "diagnosticOnly": true,
+  "certified": false,
+  "hostedCertified": false,
+  "workers": 4,
+  "iterations": 20,
+  "committed": 80,
+  "acquireP50Ms": 0.1412000000000262,
+  "acquireP95Ms": 0.2834999999999468,
+  "acquireMaxMs": 50.565800000000024,
+  "interpretation": "Separate isolated SQLite fixture; compare repeated 1-worker and 4-worker runs. Not proof of application bottleneck."
+}

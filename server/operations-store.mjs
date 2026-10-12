@@ -14,6 +14,9 @@ import {randomUUID} from 'node:crypto';
 import {performance} from 'node:perf_hooks';
 import {OpsError} from '../domain/operations-errors.mjs';
 export class OperationsStore{
+ // Reuse seven fixed SQL statements only; always read current values and authority.
+ #statements=new Map();
+ #prepare(sql){let statement=this.#statements.get(sql);if(!statement){statement=this.db.prepare(sql);this.#statements.set(sql,statement)}return statement;}
  constructor(path,{onTransactionTiming}={}){
   if(onTransactionTiming!==undefined&&typeof onTransactionTiming!=='function')throw new TypeError('onTransactionTiming must be a function');
   this.onTransactionTiming=onTransactionTiming;
@@ -45,40 +48,40 @@ export class OperationsStore{
   this.db.exec(providerIntegritySQL);
  }
  transaction(fn){
-  if(!this.onTransactionTiming){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){this.db.exec('ROLLBACK');throw e}}
+  if(!this.onTransactionTiming){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){try{this.db.exec('ROLLBACK')}catch{}throw e}}
   const start=performance.now();let acquired=start,executed=start,finished=start,committed=false,began=false,bodyCompleted=false;
   try{
    this.db.exec('BEGIN IMMEDIATE');began=true;acquired=performance.now();
    const result=fn();executed=performance.now();bodyCompleted=true;
    this.db.exec('COMMIT');committed=true;finished=performance.now();return result;
   }catch(error){
-   if(!bodyCompleted)executed=performance.now();
+   if(!began){acquired=performance.now();executed=acquired;}else if(!bodyCompleted)executed=performance.now();
    if(began){try{this.db.exec('ROLLBACK')}catch{ /* Preserve the original transaction failure. */ }}
-   finished=performance.now();throw error;
+   finished=began?performance.now():executed;throw error;
   }finally{
    // Never allow optional diagnostics to change transaction success or failure.
-   try{this.onTransactionTiming({acquireMs:Math.max(0,acquired-start),executeMs:Math.max(0,executed-acquired),finalizeMs:Math.max(0,finished-executed),committed})}catch{}
+   try{this.onTransactionTiming({acquireMs:Math.max(0,acquired-start),executeMs:Math.max(0,executed-acquired),finalizeMs:Math.max(0,finished-executed),committed,acquired:began})}catch{}
   }
  }
- principal(id){const row=this.db.prepare('SELECT data FROM users WHERE id=?').get(id);return row?JSON.parse(row.data):undefined}
- tenant(id){return this.db.prepare('SELECT id,name,timezone FROM tenants WHERE id=?').get(id)}
- list(kind,tenantId){return this.db.prepare('SELECT data FROM resources WHERE kind=? AND tenant_id=? ORDER BY rowid').all(kind,tenantId).map(r=>JSON.parse(r.data))}
- get(kind,id,tenantId){const row=this.db.prepare('SELECT data FROM resources WHERE kind=? AND id=? AND tenant_id=?').get(kind,id,tenantId);if(!row)throw new OpsError(404,'NOT_FOUND','Record not found.');return JSON.parse(row.data)}
+ principal(id){const row=this.#prepare('SELECT data FROM users WHERE id=?').get(id);return row?JSON.parse(row.data):undefined}
+ tenant(id){return this.#prepare('SELECT id,name,timezone FROM tenants WHERE id=?').get(id)}
+ list(kind,tenantId){return this.#prepare('SELECT data FROM resources WHERE kind=? AND tenant_id=? ORDER BY rowid').all(kind,tenantId).map(r=>JSON.parse(r.data))}
+ get(kind,id,tenantId){const row=this.#prepare('SELECT data FROM resources WHERE kind=? AND id=? AND tenant_id=?').get(kind,id,tenantId);if(!row)throw new OpsError(404,'NOT_FOUND','Record not found.');return JSON.parse(row.data)}
  insert(kind,tenantId,values){
   const doc={...values,kind,id:values.id??randomUUID(),tenantId,version:1};
-  this.db.prepare('INSERT INTO resources(kind,id,tenant_id,version,data) VALUES(?,?,?,?,?)').run(kind,doc.id,tenantId,1,JSON.stringify(doc));return doc;
+  this.#prepare('INSERT INTO resources(kind,id,tenant_id,version,data) VALUES(?,?,?,?,?)').run(kind,doc.id,tenantId,1,JSON.stringify(doc));return doc;
  }
  update(kind,id,tenantId,expectedVersion,patch){
   const before=this.get(kind,id,tenantId);
   if(before.version!==expectedVersion)throw new OpsError(409,'STALE','This record changed. Refresh before retrying.');
   if(('id'in patch&&patch.id!==id)||('tenantId'in patch&&patch.tenantId!==tenantId)||('kind'in patch&&patch.kind!==kind))throw new OpsError(422,'OWNERSHIP','Record ownership cannot be overwritten.');
   const after={...before,...patch,id,kind,tenantId,version:before.version+1};
-  const result=this.db.prepare('UPDATE resources SET version=?,data=? WHERE kind=? AND id=? AND tenant_id=? AND version=?').run(after.version,JSON.stringify(after),kind,id,tenantId,expectedVersion);
+  const result=this.#prepare('UPDATE resources SET version=?,data=? WHERE kind=? AND id=? AND tenant_id=? AND version=?').run(after.version,JSON.stringify(after),kind,id,tenantId,expectedVersion);
   if(result.changes!==1)throw new OpsError(409,'STALE','This record changed.');
   return after;
  }
  audit(actor,action,resourceId,outcome,detail={},at=new Date().toISOString()){
-  this.db.prepare('INSERT INTO audit(id,tenant_id,actor_id,action,resource_id,at,outcome,detail) VALUES(?,?,?,?,?,?,?,?)').run(randomUUID(),actor.tenantId,actor.id,action,resourceId??null,at,outcome,JSON.stringify(detail));
+  this.#prepare('INSERT INTO audit(id,tenant_id,actor_id,action,resource_id,at,outcome,detail) VALUES(?,?,?,?,?,?,?,?)').run(randomUUID(),actor.tenantId,actor.id,action,resourceId??null,at,outcome,JSON.stringify(detail));
  }
- close(){this.db.close()}
+ close(){this.#statements.clear();this.db.close()}
 }

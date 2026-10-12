@@ -17,7 +17,7 @@ test('opt-in timing records transaction phases without exposing business data',(
   assert.equal(samples.length,1);
   assert.equal(samples[0].committed,true);
   for(const key of ['acquireMs','executeMs','finalizeMs'])assert.ok(Number.isFinite(samples[0][key])&&samples[0][key]>=0);
-  assert.deepEqual(Object.keys(samples[0]).sort(),['acquireMs','committed','executeMs','finalizeMs'].sort());
+  assert.deepEqual(Object.keys(samples[0]).sort(),['acquireMs','committed','executeMs','finalizeMs','acquired'].sort());
  });
 });
 test('timing callback failure never changes committed transaction result',()=>{
