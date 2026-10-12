@@ -1,0 +1,46 @@
+
+> iway-platform@0.1.0 test:browser
+> playwright test
+
+
+Running 12 tests using 1 worker
+
+(node:23228) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x   1 tests\browser\accessibility.spec.mjs:4:1 › WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable (3.5m)
+(node:25932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  2 tests\browser\accessibility.spec.mjs:21:1 › sign-in failure is announced and focused and recovers with keyboard input (13.8s)
+  ok  3 tests\browser\accessibility.spec.mjs:38:1 › fleet completes employment and equipment work and server errors remain recoverable (19.9s)
+  ok  4 tests\browser\operations.spec.mjs:11:2 › carrier has an accessible role-scoped workspace at 1440px (35.7s)
+  ok  5 tests\browser\operations.spec.mjs:11:2 › dispatcher has an accessible role-scoped workspace at 1440px (27.7s)
+  ok  6 tests\browser\operations.spec.mjs:11:2 › driver has an accessible role-scoped workspace at 390px (18.7s)
+  ok  7 tests\browser\operations.spec.mjs:11:2 › fleet has an accessible role-scoped workspace at 390px (15.9s)
+  ok  8 tests\browser\operations.spec.mjs:41:1 › browser journey creates, dispatches, executes and approves an invoice with real persistence (1.1m)
+  ok  9 tests\browser\operations.spec.mjs:182:1 › browser rejects unauthorized sessions and preserves tenant isolation (8.9s)
+  ok 10 tests\browser\operations.spec.mjs:200:1 › customer portal exposes only its latest reviewed BOL and protects revision history (21.9s)
+  ok 11 tests\browser\operations.spec.mjs:254:1 › Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery (51.5s)
+  ok 12 tests\browser\operations.spec.mjs:375:2 › dispatcher can mark ready and cancel an assignment without duplicate active claims (15.1s)
+
+
+  1) tests\browser\accessibility.spec.mjs:4:1 › WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable 
+
+    Test timeout of 180000ms exceeded.
+
+    attachment #31: screenshot (image/png) ─────────────────────────────────────────────────────────
+    dist\browser-results\accessibility-WCAG2-2AA-ca-015a5-navigation-and-forms-usable\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: dist\browser-results\accessibility-WCAG2-2AA-ca-015a5-navigation-and-forms-usable\error-context.md
+
+    attachment #37: trace (application/zip) ────────────────────────────────────────────────────────
+    dist\browser-results\accessibility-WCAG2-2AA-ca-015a5-navigation-and-forms-usable\trace.zip
+    Usage:
+
+        npx playwright show-trace dist\browser-results\accessibility-WCAG2-2AA-ca-015a5-navigation-and-forms-usable\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests\browser\accessibility.spec.mjs:4:1 › WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable 
+  11 passed (9.4m)
