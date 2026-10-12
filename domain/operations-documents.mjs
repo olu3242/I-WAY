@@ -42,7 +42,8 @@ export function documentMetadata(record){
   createdAt:record.createdAt,reviewedAt:record.reviewedAt??null,reviewedBy:record.reviewedBy??null,reviewNeeded:record.status==='pending_review'};
 }
 function latestDocuments(ops,actor,loadId){
- const documents=ops.store.list('document',actor.tenantId).filter(d=>d.loadId===loadId);
+ // Restrict rows before JSON decoding; retain rowid ordering and revision semantics.
+ const documents=ops.store.db.prepare("SELECT data FROM resources WHERE kind='document' AND tenant_id=? AND json_extract(data,'$.loadId')=? ORDER BY rowid").all(actor.tenantId,loadId).map(row=>JSON.parse(row.data));
  const previous=new Set(documents.map(d=>d.previousDocId).filter(Boolean));
  return documents.filter(d=>!previous.has(d.id));
 }
