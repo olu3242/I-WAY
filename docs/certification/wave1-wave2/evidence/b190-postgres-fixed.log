@@ -1,0 +1,31 @@
+
+> iway-platform@0.1.0 test:pg:local
+> node scripts/certify-postgres.mjs local --operations-isolated
+
+Running LOCAL PostgreSQL checks; this cannot certify hosted operation
+▶ disposable PostgreSQL Operations certification
+  ✔ verified TLS, restricted role, migrations and forced RLS (526.5294ms)
+  ✔ atomic load/shipment/audit/command and concurrent replay (1401.6517ms)
+  ✔ concurrent conflicting commands commit exactly one pair (156.3413ms)
+  ✔ resources persistence failure rolls back all records and permits retry (274.3358ms)
+  ✔ commands persistence failure rolls back all records and permits retry (195.2305ms)
+  ✔ audit persistence failure rolls back all records and permits retry (182.7578ms)
+  ✔ optimistic concurrency permits one update and rejects stale version (118.9169ms)
+  ✔ cross-tenant, missing and inactive principals cannot read or write (661.8052ms)
+  ✔ actor spoofing denied for audit, command evidence and sessions (37.7039ms)
+  ✔ audit and command mutation and role escalation denied (505.9586ms)
+  ✔ dispatcher lookup reveals only active directory data; user records remain self-only (644.7828ms)
+  ✔ migration history is atomic, idempotent and rejects changed checksums (71.456ms)
+  ✔ forced RLS denies all logistics resource kinds and ownership reassignment (629.4129ms)
+  ✔ concurrent approval evidence updates have one optimistic winner (104.461ms)
+  ✔ pool exhaustion times out and pool recovers without writes (3432.494ms)
+✔ disposable PostgreSQL Operations certification (153815.0026ms)
+ℹ {"scope":"disposable PostgreSQL same-key contention","requests":12,"elapsedMs":1162.0869999999995}
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 154756.729

@@ -1,3 +1,4 @@
+import {applyOperationsMigrations} from './operations-migrations.mjs';
 // Explicit local fixture infrastructure. Never reads .env files or connects to an existing cluster.
 import {execFileSync} from 'node:child_process';
 import {mkdtempSync,writeFileSync,readFileSync,rmSync,existsSync,realpathSync,openSync,closeSync} from 'node:fs';
@@ -58,7 +59,7 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   await admin.end();admin=new Pool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
   // Password originates only from randomBytes hex above, not input. No credentials reach command arguments/logs.
   await admin.query("CREATE ROLE iway_operations_fixture LOGIN PASSWORD '"+restrictedPassword+"' NOSUPERUSER NOBYPASSRLS NOCREATEROLE NOCREATEDB NOREPLICATION");
-  for(const path of ['../../supabase/migrations/20261011174100_operations_persistence_readiness.sql','../../supabase/migrations/20261011210552_operations_active_principal_rls.sql','../../supabase/migrations/20261011220000_operations_actor_evidence.sql','../../supabase/migrations/20261011221000_operations_dispatcher_directory.sql'])await admin.query(readFileSync(new URL(path,import.meta.url),'utf8'));
+  await applyOperationsMigrations(admin);
   await admin.query('GRANT USAGE ON SCHEMA operations_private TO iway_operations_fixture');
   await admin.query('GRANT SELECT ON operations_private.tenants,operations_private.users,operations_private.dispatcher_directory TO iway_operations_fixture');
   await admin.query('GRANT SELECT,INSERT,UPDATE ON operations_private.resources,operations_private.sessions TO iway_operations_fixture');

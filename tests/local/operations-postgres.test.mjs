@@ -1,3 +1,4 @@
+import {applyOperationsMigrations,operationsMigrationFiles} from '../../scripts/lib/operations-migrations.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
@@ -81,6 +82,27 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await raw({...a,actorId:other},async c=>assert.equal((await c.query('SELECT * FROM operations_private.dispatcher_directory')).rowCount,0));
   await f.admin.query("UPDATE operations_private.users SET data=jsonb_set(data,'{active}','false') WHERE id=$1",[other]);
   try{const before=await counts();await assert.rejects(create(command()),{code:'INVALID_DISPATCHER'});assert.deepEqual(await counts(),before)}finally{await f.admin.query("UPDATE operations_private.users SET data=jsonb_set(data,'{active}','true') WHERE id=$1",[other])}
+ });
+ await t.test('migration history is atomic, idempotent and rejects changed checksums',async()=>{
+  const repeated=await applyOperationsMigrations(f.admin);assert.deepEqual(repeated.applied,[]);assert.deepEqual(repeated.skipped,operationsMigrationFiles);
+  const name=operationsMigrationFiles[0],before=await f.admin.query('SELECT checksum FROM operations_migrations.applied WHERE name=$1',[name]);
+  await f.admin.query('UPDATE operations_migrations.applied SET checksum=$1 WHERE name=$2',['invalid-fixture-checksum',name]);
+  try{await assert.rejects(applyOperationsMigrations(f.admin),/MIGRATION_CHECKSUM_CHANGED/)}finally{await f.admin.query('UPDATE operations_migrations.applied SET checksum=$1 WHERE name=$2',[before.rows[0].checksum,name])}
+  await raw(a,c=>assert.rejects(c.query('SELECT * FROM operations_migrations.applied'),{code:'42501'}));
+ });
+ await t.test('forced RLS denies all logistics resource kinds and ownership reassignment',async()=>{
+  for(const kind of ['shipment','assignment','tracking','document','notification','workflow','approval']){
+   const record=await store.transaction(a,tx=>tx.insert(kind,{loadId:load.id,status:'pending'}));
+   await assert.rejects(store.transaction(b,tx=>tx.get(kind,record.id)),{code:'NOT_FOUND'});
+   await raw(b,async c=>{assert.equal((await c.query('SELECT id FROM operations_private.resources WHERE id=$1',[record.id])).rowCount,0);assert.equal((await c.query('UPDATE operations_private.resources SET version=version+1 WHERE id=$1',[record.id])).rowCount,0)});
+   await raw(a,c=>assert.rejects(c.query("UPDATE operations_private.resources SET tenant_id=$1::uuid,data=jsonb_set(data,'{tenantId}',to_jsonb(($1::uuid)::text)) WHERE id=$2",[b.tenantId,record.id]),{code:'42501'}));
+  }
+ });
+ await t.test('concurrent approval evidence updates have one optimistic winner',async()=>{
+  const approval=await store.transaction(a,tx=>tx.insert('approval',{loadId:load.id,status:'pending'}));
+  const decisions=await Promise.allSettled(['approved','rejected'].map(status=>store.transaction(a,tx=>tx.update('approval',approval.id,1,{status}))));
+  assert.equal(decisions.filter(d=>d.status==='fulfilled').length,1);assert.equal(decisions.find(d=>d.status==='rejected').reason.code,'STALE');
+  assert.equal((await store.transaction(a,tx=>tx.get('approval',approval.id))).version,2);
  });
  await t.test('pool exhaustion times out and pool recovers without writes',async()=>{
   const limited=f.createPool({max:1,connectionTimeoutMillis:3000});const held=await limited.connect(),before=await counts();
