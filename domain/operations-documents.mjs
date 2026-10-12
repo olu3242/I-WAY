@@ -60,7 +60,7 @@ export function shippingDocumentReadiness(ops,actor,load){
  if(!documents.length)issues.push('MISSING_BOL');
  if(documents.some(d=>d.status!=='validated'))issues.push('BOL_REVIEW_REQUIRED');
  if(documents.some(d=>d.extraction.missing.length||d.extraction.mismatches.length))issues.push('BOL_INVALID');
- const pods=ops.store.list('pod',actor.tenantId).filter(p=>p.loadId===load.id&&p.recipientAcknowledged===true);
+ const pods=ops.store.db.prepare("SELECT data FROM resources WHERE kind='pod' AND tenant_id=? AND json_extract(data,'$.loadId')=? AND json_extract(data,'$.recipientAcknowledged')=1 ORDER BY rowid").all(actor.tenantId,load.id).map(row=>JSON.parse(row.data));
  if(load.stops.filter(s=>s.type==='delivery').some(s=>!pods.some(p=>p.stopId===s.id)))issues.push('MISSING_POD');
  return {ready:issues.length===0,issues,documentIds:documents.map(d=>d.id),podIds:pods.map(p=>p.id)};
 }
@@ -72,7 +72,8 @@ function scan(ops,actor,load){
  if(latest.some(d=>d.extraction.missing.length))issues.push('BOL_REQUIRED_FIELDS');
  if(latest.some(d=>d.extraction.mismatches.length))issues.push('BOL_MISMATCH');
  if(load.status==='delivered'&&shippingDocumentReadiness(ops,actor,load).issues.includes('MISSING_POD'))issues.push('MISSING_POD');
- const current=ops.store.list('documentexception',actor.tenantId).find(e=>e.loadId===load.id&&e.status==='open');
+ const currentRow=ops.store.db.prepare("SELECT data FROM resources WHERE kind='documentexception' AND tenant_id=? AND json_extract(data,'$.loadId')=? AND json_extract(data,'$.status')='open' ORDER BY rowid LIMIT 1").get(actor.tenantId,load.id);
+ const current=currentRow?JSON.parse(currentRow.data):undefined;
  const at=ops.now().toISOString(),escalation=issues.some(x=>['BOL_REJECTED','BOL_MISMATCH','MISSING_POD'].includes(x))?'carrier':'dispatcher';
  if(!issues.length){if(current)return ops.change(actor,current,{status:'resolved',issueCodes:[],resolvedAt:at},'documentexception:resolve','Current shipping document evidence passed validation.');return {loadId:load.id,status:'clear',issueCodes:[]};}
  if(current){
@@ -128,7 +129,8 @@ export function createDocumentExtensions({extract=parseDocumentContent}={}){
    if(load.status==='in_transit')requireValue(load.stops.find(s=>!s.completedAt)?.id===stop.id,'STOP_ORDER','Record proof for the next scheduled delivery stop.',409);
    requireValue(p.recipientAcknowledged===true,'POD_ACKNOWLEDGMENT','Recipient acknowledgment is required.');
    const evidenceReference=text(p.evidenceReference,120);requireValue(!/[\r\n\x00-\x1F\x7F]/.test(evidenceReference),'POD_EVIDENCE','Evidence reference contains unsupported characters.');
-   requireValue(!ops.store.list('pod',actor.tenantId).some(pod=>pod.loadId===load.id&&pod.stopId===stop.id),'POD_EXISTS','This stop already has immutable delivery evidence.',409);
+   const existingPod=ops.store.db.prepare("SELECT 1 FROM resources WHERE kind='pod' AND tenant_id=? AND json_extract(data,'$.loadId')=? AND json_extract(data,'$.stopId')=? LIMIT 1").get(actor.tenantId,load.id,stop.id);
+   requireValue(!existingPod,'POD_EXISTS','This stop already has immutable delivery evidence.',409);
    const at=ops.now().toISOString(),pod=ops.store.insert('pod',actor.tenantId,{loadId:load.id,stopId:stop.id,recipientAcknowledged:true,evidenceReference,recordedAt:at,recordedBy:actor.id});
    const completion=ops.store.insert('deliveryevent',actor.tenantId,{loadId:load.id,stopId:stop.id,podId:pod.id,type:'recipient_acknowledged',at,recordedBy:actor.id});
    ops.store.audit(actor,c.action,pod.id,'success',{loadId:load.id,stopId:stop.id,completionEventId:completion.id,recipientAcknowledged:true,evidenceHash:fingerprint(evidenceReference),recordedAt:at},at);
