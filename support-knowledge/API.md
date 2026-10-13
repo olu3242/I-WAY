@@ -67,3 +67,10 @@ Update this document and `support-knowledge/CHANGELOG.md` whenever a function si
 
 ## B6 HTTP integration (internal, opt-in only)
 The server now supports an **optional** `sopHandler` injected into `makeApp`. When absent, `/api/v1/support/*` responds `503 support_unavailable`. `createSopHttpHandler({verifySession,resolveResource,repository})` implements POST `/api/v1/support/resolve`, POST `/api/v1/support/tickets`, and POST `/api/v1/support/tickets/{ticketId}/transitions` only when explicitly injected with trusted server-side ports. The default startup does **not** inject this handler. No frontend wiring, deployed endpoints, real session verifier or database certification is claimed. Error responses: 400 invalid JSON, 401 unauthorized, 403 forbidden, 404 unknown route, 413 oversized, 415 content type, 503 unavailable.
+
+## B7–B10 integration interfaces (staged, not deployed)
+- `createBoundSopRepository(pool,identity)`: transaction-local database identity binding for article lookup, ticket insert, and ticket transition. Identity must come from trusted server verification; not yet exercised against PostgreSQL.
+- `createSopSessionVerifier({verifyBearerToken,lookupMembership})`: verifies token via injected trusted provider and active membership lookup; no actual provider connected.
+- `createSopClient({getAccessToken,fetchImpl?,baseUrl?})`: browser-side client for resolve/create/transition. No frontend application screen or token provider connected yet.
+- Six B7–B10 integration contract tests. They use mocks; no real PostgreSQL, browser navigation, or hosted certification.
+- **Integration gap:** server startup still does not inject the SOP HTTP handler. No production or customer-facing exposure.
