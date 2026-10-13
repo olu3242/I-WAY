@@ -123,7 +123,7 @@ function audit(){
 }
 function offlineReadiness(){
  return pageHead('Offline readiness','Connectivity does not authorize commands. Driver actions require a confirmed server response.')+
- '<section class="card"><h2>Connection status</h2><p role="status" aria-live="polite">'+(driverNetworkOnline?'Browser reports online':'Browser reports offline')+'</p>'+
+ '<section class="card"><h2>Connection status</h2><p aria-live="polite">'+(driverNetworkOnline?'Browser reports online':'Browser reports offline')+'</p>'+
  '<p>Offline command submission is not yet enabled. Do not rely on this device to record a pickup or transit update while disconnected.</p>'+
  '<p>Reconnect, refresh your assigned loads, and submit the action when the server is available. Unconfirmed actions must be reviewed rather than assumed complete.</p>'+
  '<div class="actions"><button type="button" data-action="offline:refresh">Check server connection</button></div></section>';
