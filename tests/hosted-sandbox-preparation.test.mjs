@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {prepareHostedSandbox,validateHostedSandbox} from '../domain/hosted-sandbox-preparation.mjs';
+const base={environment:'non-production',sourceHash:'a'.repeat(64),operator:'sandbox-owner',consentVersion:'2026-10-13.1',consentApproved:false,restrictedIdentityReviewed:false,rotationEvidenceReviewed:false,rollbackPlanReviewed:false,syntheticFixtureApproved:false,authorizationReviewed:false};
+test('B296: sandbox scope is strictly non-production',()=>{assert.throws(()=>prepareHostedSandbox({...base,environment:'production'}));});
+test('B297: consent remains unapproved until reviewed',()=>{assert.equal(prepareHostedSandbox(base).requirements.approvedConsent,false);});
+test('B298: seven deterministic synthetic fixtures without PII',()=>{const a=prepareHostedSandbox(base);assert.equal(a.fixtures.length,7);assert.deepEqual(a.fixtures,prepareHostedSandbox(base).fixtures);});
+test('B299: malformed approvals and unexpected keys rejected',()=>{assert.throws(()=>prepareHostedSandbox({...base,authorizationReviewed:'yes'}));assert.throws(()=>prepareHostedSandbox({...base,password:'secret'}));});
+test('B300: all reviews still do not authorize execution',()=>{const a=prepareHostedSandbox({...base,...Object.fromEntries(Object.keys(base).filter(k=>k.endsWith('Reviewed')||k.endsWith('Approved')).map(k=>[k,true]))});assert.equal(a.missing.length,0);assert.equal(a.executionAuthorized,false);assert.equal(a.decision,'NO-GO');});
+test('B301: unauthorized report changes are rejected',()=>{const r=prepareHostedSandbox(base);r.decision='GO';assert.throws(()=>validateHostedSandbox(r,base));});
+test('B302: hosted execution stays disabled',()=>{const r=prepareHostedSandbox(base);assert.equal(r.hostedExecuted,false);assert.equal(r.networkCalls,0);});
+test('B303: no production writes',()=>{assert.equal(prepareHostedSandbox(base).productionWrites,0);});
+test('B304: no customer notifications',()=>{assert.equal(prepareHostedSandbox(base).customerNotifications,0);});
+test('B305: deterministic evidence validates',()=>{assert.equal(validateHostedSandbox(prepareHostedSandbox(base),base).valid,true);});
