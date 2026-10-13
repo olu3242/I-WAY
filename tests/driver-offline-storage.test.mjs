@@ -53,3 +53,20 @@ test('rejects missing browser storage',async()=>{
  const queue=createDriverOfflineStorage({indexedDB:null,context:identity});
  await assert.rejects(queue.list(),/STORAGE_UNAVAILABLE/);
 });
+
+test('B14 foreign actor cannot purge owner queued commands',async()=>{
+ const indexedDB=fakeIndexedDB(),now=()=>1000;
+ const owner=createDriverOfflineStorage({indexedDB,context:identity,now});
+ await owner.enqueue(cmd());
+ const foreign=createDriverOfflineStorage({indexedDB,context:{...identity,actorId:'driver_2'},now});
+ await assert.rejects(foreign.purge(),/STORAGE_FAILURE/);
+ assert.equal((await owner.list()).length,1);
+});
+test('B14 tenant mismatch cannot enqueue into another tenant queue',async()=>{
+ const indexedDB=fakeIndexedDB(),now=()=>1000;
+ const owner=createDriverOfflineStorage({indexedDB,context:identity,now});
+ await owner.enqueue(cmd());
+ const foreign=createDriverOfflineStorage({indexedDB,context:{...identity,tenantId:'tenant_2'},now});
+ await assert.rejects(foreign.enqueue({...cmd('550e8400-e29b-41d4-a716-446655440001'),tenantId:'tenant_2'}),/STORAGE_FAILURE/);
+ assert.equal((await owner.list()).length,1);
+});
