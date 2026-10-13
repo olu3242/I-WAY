@@ -6,6 +6,7 @@ export function createSessionBoundOfflineQueue({storage,identity,readSession} = 
     throw new Error('OFFLINE_SESSION_REQUIRED');
   }
   let locked = false;
+  let replaying = false;
   async function authorize() {
     if (locked) throw new Error('OFFLINE_SESSION_LOCKED');
     let current;
@@ -25,21 +26,27 @@ export function createSessionBoundOfflineQueue({storage,identity,readSession} = 
     async acknowledge(key) { await authorize(); return storage.acknowledge(key); },
     async replay(send) {
       if (typeof send !== 'function') throw new Error('OFFLINE_SEND_REQUIRED');
-      await authorize();
-      const entries = await storage.list();
-      const confirmed = [];
-      for (const entry of entries) {
+      if (replaying) throw new Error('OFFLINE_REPLAY_IN_PROGRESS');
+      replaying = true;
+      try {
         await authorize();
-        let receipt;
-        try { receipt = await send(entry); }
-        catch { return {status:'needs_attention',confirmed,remaining:entries.slice(confirmed.length)}; }
-        if (receipt?.confirmed !== true || receipt.idempotencyKey !== entry.idempotencyKey)
-          return {status:'needs_attention',confirmed,remaining:entries.slice(confirmed.length)};
-        await authorize();
-        await storage.acknowledge(entry.idempotencyKey);
-        confirmed.push({idempotencyKey:entry.idempotencyKey,status:'confirmed_by_server'});
-      }
-      return {status:'confirmed_by_server',confirmed,remaining:[]};
+        const entries = await storage.list();
+        const confirmed = [];
+        for (const entry of entries) {
+          await authorize();
+          let receipt;
+          try { receipt = await send(Object.freeze({...entry,payload:{}})); }
+          catch { return {status:'needs_attention',confirmed,remaining:entries.slice(confirmed.length)}; }
+          if (receipt?.confirmed !== true || receipt.idempotencyKey !== entry.idempotencyKey)
+            return {status:'needs_attention',confirmed,remaining:entries.slice(confirmed.length)};
+          // An authenticated receipt must precede local removal. If the session changes
+          // after send, preserve the command for idempotent review, not silent deletion.
+          await authorize();
+          await storage.acknowledge(entry.idempotencyKey);
+          confirmed.push({idempotencyKey:entry.idempotencyKey,status:'confirmed_by_server'});
+        }
+        return {status:'confirmed_by_server',confirmed,remaining:[]};
+      } finally { replaying = false; }
     },
     async invalidate() { locked = true; await storage.close(); }
   });
