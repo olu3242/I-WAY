@@ -4,7 +4,12 @@ import {readFileSync} from 'node:fs';
 const sql=readFileSync(new URL('../sql/sop-local-rls.sql',import.meta.url),'utf8');
 test('SOP B4: dedicated role is non-login and non-bypass',()=>{
  assert.match(sql,/CREATE ROLE iway_sop_runtime NOLOGIN NOBYPASSRLS/);
- assert.doesNotMatch(sql,/\bBYPASSRLS\b(?!\s*;)/g); // role creation is NOLOGIN NOBYPASSRLS
+ const statements=sql.replace(/^\s*--.*$/gm,'').split(';').map(x=>x.trim()).filter(Boolean);
+ const roleStatement=statements.find(x=>/CREATE ROLE\s+iway_sop_runtime\b/i.test(x));
+ assert.ok(roleStatement,'runtime role must be created');
+ assert.match(roleStatement,/\bNOLOGIN\s+NOBYPASSRLS\b/i);
+ assert.doesNotMatch(roleStatement,/(?<!NO)\bBYPASSRLS\b/i);
+ assert.doesNotMatch(roleStatement,/(?<!NO)\bLOGIN\b/i);
 });
 test('SOP B4: policies cover tenant reads and writes',()=>{
  for(const policy of ['sop_articles_tenant_select','sop_tickets_tenant_select','sop_tickets_tenant_insert','sop_tickets_tenant_update','sop_events_tenant_insert'])assert.match(sql,new RegExp('CREATE POLICY '+policy+'\\b'));
