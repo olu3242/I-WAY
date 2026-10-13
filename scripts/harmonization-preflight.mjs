@@ -2,7 +2,7 @@
 // B224-B233 read-only, token-efficient repository harmonization preflight.
 // Never reads .env files or connects to hosted services.
 import {execFileSync} from 'node:child_process';
-import {writeFileSync,mkdirSync} from 'node:fs';
+import {writeFileSync,mkdirSync,existsSync} from 'node:fs';
 import {dirname} from 'node:path';
 const git=(...args)=>execFileSync('git',args,{encoding:'utf8',stdio:['ignore','pipe','pipe']}).trim();
 const branch=git('branch','--show-current');
@@ -33,6 +33,7 @@ const report={schemaVersion:1,branch,baseline,worktreeDirty:changed.length>0,
  batches:evidence};
 const output='docs/certification/b224-b233/execution-state.json';
 mkdirSync(dirname(output),{recursive:true});
+if(existsSync(output))throw new Error('Existing checkpoint preserved; move or archive it before a fresh preflight.');
 writeFileSync(output,JSON.stringify(report,null,2)+'\n',{flag:'wx'});
 console.log(JSON.stringify({output,branch,baseline,dirty:report.worktreeDirty,
  tracked:paths.length,batches:evidence.length,hosted:'NOT_TOUCHED'}));
