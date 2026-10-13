@@ -85,3 +85,6 @@ The server now supports an **optional** `sopHandler` injected into `makeApp`. Wh
 - `/support.html` provides a shared accessible support form and imports `support-ui.js`; it stays disabled without an injected `globalThis.iwayAuth.getAccessToken` provider. This is **not** integration into the four distinct app shells.
 - `support-knowledge/scripts/verify-postgres.mjs` performs a read-only isolated database smoke probe with a restricted non-owner, non-bypass role. It requires `IWAY_SOP_ISOLATED_DATABASE_URL` and `IWAY_SOP_ISOLATED_CONFIRM=YES`. It does not prove write policies, multi-tenant isolation, or hosted readiness.
 - Default server startup does not activate SOP endpoints; production identity and tenant membership implementations remain to be connected. No secrets belong in browser assets.
+
+## B16 local certification contract
+The read-only probe requires IWAY_SOP_ISOLATED_CONFIRM=YES and IWAY_SOP_ISOLATED_DATABASE_URL pointing to loopback port 55432, database iway_sop_cert, login iway_sop_cert. It switches to iway_sop_runtime inside a transaction and checks forced RLS. This is not write/rollback, cross-tenant, or hosted certification. Custom tenant GUCs must only be bound by trusted server code; they are not authentication proofs. Hosted release NO-GO.
