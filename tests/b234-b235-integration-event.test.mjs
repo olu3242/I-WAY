@@ -20,7 +20,7 @@ test('B235: replay has stable identity; changed resource version does not',()=>{
   assert.notEqual(a.idempotencyKey,coordinateIntegrationEvent({...base(),resourceVersion:4}).idempotencyKey);
 });
 test('B234: disallow unknown, same-app and unauthorized event routes',()=>{
-  for(const changes of [{kind:'unrecognized'}, {targetApp:'driver'}, {sourceApp:'platform'}, {targetApp:'unknown'}]){
+  for(const changes of [{kind:'unrecognized'}, {targetApp:'driver'}, {sourceApp:'finance'}, {targetApp:'unknown'}]){
     assert.throws(()=>coordinateIntegrationEvent({...base(),...changes}),/EVENT_ROUTE/);
   }
 });
