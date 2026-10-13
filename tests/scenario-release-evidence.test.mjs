@@ -28,7 +28,10 @@ test('B265: missing manifest is not an executable success',()=>{
 });
 test('B265: stale source and changed logs are rejected',()=>{
  const f=fixture();
- assert.throws(()=>assessScenarioRelease('different-source',f.read));
+ const stale=assessScenarioRelease('different-source',f.read);
+ assert.equal(stale.status,'STALE_EVIDENCE');
+ assert.equal(stale.hostedDecision,'NO-GO');
+ assert.equal(stale.hostedExecuted,false);
  f.files['identity.log']=Buffer.from('modified');
  assert.throws(()=>assessScenarioRelease(sourceHash,f.read));
 });
