@@ -49,7 +49,7 @@ export function createDriverOfflineStorage({indexedDB,context,now=()=>Date.now()
         const req=store.getAll();
         req.onsuccess=()=>{
           const existing=req.result;
-          if(existing.some(e=>e.tenantId!==context.tenantId||e.actorId!==context.actorId) ||
+          if(existing.some(e=>e.tenantId!==context.tenantId||e.actorId!==context.actorId||(context.sessionId&&e.sessionId!==context.sessionId)) ||
              existing.length>=MAX_OFFLINE_COMMANDS || existing.some(e=>e.idempotencyKey===valid.idempotencyKey)){
             abort();return;
           }
@@ -62,7 +62,7 @@ export function createDriverOfflineStorage({indexedDB,context,now=()=>Date.now()
       return transaction(db,'readwrite',(store,set,abort)=>{
         const req=store.get(key);
         req.onsuccess=()=>{
-          if(!req.result||req.result.tenantId!==context.tenantId||req.result.actorId!==context.actorId){abort();return;}
+          if(!req.result||req.result.tenantId!==context.tenantId||req.result.actorId!==context.actorId||(context.sessionId&&req.result.sessionId!==context.sessionId)){abort();return;}
           store.delete(key);set(true);
         };
       });
