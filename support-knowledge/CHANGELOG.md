@@ -2,6 +2,12 @@
 
 All entries describe **committed implementation**, not hosted deployment. Keep this file updated with every SOP change. Release status remains **NO-GO**.
 
+## [B5.1] — RLS contract test correction
+### Fixed
+- Replaced the overly broad `BYPASSRLS` regex with assertions against the SQL role creation statement, preserving checks for `NOLOGIN NOBYPASSRLS` while ignoring comments.
+### Certification
+- User-reported B5 baseline: 32/33 tests passed; the single failure was this contract assertion. Corrected suite requires rerun; no pass claimed yet.
+
 ## [B5] — Transaction-local database context helper
 ### Added
 - `transaction-context.mjs`: internal transaction-local tenant and actor settings with rollback and connection release.
