@@ -9,11 +9,12 @@ export const MAX_OFFLINE_AGE_MS = 24 * 60 * 60 * 1000;
 
 export function validateOfflineCommand(entry, context, now = Date.now()) {
   if (!entry || typeof entry !== 'object' || Array.isArray(entry)) throw new Error('OFFLINE_INVALID');
-  const allowed = ['schemaVersion','tenantId','actorId','action','resourceId','expectedVersion','idempotencyKey','createdAt','payload'];
+  const allowed = ['sessionId','schemaVersion','tenantId','actorId','action','resourceId','expectedVersion','idempotencyKey','createdAt','payload'];
   if (Object.keys(entry).some(key => !allowed.includes(key))) throw new Error('OFFLINE_UNEXPECTED_FIELD');
   if (entry.schemaVersion !== OFFLINE_COMMAND_SCHEMA || !ACTIONS.has(entry.action)) throw new Error('OFFLINE_UNSUPPORTED');
   if (!context || entry.tenantId !== context.tenantId || entry.actorId !== context.actorId ||
       !ID.test(entry.tenantId ?? '') || !ID.test(entry.actorId ?? '')) throw new Error('OFFLINE_IDENTITY_MISMATCH');
+  if (context.sessionId && entry.sessionId !== context.sessionId) throw new Error('OFFLINE_SESSION_MISMATCH');
   if (!ID.test(entry.resourceId ?? '') || !Number.isSafeInteger(entry.expectedVersion) || entry.expectedVersion < 1 ||
       !UUID.test(entry.idempotencyKey ?? '')) throw new Error('OFFLINE_INVALID');
   if (!Number.isSafeInteger(entry.createdAt) || entry.createdAt > now ||
