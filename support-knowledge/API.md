@@ -61,3 +61,6 @@ Potential future routes, subject to API review and certification:
 
 ## Change management
 Update this document and `support-knowledge/CHANGELOG.md` whenever a function signature, permission, schema, security gate, or release status changes. Never label a contract as deployed until runtime evidence exists.
+
+## B5 internal transaction context (implemented helper, not production authentication)
+`withSopTransaction(pool, identity, run)` starts a transaction, sets `iway.verified_tenant` and `iway.verified_actor` with transaction-local `set_config`, invokes `run(client,{tenantId,actorId})`, then commits or rolls back and releases the client. Identity requires `verified:true`, `tenantMembershipVerified:true`, `subjectId` and `tenantId`. **These flags must be created by a trusted server verifier; caller-provided flags are not proof.** The existing repository adapter has not yet been refactored to use this helper. No HTTP endpoints or hosted integration are enabled.
