@@ -121,6 +121,23 @@ function finance(){
 function audit(){
  return pageHead('Activity trail','An append-only record of operational decisions.')+'<section class="card"><div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Time</th><th>Action</th><th>Outcome</th><th>Record</th></tr></thead><tbody>'+state.audit.map(a=>'<tr><td>'+esc(date(a.at))+'</td><td>'+esc(human(a.action))+'</td><td>'+chip(a.outcome)+'</td><td>'+esc(a.resourceId?.slice(0,8)??'Workspace')+'</td></tr>').join('')+'</tbody></table></div></section>';
 }
+// B21: authenticated session identity is verified by the server, never by browser storage.
+let offlineSessionSnapshot=null;
+async function inspectOfflineSession(){
+ const response=await fetch('/api/ops/offline-session',{credentials:'same-origin',cache:'no-store'});
+ if(!response.ok){offlineSessionSnapshot=null;throw new Error('Offline session unavailable. Sign in again before continuing.');}
+ const data=await response.json();
+ if(data.active!==true||data.replayEnabled!==false||data.scope!=='local'||
+    data.actorId!==state?.actor?.id||data.tenantId!==state?.actor?.tenantId||
+    typeof data.sessionId!=='string'||!/^[a-f0-9]{64}$/.test(data.sessionId)){
+  offlineSessionSnapshot=null;throw new Error('Offline session verification failed.');
+ }
+ if(offlineSessionSnapshot&&offlineSessionSnapshot.sessionId!==data.sessionId){
+  offlineSessionSnapshot=null;throw new Error('Session changed. Pending offline work must not be replayed.');
+ }
+ offlineSessionSnapshot={actorId:data.actorId,tenantId:data.tenantId,sessionId:data.sessionId};
+ return offlineSessionSnapshot;
+}
 function offlineReadiness(){
  return pageHead('Offline readiness','Connectivity does not authorize commands. Driver actions require a confirmed server response.')+
  '<section class="card"><h2>Connection status</h2><p aria-live="polite">'+(driverNetworkOnline?'Browser reports online':'Browser reports offline')+'</p>'+
@@ -149,7 +166,7 @@ view.addEventListener('click',async event=>{
  if(typeof handleExtendedClick==='function'&&await handleExtendedClick(event))return;
  const btn=event.target.closest('[data-action]');if(!btn)return;
  const action=btn.dataset.action,id=btn.dataset.id;
- if(action==='offline:refresh'){try{await refresh();alertMessage('Server connection verified.');}catch(error){alertMessage('Server connection unavailable. No action was submitted.',true);}finally{btn.disabled=false;}return;}
+ if(action==='offline:refresh'){btn.disabled=true;try{await refresh();if(state.actor.role!=='driver')throw new Error('Driver access required.');await inspectOfflineSession();alertMessage('Driver session verified. Offline command submission remains disabled.');}catch(error){offlineSessionSnapshot=null;alertMessage('Server or driver session unavailable. No action was submitted.',true);}finally{btn.disabled=false;}return;}
  if(action==='open'){tab='loads';selected=id;creating=false;return showView();}
  if(action==='new-load'){tab='loads';creating=true;return showView();}
  if(action==='back'){selected=null;creating=false;return showView();}
