@@ -4,6 +4,7 @@ import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {sourceFingerprint,sha256} from '../domain/operations-certification.mjs';
+import {validateIsolatedScenarioEvidence} from '../domain/isolated-scenario-evidence.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const out=resolve(root,'dist/operations-evidence');
 const manifest=resolve(out,'isolated-scenarios.json');
@@ -21,18 +22,8 @@ function execute(args){
   child.on('close',code=>done({exitCode:code??1,log:stdout+stderr}));
  });
 }
-function validate(report){
- if(report.sourceHash!==sourceFingerprint(root)||report.scope!=='isolated-local'||report.hostedExecuted!==false||report.hostedDecision!=='NO-GO')throw Error('SCENARIO_MANIFEST_INVALID');
- if(report.scenarios.length!==scenarios.length)throw Error('SCENARIO_MANIFEST_INVALID');
- for(let i=0;i<scenarios.length;i++){
-  const spec=scenarios[i],item=report.scenarios[i];
-  if(item.id!==spec.id||item.status==='HOSTED_PASS')throw Error('SCENARIO_MANIFEST_INVALID');
-  if(!spec.enabled){if(item.status!=='NOT_EXECUTED'||item.logFile!==null)throw Error('SCENARIO_MANIFEST_INVALID');continue;}
-  if(!['PASS','FAIL'].includes(item.status)||item.logFile!==spec.id+'.log'||!Number.isInteger(item.exitCode)||item.status!==(item.exitCode===0?'PASS':'FAIL'))throw Error('SCENARIO_MANIFEST_INVALID');
-  if(sha256(readFileSync(resolve(out,item.logFile)))!==item.logSha256)throw Error('SCENARIO_LOG_CHANGED');
- }
- return {valid:true,localStatus:report.scenarios.some(s=>s.status==='FAIL')?'FAIL':'PARTIAL',hostedDecision:'NO-GO'};
-}
+function validate(report){return validateIsolatedScenarioEvidence(report,{sourceHash:sourceFingerprint(root),readLog:name=>readFileSync(resolve(out,name))});}
+
 try{
  mkdirSync(out,{recursive:true});
  if(process.argv[2]==='validate'){
