@@ -68,9 +68,17 @@ export function createDriverOfflineStorage({indexedDB,context,now=()=>Date.now()
       });
     },
     async purge(){
-      // Clear the entire local queue on logout/account switch, including foreign entries.
+      // An actor may only clear its own entries. Never delete another actor's queued work.
       const db=await connect();
-      return transaction(db,'readwrite',(store,set)=>{store.clear();set(true);});
+      return transaction(db,'readwrite',(store,set,abort)=>{
+        const req=store.getAll();
+        req.onsuccess=()=>{
+          if(req.result.some(e=>e.tenantId!==context.tenantId||e.actorId!==context.actorId)){
+            abort();return;
+          }
+          store.clear();set(true);
+        };
+      });
     },
     async close(){if(dbPromise){const db=await dbPromise;db.close();dbPromise=undefined;}}
   });
