@@ -14,6 +14,7 @@ function openDatabase(indexedDB){
       if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE,{keyPath:'idempotencyKey'});
     };
     req.onerror=()=>reject(new Error('OFFLINE_STORAGE_UNAVAILABLE'));
+    req.onversionchange=()=>{try{req.result?.close();}catch{}};
     req.onblocked=()=>reject(new Error('OFFLINE_STORAGE_BLOCKED'));
     req.onsuccess=()=>resolve(req.result);
   });
@@ -31,7 +32,7 @@ function transaction(db,mode,work){
 export function createDriverOfflineStorage({indexedDB,context,now=()=>Date.now()}={}){
   if(!context?.tenantId||!context?.actorId)throw new Error('OFFLINE_CONTEXT_REQUIRED');
   let dbPromise;
-  const connect=()=>dbPromise??=openDatabase(indexedDB);
+  const connect=()=>dbPromise??=openDatabase(indexedDB).catch(error=>{dbPromise=undefined;throw error;});
   const readAll=async()=>{const db=await connect();return transaction(db,'readonly',(store,set)=>{
     const req=store.getAll();req.onsuccess=()=>set(req.result);
   });};
@@ -71,6 +72,6 @@ export function createDriverOfflineStorage({indexedDB,context,now=()=>Date.now()
       const db=await connect();
       return transaction(db,'readwrite',(store,set)=>{store.clear();set(true);});
     },
-    async close(){if(dbPromise)(await dbPromise).close();}
+    async close(){if(dbPromise){const db=await dbPromise;db.close();dbPromise=undefined;}}
   });
 }
