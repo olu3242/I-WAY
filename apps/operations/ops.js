@@ -138,12 +138,30 @@ async function inspectOfflineSession(){
  offlineSessionSnapshot={actorId:data.actorId,tenantId:data.tenantId,sessionId:data.sessionId};
  return offlineSessionSnapshot;
 }
+// B21 read-only queue inspection. Capture/replay remain disabled until server receipts are certified.
+let offlineQueue=null;
+async function inspectOfflineQueue(){
+ const identity=await inspectOfflineSession();
+ if(typeof indexedDB==='undefined')throw new Error('Offline storage unavailable.');
+ if(!offlineQueue){
+  const [{createDriverOfflineStorage},{createSessionBoundOfflineQueue}]=await Promise.all([
+   import('/assets/driver-offline-storage.js'),import('/domain/driver-offline-session.mjs')
+  ]);
+  const storage=createDriverOfflineStorage({indexedDB,context:{actorId:identity.actorId,tenantId:identity.tenantId}});
+  offlineQueue=createSessionBoundOfflineQueue({storage,identity,readSession:async()=>{
+   const r=await fetch('/api/ops/offline-session',{credentials:'same-origin',cache:'no-store'});
+   if(!r.ok)return null;
+   return r.json();
+  }});
+ }
+ return offlineQueue.list();
+}
 function offlineReadiness(){
  return pageHead('Offline readiness','Connectivity does not authorize commands. Driver actions require a confirmed server response.')+
  '<section class="card"><h2>Connection status</h2><p aria-live="polite">'+(driverNetworkOnline?'Browser reports online':'Browser reports offline')+'</p>'+
  '<p>Offline command submission is not yet enabled. Do not rely on this device to record a pickup or transit update while disconnected.</p>'+
  '<p>Reconnect, refresh your assigned loads, and submit the action when the server is available. Unconfirmed actions must be reviewed rather than assumed complete.</p>'+
- '<div class="actions"><button type="button" data-action="offline:refresh">Check server connection</button></div></section>';
+ '<div class="actions"><button type="button" data-action="offline:refresh">Check server connection</button><button type="button" data-action="offline:inspect">Inspect pending work</button></div></section>';
 }
 function render(){
  document.querySelector('#tenant').textContent=state.tenant.name;
@@ -166,6 +184,17 @@ view.addEventListener('click',async event=>{
  if(typeof handleExtendedClick==='function'&&await handleExtendedClick(event))return;
  const btn=event.target.closest('[data-action]');if(!btn)return;
  const action=btn.dataset.action,id=btn.dataset.id;
+ if(action==='offline:inspect'){
+  btn.disabled=true;
+  try{
+   const entries=await inspectOfflineQueue();
+   alertMessage(entries.length+' pending offline command(s) on this device. Submission and synchronization remain disabled.');
+  }catch(error){
+   offlineQueue=null;
+   alertMessage('Pending work could not be verified. No command was submitted or removed.',true);
+  }finally{btn.disabled=false;}
+  return;
+ }
  if(action==='offline:refresh'){btn.disabled=true;try{await refresh();if(state.actor.role!=='driver')throw new Error('Driver access required.');await inspectOfflineSession();alertMessage('Driver session verified. Offline command submission remains disabled.');}catch(error){offlineSessionSnapshot=null;alertMessage('Server or driver session unavailable. No action was submitted.',true);}finally{btn.disabled=false;}return;}
  if(action==='open'){tab='loads';selected=id;creating=false;return showView();}
  if(action==='new-load'){tab='loads';creating=true;return showView();}
