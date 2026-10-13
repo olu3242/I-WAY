@@ -102,3 +102,7 @@ All entries describe **committed implementation**, not hosted deployment. Keep t
 
 ## Release gate
 Hosted deployment, operational workflow integration, HTTP API exposure, real PostgreSQL RLS certification, accessibility and four-app E2E remain pending. **NO-GO**.
+
+## [B16] — Restricted isolated PostgreSQL certification (in progress)
+- Local probe now rejects non-loopback targets, unexpected database/port, and privileged login names; uses SET LOCAL ROLE iway_sop_runtime.
+- Real database tests, Docker startup, hosted browser certification remain unexecuted. Production NO-GO.
