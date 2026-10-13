@@ -4,7 +4,7 @@ test('B19 driver offline readiness is accessible and does not submit commands',a
  await signIn(page,workspace,workspace.driver);
  await page.getByRole('button',{name:'Offline readiness'}).click();
  await expect(page.getByRole('heading',{name:'Offline readiness'})).toBeVisible();
- await expect(page.getByText('Offline command submission is not yet enabled.',{exact:false})).toBeVisible();
+ await expect(page.getByText('Offline server submission is not available while disconnected.',{exact:false})).toBeVisible();
  await basicAccessibility(page);
  await page.getByRole('button',{name:'Check server connection'}).click();
  await expect(page.getByText('Driver session verified. Offline command submission remains disabled.')).toBeVisible();
