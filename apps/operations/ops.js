@@ -1,8 +1,8 @@
 let state,tab='overview',selected=null,creating=false;
 // B19: browser connectivity is advisory; server authorization is always required.
-let driverNetworkOnline=navigator.onLine;
-window.addEventListener('online',()=>{driverNetworkOnline=true;render();});
-window.addEventListener('offline',()=>{driverNetworkOnline=false;render();});
+let driverNetworkOnline=typeof navigator==='undefined'?true:navigator.onLine;
+if(typeof window!=='undefined')window.addEventListener('online',()=>{driverNetworkOnline=true;if(state)render();});
+if(typeof window!=='undefined')window.addEventListener('offline',()=>{driverNetworkOnline=false;if(state)render();});
 const view=document.querySelector('#view'),message=document.querySelector('#message');
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const human=value=>String(value??'').replaceAll('_',' ').replaceAll(':',' · ');
