@@ -7,7 +7,7 @@ import {securityHeaders} from './security-headers.mjs';
 import {authenticate,session,logout} from './operations-auth.mjs';
 import {readDocument} from '../domain/operations-documents.mjs';
 import {OpsError,fields} from '../domain/operations-errors.mjs';
-const assets=new Map([['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
+const assets=new Map([['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/driver-offline-storage.js','driver-offline-storage.js'],['/domain/driver-offline-replay.mjs','../../domain/driver-offline-replay.mjs'],['/domain/driver-offline-session.mjs','../../domain/driver-offline-session.mjs'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
 export function makeOperationsApp({store,operations,logSink=()=>{}}){
  const loginAttempts=new Map();
  // Process-scoped, non-bearer binding. Restart changes the identifier and fails closed.
@@ -62,7 +62,7 @@ export function makeOperationsApp({store,operations,logSink=()=>{}}){
    if(path==='/app'&&!auth){res.writeHead(302,{Location:'/login',...securityHeaders()});return res.end();}
    const asset=assets.get(path);if(!asset)return send(404,{error:'Not found.'});
    const body=await readFile(new URL('../apps/operations/'+asset,import.meta.url));
-   const type={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml'}[extname(asset)];
+   const type={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml'}[extname(asset)];
    res.writeHead(200,{...securityHeaders(),'Content-Type':type,'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"});res.end(req.method==='HEAD'?undefined:body);
   }catch(e){send(e instanceof OpsError?e.status:503,{error:e instanceof OpsError?e.message:'Operation unavailable.',code:e instanceof OpsError?e.code:'UNAVAILABLE'});}
  });
