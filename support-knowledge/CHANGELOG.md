@@ -2,6 +2,14 @@
 
 All entries describe **committed implementation**, not hosted deployment. Keep this file updated with every SOP change. Release status remains **NO-GO**.
 
+## [B5] — Transaction-local database context helper
+### Added
+- `transaction-context.mjs`: internal transaction-local tenant and actor settings with rollback and connection release.
+- `tests/transaction-context.test.mjs`: four mocked transaction tests.
+### Known limitations
+- Existing repository adapter is not yet wired to the helper; real database RLS and trusted server session verification remain pending.
+- B5 tests are committed but not yet reported executed; hosted release remains NO-GO.
+
 ## [Unreleased] — API documentation
 ### Added
 - `API.md`: internal function contracts, repository ports, response shapes, permissions, proposed (not implemented) HTTP endpoints, evidence and limitations.
