@@ -9,9 +9,9 @@ const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const out=resolve(root,'dist/operations-evidence');
 const manifest=resolve(out,'isolated-scenarios.json');
 const scenarios=Object.freeze([
- {id:'identity',args:['--test','tests/identity.test.mjs'],enabled:false},
+ {id:'identity',args:['--test','tests/operations-identity.test.mjs'],enabled:true},
  {id:'persistence-isolation-workflow',args:['--test','tests/local/operations-postgres.test.mjs'],enabled:true},
- {id:'integrations',args:['--test','tests/integrations.test.mjs'],enabled:false}
+ {id:'integrations',args:['--test','tests/operations-integration.test.mjs'],enabled:true}
 ]);
 function execute(args){
  return new Promise(done=>{
