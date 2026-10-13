@@ -3,6 +3,16 @@
 All entries describe **committed implementation**, not hosted deployment. Keep this file updated with every SOP change. Release status remains **NO-GO**.
 
 
+
+## [B7–B10] — Staged database, authentication, client and test contracts
+### Added
+- `bound-repository.mjs`: transaction-bound tenant and actor context for SOP repository operations.
+- `session-verifier.mjs`: trusted token-verifier and membership-lookup ports.
+- `site/public/assets/js/sop-client.js`: browser-safe authenticated API client.
+- `tests/b7-b10-integration.test.mjs`: six mocked integration and denial tests.
+### Certification
+- Tests committed but not yet executed. Real PostgreSQL, production identity provider, four-app UI wiring and full browser E2E remain pending. Hosted NO-GO.
+
 ## [B6] — Optional HTTP integration and request isolation
 ### Added
 - `http-handler.mjs`: internal HTTP adapter with trusted session and resource resolver ports.
