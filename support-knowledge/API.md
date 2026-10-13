@@ -77,3 +77,6 @@ The server now supports an **optional** `sopHandler` injected into `makeApp`. Wh
 
 ## B11 staged composition
 `createSopComposition({verifyBearerToken,lookupMembership,pool,resolveResource})` is a **fail-closed integration checkpoint**, not a live deployment. It rejects missing dependencies, verifies tokens through injected server ports, and currently rejects repository operations because B6's HTTP handler has no per-request repository factory. Default server startup remains unchanged. Next implementation must introduce request-scoped repository binding, restricted PostgreSQL role, and genuine identity-provider integration before activation.
+
+## B12–B14 request-scoped HTTP to SQL integration
+`createSopHttpHandler` now optionally accepts `repositoryForSession(session)`. After trusted `verifySession` and resource resolution, it creates a request-scoped repository. `createSopComposition` uses `createBoundSopRepository(pool,session)`; the SQL adapter binds actor and tenant inside a transaction. B14 includes an HTTP-to-mocked-SQL success path and membership denial. **Not yet certified against real PostgreSQL or a live identity provider; no four-application UI integration or hosted deployment.** The application startup remains disabled by default.
