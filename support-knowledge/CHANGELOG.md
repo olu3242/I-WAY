@@ -1,3 +1,9 @@
+
+## [B11] — Fail-closed composition checkpoint
+- Added `composition.mjs` and two HTTP/composition tests.
+- Deliberately blocked database operations pending per-request repository binding.
+- Tests committed but not executed; hosted release remains NO-GO.
+
 # I-way AI SOP Changelog
 
 All entries describe **committed implementation**, not hosted deployment. Keep this file updated with every SOP change. Release status remains **NO-GO**.
