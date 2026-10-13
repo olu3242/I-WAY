@@ -147,7 +147,7 @@ async function inspectOfflineQueue(){
   const [{createDriverOfflineStorage},{createSessionBoundOfflineQueue}]=await Promise.all([
    import('/assets/driver-offline-storage.js'),import('/domain/driver-offline-session.mjs')
   ]);
-  const storage=createDriverOfflineStorage({indexedDB,context:{actorId:identity.actorId,tenantId:identity.tenantId}});
+  const storage=createDriverOfflineStorage({indexedDB,context:{actorId:identity.actorId,tenantId:identity.tenantId,sessionId:identity.sessionId}});
   offlineQueue=createSessionBoundOfflineQueue({storage,identity,readSession:async()=>{
    const r=await fetch('/api/ops/offline-session',{credentials:'same-origin',cache:'no-store'});
    if(!r.ok)return null;
@@ -156,12 +156,49 @@ async function inspectOfflineQueue(){
  }
  return offlineQueue.list();
 }
+async function captureOfflineAction(action,record){
+ if(!offlineQueue||!offlineSessionSnapshot)throw new Error('Verify the driver session and inspect the queue while online before capturing work.');
+ if(!['load:accept','load:transit'].includes(action))throw new Error('Offline action is not supported.');
+ if(!record||!Number.isSafeInteger(record.version))throw new Error('Load version unavailable.');
+ const entry={schemaVersion:1,actorId:offlineSessionSnapshot.actorId,tenantId:offlineSessionSnapshot.tenantId,
+  sessionId:offlineSessionSnapshot.sessionId,action,resourceId:record.id,expectedVersion:record.version,
+  idempotencyKey:crypto.randomUUID(),createdAt:Date.now(),payload:{}};
+ // Session-bound storage is durable; the server will reauthorize every replay.
+ // This action is explicitly pending and does not change the displayed load state.
+ const storage=await import('/assets/driver-offline-storage.js');
+ const queueStore=storage.createDriverOfflineStorage({indexedDB,context:offlineSessionSnapshot});
+ await queueStore.enqueue(entry);
+ await queueStore.close();
+}
+async function synchronizeOfflineQueue(){
+ if(!driverNetworkOnline)throw new Error('Reconnect before synchronization.');
+ const entries=await inspectOfflineQueue();
+ if(!entries.length)return {status:'empty',confirmed:[],remaining:[]};
+ const identity=offlineSessionSnapshot;
+ const {createDriverOfflineStorage}=await import('/assets/driver-offline-storage.js');
+ const {createSessionBoundOfflineQueue}=await import('/domain/driver-offline-session.mjs');
+ const storage=createDriverOfflineStorage({indexedDB,context:identity});
+ const queue=createSessionBoundOfflineQueue({storage,identity,readSession:async()=>{
+  const r=await fetch('/api/ops/offline-session',{credentials:'same-origin',cache:'no-store'});
+  return r.ok?r.json():null;
+ }});
+ try{
+  return await queue.replay(async entry=>{
+   const response=await fetch('/api/ops/offline-replay',{method:'POST',credentials:'same-origin',
+    headers:{'Content-Type':'application/json','X-CSRF-Token':state.csrf},
+    body:JSON.stringify(entry)});
+   if(!response.ok)throw new Error('Replay not confirmed.');
+   const receipt=await response.json();
+   return {confirmed:receipt.confirmed===true,idempotencyKey:receipt.idempotencyKey};
+  });
+ }finally{await queue.invalidate();}
+}
 function offlineReadiness(){
  return pageHead('Offline readiness','Connectivity does not authorize commands. Driver actions require a confirmed server response.')+
  '<section class="card"><h2>Connection status</h2><p aria-live="polite">'+(driverNetworkOnline?'Browser reports online':'Browser reports offline')+'</p>'+
- '<p>Offline command submission is not yet enabled. Do not rely on this device to record a pickup or transit update while disconnected.</p>'+
+ '<p>Offline server submission is not available while disconnected. After verifying your session online, accept and transit actions may be saved locally as pending; pickup and delivery require online confirmation.</p>'+
  '<p>Reconnect, refresh your assigned loads, and submit the action when the server is available. Unconfirmed actions must be reviewed rather than assumed complete.</p>'+
- '<div class="actions"><button type="button" data-action="offline:refresh">Check server connection</button><button type="button" data-action="offline:inspect">Inspect pending work</button></div></section>';
+ '<div class="actions"><button type="button" data-action="offline:refresh">Check server connection</button><button type="button" data-action="offline:inspect">Inspect pending work</button><button type="button" data-action="offline:sync">Synchronize pending work</button></div></section>';
 }
 function render(){
  document.querySelector('#tenant').textContent=state.tenant.name;
@@ -184,6 +221,16 @@ view.addEventListener('click',async event=>{
  if(typeof handleExtendedClick==='function'&&await handleExtendedClick(event))return;
  const btn=event.target.closest('[data-action]');if(!btn)return;
  const action=btn.dataset.action,id=btn.dataset.id;
+ if(action==='offline:sync'){
+  btn.disabled=true;
+  try{
+   const result=await synchronizeOfflineQueue();
+   await refresh();
+   alertMessage(result.status==='confirmed_by_server'?'Server confirmed '+result.confirmed.length+' queued action(s).':result.status==='empty'?'No pending offline commands.':'Synchronization needs attention. Unconfirmed commands were retained.',result.status==='needs_attention');
+  }catch(error){alertMessage('Synchronization not confirmed. Pending commands were retained.',true);}
+  finally{btn.disabled=false;}
+  return;
+ }
  if(action==='offline:inspect'){
   btn.disabled=true;
   try{
@@ -211,6 +258,11 @@ view.addEventListener('click',async event=>{
   if(action==='workflow:restart'){const reason=prompt('Reason for requesting a fresh review');if(!reason)return;payload={reason};}
   if(action.startsWith('approval:')){record=state.approvals.find(a=>a.id===id);const reason=prompt('Reason for this decision');if(!reason)return;await command('approval:decide',record,{decision:action.endsWith('approve')?'approved':'rejected',reason});alertMessage('Decision recorded.');return;}
   if(action==='finance:approve'){record=state.invoices.find(i=>i.id===id);const reason=prompt('Reason for approving this financial record');if(!reason)return;payload={reason};}
+  if(state.actor.role==='driver'&&!driverNetworkOnline&&['load:accept','load:transit'].includes(action)){
+   await captureOfflineAction(action,record);
+   alertMessage('Action saved locally as pending. It has NOT been submitted to the server.');
+   return;
+  }
   await command(action,record,payload);alertMessage('Operation saved.');
  }catch(error){alertMessage(error.message,true);}finally{btn.disabled=false;}
 });
