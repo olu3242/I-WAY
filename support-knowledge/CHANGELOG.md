@@ -2,6 +2,15 @@
 
 All entries describe **committed implementation**, not hosted deployment. Keep this file updated with every SOP change. Release status remains **NO-GO**.
 
+
+## [B6] — Optional HTTP integration and request isolation
+### Added
+- `http-handler.mjs`: internal HTTP adapter with trusted session and resource resolver ports.
+- Optional `sopHandler` route dispatch in `server/app.mjs`, disabled by default.
+- Four server-level HTTP tests for disabled endpoint, authentication, tenant spoofing, cross-tenant denial.
+### Certification
+- Tests committed but not yet executed. No production identity provider, frontend connection, or live PostgreSQL integration. Hosted remains NO-GO.
+
 ## [B5.1] — RLS contract test correction
 ### Fixed
 - Replaced the overly broad `BYPASSRLS` regex with assertions against the SQL role creation statement, preserving checks for `NOLOGIN NOBYPASSRLS` while ignoring comments.
