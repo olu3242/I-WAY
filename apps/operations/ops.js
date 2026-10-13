@@ -1,4 +1,8 @@
 let state,tab='overview',selected=null,creating=false;
+// B19: browser connectivity is advisory; server authorization is always required.
+let driverNetworkOnline=navigator.onLine;
+window.addEventListener('online',()=>{driverNetworkOnline=true;render();});
+window.addEventListener('offline',()=>{driverNetworkOnline=false;render();});
 const view=document.querySelector('#view'),message=document.querySelector('#message');
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const human=value=>String(value??'').replaceAll('_',' ').replaceAll(':',' · ');
@@ -117,10 +121,18 @@ function finance(){
 function audit(){
  return pageHead('Activity trail','An append-only record of operational decisions.')+'<section class="card"><div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Time</th><th>Action</th><th>Outcome</th><th>Record</th></tr></thead><tbody>'+state.audit.map(a=>'<tr><td>'+esc(date(a.at))+'</td><td>'+esc(human(a.action))+'</td><td>'+chip(a.outcome)+'</td><td>'+esc(a.resourceId?.slice(0,8)??'Workspace')+'</td></tr>').join('')+'</tbody></table></div></section>';
 }
+function offlineReadiness(){
+ return pageHead('Offline readiness','Connectivity does not authorize commands. Driver actions require a confirmed server response.')+
+ '<section class="card"><h2>Connection status</h2><p role="status" aria-live="polite">'+(driverNetworkOnline?'Browser reports online':'Browser reports offline')+'</p>'+
+ '<p>Offline command submission is not yet enabled. Do not rely on this device to record a pickup or transit update while disconnected.</p>'+
+ '<p>Reconnect, refresh your assigned loads, and submit the action when the server is available. Unconfirmed actions must be reviewed rather than assumed complete.</p>'+
+ '<div class="actions"><button type="button" data-action="offline:refresh">Check server connection</button></div></section>';
+}
 function render(){
  document.querySelector('#tenant').textContent=state.tenant.name;
  document.querySelector('#identity').textContent=state.actor.name+' · '+human(state.actor.role);
  const tabs=[['overview','Overview'],['loads',state.actor.role==='driver'?'My assignments':'Loads']];
+ if(state.actor.role==='driver')tabs.push(['offline','Offline readiness']);
  if(can('asset:view'))tabs.push(['assets','People & equipment']);
  if(typeof extendedTabs==='function')tabs.push(...extendedTabs());
  if(state.capabilities.includes('workflow:advance')&&(can('workflow:run')||can('approval:decide')))tabs.push(['workflows','Review & recovery']);
@@ -129,7 +141,7 @@ function render(){
  if(can('audit:view'))tabs.push(['audit','Activity']);
  document.querySelector('#nav').innerHTML=tabs.map(([id,label])=>'<button data-tab="'+id+'" aria-current="'+(tab===id?'page':'false')+'">'+label+'</button>').join('');
  const extension=typeof extendedView==='function'?extendedView(tab):null;
- view.innerHTML=extension??(creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+'<section class="card">'+loadTable()+'</section>':tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview());
+ view.innerHTML=extension??(creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+'<section class="card">'+loadTable()+'</section>':tab==='offline'?offlineReadiness():tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview());
 }
 document.querySelector('#nav').addEventListener('click',event=>{const btn=event.target.closest('[data-tab]');if(btn){tab=btn.dataset.tab;selected=null;creating=false;showView();}});
 document.querySelector('#logout').addEventListener('click',async()=>{try{await request('/api/ops/logout',{method:'POST'});location.assign('/login');}catch(error){alertMessage(error.message,true)}});
@@ -137,6 +149,7 @@ view.addEventListener('click',async event=>{
  if(typeof handleExtendedClick==='function'&&await handleExtendedClick(event))return;
  const btn=event.target.closest('[data-action]');if(!btn)return;
  const action=btn.dataset.action,id=btn.dataset.id;
+ if(action==='offline:refresh'){try{await refresh();alertMessage('Server connection verified.');}catch(error){alertMessage('Server connection unavailable. No action was submitted.',true);}finally{btn.disabled=false;}return;}
  if(action==='open'){tab='loads';selected=id;creating=false;return showView();}
  if(action==='new-load'){tab='loads';creating=true;return showView();}
  if(action==='back'){selected=null;creating=false;return showView();}
