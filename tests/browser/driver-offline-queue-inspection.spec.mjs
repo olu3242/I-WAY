@@ -5,7 +5,7 @@ test('B21 driver inspects session-bound IndexedDB queue without enabling capture
  await page.getByRole('button',{name:'Offline readiness'}).click();
  await page.getByRole('button',{name:'Inspect pending work'}).click();
  await expect(page.getByText('0 pending offline command(s) on this device. Submission and synchronization remain disabled.')).toBeVisible();
- await expect(page.getByText('Offline command submission is not yet enabled.',{exact:false})).toBeVisible();
+ await expect(page.getByText('Offline server submission is not available while disconnected.',{exact:false})).toBeVisible();
 });
 test('B21 disconnected inspection fails closed without claiming queue success',async({page,workspace})=>{
  await signIn(page,workspace,workspace.driver);
