@@ -1,4 +1,11 @@
 
+## [B15] — Single-batch staged frontend and isolated PostgreSQL verification
+- Added shared support HTML and browser form controller, disabled until a trusted application token provider is injected.
+- Added read-only isolated PostgreSQL RLS smoke probe with fail-closed environment gate.
+- Added frontend smoke/markup tests.
+- Four application shell integration, live identity, DB write/rollback and cross-tenant certification, accessibility browser sweep, and hosted deployment remain NO-GO.
+
+
 ## [B12–B14] — Unified request-scoped SOP integration
 - Added per-request repository factory to HTTP adapter and connected it to verified session composition.
 - Added two HTTP-to-mocked-SQL integration tests for ticket persistence receipt and inactive membership denial.
