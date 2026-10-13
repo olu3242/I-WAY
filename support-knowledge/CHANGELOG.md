@@ -1,4 +1,10 @@
 
+## [B12–B14] — Unified request-scoped SOP integration
+- Added per-request repository factory to HTTP adapter and connected it to verified session composition.
+- Added two HTTP-to-mocked-SQL integration tests for ticket persistence receipt and inactive membership denial.
+- API docs updated. Real PostgreSQL RLS, full UI E2E, accessibility, hosted readiness remain unverified and NO-GO.
+
+
 ## [B11] — Fail-closed composition checkpoint
 - Added `composition.mjs` and two HTTP/composition tests.
 - Deliberately blocked database operations pending per-request repository binding.
