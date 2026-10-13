@@ -51,4 +51,12 @@ try{
   if(process.argv[2]!=='validate')writeFileSync(resolve(out,'release.json'),JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify({...result,scenarioStatus:scenarioAssessment.status,hostedDossier:'dist/operations-evidence/hosted-certification-dossier.json',hostedInventory:'dist/operations-evidence/hosted-evidence-inventory.json',hostedPreparation:'dist/operations-evidence/hosted-execution-preparation.json',hostedSandbox:'dist/operations-evidence/hosted-sandbox-preparation.json',scenarioArtifact:'dist/operations-evidence/scenario-release-evidence.json',remediationStatus:'BLOCKED',localEvidenceStatus:'LOCAL_GATE_EVIDENCE_ONLY',localEvidenceArtifact:'dist/operations-evidence/local-remediation-evidence.json',remediationArtifact:'dist/operations-evidence/remediation.json',artifact:'dist/operations-evidence/release.json'}));
  }
-}catch{console.error(JSON.stringify({status:'BLOCKED',category:'RELEASE_EVIDENCE_INVALID',message:'Run and validate the current local evidence gates. Hosted release remains NO-GO.'}));process.exitCode=1;}
+}catch(error){
+ // Diagnostics expose only a reviewed error code and pipeline stage, never raw
+ // exception messages, paths, credentials or contents of certification artifacts.
+ const known=new Set(['CERTIFICATION_INVALID','CERTIFICATION_EVIDENCE_INVALID','RELEASE_EVIDENCE_MISMATCH','SCENARIO_RELEASE_EVIDENCE_MISMATCH','REMEDIATION_EVIDENCE_MISMATCH','LOCAL_REMEDIATION_EVIDENCE_MISMATCH','LOCAL_EVIDENCE_CHANGED']);
+ const code=known.has(error?.message)?error.message:error?.code==='ENOENT'?'MISSING_ARTIFACT':'UNCLASSIFIED_VALIDATION_FAILURE';
+ console.error(JSON.stringify({status:'BLOCKED',category:'RELEASE_EVIDENCE_INVALID',diagnostic:code,
+  message:'Run and validate the current local evidence gates. Hosted release remains NO-GO.'}));
+ process.exitCode=1;
+}
