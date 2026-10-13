@@ -33,7 +33,9 @@
     "ops:scenarios:certify": "node scripts/certify-isolated-scenarios.mjs",
     "ops:scenarios:validate": "node scripts/certify-isolated-scenarios.mjs validate",
     "ops:hosted:preflight": "node scripts/hosted-readiness-preflight.mjs",
-    "ops:hosted:preflight:validate": "node scripts/hosted-readiness-preflight.mjs validate"
+    "ops:hosted:preflight:validate": "node scripts/hosted-readiness-preflight.mjs validate",
+    "ops:hosted:intake": "node scripts/hosted-evidence-intake.mjs",
+    "ops:hosted:intake:validate": "node scripts/hosted-evidence-intake.mjs validate"
   },
   "dependencies": {
     "pg": "^8.16.3"
