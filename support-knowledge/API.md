@@ -80,3 +80,8 @@ The server now supports an **optional** `sopHandler` injected into `makeApp`. Wh
 
 ## B12–B14 request-scoped HTTP to SQL integration
 `createSopHttpHandler` now optionally accepts `repositoryForSession(session)`. After trusted `verifySession` and resource resolution, it creates a request-scoped repository. `createSopComposition` uses `createBoundSopRepository(pool,session)`; the SQL adapter binds actor and tenant inside a transaction. B14 includes an HTTP-to-mocked-SQL success path and membership denial. **Not yet certified against real PostgreSQL or a live identity provider; no four-application UI integration or hosted deployment.** The application startup remains disabled by default.
+
+## B15 single-batch integration checkpoint
+- `/support.html` provides a shared accessible support form and imports `support-ui.js`; it stays disabled without an injected `globalThis.iwayAuth.getAccessToken` provider. This is **not** integration into the four distinct app shells.
+- `support-knowledge/scripts/verify-postgres.mjs` performs a read-only isolated database smoke probe with a restricted non-owner, non-bypass role. It requires `IWAY_SOP_ISOLATED_DATABASE_URL` and `IWAY_SOP_ISOLATED_CONFIRM=YES`. It does not prove write policies, multi-tenant isolation, or hosted readiness.
+- Default server startup does not activate SOP endpoints; production identity and tenant membership implementations remain to be connected. No secrets belong in browser assets.
