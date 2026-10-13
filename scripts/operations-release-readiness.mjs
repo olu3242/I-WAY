@@ -65,7 +65,7 @@ try{
 }catch(error){
  // Diagnostics expose only a reviewed error code and pipeline stage, never raw
  // exception messages, paths, credentials or contents of certification artifacts.
- const known=new Set(['CERTIFICATION_INVALID','CERTIFICATION_EVIDENCE_INVALID','RELEASE_EVIDENCE_MISMATCH','SCENARIO_RELEASE_EVIDENCE_MISMATCH','REMEDIATION_EVIDENCE_MISMATCH','LOCAL_REMEDIATION_EVIDENCE_MISMATCH','LOCAL_EVIDENCE_CHANGED']);
+ const known=new Set(['CERTIFICATION_INVALID','CERTIFICATION_EVIDENCE_INVALID','RELEASE_EVIDENCE_MISMATCH','SCENARIO_RELEASE_EVIDENCE_MISMATCH','REMEDIATION_EVIDENCE_MISMATCH','LOCAL_REMEDIATION_EVIDENCE_MISMATCH','LOCAL_EVIDENCE_CHANGED','SCENARIO_MANIFEST_INVALID','SCENARIO_LOG_CHANGED','SCENARIO_ASSERTIONS_INCOMPLETE']);
  const code=known.has(error?.message)?error.message:error?.code==='ENOENT'?'MISSING_ARTIFACT':'UNCLASSIFIED_VALIDATION_FAILURE';
  console.error(JSON.stringify({status:'BLOCKED',category:'RELEASE_EVIDENCE_INVALID',diagnostic:code,stage,
   message:'Run and validate the current local evidence gates. Hosted release remains NO-GO.'}));
