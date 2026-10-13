@@ -41,6 +41,16 @@ export function makeOperationsApp({store,operations,logSink=()=>{}}){
     if(!auth)return send(401,{error:'Sign in required.'});
     if(req.headers['x-csrf-token']!==auth.csrf)return send(403,{error:'Session verification failed.'});
     if(path==='/api/ops/logout'){logout(store,token,auth.actor);res.setHeader('Set-Cookie','iway_ops=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');return send(200,{ok:true});}
+    if(path==='/api/ops/offline-replay'){
+     if(auth.actor.role!=='driver')return send(403,{error:'Driver access required.'});
+     const input=await readBody();
+     const {validateOfflineCommand}=await import('../domain/driver-offline-replay.mjs');
+     const sessionId=createHmac('sha256',offlineBindingKey).update(token).digest('hex');
+     const valid=validateOfflineCommand(input,{actorId:auth.actor.id,tenantId:auth.actor.tenantId,sessionId});
+     const result=operations.execute(auth.actor.id,{action:valid.action,resourceId:valid.resourceId,
+      expectedVersion:valid.expectedVersion,idempotencyKey:valid.idempotencyKey,payload:{}});
+     return send(200,{confirmed:true,idempotencyKey:valid.idempotencyKey,result});
+    }
     if(path==='/api/ops/commands')return send(200,operations.execute(auth.actor.id,await readBody()));
     return send(404,{error:'Not found.'});
    }
