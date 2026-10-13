@@ -3,11 +3,12 @@ import {readFile} from 'node:fs/promises';
 import {join,normalize,extname} from 'node:path';
 import {registerLead} from './lead-store.mjs';
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.json':'application/json; charset=utf-8'};
-export function makeApp({root='site/public',dbPath='data/early-access.json',register=lead=>registerLead(dbPath,lead)}={}){
+export function makeApp({root='site/public',dbPath='data/early-access.json',register=lead=>registerLead(dbPath,lead),sopHandler=null}={}){
  const rate=new Map();
  return createServer(async(req,res)=>{
   const respond=(status,obj)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(obj))};
   let url;try{url=new URL(req.url,'http://localhost')}catch{return respond(400,{error:'Bad URL'})}
+  if(url.pathname.startsWith('/api/v1/support/')){if(!sopHandler)return respond(503,{error:'support_unavailable'});return sopHandler(req,res,url)}
   if(url.pathname==='/api/health')return respond(200,{status:'ok'});
   if(url.pathname==='/api/early-access'){
    if(req.method!=='POST')return respond(405,{error:'Method not allowed'});
