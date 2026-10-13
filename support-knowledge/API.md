@@ -74,3 +74,6 @@ The server now supports an **optional** `sopHandler` injected into `makeApp`. Wh
 - `createSopClient({getAccessToken,fetchImpl?,baseUrl?})`: browser-side client for resolve/create/transition. No frontend application screen or token provider connected yet.
 - Six B7–B10 integration contract tests. They use mocks; no real PostgreSQL, browser navigation, or hosted certification.
 - **Integration gap:** server startup still does not inject the SOP HTTP handler. No production or customer-facing exposure.
+
+## B11 staged composition
+`createSopComposition({verifyBearerToken,lookupMembership,pool,resolveResource})` is a **fail-closed integration checkpoint**, not a live deployment. It rejects missing dependencies, verifies tokens through injected server ports, and currently rejects repository operations because B6's HTTP handler has no per-request repository factory. Default server startup remains unchanged. Next implementation must introduce request-scoped repository binding, restricted PostgreSQL role, and genuine identity-provider integration before activation.
