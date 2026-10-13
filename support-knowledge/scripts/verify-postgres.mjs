@@ -14,7 +14,7 @@ else{
    if(role.rowCount!==1||role.rows[0].rolbypassrls||role.rows[0].rolsuper)throw Error('PRIVILEGED_DB_ROLE');
    const owner=await client.query("SELECT count(*)::int AS owned FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='iway_private' AND c.relname LIKE 'sop_%' AND c.relowner=(SELECT oid FROM pg_roles WHERE rolname=current_user)");
    if(owner.rows[0].owned!==0)throw Error('OWNER_ROLE_UNSAFE');
-   const policies=await client.query("SELECT tablename,rowsecurity,forcerowsecurity FROM pg_tables WHERE schemaname='iway_private' AND tablename IN ('sop_articles','sop_tickets','sop_ticket_events')");
+   const policies=await client.query("SELECT c.relname AS tablename,c.relrowsecurity AS rowsecurity,c.relforcerowsecurity AS forcerowsecurity FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='iway_private' AND c.relname IN ('sop_articles','sop_tickets','sop_ticket_events')");
    if(policies.rowCount!==3||policies.rows.some(x=>!x.rowsecurity||!x.forcerowsecurity))throw Error('RLS_NOT_ENFORCED');
    const articles=await client.query('SELECT count(*)::int AS n FROM iway_private.sop_articles WHERE tenant_id=$1',['cert_tenant']);
    const tickets=await client.query('SELECT count(*)::int AS n FROM iway_private.sop_tickets WHERE tenant_id=$1',['cert_tenant']);
