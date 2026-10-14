@@ -5,10 +5,12 @@
 import {rolePermissions,authorize} from './authorization.mjs';
 const actions=new Set(Object.values(rolePermissions).flat());
 const id=v=>typeof v==='string'&&/^[a-zA-Z0-9][\w-]{0,127}$/.test(v);
+const hasAdminStore=store=>!!store?.db?.prepare?.("SELECT 1 FROM sqlite_master WHERE type='table' AND name='organization_admin'").get();
 export function effectiveAdminDenials(store,actor){
  if(!actor?.id||!actor.tenantId||actor.active===false)return new Set(actions);
  const current=store.principal(actor.id);
  if(!current?.active||current.tenantId!==actor.tenantId)return new Set(actions);
+ if(!hasAdminStore(store))return new Set();
  const rows=store.db.prepare("SELECT kind,id,data FROM organization_admin WHERE tenant_id=? AND kind IN ('permission-set','permission-assignment')").all(actor.tenantId);
  const sets=new Map(),assigned=new Set();
  for(const row of rows){
@@ -30,6 +32,7 @@ export function authorizeConfigured({store,actor,action,resource}){
 }
 export function projectConfiguredFields({store,actor,resource,object,record}){
  if(!record||typeof record!=='object'||Array.isArray(record))return {};
+ if(!hasAdminStore(store))return {...record};
  const rows=store.db.prepare("SELECT data FROM organization_admin WHERE tenant_id=? AND kind='field-security'").all(actor.tenantId);
  const denied=new Set();
  for(const row of rows){
