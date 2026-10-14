@@ -8,9 +8,13 @@ const id=v=>typeof v==='string'&&/^[a-zA-Z0-9][\w-]{0,127}$/.test(v);
 const hasAdminStore=store=>!!store?.db?.prepare?.("SELECT 1 FROM sqlite_master WHERE type='table' AND name='organization_admin'").get();
 export function effectiveAdminDenials(store,actor){
  if(!actor?.id||!actor.tenantId||actor.active===false)return new Set(actions);
- const current=store.principal(actor.id);
- if(!current?.active||current.tenantId!==actor.tenantId)return new Set(actions);
+ // Without any configured administration storage, retain canonical authorization unchanged.
  if(!hasAdminStore(store))return new Set();
+ const current=store.principal(actor.id);
+ // Non-persisted automation principals are constrained by canonical role permissions.
+ // Only a persisted, explicitly assigned set may impose additional denies.
+ if(!current)return new Set();
+ if(current.active===false||current.tenantId!==actor.tenantId)return new Set(actions);
  const rows=store.db.prepare("SELECT kind,id,data FROM organization_admin WHERE tenant_id=? AND kind IN ('permission-set','permission-assignment')").all(actor.tenantId);
  const sets=new Map(),assigned=new Set();
  for(const row of rows){
