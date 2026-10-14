@@ -1,0 +1,40 @@
+{
+  "name": "iway-platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.13.0"
+  },
+  "scripts": {
+    "start": "node server/start.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "scan:ip": "node scripts/scan-ip.mjs",
+    "verify": "npm run test && npm run scan:ip && npm run check:site",
+    "check:site": "node scripts/check-site.mjs",
+    "test:hosted": "node scripts/certify-postgres.mjs hosted",
+    "test:pg:local": "node scripts/certify-postgres.mjs local",
+    "probe:postgres": "node scripts/probe-postgres.mjs",
+    "ops:start": "node scripts/operations-start.mjs",
+    "ops:init": "node scripts/operations-init.mjs",
+    "test:browser": "playwright test",
+    "ops:backup": "node scripts/operations-backup.mjs",
+    "ops:restore": "node scripts/operations-restore.mjs",
+    "ops:benchmark": "node scripts/operations-benchmark.mjs",
+    "ops:recovery:verify": "node scripts/operations-recovery-rehearsal.mjs",
+    "ops:evaluate": "node scripts/evaluate-operations.mjs",
+    "ops:certify": "node scripts/certify-operations.mjs",
+    "ops:certify:validate": "node scripts/certify-operations.mjs validate",
+    "verify:public-target": "node scripts/verify-public-release.mjs",
+    "ops:hosted:plan": "node scripts/operations-release-readiness.mjs hosted-plan",
+    "ops:release:check": "node scripts/operations-release-readiness.mjs",
+    "ops:release:validate": "node scripts/operations-release-readiness.mjs validate"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.64.0"
+  }
+}

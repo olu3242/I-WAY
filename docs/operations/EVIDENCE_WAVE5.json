@@ -1,0 +1,117 @@
+{
+  "wave": 5,
+  "generatedAt": "2026-10-11T17:36:11.728Z",
+  "automatedTests": {
+    "passed": 160,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0
+  },
+  "accessibility": {
+    "scans": 54,
+    "violations": 0,
+    "incomplete": [
+      "color-contrast"
+    ],
+    "conformance": "manual_review_required"
+  },
+  "performance": [
+    {
+      "scenario": "dispatch",
+      "p95Ms": 65.12120000000002,
+      "throughputPerSecond": 52.11753546598287,
+      "unexpectedErrors": 0,
+      "peakWorkerRssBytes": 68816896
+    },
+    {
+      "scenario": "workflow",
+      "p95Ms": 161.634,
+      "throughputPerSecond": 112.4883433954157,
+      "unexpectedErrors": 0,
+      "peakWorkerRssBytes": 69009408
+    },
+    {
+      "scenario": "documents",
+      "p95Ms": 147.94349999999997,
+      "throughputPerSecond": 111.54738532928792,
+      "unexpectedErrors": 0,
+      "peakWorkerRssBytes": 69017600
+    },
+    {
+      "scenario": "tenant_isolation",
+      "p95Ms": 63.60849999999999,
+      "throughputPerSecond": 235.9796152942321,
+      "unexpectedErrors": 0,
+      "peakWorkerRssBytes": 68730880
+    }
+  ],
+  "recovery": {
+    "format": "iway-recovery-evidence",
+    "version": 1,
+    "status": "PASS",
+    "capturedAt": "2026-10-11T17:36:07.737Z",
+    "scope": "Isolated local SQLite rehearsal; not hosted disaster-recovery certification",
+    "runtime": {
+      "node": "v24.16.0",
+      "platform": "win32"
+    },
+    "backupDurationMs": 16.59960000000001,
+    "restoreDurationMs": 229.70049999999992,
+    "observedRpoMs": 281,
+    "observedRtoMs": 254.03010000000006,
+    "measurementDefinitions": {
+      "rpo": "Simulated failure timestamp minus latest recoverable audit timestamp; one deliberately committed post-snapshot load is absent.",
+      "rto": "Simulated failure to verified restore, audit-prefix validation, session revocation, and completion of a recovered five-checkpoint advisory workflow."
+    },
+    "backupBytes": 135168,
+    "manifestSha256": "3abc1bc8f92e0557936e2df0aef4fc08eb7f083ca6ea26781f938617cf324862",
+    "sourceAuditSequenceAtFailure": 12,
+    "recoveredAuditSequence": 10,
+    "lostAuditEvents": 2,
+    "checks": {
+      "integrity": true,
+      "auditPrefixPreserved": true,
+      "postSnapshotFixtureLoadAbsent": true,
+      "recoveredWorkflowCompleted": true,
+      "restoredSessionsRevoked": true,
+      "sourcePreserved": true
+    },
+    "budgets": {
+      "localRehearsalRtoMs": 10000,
+      "expectedLostPostSnapshotFixtureLoads": 1
+    },
+    "hostedCertified": false
+  },
+  "evaluation": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "correctLabels": 12,
+    "labelAccuracy": 1,
+    "policyPassed": 12,
+    "policyCompliance": 1,
+    "latencyMs": {
+      "count": 12,
+      "min": 3.625099999999975,
+      "max": 25.5009,
+      "p50": 7.861300000000028,
+      "p95": 25.5009
+    },
+    "inferenceCostEstimateUSD": null,
+    "modelInferenceCount": 0
+  },
+  "modelEvaluation": {
+    "status": "BLOCKED",
+    "reason": "No approved model provider was invoked.",
+    "accuracy": null,
+    "policyCompliance": null,
+    "costEstimateUSD": null,
+    "latencyMs": null
+  },
+  "sourceHash": "db8a0b396fd6e408eee6195097d763f04b9cb25b1537ee5871ce629c48868424"
+}
