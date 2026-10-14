@@ -11,14 +11,21 @@ export function projectResult(ops,actor,value){
  if(value.kind==='integrationcircuit')ops.guard(actor,'governance:manage',{tenantId:value.tenantId});
  if(['integrationreceipt','integrationjob'].includes(value.kind)&&value.event?.type==='document')ops.guard(actor,'document:view',ops.read('load',value.loadId,actor));
  if(value.kind==='providerrecommendation'&&['document','finance'].includes(value.purpose))ops.guard(actor,'document:view',ops.read('load',value.loadId,actor));
+<<<<<<< HEAD
  if(value.kind==='providerrecommendation'&&value.purpose==='dispatch')ops.guard(actor,'asset:view',{tenantId:value.tenantId});
+=======
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  if(value.kind==='providerrecommendation'&&value.purpose==='finance')ops.guard(actor,'billing:manage',ops.read('load',value.loadId,actor));
  if(value.kind==='governancepolicy')ops.guard(actor,'governance:manage',{tenantId:value.tenantId});
  if(value.kind==='customer')ops.guard(actor,'customer:manage',{tenantId:value.tenantId});
  if(value.kind==='load'||value.kind==='shipment'){
   const load=value.kind==='load'?ops.store.get('load',value.id,actor.tenantId):ops.store.get('load',value.loadId,actor.tenantId);
   ops.guard(actor,'load:view',load);
+<<<<<<< HEAD
   if(actor.role==='customer')return pick(value,['id','kind','tenantId','version','loadId','reference','commodity','weightLb','status','stops','createdAt','deliveredAt','lifecycleState','readyAt','closedAt']);
+=======
+  if(actor.role==='customer')return pick(value,['id','kind','tenantId','version','loadId','reference','commodity','weightLb','status','stops','createdAt','deliveredAt']);
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
   if(['driver','fleet'].includes(actor.role)){const {rateCents,charges,customer,customerId,factorName,factored,...safe}=value;return safe;}
  }
  if(value.kind==='connectorjob'&&value.capability==='accounting'||value.kind==='connectorresult'&&value.snapshot?.invoiceId||value.kind==='agentdecision'&&value.role==='finance'){ops.guard(actor,'billing:manage',ops.read('load',value.loadId,actor));}

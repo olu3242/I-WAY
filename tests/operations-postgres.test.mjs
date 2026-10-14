@@ -134,6 +134,7 @@ test('offline migration contains explicit forced RLS per table, tenant USING and
  assert.match(statements,/REVOKE ALL ON SCHEMA operations_private FROM PUBLIC/);
  assert.doesNotMatch(statements,/\bCREATE POLICY[^;]+FOR DELETE/i);
 });
+<<<<<<< HEAD
 
 test('tenant serialization precedes principal verification and protected work',async()=>{
  const h=harness(),context=scope();await h.store.transaction(context,tx=>tx.list('load'));
@@ -165,3 +166,5 @@ test('dispatcher lookup uses only the tenant-scoped minimal directory projection
  assert.match(sql,/data->>'role'='carrier'/);assert.match(sql,/data->'permissions' \? 'load:create'/);
  assert.doesNotMatch(sql,/SECURITY DEFINER|DROP POLICY|GRANT /i);
 });
+=======
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline

@@ -1,7 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fixture} from './helpers/operations-fixture.mjs';
+<<<<<<< HEAD
 import {createRuntimeExtensions} from '../domain/operations-runtime.mjs';
+=======
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
 import {OperationsStore} from '../server/operations-store.mjs';
 import {createProviderExtensions,providerState,providerIntegritySQL,buildGovernedContext,localGovernedAdapter,recommendWithProvider,invokeGovernedProvider,governedProviderPolicy} from '../domain/operations-provider.mjs';
 const code=value=>error=>error.code===value;
@@ -65,6 +68,7 @@ test('B56 actual deterministic fixture evaluation reports measured local labels,
  const driver=f.store.get('driver',f.driver.id,load.tenantId);f.command(f.manager,'driver:update',driver,{compliance:'critical',reason:'Illustrative eligibility change'});
  assert.equal(f.command(f.dispatcher,'provider:recommend',load,{purpose:'dispatch'}).label,'no_eligible_capacity');
 });
+<<<<<<< HEAD
 
 test('B66/B76 provider obeys current carrier governance switches and records reviewed policy version',async t=>{
  const f=install(await fixture(t)),load=validated(f);Object.assign(f.ops.extensions,createRuntimeExtensions());
@@ -88,3 +92,5 @@ test('B66/B76 fallback records attempted binding and isolates evaluation hook fa
  assert.equal(result.failureCode,'PROVIDER_FAILURE');assert.ok(!JSON.stringify(result).includes('private'));
  await new Promise(resolve=>setImmediate(resolve));
 });
+=======
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline

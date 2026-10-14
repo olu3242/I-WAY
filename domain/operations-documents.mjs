@@ -42,8 +42,12 @@ export function documentMetadata(record){
   createdAt:record.createdAt,reviewedAt:record.reviewedAt??null,reviewedBy:record.reviewedBy??null,reviewNeeded:record.status==='pending_review'};
 }
 function latestDocuments(ops,actor,loadId){
+<<<<<<< HEAD
  // Restrict rows before JSON decoding; retain rowid ordering and revision semantics.
  const documents=ops.store.db.prepare("SELECT data FROM resources WHERE kind='document' AND tenant_id=? AND json_extract(data,'$.loadId')=? ORDER BY rowid").all(actor.tenantId,loadId).map(row=>JSON.parse(row.data));
+=======
+ const documents=ops.store.list('document',actor.tenantId).filter(d=>d.loadId===loadId);
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  const previous=new Set(documents.map(d=>d.previousDocId).filter(Boolean));
  return documents.filter(d=>!previous.has(d.id));
 }
@@ -51,7 +55,10 @@ export function readDocument(ops,actor,id){
  actor=ops.actor(actor.id);
  const document=ops.read('document',id,actor),load=ops.read('load',document.loadId,actor,'document:view');
  if(actor.role==='customer')requireValue(document.type==='BOL'&&document.status==='validated'&&latestDocuments(ops,actor,load.id).some(d=>d.id===document.id),'DOCUMENT_ACCESS','This document is not available.',403);
+<<<<<<< HEAD
  requireValue(fingerprint(document.content)===document.contentHash,'DOCUMENT_INTEGRITY','Document integrity verification failed.',409);
+=======
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  ops.store.audit(actor,'document:read',document.id,'success',{loadId:load.id,contentHash:document.contentHash},ops.now().toISOString());
  return {...documentMetadata(document),content:document.content,extractedFields:document.extraction.fields};
 }
@@ -59,10 +66,16 @@ export function shippingDocumentReadiness(ops,actor,load){
  ops.guard(actor,'load:view',load);
  const documents=latestDocuments(ops,actor,load.id).filter(d=>d.type==='BOL'),issues=[];
  if(!documents.length)issues.push('MISSING_BOL');
+<<<<<<< HEAD
  if(documents.some(d=>fingerprint(d.content)!==d.contentHash))issues.push('BOL_INTEGRITY');
  if(documents.some(d=>d.status!=='validated'))issues.push('BOL_REVIEW_REQUIRED');
  if(documents.some(d=>d.extraction.missing.length||d.extraction.mismatches.length))issues.push('BOL_INVALID');
  const pods=ops.store.db.prepare("SELECT data FROM resources WHERE kind='pod' AND tenant_id=? AND json_extract(data,'$.loadId')=? AND json_extract(data,'$.recipientAcknowledged')=1 ORDER BY rowid").all(actor.tenantId,load.id).map(row=>JSON.parse(row.data));
+=======
+ if(documents.some(d=>d.status!=='validated'))issues.push('BOL_REVIEW_REQUIRED');
+ if(documents.some(d=>d.extraction.missing.length||d.extraction.mismatches.length))issues.push('BOL_INVALID');
+ const pods=ops.store.list('pod',actor.tenantId).filter(p=>p.loadId===load.id&&p.recipientAcknowledged===true);
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  if(load.stops.filter(s=>s.type==='delivery').some(s=>!pods.some(p=>p.stopId===s.id)))issues.push('MISSING_POD');
  return {ready:issues.length===0,issues,documentIds:documents.map(d=>d.id),podIds:pods.map(p=>p.id)};
 }
@@ -74,8 +87,12 @@ function scan(ops,actor,load){
  if(latest.some(d=>d.extraction.missing.length))issues.push('BOL_REQUIRED_FIELDS');
  if(latest.some(d=>d.extraction.mismatches.length))issues.push('BOL_MISMATCH');
  if(load.status==='delivered'&&shippingDocumentReadiness(ops,actor,load).issues.includes('MISSING_POD'))issues.push('MISSING_POD');
+<<<<<<< HEAD
  const currentRow=ops.store.db.prepare("SELECT data FROM resources WHERE kind='documentexception' AND tenant_id=? AND json_extract(data,'$.loadId')=? AND json_extract(data,'$.status')='open' ORDER BY rowid LIMIT 1").get(actor.tenantId,load.id);
  const current=currentRow?JSON.parse(currentRow.data):undefined;
+=======
+ const current=ops.store.list('documentexception',actor.tenantId).find(e=>e.loadId===load.id&&e.status==='open');
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  const at=ops.now().toISOString(),escalation=issues.some(x=>['BOL_REJECTED','BOL_MISMATCH','MISSING_POD'].includes(x))?'carrier':'dispatcher';
  if(!issues.length){if(current)return ops.change(actor,current,{status:'resolved',issueCodes:[],resolvedAt:at},'documentexception:resolve','Current shipping document evidence passed validation.');return {loadId:load.id,status:'clear',issueCodes:[]};}
  if(current){
@@ -89,7 +106,11 @@ export function createDocumentExtensions({extract=parseDocumentContent}={}){
   'document:ingest':(ops,actor,c)=>{
    const p=c.payload??{};fields(p,['type','mimeType','content','previousDocId']);
    const load=ops.read('load',c.resourceId,actor,'document:manage');ops.version(load,c.expectedVersion);
+<<<<<<< HEAD
    requireValue(load.status!=='void'&&!load.closedAt,'DOCUMENT_STATE','Voided shipments cannot accept documents.',409);
+=======
+   requireValue(load.status!=='void','DOCUMENT_STATE','Voided shipments cannot accept documents.',409);
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
    requireValue(['BOL','other','auto'].includes(p.type),'DOCUMENT_TYPE','Select a supported document type.');
    requireValue(['text/plain','application/json'].includes(p.mimeType),'DOCUMENT_MIME','Use plain text or JSON; binary OCR is not configured.');
    requireValue(typeof p.content==='string'&&p.content.trim().length>0&&Buffer.byteLength(p.content,'utf8')<=32768&&!/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(p.content),'DOCUMENT_CONTENT','Use a nonempty text document of at most 32 KiB without control characters.');
@@ -131,8 +152,12 @@ export function createDocumentExtensions({extract=parseDocumentContent}={}){
    if(load.status==='in_transit')requireValue(load.stops.find(s=>!s.completedAt)?.id===stop.id,'STOP_ORDER','Record proof for the next scheduled delivery stop.',409);
    requireValue(p.recipientAcknowledged===true,'POD_ACKNOWLEDGMENT','Recipient acknowledgment is required.');
    const evidenceReference=text(p.evidenceReference,120);requireValue(!/[\r\n\x00-\x1F\x7F]/.test(evidenceReference),'POD_EVIDENCE','Evidence reference contains unsupported characters.');
+<<<<<<< HEAD
    const existingPod=ops.store.db.prepare("SELECT 1 FROM resources WHERE kind='pod' AND tenant_id=? AND json_extract(data,'$.loadId')=? AND json_extract(data,'$.stopId')=? LIMIT 1").get(actor.tenantId,load.id,stop.id);
    requireValue(!existingPod,'POD_EXISTS','This stop already has immutable delivery evidence.',409);
+=======
+   requireValue(!ops.store.list('pod',actor.tenantId).some(pod=>pod.loadId===load.id&&pod.stopId===stop.id),'POD_EXISTS','This stop already has immutable delivery evidence.',409);
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
    const at=ops.now().toISOString(),pod=ops.store.insert('pod',actor.tenantId,{loadId:load.id,stopId:stop.id,recipientAcknowledged:true,evidenceReference,recordedAt:at,recordedBy:actor.id});
    const completion=ops.store.insert('deliveryevent',actor.tenantId,{loadId:load.id,stopId:stop.id,podId:pod.id,type:'recipient_acknowledged',at,recordedBy:actor.id});
    ops.store.audit(actor,c.action,pod.id,'success',{loadId:load.id,stopId:stop.id,completionEventId:completion.id,recipientAcknowledged:true,evidenceHash:fingerprint(evidenceReference),recordedAt:at},at);
@@ -142,9 +167,12 @@ export function createDocumentExtensions({extract=parseDocumentContent}={}){
 }
 
 export const documentIntegritySQL = `
+<<<<<<< HEAD
  CREATE INDEX IF NOT EXISTS document_by_shipment ON resources(tenant_id,json_extract(data,'$.loadId')) WHERE kind='document';
  CREATE INDEX IF NOT EXISTS pod_by_shipment ON resources(tenant_id,json_extract(data,'$.loadId')) WHERE kind='pod';
  CREATE INDEX IF NOT EXISTS open_document_exception_by_shipment ON resources(tenant_id,json_extract(data,'$.loadId')) WHERE kind='documentexception' AND json_extract(data,'$.status')='open';
+=======
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  CREATE TRIGGER IF NOT EXISTS delivery_evidence_no_update BEFORE UPDATE ON resources WHEN OLD.kind IN ('pod','deliveryevent') BEGIN SELECT RAISE(ABORT,'Delivery evidence is immutable'); END;
  CREATE TRIGGER IF NOT EXISTS delivery_evidence_no_delete BEFORE DELETE ON resources WHEN OLD.kind IN ('pod','deliveryevent','document') BEGIN SELECT RAISE(ABORT,'Document evidence cannot be deleted'); END;
  CREATE TRIGGER IF NOT EXISTS document_content_immutable BEFORE UPDATE ON resources WHEN OLD.kind='document' AND (NEW.kind<>OLD.kind OR NEW.id<>OLD.id OR NEW.tenant_id<>OLD.tenant_id OR json_remove(NEW.data,'$.version','$.status','$.reviewedAt','$.reviewedBy','$.reviewReason')<>json_remove(OLD.data,'$.version','$.status','$.reviewedAt','$.reviewedBy','$.reviewReason')) BEGIN SELECT RAISE(ABORT,'Document content is immutable; create a revision'); END;

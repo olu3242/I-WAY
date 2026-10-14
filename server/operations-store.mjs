@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import {aiPolicyIntegritySQL} from '../domain/operations-ai-policy.mjs';
+=======
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
 import{identitySQL}from'./operations-identity.mjs';
 import{integrationIntegritySQL}from'../domain/operations-integration.mjs';
 import{providerIntegritySQL}from'../domain/operations-provider.mjs';
@@ -11,6 +14,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
 import {randomUUID} from 'node:crypto';
+<<<<<<< HEAD
 import {performance} from 'node:perf_hooks';
 import {OpsError} from '../domain/operations-errors.mjs';
 export class OperationsStore{
@@ -20,6 +24,11 @@ export class OperationsStore{
  constructor(path,{onTransactionTiming}={}){
   if(onTransactionTiming!==undefined&&typeof onTransactionTiming!=='function')throw new TypeError('onTransactionTiming must be a function');
   this.onTransactionTiming=onTransactionTiming;
+=======
+import {OpsError} from '../domain/operations-errors.mjs';
+export class OperationsStore{
+ constructor(path){
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
   mkdirSync(dirname(path),{recursive:true});
   this.db=new DatabaseSync(path);
   this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;
@@ -40,13 +49,17 @@ export class OperationsStore{
   this.db.exec(documentIntegritySQL);
   this.db.exec(intelligenceIntegritySQL);
   this.db.exec(runtimeIntegritySQL);
+<<<<<<< HEAD
   this.db.exec(aiPolicyIntegritySQL);
+=======
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
   this.db.exec(measurementIntegritySQL);
   this.db.exec(complianceIntegritySQL);
   this.db.exec(identitySQL);
   this.db.exec(integrationIntegritySQL);
   this.db.exec(providerIntegritySQL);
  }
+<<<<<<< HEAD
  transaction(fn){
   if(!this.onTransactionTiming){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){try{this.db.exec('ROLLBACK')}catch{}throw e}}
   const start=performance.now();let acquired=start,executed=start,finished=start,committed=false,began=false,bodyCompleted=false;
@@ -70,18 +83,38 @@ export class OperationsStore{
  insert(kind,tenantId,values){
   const doc={...values,kind,id:values.id??randomUUID(),tenantId,version:1};
   this.#prepare('INSERT INTO resources(kind,id,tenant_id,version,data) VALUES(?,?,?,?,?)').run(kind,doc.id,tenantId,1,JSON.stringify(doc));return doc;
+=======
+ transaction(fn){this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result}catch(e){this.db.exec('ROLLBACK');throw e}}
+ principal(id){const row=this.db.prepare('SELECT data FROM users WHERE id=?').get(id);return row?JSON.parse(row.data):undefined}
+ tenant(id){return this.db.prepare('SELECT id,name,timezone FROM tenants WHERE id=?').get(id)}
+ list(kind,tenantId){return this.db.prepare('SELECT data FROM resources WHERE kind=? AND tenant_id=? ORDER BY rowid').all(kind,tenantId).map(r=>JSON.parse(r.data))}
+ get(kind,id,tenantId){const row=this.db.prepare('SELECT data FROM resources WHERE kind=? AND id=? AND tenant_id=?').get(kind,id,tenantId);if(!row)throw new OpsError(404,'NOT_FOUND','Record not found.');return JSON.parse(row.data)}
+ insert(kind,tenantId,values){
+  const doc={...values,kind,id:values.id??randomUUID(),tenantId,version:1};
+  this.db.prepare('INSERT INTO resources(kind,id,tenant_id,version,data) VALUES(?,?,?,?,?)').run(kind,doc.id,tenantId,1,JSON.stringify(doc));return doc;
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  }
  update(kind,id,tenantId,expectedVersion,patch){
   const before=this.get(kind,id,tenantId);
   if(before.version!==expectedVersion)throw new OpsError(409,'STALE','This record changed. Refresh before retrying.');
   if(('id'in patch&&patch.id!==id)||('tenantId'in patch&&patch.tenantId!==tenantId)||('kind'in patch&&patch.kind!==kind))throw new OpsError(422,'OWNERSHIP','Record ownership cannot be overwritten.');
   const after={...before,...patch,id,kind,tenantId,version:before.version+1};
+<<<<<<< HEAD
   const result=this.#prepare('UPDATE resources SET version=?,data=? WHERE kind=? AND id=? AND tenant_id=? AND version=?').run(after.version,JSON.stringify(after),kind,id,tenantId,expectedVersion);
+=======
+  const result=this.db.prepare('UPDATE resources SET version=?,data=? WHERE kind=? AND id=? AND tenant_id=? AND version=?').run(after.version,JSON.stringify(after),kind,id,tenantId,expectedVersion);
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
   if(result.changes!==1)throw new OpsError(409,'STALE','This record changed.');
   return after;
  }
  audit(actor,action,resourceId,outcome,detail={},at=new Date().toISOString()){
+<<<<<<< HEAD
   this.#prepare('INSERT INTO audit(id,tenant_id,actor_id,action,resource_id,at,outcome,detail) VALUES(?,?,?,?,?,?,?,?)').run(randomUUID(),actor.tenantId,actor.id,action,resourceId??null,at,outcome,JSON.stringify(detail));
  }
  close(){this.#statements.clear();this.db.close()}
+=======
+  this.db.prepare('INSERT INTO audit(id,tenant_id,actor_id,action,resource_id,at,outcome,detail) VALUES(?,?,?,?,?,?,?,?)').run(randomUUID(),actor.tenantId,actor.id,action,resourceId??null,at,outcome,JSON.stringify(detail));
+ }
+ close(){this.db.close()}
+>>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
 }
