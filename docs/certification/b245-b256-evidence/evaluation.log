@@ -1,0 +1,5 @@
+
+> iway-platform@0.1.0 ops:evaluate
+> node scripts/evaluate-operations.mjs
+
+{"status":"PASS","total":12,"passed":12,"failed":0,"skipped":0,"correctLabels":12,"labelAccuracy":1,"policyPassed":12,"policyCompliance":1,"latencyMs":{"count":12,"min":5.21349999999984,"max":67.2483000000002,"p50":13.995899999999892,"p95":67.2483000000002},"inferenceCostEstimateUSD":null,"modelInferenceCount":0,"modelEvaluation":"BLOCKED","artifact":"dist\\operations-evidence\\evaluation.json"}

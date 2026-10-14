@@ -1,0 +1,26 @@
+▶ disposable PostgreSQL Operations certification
+  ✔ verified TLS, restricted role, migrations and forced RLS (105.6993ms)
+  ✔ atomic load/shipment/audit/command and concurrent replay (238.0562ms)
+  ✔ concurrent conflicting commands commit exactly one pair (34.4875ms)
+  ✔ resources persistence failure rolls back all records and permits retry (56.7048ms)
+  ✔ commands persistence failure rolls back all records and permits retry (37.8416ms)
+  ✔ audit persistence failure rolls back all records and permits retry (33.0317ms)
+  ✔ optimistic concurrency permits one update and rejects stale version (12.5582ms)
+  ✔ cross-tenant, missing and inactive principals cannot read or write (134.613ms)
+  ✔ actor spoofing denied for audit, command evidence and sessions (8.6727ms)
+  ✔ audit and command mutation and role escalation denied (108.3454ms)
+  ✔ dispatcher lookup reveals only active directory data; user records remain self-only (123.3856ms)
+  ✔ migration history is atomic, idempotent and rejects changed checksums (33.6988ms)
+  ✔ forced RLS denies all logistics resource kinds and ownership reassignment (140.8886ms)
+  ✔ concurrent approval evidence updates have one optimistic winner (21.3812ms)
+  ✔ pool exhaustion times out and pool recovers without writes (3123.1799ms)
+✔ disposable PostgreSQL Operations certification (21560.9958ms)
+ℹ {"scope":"disposable PostgreSQL same-key contention","requests":12,"elapsedMs":189.25209999999788}
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21920.1446

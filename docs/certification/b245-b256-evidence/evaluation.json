@@ -1,0 +1,530 @@
+{
+  "schemaVersion": 1,
+  "dataset": "iway-illustrative-offline-cases-v1",
+  "fixtureKind": "isolated synthetic local operations",
+  "startedAt": "2026-10-14T02:27:10.717Z",
+  "completedAt": "2026-10-14T02:27:16.400Z",
+  "provider": {
+    "id": "deterministic-domain-engines",
+    "version": "1",
+    "mode": "local-only",
+    "model": null
+  },
+  "localStatus": "PASS",
+  "modelEvaluation": {
+    "status": "BLOCKED",
+    "reason": "No approved model provider was invoked.",
+    "accuracy": null,
+    "policyCompliance": null,
+    "costEstimateUSD": null,
+    "latencyMs": null
+  },
+  "scope": "Accuracy is exact-label agreement on these deterministic synthetic cases, not model quality or production predictive accuracy. Timings measure local scenario execution; fixture setup is reported separately.",
+  "thresholds": {
+    "labelAccuracy": 1,
+    "policyCompliance": 1
+  },
+  "summary": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "correctLabels": 12,
+    "labelAccuracy": 1,
+    "policyPassed": 12,
+    "policyCompliance": 1,
+    "latencyMs": {
+      "count": 12,
+      "min": 5.21349999999984,
+      "max": 67.2483000000002,
+      "p50": 13.995899999999892,
+      "p95": 67.2483000000002
+    },
+    "inferenceCostEstimateUSD": null,
+    "modelInferenceCount": 0
+  },
+  "categories": {
+    "dispatch": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "correctLabels": 4,
+      "labelAccuracy": 1,
+      "policyPassed": 4,
+      "policyCompliance": 1,
+      "latencyMs": {
+        "count": 4,
+        "min": 8.850000000000136,
+        "max": 38.162500000000364,
+        "p50": 10.960100000000011,
+        "p95": 38.162500000000364
+      },
+      "inferenceCostEstimateUSD": null,
+      "modelInferenceCount": 0
+    },
+    "document": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "correctLabels": 3,
+      "labelAccuracy": 1,
+      "policyPassed": 3,
+      "policyCompliance": 1,
+      "latencyMs": {
+        "count": 3,
+        "min": 5.21349999999984,
+        "max": 8.479299999999967,
+        "p50": 6.6478000000001884,
+        "p95": 8.479299999999967
+      },
+      "inferenceCostEstimateUSD": null,
+      "modelInferenceCount": 0
+    },
+    "exception": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "correctLabels": 2,
+      "labelAccuracy": 1,
+      "policyPassed": 2,
+      "policyCompliance": 1,
+      "latencyMs": {
+        "count": 2,
+        "min": 14.202299999999923,
+        "max": 22.129599999999755,
+        "p50": 14.202299999999923,
+        "p95": 22.129599999999755
+      },
+      "inferenceCostEstimateUSD": null,
+      "modelInferenceCount": 0
+    },
+    "finance": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "correctLabels": 3,
+      "labelAccuracy": 1,
+      "policyPassed": 3,
+      "policyCompliance": 1,
+      "latencyMs": {
+        "count": 3,
+        "min": 13.995899999999892,
+        "max": 67.2483000000002,
+        "p50": 58.51080000000002,
+        "p95": 67.2483000000002
+      },
+      "inferenceCostEstimateUSD": null,
+      "modelInferenceCount": 0
+    }
+  },
+  "results": [
+    {
+      "id": "dispatch-eligible",
+      "category": "dispatch",
+      "expectedLabel": "requires_human_approval",
+      "actualLabel": "requires_human_approval",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 16.33289999999988,
+      "setupMs": 673.3351,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "dispatch-critical",
+      "category": "dispatch",
+      "expectedLabel": "no_eligible_capacity",
+      "actualLabel": "no_eligible_capacity",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 8.850000000000136,
+      "setupMs": 379.7572,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "dispatch-unapproved-apply",
+      "category": "dispatch",
+      "expectedLabel": "policy_denied",
+      "actualLabel": "policy_denied",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 10.960100000000011,
+      "setupMs": 504.972,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "document-matched",
+      "category": "document",
+      "expectedLabel": "pending_human_review",
+      "actualLabel": "pending_human_review",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 8.479299999999967,
+      "setupMs": 418.5012999999999,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "document-mismatch",
+      "category": "document",
+      "expectedLabel": "blocked_mismatched_reference",
+      "actualLabel": "blocked_mismatched_reference",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 6.6478000000001884,
+      "setupMs": 360.52040000000034,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "document-provider-failure",
+      "category": "document",
+      "expectedLabel": "fallback_requires_review",
+      "actualLabel": "fallback_requires_review",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 5.21349999999984,
+      "setupMs": 366.63560000000007,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "exception-eligible",
+      "category": "exception",
+      "expectedLabel": "request_human_review",
+      "actualLabel": "request_human_review",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 14.202299999999923,
+      "setupMs": 432.3257999999996,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "exception-critical",
+      "category": "exception",
+      "expectedLabel": "hold_for_repair",
+      "actualLabel": "hold_for_repair",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 22.129599999999755,
+      "setupMs": 297.2925,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "finance-incomplete",
+      "category": "finance",
+      "expectedLabel": "not_invoice_ready",
+      "actualLabel": "not_invoice_ready",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 13.995899999999892,
+      "setupMs": 429.65300000000025,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "finance-complete",
+      "category": "finance",
+      "expectedLabel": "requires_finance_approval",
+      "actualLabel": "requires_finance_approval",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 67.2483000000002,
+      "setupMs": 529.6323000000002,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "finance-unauthorized",
+      "category": "finance",
+      "expectedLabel": "policy_denied",
+      "actualLabel": "policy_denied",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 58.51080000000002,
+      "setupMs": 418.08879999999954,
+      "model": null,
+      "costEstimateUSD": null
+    },
+    {
+      "id": "dispatch-cross-tenant",
+      "category": "dispatch",
+      "expectedLabel": "policy_denied",
+      "actualLabel": "policy_denied",
+      "correct": true,
+      "policyCompliant": true,
+      "passed": true,
+      "errorCategory": null,
+      "latencyMs": 38.162500000000364,
+      "setupMs": 461.9319999999998,
+      "model": null,
+      "costEstimateUSD": null
+    }
+  ],
+  "sources": [
+    {
+      "path": "domain/authorization.mjs",
+      "sha256": "85ee50411ae9df629d1c1efd07c9a29d420898a81174ba2d24c1a5e44ada629f"
+    },
+    {
+      "path": "domain/driver-offline-replay.mjs",
+      "sha256": "a413f2c8ca8d9bbdbfec4782dc319245c84eb21784257c2c83b157ae87f103a3"
+    },
+    {
+      "path": "domain/enterprise-admin.mjs",
+      "sha256": "9bf8fd9bd5899798e1616fa83f33116f576afdc63f4dcd58c181a4ea048c5436"
+    },
+    {
+      "path": "domain/hosted-certification-matrix.mjs",
+      "sha256": "54578f73dd84e9eae802faa1641af6b4e08049505af4aeae05ebb6e34fd7645e"
+    },
+    {
+      "path": "domain/hosted-evidence-inventory.mjs",
+      "sha256": "6af774ee800bc3fef90d551622b3a287c592eebcb0355533d9d87a0112da8d11"
+    },
+    {
+      "path": "domain/hosted-evidence.mjs",
+      "sha256": "f09d10e0642120f6ed63dffd4eed0184b63382ad99dd8cc8fb8a1656a4fd7f73"
+    },
+    {
+      "path": "domain/hosted-execution-preparation.mjs",
+      "sha256": "cf75fee8b39cdec481553040643e6fa0f79146fbafe46b1d93fd88fb0bba91d0"
+    },
+    {
+      "path": "domain/hosted-prerequisite-assessment.mjs",
+      "sha256": "ce9608053f868ecb431e04b0930fe185a9bc857380750eba46ae2f4c867cc7e9"
+    },
+    {
+      "path": "domain/hosted-release-dossier.mjs",
+      "sha256": "8ca4f2a4e13c1701aa5db97abeebfd28ec15952c07d83dcb25b927f010173649"
+    },
+    {
+      "path": "domain/hosted-sandbox-preparation.mjs",
+      "sha256": "048a0ceeb15bd429d57d329b74b0d47cc8d414fde519d45dc89d335854b6dee9"
+    },
+    {
+      "path": "domain/hosted-scenario-harness.mjs",
+      "sha256": "d10bc7c26b6d9dee38ec76033d8db8a3c351d65bb0993ac0324304e80ed1547e"
+    },
+    {
+      "path": "domain/independent-hosted-release.mjs",
+      "sha256": "320a6e689f833acd6bf555bb80190c5a31c114b9e8093d481aa73b1ce13b9d79"
+    },
+    {
+      "path": "domain/isolated-scenario-evidence.mjs",
+      "sha256": "5b615fcce5987fe8dd1f6d3f74390e26242c3adc433a181d1cacc20e6e3806f9"
+    },
+    {
+      "path": "domain/local-remediation-evidence.mjs",
+      "sha256": "e50a6634f7918ef73228db262080f4a2eee64b17f403342fdf94ca70d18073cd"
+    },
+    {
+      "path": "domain/operations-admin-policy.mjs",
+      "sha256": "1e3a1aff4a16ba84477d2469885c3346c32fa6c21ae49dc6bf01c5f5a6e1471a"
+    },
+    {
+      "path": "domain/operations-admin-validation.mjs",
+      "sha256": "3d8c26d5e86b17af7c1bee8d8fc26ce34cdbbece8d9212a3ae102fbf14afe687"
+    },
+    {
+      "path": "domain/operations-ai-policy.mjs",
+      "sha256": "5b0bb7caffab6eed181052e56a8e2543f8c4d1903b484ad1b8efa262a57bcb15"
+    },
+    {
+      "path": "domain/operations-async-command.mjs",
+      "sha256": "fdcc3a02e8b25cb817d081b63ce3361110c5ff92b6000c7988506a71bf568b00"
+    },
+    {
+      "path": "domain/operations-async-load.mjs",
+      "sha256": "a8031c86e137c13ca358d0e3127cb7e3ab2d90da16304a0a0616cb340be4629a"
+    },
+    {
+      "path": "domain/operations-automation.mjs",
+      "sha256": "058ae56e609f09e567e35e9599fd1d615568912f03e4a64c0a4d510cee64b3d6"
+    },
+    {
+      "path": "domain/operations-backend-mode.mjs",
+      "sha256": "f517d321e7a1e0a6a4c8ae4eb2b540be47cb580bc40a284422b9dd56dec3d77a"
+    },
+    {
+      "path": "domain/operations-business.mjs",
+      "sha256": "9ea6e2b7aeb6203c907d657b6a4ec8146f361879d5e84d92a56b0a1bd915711f"
+    },
+    {
+      "path": "domain/operations-certification.mjs",
+      "sha256": "eb8f82d776f53f04ecb07a6e32fa4f0cfa541b67c3b75d51d6a64ed305479248"
+    },
+    {
+      "path": "domain/operations-commercial-quote.mjs",
+      "sha256": "af714b9d0ec26ea0679cc795c394d06a8587d9292dcd8ea2204ce6aea94c8597"
+    },
+    {
+      "path": "domain/operations-compliance.mjs",
+      "sha256": "216c082f55f157007bf954d137329011cf7afccd249a50e83d188d5bb589d74d"
+    },
+    {
+      "path": "domain/operations-connectors.mjs",
+      "sha256": "1977249f7f676c93fa00d3e2eeabbc9d09d542b304ae383223bd75abe4992944"
+    },
+    {
+      "path": "domain/operations-document-adapters.mjs",
+      "sha256": "02e0e41655560ad5d74730ea28cc71d72ac02d9a7baf0f7db4b1cbaf3317a3c2"
+    },
+    {
+      "path": "domain/operations-documents.mjs",
+      "sha256": "6e928b53348e0855db633a62ee252ae903d5de407045290ff5a63f25282f46b4"
+    },
+    {
+      "path": "domain/operations-errors.mjs",
+      "sha256": "b789c8e8205f34d023e3963460cc4efe398f633d3c74db47e1e31f0e0ae9e2b7"
+    },
+    {
+      "path": "domain/operations-evaluation.mjs",
+      "sha256": "a7faca756af876ac306eb15c1d42054cc87ad9319e9524ec86c94410b2b73696"
+    },
+    {
+      "path": "domain/operations-features.mjs",
+      "sha256": "ab1e994669cda11ff32ad5f1f740fa472a89d07245b82bddc15bf154b97b9fce"
+    },
+    {
+      "path": "domain/operations-integration.mjs",
+      "sha256": "efbd047cd586e17fe9b82280908a5d0d99e617d52025068d7fae41d562f58bd1"
+    },
+    {
+      "path": "domain/operations-intelligence.mjs",
+      "sha256": "b4964155d231144bfd396665ca9bb556a9df4f390e25fb2612dbec11ee76fb01"
+    },
+    {
+      "path": "domain/operations-interoperability.mjs",
+      "sha256": "4d3a4b9665eb33f5c2fbdc9ae690ac1cdbc186ca7d36c2d9926e8d79781bca02"
+    },
+    {
+      "path": "domain/operations-lifecycle.mjs",
+      "sha256": "33067c3ad86fa9ad067dc8432561de2bbb8681385902099d91aaa0bb325b7e4a"
+    },
+    {
+      "path": "domain/operations-load-contract.mjs",
+      "sha256": "da9af86a2f599e3231a2c4b45d4140017df08f8d47ca99713d3ac7dbc63a855b"
+    },
+    {
+      "path": "domain/operations-measurement.mjs",
+      "sha256": "808237528db5dd5efc8d355f4e23efcd071932545c579e9f6820caf28bf264e9"
+    },
+    {
+      "path": "domain/operations-performance-comparison.mjs",
+      "sha256": "3bd40a7c796b3607a7bfd91a6cd7db56c1df4b3c9fdabf7a0d0f74ae90ea77ab"
+    },
+    {
+      "path": "domain/operations-performance-diagnostics.mjs",
+      "sha256": "5d7fdf3ad55ed49e0ead4928a7c2a42db200c66bf4e29556fad7262f22df99fa"
+    },
+    {
+      "path": "domain/operations-performance-series.mjs",
+      "sha256": "3754d14acadf57f35f446bb320e1c82a0e98c3ad99842261531bbf79af6b440c"
+    },
+    {
+      "path": "domain/operations-portal.mjs",
+      "sha256": "f8f3a0fd44d1fb38431d347cd7ced2a1250ef9e79990d6a4b9698c58ed87fca0"
+    },
+    {
+      "path": "domain/operations-projection.mjs",
+      "sha256": "f990eb7cf278e8348885ea33dd2c1653a29a2b3af02b526c3ae0cab592a5e400"
+    },
+    {
+      "path": "domain/operations-provider.mjs",
+      "sha256": "faf1ee6ffad547aed1584ddb3c50051666a38a6b94a6e458023a78ce7f462102"
+    },
+    {
+      "path": "domain/operations-release.mjs",
+      "sha256": "2ba02e3a10e33c43201c03f94aa83baf80a8f620e498737c770ba0ec3d77a6cd"
+    },
+    {
+      "path": "domain/operations-runtime.mjs",
+      "sha256": "ac741fed220a2d580c0b4dad63ca98dd58f3b4f90972e2d889adf4343d45b599"
+    },
+    {
+      "path": "domain/operations-transaction-diagnostic-comparison.mjs",
+      "sha256": "12b17d94f56a1f0cf11cea4eb8308b6b054e70c68a7cc3370c7f741ef19e9c56"
+    },
+    {
+      "path": "domain/operations-transaction-diagnostic-summary.mjs",
+      "sha256": "d28b7bbf9e5643cbe25be77d7eb8556a7b0ff70bfa4919282c0ae4d52648a750"
+    },
+    {
+      "path": "domain/operations-transaction-timing.mjs",
+      "sha256": "85acb752c4a54c6fbcbd132146b4aabc1ed736226d2abe768cf5c3b26e07b59d"
+    },
+    {
+      "path": "domain/operations-transport.mjs",
+      "sha256": "74f796f5cabf6b24267721aca0af4be9037abd4e97c2f1221c3eafe2142da2a2"
+    },
+    {
+      "path": "domain/operations.mjs",
+      "sha256": "3ffff70b155ce25068c18d0490af1eb1b85a1549122169157bf616886008252b"
+    },
+    {
+      "path": "domain/organization-settings-service.mjs",
+      "sha256": "bf424ac61b48e05a285ad8e2312430234578aad9837b2cb6fea40d4f2f72e6ac"
+    },
+    {
+      "path": "domain/remediation-wave.mjs",
+      "sha256": "5b4eb0f0e8be0c0b1fc9885bfa78e0bcb50d9448dee2bed210b30e4e3e10be17"
+    },
+    {
+      "path": "domain/scenario-release-evidence.mjs",
+      "sha256": "04bad8bf781fd730ee41d494d92f1919e29c4443c20b094e8633862c5991814d"
+    },
+    {
+      "path": "scripts/evaluate-operations.mjs",
+      "sha256": "fd016fe3951c8c1d03e13417a2bbbf3cc95c79377eb4dedb5a8d3eaaa4149554"
+    },
+    {
+      "path": "server/operations-auth.mjs",
+      "sha256": "103b6b2bafc79a9410768a5af714db970984b2fd89b77c4ffc4c3ac1f5bfa6d6"
+    },
+    {
+      "path": "server/operations-store.mjs",
+      "sha256": "90a828a9bee924984e4c9049d41084b100f9211f4583d2f2c717dba6d1c8cbdb"
+    },
+    {
+      "path": "tests/helpers/operations-fixture.mjs",
+      "sha256": "638ecf0669788074af0d3f22f9bc218674b073f177c18076b08329368c6a48f3"
+    }
+  ],
+  "sourceDigest": "d55f61a815149103bf180207ae4de7cba4a01565b2f013df9724520acbd8a333",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32"
+  },
+  "artifactKind": "offline-evaluation"
+}

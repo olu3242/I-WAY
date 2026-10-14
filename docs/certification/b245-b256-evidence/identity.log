@@ -1,0 +1,12 @@
+✔ sessions enforce idle expiry, authority fingerprints and audited revocation with metadata cascade (559.081ms)
+✔ real RS256 and ES256 signatures require exact issuer audience time and verified MFA claims (115.7787ms)
+✔ federated identity uses server-owned subject binding, rejects forged assurance, and revokes persisted sessions (381.8066ms)
+✔ limited managers cannot bind higher authority or widen relationships through role promotion (586.8682ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1868.8175

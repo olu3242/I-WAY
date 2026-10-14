@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "sourceHash": "9d42b324a77ce068b6c495243cf197aa76ed8eb4f83796e27dd7add2bab79fd5",
+  "scope": "isolated-local",
+  "hostedExecuted": false,
+  "hostedDecision": "NO-GO",
+  "scenarios": [
+    {
+      "id": "identity",
+      "status": "PASS",
+      "exitCode": 0,
+      "logFile": "identity.log",
+      "logSha256": "592f5f8955d1de4d146b9545848db77e7711fd7883362d9fd897b44b02c4e519"
+    },
+    {
+      "id": "persistence-isolation-workflow",
+      "status": "PASS",
+      "exitCode": 0,
+      "logFile": "persistence-isolation-workflow.log",
+      "logSha256": "3f9d6c49d68ade399ede0bf922c2615d0fa3d34d7981a0a936577ffb67f75749"
+    },
+    {
+      "id": "integrations",
+      "status": "PASS",
+      "exitCode": 0,
+      "logFile": "integrations.log",
+      "logSha256": "6ad424698171e5390321516c236c5afd3b1d91d214baf6384db6273e571ac442"
+    }
+  ]
+}

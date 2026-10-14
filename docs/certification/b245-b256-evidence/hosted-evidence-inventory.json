@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "sourceHash": "9d42b324a77ce068b6c495243cf197aa76ed8eb4f83796e27dd7add2bab79fd5",
+  "scope": "offline-review-metadata",
+  "prerequisites": {
+    "explicitHostedTestAuthorization": {
+      "status": "MISSING"
+    },
+    "restrictedPostgresAuthentication": {
+      "status": "MISSING"
+    },
+    "approvedConsent": {
+      "status": "MISSING"
+    },
+    "exposedCredentialRotation": {
+      "status": "MISSING"
+    },
+    "approvedHostedIdentity": {
+      "status": "MISSING"
+    },
+    "dedicatedOperationsPersistence": {
+      "status": "MISSING"
+    },
+    "approvedIntegrationFixtures": {
+      "status": "MISSING"
+    },
+    "approvedDeploymentAndRollback": {
+      "status": "MISSING"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "identity",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "verifiedMfa",
+        "tenantBound",
+        "revokedSessionDenied"
+      ]
+    },
+    {
+      "id": "registration",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "restrictedIdentity",
+        "approvedConsent",
+        "receiptPersisted"
+      ]
+    },
+    {
+      "id": "persistence",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "commitPersisted",
+        "restartReadMatched"
+      ]
+    },
+    {
+      "id": "isolation",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "ownReadAllowed",
+        "foreignReadDenied",
+        "foreignWriteDenied",
+        "noForeignMutation"
+      ]
+    },
+    {
+      "id": "workflow",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "heartbeatPersisted",
+        "restartRecovered",
+        "staleFenceDenied",
+        "exactlyOneCompletion"
+      ]
+    },
+    {
+      "id": "integrations",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "signatureVerified",
+        "duplicateSuppressed",
+        "retryBounded",
+        "deadLetterVisible"
+      ]
+    },
+    {
+      "id": "rollback",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "artifactVerified",
+        "restoreIntegrity",
+        "healthPassed",
+        "auditContinuity"
+      ]
+    }
+  ],
+  "missing": [
+    "explicitHostedTestAuthorization",
+    "restrictedPostgresAuthentication",
+    "approvedConsent",
+    "exposedCredentialRotation",
+    "approvedHostedIdentity",
+    "dedicatedOperationsPersistence",
+    "approvedIntegrationFixtures",
+    "approvedDeploymentAndRollback"
+  ],
+  "digest": "8def812f0b7acf8cc9cf08f58049f2201ee4e82b4b646ef47f1917ab16d58be0",
+  "networkCalls": 0,
+  "hostedExecuted": false,
+  "executionAuthorized": false,
+  "decision": "NO-GO"
+}

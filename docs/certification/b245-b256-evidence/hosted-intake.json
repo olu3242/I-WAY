@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "sourceHash": "9d42b324a77ce068b6c495243cf197aa76ed8eb4f83796e27dd7add2bab79fd5",
+  "scope": "independent-hosted-evidence-intake",
+  "records": 0,
+  "accepted": 0,
+  "authorization": "MISSING",
+  "hostedExecuted": false,
+  "hostedDecision": "NO-GO",
+  "productionDecision": "NO-GO",
+  "scenarios": [
+    {
+      "id": "identity",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "registration",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "persistence",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "isolation",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "workflow",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "integrations",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "rollback",
+      "status": "NOT_EXECUTED"
+    }
+  ]
+}
