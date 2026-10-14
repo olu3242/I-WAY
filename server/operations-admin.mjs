@@ -4,9 +4,10 @@
 import {rolePermissions} from '../domain/authorization.mjs';
 import {validateOrganizationSettings,evaluateValidationRule,validateRuleDefinition} from '../domain/enterprise-admin.mjs';
 import {authorizeOrganizationSettings} from '../domain/organization-settings-service.mjs';
-const TYPES=['permission-set','field-security','validation-rule','related-tab','page-layout','business-unit','location'];
+const TYPES=['permission-set','permission-assignment','field-security','validation-rule','related-tab','page-layout','business-unit','location'];
 const allowed={
  'permission-set':['name','description','grants','denials'],
+ 'permission-assignment':['name','setIds'],
  'field-security':['name','object','field','read','create','update','export','filter'],
  'validation-rule':['name','object','field','operator','value','enabled'],
  'related-tab':['name','object','relatedObject','label','order'],
@@ -22,6 +23,7 @@ function clean(type,data){
  if(!idOk(data.name)||data.name.length>128)throw new Error('INVALID_INPUT');
  if(type==='validation-rule'&&!validateRuleDefinition({...data,id:'rule',version:1,enabled:true}))throw new Error('INVALID_INPUT');
  if(type==='field-security'&&(!idOk(data.object)||!idOk(data.field)))throw new Error('INVALID_INPUT');
+ if(type==='permission-assignment'&&(!Array.isArray(data.setIds)||data.setIds.length>30||!data.setIds.every(idOk)))throw new Error('INVALID_INPUT');
  if(type==='permission-set'){
   if(!Array.isArray(data.grants)||!Array.isArray(data.denials)||![...data.grants,...data.denials].every(v=>typeof v==='string'&&validAction.has(v)))throw new Error('INVALID_INPUT');
  }
