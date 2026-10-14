@@ -1,0 +1,17 @@
+%% Authorization decision for every request (INTERNAL)
+flowchart TD
+  R["Request: actor, action, resource"] --> A{"Authenticated and device trusted?"}
+  A -- no --> D1["Deny + audit"]
+  A -- yes --> T{"Resource in actor's tenant?"}
+  T -- no --> D2["Deny + audit (BR-010 / BR-011)"]
+  T -- yes --> REL{"Relationship valid?<br/>e.g. driver belongs to this fleet company"}
+  REL -- no --> D3["Deny + audit"]
+  REL -- yes --> OWN{"Actor's app owns this function?<br/>(responsibility matrix)"}
+  OWN -- no --> VIEW{"View-only or request allowed?"}
+  VIEW -- no --> D4["Deny + audit"]
+  VIEW -- yes --> OK
+  OWN -- yes --> P{"Role grants permission?"}
+  P -- no --> D5["Deny + audit"]
+  P -- yes --> SENS{"Sensitive action?"}
+  SENS -- yes --> ELEV["Require elevated permission + reason code"] --> OK
+  SENS -- no --> OK["Allow + audit event"]

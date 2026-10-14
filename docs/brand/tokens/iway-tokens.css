@@ -1,0 +1,38 @@
+:root{ /* I-way tokens. Generated from iway-tokens.json */
+  --iw-navy:#092448;
+  --iw-blue:#1261F3;
+  --iw-cyan:#00BCE8;
+  --iw-orange:#FF681C;
+  --iw-amber:#FFB000;
+  --iw-cloud:#F5F8FC;
+  --iw-ink:#111827;
+  --iw-white:#FFFFFF;
+  --iw-muted:#475569;
+  --iw-line:#DCE7F3;
+  --iw-navy-800:#12396F;
+  --iw-navy-700:#0F2F5C;
+  --iw-success:#0B7A4B;
+  --iw-success-bg:#E3F6EC;
+  --iw-warning:#8A5300;
+  --iw-warning-bg:#FFF3D6;
+  --iw-danger:#B42318;
+  --iw-danger-bg:#FDECEA;
+  --iw-info:#1E40AF;
+  --iw-info-bg:#E0EAFF;
+  --iw-font:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --iw-r-card:20px;
+  --iw-r-button:12px;
+  --iw-r-field:10px;
+  --iw-r-chip:999px;
+  --iw-shadow-1:0 8px 24px rgba(9,36,72,.06);
+  --iw-shadow-2:0 24px 60px rgba(9,36,72,.14);
+  --iw-s1:4px;
+  --iw-s2:8px;
+  --iw-s3:12px;
+  --iw-s4:16px;
+  --iw-s5:24px;
+  --iw-s6:32px;
+  --iw-s7:48px;
+  --iw-s8:72px;
+  --iw-s9:104px;
+}

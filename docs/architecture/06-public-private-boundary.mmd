@@ -1,0 +1,15 @@
+%% Public vs private separation (INTERNAL)
+flowchart LR
+  subgraph PUB["PUBLIC: site/public (deployed)"]
+    P1["Customer outcomes"]
+    P2["Early access and sign-in chooser"]
+    P3["Illustrative sample data only"]
+  end
+  subgraph PRIV["PRIVATE: docs/, reference/, apps (never deployed with site)"]
+    R1["Strategy, PRD, BRD"]
+    R2["Architecture, algorithms, pricing, settlement rules"]
+    R3["Prototype source"]
+  end
+  GATE{{"npm run verify<br/>IP scan + link check"}}
+  PRIV -. "no shared files" .- PUB
+  PUB --> GATE --> REL["Release approval:<br/>IP-disclosure review signed"]

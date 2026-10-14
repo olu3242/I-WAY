@@ -1,0 +1,17 @@
+{
+  "name": "iway-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "I-way: public conversion website, product documentation and architecture package. Internal docs are never deployed with the public site.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "site:build": "node scripts/build-site.mjs",
+    "site:serve": "node scripts/serve.mjs",
+    "scan:ip": "node scripts/scan-ip.mjs",
+    "check": "node scripts/check-site.mjs",
+    "verify": "npm run site:build && npm run scan:ip && npm run check",
+    "docs:docx": "node scripts/build-docs.mjs",
+    "diagrams": "node scripts/build-diagrams.mjs"
+  }
+}

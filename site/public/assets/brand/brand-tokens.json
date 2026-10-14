@@ -1,0 +1,19 @@
+{
+  "name": "I-way",
+  "typography": {
+    "primary": "Inter, Arial, sans-serif"
+  },
+  "colors": {
+    "navy": "#092448",
+    "blue": "#1261F3",
+    "cyan": "#00BCE8",
+    "orange": "#FF681C",
+    "amber": "#FFB000",
+    "light": "#F5F8FC",
+    "ink": "#111827"
+  },
+  "radii": {
+    "card": "20px",
+    "button": "12px"
+  }
+}

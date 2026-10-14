@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>I-way Brand Guidelines v1.0 (INTERNAL)</title>
+<style>
+{{FONTS}}
+:root{--navy:#092448;--blue:#1261F3;--cyan:#00BCE8;--orange:#FF681C;--amber:#FFB000;--cloud:#F5F8FC;--ink:#111827;--muted:#475569;--line:#DCE7F3}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;color:var(--ink);font-size:14px;line-height:1.6;background:#fff;-webkit-font-smoothing:antialiased}
+.page{max-width:1000px;margin:0 auto;padding:48px 40px}
+h1,h2,h3,h4{color:var(--navy);margin:0;letter-spacing:-.02em;line-height:1.15}
+h2{font-size:30px;font-weight:800;margin:6px 0 14px}
+h3{font-size:18px;font-weight:700;margin:26px 0 8px}
+h4{font-size:14px;font-weight:700;margin:16px 0 6px}
+p{margin:8px 0}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.muted{color:var(--muted)}
+section{padding:36px 0;border-top:1px solid var(--line)}
+.cover{background:var(--navy);color:#fff;min-height:620px;display:flex;flex-direction:column;justify-content:space-between;padding:56px;border-radius:0}
+.cover .chip{background:#fff;border-radius:16px;padding:16px 24px;display:inline-block}
+.cover .chip svg{width:200px;height:auto;display:block}
+.cover h1{color:#fff;font-size:56px;font-weight:800;line-height:1.05}
+.cover h1 span{color:var(--cyan)}
+.cover p{color:#C9D8EE;max-width:560px;font-size:16px}
+.cover .meta{display:flex;gap:28px;flex-wrap:wrap;font-size:12px;color:#9FB4D0;border-top:1px solid #1C3558;padding-top:18px}
+.tag{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;background:#FFF3D6;color:#8A5300}
+.tag.ok{background:#E3F6EC;color:#0B7A4B}.tag.no{background:#FDECEA;color:#B42318}.tag.info{background:#E0EAFF;color:#1E40AF}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:12.5px}
+th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-weight:700}
+td{border:1px solid var(--line);padding:8px 10px;vertical-align:top}
+tr:nth-child(even) td{background:#FAFCFE}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{border:1px solid var(--line);border-radius:20px;padding:20px;background:#fff}
+.callout{background:var(--cloud);border-left:4px solid var(--blue);padding:12px 16px;border-radius:0 12px 12px 0;margin:14px 0}
+.callout.warn{border-color:var(--orange);background:#FFF6EF}
+.stage{border:1px solid var(--line);border-radius:20px;padding:32px;display:flex;align-items:center;justify-content:center;background:#fff}
+.stage svg.logo{width:300px;height:auto}
+.stage.dark{background:var(--navy)}.stage.cloud{background:var(--cloud)}
+.sw{border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+.sw .c{height:92px;padding:12px;display:flex;align-items:flex-end;font-weight:800;font-size:16px}
+.sw .t{padding:10px 12px;font-size:12px;line-height:1.5}
+.sw .t b{display:block;font-size:13px}
+.bar{display:flex;height:34px;border-radius:12px;overflow:hidden;margin:10px 0;border:1px solid var(--line)}
+.dont{position:relative}
+.dont::after{content:"✕";position:absolute;top:8px;right:12px;color:#B42318;font-weight:800;font-size:18px}
+.do::after{content:"✓";position:absolute;top:8px;right:12px;color:#0B7A4B;font-weight:800;font-size:18px}
+.do{position:relative}
+.small{font-size:12px}
+.spec{display:flex;gap:18px;align-items:baseline;border-bottom:1px solid var(--line);padding:10px 0}
+.spec .m{width:150px;flex:none;font-size:11px;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:10px 22px;border-radius:12px;font-weight:700;font-size:14px;border:2px solid transparent}
+.btn.p{background:var(--orange);color:var(--navy)}.btn.s{border-color:var(--navy);color:var(--navy);background:#fff}.btn.x{background:var(--navy);color:#fff}
+.chipx{display:inline-flex;gap:6px;align-items:center;border-radius:99px;padding:4px 11px;font-size:12px;font-weight:700}
+.ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center}
+.ico svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
+.pagebreak{break-before:page}
+@media print{.page{padding:0 0}section{break-inside:avoid-page}.cover{min-height:250mm}@page{size:A4;margin:14mm}}
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="chip">{{LOGO}}</div>
+  <div>
+    <p class="eyebrow" style="color:#9FE7FF">Brand Guidelines · v1.0</p>
+    <h1>Move Smarter.<br><span>Go Further.</span></h1>
+    <p style="margin-top:18px">How I-way looks, sounds and behaves, across the public website, the four applications, documents and partner materials.</p>
+  </div>
+  <div class="meta"><span>INTERNAL · CONFIDENTIAL</span><span>Date: October 10, 2026</span><span>Basis: I-way Brand Kit (tokens, logo, icon, concept board) and the Public Experience Directive</span></div>
+</div>
+
+<div class="page">
+
+<section style="border-top:0" id="contents">
+  <p class="eyebrow">Contents</p>
+  <h2>What this guide covers</h2>
+  <table>
+    <tr><th style="width:60px">#</th><th>Section</th><th>Use it to</th></tr>
+    <tr><td>1</td><td>Brand foundation</td><td>Explain who I-way is and how it positions itself publicly</td></tr>
+    <tr><td>2</td><td>Voice and messaging</td><td>Write copy, UI text, notifications and errors</td></tr>
+    <tr><td>3</td><td>Logo and icon</td><td>Place the mark correctly on any surface</td></tr>
+    <tr><td>4</td><td>Colour</td><td>Choose colours and accessible pairings</td></tr>
+    <tr><td>5</td><td>Typography</td><td>Set type for web, apps and documents</td></tr>
+    <tr><td>6</td><td>Layout, shape, icons, imagery, motion</td><td>Build consistent interfaces and visuals</td></tr>
+    <tr><td>7</td><td>Components and status language</td><td>Use buttons, chips and status colours the same way everywhere</td></tr>
+    <tr><td>8</td><td>Product expression by application</td><td>Apply the brand to Driver, Carrier, Fleet and Platform apps</td></tr>
+    <tr><td>9</td><td>Public vs. private brand rules</td><td>Protect proprietary information in anything customer-facing</td></tr>
+    <tr><td>10</td><td>What not to use (concept-board conflicts)</td><td>Avoid claims and assets the directive prohibits</td></tr>
+    <tr><td>11</td><td>Applications and templates</td><td>Apply the brand to email, slides, documents and social</td></tr>
+    <tr><td>12</td><td>Asset inventory and governance</td><td>Know what exists, what is missing and who approves</td></tr>
+  </table>
+  <div class="callout"><b>Authority.</b> <code>brand-tokens.json</code> and the SVG files in the Brand Kit are authoritative. Values marked <span class="tag">derived</span> were introduced for UI and accessibility and need brand-owner approval. The concept board (PNG) is inspiration, not specification.</div>
+</section>
+
+<!-- 1 -->
+<section id="foundation">
+  <p class="eyebrow">01 · Foundation</p>
+  <h2>Brand foundation</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Purpose</h4><p>Make moving goods simpler, so businesses and the people who deliver for them spend less time coordinating and more time moving forward.</p></div>
+    <div class="card"><h4>Promise</h4><p>One connected experience: plan the work, see what is moving, keep everything organized.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h4>Brand line</h4><p style="font-size:22px;font-weight:800;color:var(--navy);margin:4px 0">Move Smarter. Go Further.</p><p class="muted small">Always sentence case with full stops, always as two sentences. Descriptor: “Logistics made simpler.”</p></div>
+    <div class="card"><h4>Positioning (public)</h4><p>A logistics platform that helps businesses plan shipments, stay informed and keep deliveries organized. Say <i>what customers can do</i>, never <i>how the technology works</i>.</p></div>
+  </div>
+  <h3>Personality: four pillars</h3>
+  <div class="grid g4">
+    <div class="card"><h4>Effortless</h4><p class="small">Few steps, plain words, no clutter.</p></div>
+    <div class="card"><h4>Trustworthy</h4><p class="small">Verified claims, visible status, honest limits.</p></div>
+    <div class="card"><h4>Forward-moving</h4><p class="small">Direction, momentum, progress, never hype.</p></div>
+    <div class="card"><h4>Approachable</h4><p class="small">Professional, human, never stiff.</p></div>
+  </div>
+  <h3>Audiences</h3>
+  <table>
+    <tr><th>Audience</th><th>What they need from the brand</th><th>Where they meet it</th></tr>
+    <tr><td>Businesses that ship goods</td><td>Clarity, confidence, less chasing</td><td>Public website, notifications, tracking links</td></tr>
+    <tr><td>Carriers, dispatchers, accounting</td><td>Control, accuracy, speed</td><td>Carrier Admin Portal</td></tr>
+    <tr><td>Drivers</td><td>Glanceable, one-handed, no ambiguity</td><td>Driver Mobile App</td></tr>
+    <tr><td>Fleet companies</td><td>Ownership of their fleet and pay</td><td>Fleet Company Portal</td></tr>
+    <tr><td>I-way staff</td><td>Governed visibility</td><td>Platform Admin (internal)</td></tr>
+  </table>
+  <div class="callout warn"><b>Brand note on “AI”.</b> The product is described internally as AI-native. Publicly, I-way does not lead with AI, show AI mechanics or use AI-themed imagery. The directive asks for outcomes, not mechanisms, and warns against generic AI imagery and buzzwords.</div>
+</section>
+
+<!-- 2 -->
+<section id="voice" class="pagebreak">
+  <p class="eyebrow">02 · Voice and messaging</p>
+  <h2>Voice and messaging</h2>
+  <div class="grid g4">
+    <div class="card"><h4>Clear</h4><p class="small">Short sentences. Everyday words. One idea at a time.</p></div>
+    <div class="card"><h4>Confident</h4><p class="small">Promise only what we can verify.</p></div>
+    <div class="card"><h4>Warm</h4><p class="small">Talk like a capable colleague.</p></div>
+    <div class="card"><h4>Honest</h4><p class="small">Say what is available now and what is not.</p></div>
+  </div>
+  <h3>Say / don’t say</h3>
+  <table>
+    <tr><th>Instead of</th><th>Write</th><th>Why</th></tr>
+    <tr><td>Leverage AI-driven orchestration to optimize your supply chain</td><td>Plan shipments, stay informed, and keep your business moving with confidence.</td><td>Outcome, not mechanism</td></tr>
+    <tr><td>Trusted by the world’s biggest brands</td><td><i>(omit until real, approved customers exist)</i></td><td>No fabricated social proof</td></tr>
+    <tr><td>Cut costs by 28%</td><td><i>(omit unless substantiated and approved)</i></td><td>No unsupported statistics</td></tr>
+    <tr><td>Error 500: request failed</td><td>We couldn’t send that just now. Your details are still here. Please try again.</td><td>Calm, specific, recoverable</td></tr>
+    <tr><td>Sign up now, limited spots!</td><td>I-way is opening through early access. Tell us about your shipments and we’ll be in touch.</td><td>No false scarcity</td></tr>
+  </table>
+  <h3>Tone by context</h3>
+  <table>
+    <tr><th>Context</th><th>Tone</th><th>Length</th><th>Example</th></tr>
+    <tr><td>Public website</td><td>Confident, simple, outcome-led</td><td>Headline ≤ 8 words; paragraphs ≤ 2 lines</td><td>Ship with confidence.</td></tr>
+    <tr><td>Product UI (Carrier, Fleet)</td><td>Precise, neutral, action-first</td><td>Labels 1–3 words</td><td>Assign driver</td></tr>
+    <tr><td>Driver app</td><td>Direct, imperative, glanceable</td><td>One line per instruction</td><td>Confirm arrival</td></tr>
+    <tr><td>Notifications</td><td>Factual, timely, specific (what, which load, what next)</td><td>≤ 2 lines</td><td>Pickup confirmed · IW-1021</td></tr>
+    <tr><td>Errors and empty states</td><td>Calm, blame-free, say what to do</td><td>2 sentences</td><td>Nothing here yet. Create your first shipment.</td></tr>
+    <tr><td>Legal and finance</td><td>Plain and exact; no marketing language</td><td>As needed</td><td>Settlement approved · PDF ready</td></tr>
+  </table>
+  <h3>Vocabulary</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Prefer</h4><p class="small">shipment (to shippers) · load (in carrier and driver tools) · delivery · plan · confirm · update · status · documents · early access</p></div>
+    <div class="card"><h4>Avoid</h4><p class="small">leverage · synergy · revolutionary · cutting-edge · best-in-class · guaranteed · seamless as a claim · “AI-powered” as a headline · superlatives without proof · exclamation marks in UI</p></div>
+  </div>
+  <h3>Approved messaging blocks (public)</h3>
+  <table>
+    <tr><th>Block</th><th>Copy</th></tr>
+    <tr><td>Headline</td><td>Move Smarter. Go Further.</td></tr>
+    <tr><td>Subheadline</td><td>Logistics made simpler. Plan shipments, stay informed, and keep your business moving with confidence.</td></tr>
+    <tr><td>Benefits</td><td>Ship with confidence · Stay informed at every step · Spend less time coordinating · Keep deliveries organized</td></tr>
+    <tr><td>How it works</td><td>01 Tell us what you’re moving · 02 Plan your delivery · 03 Stay connected</td></tr>
+    <tr><td>Closing line</td><td>Ready to move smarter? A simpler logistics experience starts here.</td></tr>
+    <tr><td>Boilerplate (short)</td><td>I-way is a logistics platform that helps businesses plan shipments, stay informed about progress, and keep deliveries organized in one place. It is currently opening through early access.</td></tr>
+    <tr><td>CTA labels</td><td>Get Started (primary) · Explore I-way (secondary) · Sign In · Join early access</td></tr>
+  </table>
+  <div class="callout"><b>Taglines.</b> “Move Smarter. Go Further.” is approved. “Smart Logistics. Greater Possibilities.” appears as a descriptor in the concept board; use only after the owner confirms it <span class="tag">TBC</span>. “AI-Powered Logistics for a Connected World” and “Your Cargo. Our Intelligence.” conflict with the public/private rule and are <b>not approved</b> for public use.</div>
+</section>
+
+<!-- 3 -->
+<section id="logo" class="pagebreak">
+  <p class="eyebrow">03 · Logo and icon</p>
+  <h2>Logo and icon</h2>
+  <p>Use the supplied SVG files exactly as provided. Do not redraw, recolour, re-space or re-typeset them.</p>
+  <div class="grid g2">
+    <div class="stage">{{LOGO}}</div>
+    <div class="stage dark"><div style="display:flex;gap:22px;align-items:center">{{ICON}}<span style="color:#9FB4D0;font-size:12px;max-width:150px">App icon: navy tile, blue, orange and cyan facets</span></div></div>
+  </div>
+  <table>
+    <tr><th>Asset</th><th>File</th><th>Details</th></tr>
+    <tr><td>Primary logo</td><td>i-way-logo.svg</td><td>viewBox 360×110 · mark in Blue #1261F3, Orange #FF681C, Navy #092448 · wordmark “I-way” in Navy, extra-bold</td></tr>
+    <tr><td>App icon</td><td>i-way-icon.svg</td><td>viewBox 128×128 · Navy tile, corner radius 28 · mark in Blue, Orange, Cyan</td></tr>
+  </table>
+  <h3>Clear space and size</h3>
+  <div class="grid g2">
+    <div class="stage cloud">
+      <svg viewBox="0 0 420 190" width="360" role="img" aria-label="Clear space diagram"><rect x="6" y="6" width="408" height="178" fill="none" stroke="#1261F3" stroke-dasharray="6 5" rx="6"/><rect x="62" y="40" width="296" height="110" fill="#fff" stroke="#DCE7F3"/><svg x="62" y="40" width="296" height="110" viewBox="0 0 360 110">{{LOGO_INNER}}</svg><text x="26" y="100" font-size="14" font-weight="800" fill="#1261F3" font-family="Inter,Arial">X</text><text x="196" y="26" font-size="14" font-weight="800" fill="#1261F3" font-family="Inter,Arial">X</text></svg>
+    </div>
+    <div class="card"><h4>Rules</h4>
+      <ul><li><b>Clear space X</b> = ¼ of the logo height on every side. Nothing enters this zone.</li>
+      <li><b>Minimum size:</b> logo 96 px wide on screen (25 mm in print); icon 24 px (16 px for favicons only).</li>
+      <li><b>Placement:</b> top-left in headers; centred only on single-focus pages.</li>
+      <li><b>Icon alone</b> for app tiles, favicons, avatars. Never use the icon where the wordmark is needed for recognition (first impressions, press).</li></ul></div>
+  </div>
+  <h3>Backgrounds</h3>
+  <div class="grid g3">
+    <div class="stage do">{{LOGO_SMALL}}</div>
+    <div class="stage cloud do">{{LOGO_SMALL}}</div>
+    <div class="stage dark do"><span style="background:#fff;border-radius:12px;padding:10px 16px;display:inline-block">{{LOGO_SMALL}}</span></div>
+  </div>
+  <p class="small muted">White and Cloud: use the primary logo. Navy or photographic backgrounds: place the primary logo on a white chip (as in the website footer) until an official reversed (white) logo is supplied. Do not invert or filter the logo to make it white.</p>
+  <h3>Misuse</h3>
+  <div class="grid g4">
+    <div class="stage dont"><div style="transform:scaleX(1.5)">{{LOGO_XS}}</div></div>
+    <div class="stage dont"><div style="transform:rotate(-12deg)">{{LOGO_XS}}</div></div>
+    <div class="stage dont"><div style="filter:hue-rotate(120deg) saturate(1.6)">{{LOGO_XS}}</div></div>
+    <div class="stage dont" style="background:linear-gradient(120deg,#FF681C,#FFB000 40%,#00BCE8)">{{LOGO_XS}}</div>
+  </div>
+  <p class="small muted">Do not: stretch or squash · rotate or skew · recolour or apply gradients · place on low-contrast or busy backgrounds · add shadows, outlines or effects · rearrange mark and wordmark · re-typeset “I-way” · crop the mark · use as a letter inside a sentence · place a third-party logo inside the clear space.</p>
+  <div class="callout warn"><b>Production note.</b> The supplied logo draws “I-way” as live text in Arial. Viewers without the same font fall back to another face. Before print, packaging or vehicle livery, request an outlined (text-to-path) version of the logo so the wordmark never changes. <span class="tag">TBC</span></div>
+</section>
+
+<!-- 4 -->
+<section id="colour" class="pagebreak">
+  <p class="eyebrow">04 · Colour</p>
+  <h2>Colour</h2>
+  <div class="grid g4">
+    <div class="sw"><div class="c" style="background:#092448;color:#fff">Navy</div><div class="t"><b>#092448</b>RGB 9 · 36 · 72<br>Text, headers, dark surfaces</div></div>
+    <div class="sw"><div class="c" style="background:#1261F3;color:#fff">Blue</div><div class="t"><b>#1261F3</b>RGB 18 · 97 · 243<br>Links, interaction, emphasis</div></div>
+    <div class="sw"><div class="c" style="background:#00BCE8;color:#092448">Cyan</div><div class="t"><b>#00BCE8</b>RGB 0 · 188 · 232<br>Tracking and data accents</div></div>
+    <div class="sw"><div class="c" style="background:#FF681C;color:#092448">Orange</div><div class="t"><b>#FF681C</b>RGB 255 · 104 · 28<br>Primary action, movement</div></div>
+    <div class="sw"><div class="c" style="background:#FFB000;color:#092448">Amber</div><div class="t"><b>#FFB000</b>RGB 255 · 176 · 0<br>Highlights, warnings</div></div>
+    <div class="sw"><div class="c" style="background:#F5F8FC;color:#092448">Cloud</div><div class="t"><b>#F5F8FC</b>RGB 245 · 248 · 252<br>Backgrounds</div></div>
+    <div class="sw"><div class="c" style="background:#111827;color:#fff">Ink</div><div class="t"><b>#111827</b>RGB 17 · 24 · 39<br>Body text on light</div></div>
+    <div class="sw"><div class="c" style="background:#fff;color:#092448;border-bottom:1px solid #DCE7F3">White</div><div class="t"><b>#FFFFFF</b><span class="tag">derived</span><br>Cards and surfaces</div></div>
+  </div>
+  <h3>Proportion</h3>
+  <div class="bar"><div style="flex:55;background:#fff"></div><div style="flex:15;background:#F5F8FC"></div><div style="flex:18;background:#092448"></div><div style="flex:7;background:#1261F3"></div><div style="flex:3;background:#00BCE8"></div><div style="flex:2;background:#FF681C"></div></div>
+  <p class="small muted">Guide, not a formula: White/Cloud and Navy carry roughly 85–90% of any layout. Blue guides interaction. Cyan marks tracking and data. Orange appears <b>once per view</b> as the main action or a single movement accent. Amber is for warnings and highlights.</p>
+  <h3>Accessible pairings (WCAG contrast, computed)</h3>
+  <table>
+    <tr><th>Foreground</th><th>Background</th><th>Ratio</th><th>Use</th></tr>
+    <tr><td>Navy</td><td>White</td><td>15.5 : 1</td><td><span class="tag ok">All text</span></td></tr>
+    <tr><td>Ink</td><td>White / Cloud</td><td>17.7 / 16.7 : 1</td><td><span class="tag ok">All text</span></td></tr>
+    <tr><td>Blue</td><td>White / Cloud</td><td>5.2 / 4.9 : 1</td><td><span class="tag ok">Text and links</span></td></tr>
+    <tr><td>Navy</td><td>Orange</td><td>5.3 : 1</td><td><span class="tag ok">Button label on Orange</span></td></tr>
+    <tr><td>Navy</td><td>Amber</td><td>8.4 : 1</td><td><span class="tag ok">Label on Amber</span></td></tr>
+    <tr><td>Cyan</td><td>Navy</td><td>6.9 : 1</td><td><span class="tag ok">Text on dark</span></td></tr>
+    <tr><td>White</td><td>Blue</td><td>5.2 : 1</td><td><span class="tag ok">Text on Blue</span></td></tr>
+    <tr><td>White</td><td>Orange</td><td>2.9 : 1</td><td><span class="tag no">Fails: do not use</span></td></tr>
+    <tr><td>Orange</td><td>White</td><td>2.9 : 1</td><td><span class="tag no">Not for text; graphics only</span></td></tr>
+    <tr><td>Cyan</td><td>White</td><td>2.2 : 1</td><td><span class="tag no">Not for text on light</span></td></tr>
+    <tr><td>Amber</td><td>White</td><td>1.8 : 1</td><td><span class="tag no">Not for text on light</span></td></tr>
+  </table>
+  <h3>Derived UI colours <span class="tag">derived · pending approval</span></h3>
+  <div class="grid g4">
+    <div class="card" style="background:#E3F6EC;color:#0B7A4B"><b>Success</b><br>#0B7A4B on #E3F6EC<br><span class="small">4.8 : 1</span></div>
+    <div class="card" style="background:#FFF3D6;color:#8A5300"><b>Warning</b><br>#8A5300 on #FFF3D6<br><span class="small">5.7 : 1</span></div>
+    <div class="card" style="background:#FDECEA;color:#B42318"><b>Error</b><br>#B42318 on #FDECEA<br><span class="small">5.8 : 1</span></div>
+    <div class="card" style="background:#E0EAFF;color:#1E40AF"><b>Info</b><br>#1E40AF on #E0EAFF<br><span class="small">7.2 : 1</span></div>
+  </div>
+  <p class="small muted">Also derived: muted text #475569 (7.6 : 1 on white), border #DCE7F3, dark panel tones #12396F and #0F2F5C for map and hero surfaces. Colour is never the only carrier of meaning: status always pairs colour with a word or icon.</p>
+</section>
+
+<!-- 5 -->
+<section id="type" class="pagebreak">
+  <p class="eyebrow">05 · Typography</p>
+  <h2>Typography</h2>
+  <div class="card" style="display:flex;gap:30px;align-items:center"><div style="font-size:110px;font-weight:800;color:var(--navy);line-height:1">Aa</div><div><h3 style="margin:0">Inter</h3><p class="muted">Primary typeface for every surface. Weights: 400, 500, 600, 700, 800. Open-source (SIL OFL). Fallback: system-ui, Segoe UI, Roboto, Arial.</p></div></div>
+  <h3>Type scale (web)</h3>
+  <div class="spec"><div class="m">Display<br>42–76 / 1.06 · 800</div><div style="font-size:46px;font-weight:800;color:var(--navy);letter-spacing:-.02em;line-height:1.06">Move Smarter.</div></div>
+  <div class="spec"><div class="m">H1<br>34–56 / 1.1 · 800</div><div style="font-size:36px;font-weight:800;color:var(--navy);letter-spacing:-.02em">Get started with I-way</div></div>
+  <div class="spec"><div class="m">H2<br>30–44 / 1.1 · 800</div><div style="font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.02em">Three simple steps</div></div>
+  <div class="spec"><div class="m">H3<br>20 / 1.3 · 700</div><div style="font-size:20px;font-weight:700;color:var(--navy)">Stay informed at every step</div></div>
+  <div class="spec"><div class="m">Lead<br>18–21 / 1.65 · 400</div><div style="font-size:18px;color:var(--muted)">Plan shipments, stay informed, and keep your business moving with confidence.</div></div>
+  <div class="spec"><div class="m">Body<br>17 / 1.6 · 400</div><div style="font-size:16px">Follow shipment progress and receive relevant updates.</div></div>
+  <div class="spec"><div class="m">Eyebrow<br>13 · 800 · caps +0.14em</div><div class="eyebrow" style="font-size:13px">How it works</div></div>
+  <div class="spec"><div class="m">Button<br>16 · 700</div><div class="btn p">Get Started</div></div>
+  <h3>Rules</h3>
+  <ul><li>Headlines: tight tracking (−0.02em), extra-bold, Navy. Sentence case, never all caps except eyebrows.</li>
+  <li>Body line length 45–75 characters. Left-aligned. Avoid justified text.</li>
+  <li>Numbers in tables, settlements and invoices use tabular figures (<code>font-variant-numeric: tabular-nums</code>) and right alignment.</li>
+  <li>Product UI: 14–16 px body in dense portals; 18 px minimum body in the Driver App, primary button label 18–20 px bold.</li>
+  <li>The supplied logo wordmark is Arial-based artwork; it is not typeset in Inter. Never retype it.</li></ul>
+</section>
+
+<!-- 6 -->
+<section id="layout" class="pagebreak">
+  <p class="eyebrow">06 · Layout, shape, icons, imagery, motion</p>
+  <h2>Layout, shape, icons, imagery and motion</h2>
+  <div class="grid g3">
+    <div class="card"><h4>Shape</h4><p class="small">Cards 20 px radius · buttons 12 px · fields 10 px · chips fully rounded. Soft, friendly, never sharp.</p><div style="display:flex;gap:10px;margin-top:10px"><div style="width:70px;height:46px;border:1px solid #DCE7F3;border-radius:20px;box-shadow:0 8px 24px rgba(9,36,72,.06)"></div><div style="width:70px;height:46px;background:#FF681C;border-radius:12px"></div></div></div>
+    <div class="card"><h4>Spacing (4-pt grid)</h4><p class="small">4 · 8 · 12 · 16 · 24 · 32 · 48 · 72 · 104. Generous whitespace between sections (64–104 px), tight inside components.</p></div>
+    <div class="card"><h4>Elevation</h4><p class="small">Shadow 1 <code>0 8px 24px rgba(9,36,72,.06)</code> for cards. Shadow 2 <code>0 24px 60px rgba(9,36,72,.14)</code> for hero and floating elements. No hard black shadows.</p></div>
+  </div>
+  <h3>Iconography</h3>
+  <div style="display:flex;gap:12px;flex-wrap:wrap">{{ICONS}}</div>
+  <p class="small muted">One family: 24 px grid, 1.75 px stroke, round caps and joins, single colour (<code>currentColor</code>), shown in a 44–52 px tile (radius 12–14) with a soft tint of its colour. Do not mix filled and outline icons, emoji or third-party icon styles in one interface.</p>
+  <h3>Imagery and illustration</h3>
+  <div class="grid g2">
+    <div class="card"><h4><span class="tag ok">Do</span></h4><ul class="small"><li>Original, clean logistics illustrations in brand colours</li><li>Interface previews with sample data labelled “illustrative”</li><li>Authentic photography only if owned or licensed, showing real work, people and vehicles without other brands</li><li>Route lines, pins, parcels, trucks as simple geometric forms</li></ul></div>
+    <div class="card"><h4><span class="tag no">Don’t</span></h4><ul class="small"><li>Generic “AI” imagery: brains, circuits, robots, glowing networks</li><li>Third-party brand logos or liveries (carriers, retailers, ports)</li><li>Crowded dashboards or technical diagrams on public pages</li><li>Stock images that imply customers, scale or coverage we cannot verify</li></ul></div>
+  </div>
+  <h3>Motion</h3>
+  <p>Subtle and purposeful: 150–200 ms for interactions, up to 600 ms for gentle reveals, route-line dash and a slow float on hero cards. Everything stops under <code>prefers-reduced-motion</code>. No autoplay video, no parallax, no animation that carries essential information.</p>
+  <h3>Data visualisation</h3>
+  <p>Primary series Blue; secondary Cyan; highlight Orange (one series); warnings Amber; neutrals from Navy tints. Always label directly or in a legend with text; never rely on colour alone.</p>
+</section>
+
+<!-- 7 -->
+<section id="components" class="pagebreak">
+  <p class="eyebrow">07 · Components and status language</p>
+  <h2>Components and status language</h2>
+  <h3>Buttons</h3>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center"><span class="btn p">Get Started</span><span class="btn s">Explore I-way</span><span class="btn x">Approve settlement</span><span style="font-weight:600;color:var(--navy)">Sign In</span></div>
+  <p class="small muted">One Orange primary action per view. Orange buttons always carry Navy text. Secondary = Navy outline. Minimum height 44 px (48 px default, 56 px hero, 52 px Driver App primary).</p>
+  <h3>Status chips (colour + word)</h3>
+  <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chipx" style="background:#EEF1F4;color:#334155">Draft</span><span class="chipx" style="background:#FFF3D6;color:#8A5300">Unassigned</span><span class="chipx" style="background:#E0EAFF;color:#1E40AF">Assigned</span><span class="chipx" style="background:#E0EAFF;color:#1E40AF">In transit</span><span class="chipx" style="background:#E3F6EC;color:#0B7A4B">Delivered</span><span class="chipx" style="background:#E3F6EC;color:#0B7A4B">Completed</span><span class="chipx" style="background:#FFF3D6;color:#8A5300">Needs information</span><span class="chipx" style="background:#FDECEA;color:#B42318">Exception</span></div>
+  <table>
+    <tr><th>Meaning</th><th>Colour</th><th>Statuses (from the status architecture)</th></tr>
+    <tr><td>Not started / neutral</td><td>Grey</td><td>Draft, Inactive, Closed</td></tr>
+    <tr><td>Needs attention</td><td>Amber</td><td>Unassigned, Under Review, Expiring Soon, Needs Information, Pending</td></tr>
+    <tr><td>In progress</td><td>Blue</td><td>Assigned, Accepted, En Route, At Pickup, Loaded, In Transit, At Delivery</td></tr>
+    <tr><td>Done / good</td><td>Green</td><td>Delivered, POD Submitted, Completed, Approved, Paid, Active</td></tr>
+    <tr><td>Problem</td><td>Red</td><td>Rejected, Expired, Failed, Returned, Suspended, Exception</td></tr>
+  </table>
+  <h3>Forms and feedback</h3>
+  <ul><li>Visible label above every field; optional fields marked “(optional)”; required kept to a minimum.</li><li>Errors sit under the field in red text with a clear fix; inputs persist after errors; focus moves to the first error.</li><li>Loading states say what is happening (“Sending…”). Success states say what happens next.</li><li>Focus ring: 3 px Blue, 3 px offset, on every interactive element.</li></ul>
+</section>
+
+<!-- 8 -->
+<section id="apps">
+  <p class="eyebrow">08 · Product expression</p>
+  <h2>Product expression by application</h2>
+  <p>One brand, four densities. Tokens are identical; layout density and target sizes change.</p>
+  <table>
+    <tr><th>Application</th><th>Character</th><th>Density and targets</th><th>Notes</th></tr>
+    <tr><td>Public website</td><td>Premium, airy, persuasive</td><td>Generous space; 48–56 px buttons</td><td>Customer outcomes only; sample data labelled</td></tr>
+    <tr><td>Driver Mobile App</td><td>Calm, bold, glanceable</td><td>18 px body; 52 px primary action; one task per screen</td><td>Works with gloves and sunlight: high contrast, large status text</td></tr>
+    <tr><td>Carrier Admin Portal</td><td>Efficient, information-rich</td><td>14–16 px; tables with tabular numbers</td><td>Navy sidebar, Cloud canvas, white cards</td></tr>
+    <tr><td>Fleet Company Portal</td><td>Same as Carrier, clearly separate context</td><td>As Carrier</td><td>Show company name in header so users know whose data they see</td></tr>
+    <tr><td>Platform Admin</td><td>Sober, audited</td><td>Dense; destructive actions need confirmation and reason</td><td>Internal only; never shown or named publicly</td></tr>
+  </table>
+  <div class="callout warn"><b>Prototype alignment.</b> The Make prototype uses a dark amber theme from an earlier style-guide proposal. It must be re-themed to these tokens. A dark mode may be added later with Navy surfaces and Cloud text; dark-mode tokens are not yet defined <span class="tag">TBC</span>.</div>
+</section>
+
+<!-- 9 -->
+<section id="public-private">
+  <p class="eyebrow">09 · Public vs. private</p>
+  <h2>Public vs. private brand rules</h2>
+  <p>Brand expression must never leak how I-way works. Show the customer-facing outcome, not the proprietary mechanism.</p>
+  <table>
+    <tr><th>Public (website, social, press)</th><th>Private (documents, apps, repositories)</th></tr>
+    <tr><td>What I-way helps customers do</td><td>How the technology accomplishes it</td></tr>
+    <tr><td>Simple shipment experience</td><td>Internal shipment orchestration</td></tr>
+    <tr><td>Tracking and visibility</td><td>Data processing and intelligence models</td></tr>
+    <tr><td>Customer benefits</td><td>Proprietary algorithms</td></tr>
+    <tr><td>Easy registration</td><td>Identity and permission architecture</td></tr>
+    <tr><td>Clear pricing, when approved</td><td>Pricing algorithms and margin models</td></tr>
+    <tr><td>Customer trust</td><td>Internal security architecture</td></tr>
+  </table>
+  <ul><li>Never in public brand material: strategy, roadmap, agent or AI mechanics, architecture, algorithms, settlement rules, margins, ownership model, Platform Admin, internal metrics.</li><li>Brand assets in the public repository carry no internal names, comments or metadata.</li><li>Every public asset passes the IP-disclosure review before release.</li></ul>
+</section>
+
+<!-- 10 -->
+<section id="avoid" class="pagebreak">
+  <p class="eyebrow">10 · What not to use</p>
+  <h2>Concept-board conflicts</h2>
+  <p>The supplied concept board (<code>i-way-brand-and-landing-preview.png</code>) is useful for logo variations, icon directions and mood, but its sample landing page contradicts the directive. Treat these items as <b>not approved</b>.</p>
+  <table>
+    <tr><th>Concept-board element</th><th>Problem</th><th>Decision</th></tr>
+    <tr><td>“Trusted by businesses worldwide” with major carrier, retailer and port logos</td><td>Fabricated social proof; third-party trademarks</td><td><span class="tag no">Remove</span></td></tr>
+    <tr><td>Statistics: −28% cost savings, 98% on-time, 1,248 shipments, $24.5K</td><td>Unsupported performance claims</td><td><span class="tag no">Remove</span> (sample data only if labelled illustrative)</td></tr>
+    <tr><td>“AI-native”, “AI route optimization”, “How does the AI optimization work?”</td><td>Reveals mechanism; AI buzzwords</td><td><span class="tag no">Remove</span></td></tr>
+    <tr><td>“Get Started Free”, “Is there a free trial?”, Pricing nav item</td><td>Unapproved commercial claims</td><td><span class="tag no">Remove</span> until pricing approved</td></tr>
+    <tr><td>Global coverage, airplane, ship and container imagery</td><td>Implies reach not verified; off-scope for a trucking-led product</td><td><span class="tag no">Remove</span></td></tr>
+    <tr><td>Industries: Healthcare, Automotive, Energy &amp; Industrial</td><td>Not in the approved list</td><td>Use: retail, e-commerce, manufacturing, distribution, growing businesses</td></tr>
+    <tr><td>Newsletter, social links, © 2024</td><td>Unconfigured or outdated</td><td>Add only when approved; use current year</td></tr>
+    <tr><td>Truck livery showing the I-way mark</td><td>Concept only</td><td>Do not publish without a real, approved vehicle program</td></tr>
+    <tr><td>Logo variations: reversed, mono, tagline lockup; app-icon colour variants</td><td>Useful direction, but no production files supplied</td><td><span class="tag">TBC</span> request official SVGs</td></tr>
+    <tr><td>Palette labels printed in the board</td><td>May differ from tokens</td><td><code>brand-tokens.json</code> wins</td></tr>
+  </table>
+</section>
+
+<!-- 11 -->
+<section id="applications">
+  <p class="eyebrow">11 · Applications and templates</p>
+  <h2>Applications and templates</h2>
+  <table>
+    <tr><th>Item</th><th>Guidance</th></tr>
+    <tr><td>Favicon / app icon</td><td>Use i-way-icon.svg. Export PNG sizes (16, 32, 180, 192, 512) from the SVG without changes <span class="tag">TBC files</span></td></tr>
+    <tr><td>Email signature</td><td>Logo ≥ 120 px wide left; name, role, phone, email in Inter or Arial 13 px Navy; no banners, quotes or images</td></tr>
+    <tr><td>Presentations</td><td>White or Navy title slide, one Orange accent, Inter, 28 px minimum body, labelled sample data</td></tr>
+    <tr><td>Documents (PRD, BRD, reports)</td><td>Navy headings, Blue sub-headings, Navy table headers with white text, “INTERNAL — CONFIDENTIAL” on every internal document</td></tr>
+    <tr><td>Social profile</td><td>Icon as avatar; Navy cover with brand line; post only approved claims</td></tr>
+    <tr><td>Social/OG image (1200×630)</td><td>Navy background, white chip with logo, brand line in Inter 800</td></tr>
+    <tr><td>Notification emails</td><td>White card on Cloud, logo top-left, one Orange button, plain-language subject, no marketing in transactional mail</td></tr>
+    <tr><td>PDFs (statements, invoices, BOL/POD)</td><td>Logo top-left, Navy headings, tabular figures, carrier name and address as the issuer where the carrier issues it</td></tr>
+  </table>
+</section>
+
+<!-- 12 -->
+<section id="governance">
+  <p class="eyebrow">12 · Assets and governance</p>
+  <h2>Asset inventory and governance</h2>
+  <table>
+    <tr><th>Asset</th><th>Status</th><th>Note</th></tr>
+    <tr><td>Primary logo SVG</td><td><span class="tag ok">Supplied</span></td><td>Outline wordmark before print</td></tr>
+    <tr><td>App icon SVG</td><td><span class="tag ok">Supplied</span></td><td></td></tr>
+    <tr><td>Brand tokens (JSON)</td><td><span class="tag ok">Supplied</span></td><td>Extended in docs/brand/tokens (kit vs. derived labelled)</td></tr>
+    <tr><td>Concept board PNG</td><td><span class="tag info">Reference</span></td><td>See section 10</td></tr>
+    <tr><td>Reversed (white) and one-colour logos</td><td><span class="tag">Needed</span></td><td>Concept shown; no files</td></tr>
+    <tr><td>Logo with descriptor line</td><td><span class="tag">Needed</span></td><td>Descriptor wording TBC</td></tr>
+    <tr><td>Favicon and app-icon PNG set, app-icon colour variants</td><td><span class="tag">Needed</span></td><td></td></tr>
+    <tr><td>Outlined wordmark</td><td><span class="tag">Needed</span></td><td>Print, vehicle, packaging</td></tr>
+    <tr><td>Social avatar, OG image, email signature, slide and document templates</td><td><span class="tag">Needed</span></td><td>Specs in section 11</td></tr>
+    <tr><td>Illustration and photography library</td><td><span class="tag">Needed</span></td><td>Original or licensed only</td></tr>
+    <tr><td>Trademark status of name and logo</td><td><span class="tag">TBC</span></td><td>Legal; do not add ™/® until confirmed</td></tr>
+    <tr><td>Inter font</td><td><span class="tag ok">Open licence</span></td><td>Self-host; include licence file</td></tr>
+  </table>
+  <h3>Governance</h3>
+  <table>
+    <tr><th>Topic</th><th>Rule</th></tr>
+    <tr><td>Brand owner</td><td>To be named <span class="tag">TBC</span></td></tr>
+    <tr><td>Using the brand</td><td>Use the supplied files and tokens unmodified; never recreate from screenshots</td></tr>
+    <tr><td>Requesting new assets or exceptions</td><td>Written request to the brand owner with use case and mock-up; exceptions recorded in the change log</td></tr>
+    <tr><td>Public release</td><td>Public copy and assets pass <code>docs/IP_DISCLOSURE_REVIEW.md</code> and <code>npm run verify</code></td></tr>
+    <tr><td>Partners and vendors</td><td>Receive this guide and the Brand Note; no use of the mark without written approval</td></tr>
+    <tr><td>Versioning</td><td>Semantic: v1.0 foundation; update on any token, logo or rule change</td></tr>
+  </table>
+  <p class="small muted" style="margin-top:28px">I-way Brand Guidelines v1.0 · INTERNAL · CONFIDENTIAL · October 10, 2026.</p>
+</section>
+</div>
+</body>
+</html>
