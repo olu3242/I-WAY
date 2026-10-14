@@ -1,3 +1,5 @@
+import {validateConfiguredRecord} from './operations-admin-validation.mjs';
+import {authorizeConfigured,projectConfiguredFields} from './operations-admin-policy.mjs';
 import {lifecycleState} from './operations-lifecycle.mjs';
 import {createAIPolicyExtensions,aiPolicyState} from './operations-ai-policy.mjs';
 import {normalizeLoadCreatePayload} from './operations-load-contract.mjs';
@@ -19,15 +21,19 @@ function localDateFormatter(timeZone){
 export class Operations{
  constructor(store,{now=()=>new Date(),extensions={},views=[]}={}){this.store=store;this.now=now;this.extensions={...createAIPolicyExtensions(),...extensions};this.views=[...views,aiPolicyState];}
  actor(id){const a=this.store.principal(id);if(!a?.active)reject(401,'SESSION','Sign in required.');return a;}
- guard(actor,action,resource){if(!authorize({actor,action,resource}))reject(403,'FORBIDDEN','This action is not permitted.');}
+ guard(actor,action,resource){if(!authorizeConfigured({store:this.store,actor,action,resource}))reject(403,'FORBIDDEN','This action is not permitted.');}
  read(kind,id,actor,action){const r=this.store.get(kind,id,actor.tenantId);if(action)this.guard(actor,action,r);return r;}
  change(actor,resource,patch,action,reason=''){
   if(['load','shipment'].includes(resource.kind))patch={...patch,lifecycleState:lifecycleState({...resource,...patch})};
+  const validation=validateConfiguredRecord(this.store,actor.tenantId,resource.kind,{...resource,...patch});
+  requireValue(validation.valid,'VALIDATION_RULE','Configured validation rule rejected this update.',422);
   const next=this.store.update(resource.kind,resource.id,actor.tenantId,resource.version,patch);
   this.store.audit(actor,action,resource.id,'success',{before:resource,after:next,reason},this.now().toISOString());return next;
  }
  create(actor,kind,values,action){
   if(['load','shipment'].includes(kind))values={...values,lifecycleState:lifecycleState(values)};
+  const validation=validateConfiguredRecord(this.store,actor.tenantId,kind,values);
+  requireValue(validation.valid,'VALIDATION_RULE','Configured validation rule rejected this record.',422);
   const result=this.store.insert(kind,actor.tenantId,values);
   this.store.audit(actor,action,result.id,'success',{after:result},this.now().toISOString());return result;
  }
@@ -61,13 +67,13 @@ export class Operations{
     if(kind==='fleet')return actor.permissions.includes('fleet:manage')||actor.role==='fleet'&&record.id===actor.fleetId;
     if(kind==='driver'||kind==='vehicle'){
      const assignment=kind==='vehicle'?this.store.list('assignment',actor.tenantId).find(a=>a.vehicleId===record.id&&a.status==='active'):null;
-     return authorize({actor,action:'asset:view',resource:assignment?{...record,driverId:assignment.driverId}:record});
+     return authorizeConfigured({store:this.store,actor,action:'asset:view',resource:assignment?{...record,driverId:assignment.driverId}:record});
     }
     if(['driver','fleet','customer'].includes(actor.role)&&['workflow','recommendation','approval'].includes(kind))return false;
     let load=record;
     if(kind!=='load')try{load=this.read('load',record.loadId,actor)}catch{return false}
-    return authorize({actor,action:'load:view',resource:load})&&(kind!=='invoice'||authorize({actor,action:actor.role==='customer'?'invoice:view':'finance:manage',resource:load}));
-   }).map(record=>projectResult(this,actor,record));
+    return authorizeConfigured({store:this.store,actor,action:'load:view',resource:load})&&(kind!=='invoice'||authorizeConfigured({store:this.store,actor,action:actor.role==='customer'?'invoice:view':'finance:manage',resource:load}));
+   }).map(record=>projectConfiguredFields({store:this.store,actor,resource:record,object:kind,record:projectResult(this,actor,record)}));
   }
   if(actor.role==='carrier'&&actor.permissions.includes('user:manage'))result.users=this.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(actor.tenantId).map(r=>JSON.parse(r.data));
   else if(actor.role==='fleet'&&actor.permissions.includes('employment:manage'))result.users=this.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(actor.tenantId).map(r=>JSON.parse(r.data)).filter(u=>u.fleetId===actor.fleetId&&u.role==='driver');
