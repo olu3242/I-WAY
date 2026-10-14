@@ -1,7 +1,7 @@
 /** Local operations admin adapter. SQLite is the currently integrated runtime;
  * PostgreSQL parity requires separate migration and RLS certification.
  */
-import {randomUUID} from 'node:crypto';
+import {rolePermissions} from '../domain/authorization.mjs';
 import {validateOrganizationSettings,evaluateValidationRule,validateRuleDefinition} from '../domain/enterprise-admin.mjs';
 import {authorizeOrganizationSettings} from '../domain/organization-settings-service.mjs';
 const TYPES=['permission-set','field-security','validation-rule','related-tab','page-layout','business-unit','location'];
@@ -14,6 +14,7 @@ const allowed={
  'business-unit':['name','code','active'],
  'location':['name','address','timeZone','active']
 };
+const validAction=new Set(Object.values(rolePermissions).flat());
 const idOk=v=>typeof v==='string'&&/^[a-zA-Z0-9][\w-]{0,127}$/.test(v);
 function clean(type,data){
  if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).some(k=>!allowed[type].includes(k)))throw new Error('INVALID_INPUT');
@@ -22,7 +23,7 @@ function clean(type,data){
  if(type==='validation-rule'&&!validateRuleDefinition({...data,id:'rule',version:1,enabled:true}))throw new Error('INVALID_INPUT');
  if(type==='field-security'&&(!idOk(data.object)||!idOk(data.field)))throw new Error('INVALID_INPUT');
  if(type==='permission-set'){
-  if(!Array.isArray(data.grants)||!Array.isArray(data.denials)||![...data.grants,...data.denials].every(idOk))throw new Error('INVALID_INPUT');
+  if(!Array.isArray(data.grants)||!Array.isArray(data.denials)||![...data.grants,...data.denials].every(v=>typeof v==='string'&&validAction.has(v)))throw new Error('INVALID_INPUT');
  }
  return JSON.parse(json);
 }
