@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {canStartQaPersonaSwitch,qaPersonaSwitchContext} from '../domain/qa-persona-switch-policy.mjs';
+const actor={id:'11111111-1111-4111-8111-111111111111',verified:true,active:true,role:'platform_admin',qaPersonaSwitchAllowed:true};
+const target={id:'22222222-2222-4222-8222-222222222222',tenantId:'33333333-3333-4333-8333-333333333333',active:true,qaAccount:true,role:'driver'};
+const now=1000000, expiresAt=now+60000;
+const input={environment:'preview',enabled:true,actor,target,now,expiresAt};
+test('authorized QA switch requires verified admin and designated QA target',()=>assert.equal(canStartQaPersonaSwitch(input),true));
+test('production cannot enable switching',()=>assert.equal(canStartQaPersonaSwitch({...input,environment:'production'}),false));
+test('flag disabled denies switching',()=>assert.equal(canStartQaPersonaSwitch({...input,enabled:false}),false));
+test('unverified or unauthorized admin denied',()=>{for(const change of [{verified:false},{qaPersonaSwitchAllowed:false},{role:'carrier_admin'},{active:false}])assert.equal(canStartQaPersonaSwitch({...input,actor:{...actor,...change}}),false)});
+test('real accounts and other platform admins are never switch targets',()=>{for(const change of [{qaAccount:false},{role:'platform_admin'},{active:false}])assert.equal(canStartQaPersonaSwitch({...input,target:{...target,...change}}),false)});
+test('switch expiry must be bounded',()=>{assert.equal(canStartQaPersonaSwitch({...input,expiresAt:now}),false);assert.equal(canStartQaPersonaSwitch({...input,expiresAt:now+16*60000}),false)});
+test('context preserves real actor identity and target tenant',()=>{
+ const grant={id:'44444444-4444-4444-8444-444444444444',actorId:actor.id,targetId:target.id,tenantId:target.tenantId,environment:'preview',enabled:true,active:true,revoked:false,issuedAt:now,expiresAt};
+ assert.deepEqual(qaPersonaSwitchContext({grant,actor,target,now}),{realActorId:actor.id,effectiveActorId:target.id,tenantId:target.tenantId,effectiveRole:'driver',grantId:grant.id,expiresAt});
+ assert.equal(qaPersonaSwitchContext({grant:{...grant,revoked:true},actor,target,now}),null);
+ assert.equal(qaPersonaSwitchContext({grant:{...grant,tenantId:actor.id},actor,target,now}),null);
+ assert.equal(qaPersonaSwitchContext({grant,actor,target,now:expiresAt}),null);
+});
