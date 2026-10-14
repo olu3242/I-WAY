@@ -1,0 +1,113 @@
+{
+  "scope": "shared host; one-second CPU deltas; no process or tenant data",
+  "repetition": 3,
+  "exitCode": 0,
+  "elapsedMs": 17436.728599999995,
+  "observed": 17,
+  "sampled": 17,
+  "truncated": false,
+  "samples": [
+    {
+      "elapsedMs": 1021.5409,
+      "hostCpuBusyPercent": 98.52477122120543,
+      "freeMemoryBytes": 2905489408,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 2029.6806999999972,
+      "hostCpuBusyPercent": 98.62245715201026,
+      "freeMemoryBytes": 2897346560,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 3039.0792999999976,
+      "hostCpuBusyPercent": 93.26139088729016,
+      "freeMemoryBytes": 2923241472,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 4036.742299999998,
+      "hostCpuBusyPercent": 68.93037665090493,
+      "freeMemoryBytes": 2891460608,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 5056.254000000001,
+      "hostCpuBusyPercent": 55.81097316780137,
+      "freeMemoryBytes": 2919968768,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 6057.647599999997,
+      "hostCpuBusyPercent": 25.194311228708454,
+      "freeMemoryBytes": 2926747648,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 7061.548499999997,
+      "hostCpuBusyPercent": 44.49389109151226,
+      "freeMemoryBytes": 2863181824,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 8059.711299999995,
+      "hostCpuBusyPercent": 77.67400308616908,
+      "freeMemoryBytes": 2840199168,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 9067.953199999996,
+      "hostCpuBusyPercent": 68.66438356164383,
+      "freeMemoryBytes": 2943361024,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 10073.455600000001,
+      "hostCpuBusyPercent": 93.96947817525435,
+      "freeMemoryBytes": 2881908736,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 11071.278699999995,
+      "hostCpuBusyPercent": 80.94502277163305,
+      "freeMemoryBytes": 2859184128,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 12084.9911,
+      "hostCpuBusyPercent": 46.64725390277441,
+      "freeMemoryBytes": 2934198272,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 13101.161699999997,
+      "hostCpuBusyPercent": 80.44639298525308,
+      "freeMemoryBytes": 2830176256,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 14088.897899999996,
+      "hostCpuBusyPercent": 61.69058744993324,
+      "freeMemoryBytes": 2929233920,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 15090.416599999997,
+      "hostCpuBusyPercent": 29.988513291762388,
+      "freeMemoryBytes": 2919063552,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 16158.8649,
+      "hostCpuBusyPercent": 44.23977281449075,
+      "freeMemoryBytes": 2843484160,
+      "totalMemoryBytes": 16847921152
+    },
+    {
+      "elapsedMs": 17124.0859,
+      "hostCpuBusyPercent": 81.59814323607428,
+      "freeMemoryBytes": 2859098112,
+      "totalMemoryBytes": 16847921152
+    }
+  ]
+}

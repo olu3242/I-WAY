@@ -1,5 +1,6 @@
-import {randomUUID} from 'node:crypto';
+import {X509Certificate,randomUUID} from 'node:crypto';
 import {checkServerIdentity} from 'node:tls';
+import {AsyncCommandError} from '../domain/operations-async-command.mjs';
 import {postgresTlsOptions} from './postgres-tls.mjs';
 
 // Readiness adapter only. The synchronous SQLite Operations engine cannot consume this contract.
@@ -16,7 +17,7 @@ export class OperationsPgError extends Error{
 }
 function ensure(value,code='CONFIGURATION'){if(!value)throw new OperationsPgError(code);}
 function sanitized(error){
- if(error instanceof OperationsPgError)return error;
+ if(error instanceof OperationsPgError||error instanceof AsyncCommandError)return error;
  const code=String(error?.code??'');
  return new OperationsPgError(code==='28P01'||code==='28000'?'AUTHENTICATION':/CERT|TLS|SSL|SELF_SIGNED/.test(code)?'TLS':/^(ECONN|ENOTFOUND|EAI_|ETIMEDOUT)/.test(code)?'NETWORK':code==='23505'?'CONFLICT':code==='42501'?'AUTHORIZATION':code==='40001'||code==='40P01'?'RETRY_TRANSACTION':'DATABASE_FAILURE');
 }
@@ -37,10 +38,20 @@ export function buildOperationsPgConfig({databaseUrl,projectRef,endpoint,databas
   expected:Object.freeze({endpoint,databaseName,username,loginRole,port:5432})});
  configs.add(config);return config;
 }
+// Test-only configuration. No hosted endpoint can use a caller-supplied CA.
+export function buildLocalOperationsPgConfig({optIn=false,connection,ca}={}){
+ ensure(optIn===true&&connection?.host==='127.0.0.1'&&connection.port===5433&&connection.database==='iway_fixture'&&connection.user==='iway_operations_fixture'&&typeof connection.password==='string'&&connection.password.length>=32);
+ let certificate;try{certificate=new X509Certificate(ca)}catch{throw new OperationsPgError('CONFIGURATION')}
+ ensure(certificate.ca&&certificate.verify(certificate.publicKey)&&Date.parse(certificate.validFrom)<=Date.now()&&Date.parse(certificate.validTo)>Date.now());
+ const config=Object.freeze({host:connection.host,port:connection.port,database:connection.database,user:connection.user,password:connection.password,
+ ssl:Object.freeze({ca,rejectUnauthorized:true,minVersion:'TLSv1.2'}),max:5,connectionTimeoutMillis:5000,idleTimeoutMillis:5000,
+ expected:Object.freeze({endpoint:connection.host,port:connection.port,databaseName:connection.database,username:connection.user,loginRole:connection.user}),localFixture:true});
+ configs.add(config);return config;
+}
 const HEALTH_SQL="SELECT current_user AS login, current_database() AS database, r.rolsuper, r.rolbypassrls, r.rolcreaterole, r.rolcreatedb, r.rolreplication, s.ssl, EXISTS (SELECT 1 FROM pg_catalog.pg_roles p WHERE pg_catalog.pg_has_role(current_user,p.oid,'MEMBER') AND (p.rolsuper OR p.rolbypassrls OR p.rolcreaterole OR p.rolcreatedb OR p.rolreplication OR p.rolname IN ('pg_write_all_data','pg_read_all_data','pg_read_server_files','pg_write_server_files','pg_execute_server_program','pg_signal_backend','pg_checkpoint','pg_maintain'))) AS elevated_membership, EXISTS (SELECT 1 FROM pg_catalog.pg_namespace n WHERE n.nspname='operations_private' AND pg_catalog.pg_has_role(current_user,n.nspowner,'MEMBER')) OR EXISTS (SELECT 1 FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_private' AND pg_catalog.pg_has_role(current_user,c.relowner,'MEMBER')) AS owns_operations FROM pg_catalog.pg_roles r LEFT JOIN pg_catalog.pg_stat_ssl s ON s.pid=pg_catalog.pg_backend_pid() WHERE r.rolname=current_user";
 async function verifiedClient(client,config){
  const expected=config.expected,p=client.connectionParameters,stream=client.connection?.stream;
- ensure(p&&p.host===expected.endpoint&&Number(p.port)===5432&&p.database===expected.databaseName&&p.user===expected.username,'CONNECTION_CONFIGURATION');
+ ensure(p&&p.host===expected.endpoint&&Number(p.port)===expected.port&&p.database===expected.databaseName&&p.user===expected.username,'CONNECTION_CONFIGURATION');
  ensure(p.ssl?.rejectUnauthorized===true&&!p.ssl.checkServerIdentity&&stream?.encrypted===true&&stream.authorized===true,'TLS');
  let certificate;try{certificate=stream.getPeerCertificate(true)}catch{throw new OperationsPgError('TLS')}
  ensure(certificate&&Object.keys(certificate).length>0&&!checkServerIdentity(expected.endpoint,certificate),'TLS');
@@ -59,7 +70,9 @@ function validateResource(kindValue,id){ensure(kind(kindValue)&&uuid(id),'INPUT'
 function scopedMethods(query,scope){
  const tenant=scope.tenantId,actor=scope.actorId;
  return Object.freeze({
+  async lockTenant(){await query('SELECT pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended($1,0))',[tenant]);},
   async principal(){const r=await query('SELECT data FROM operations_private.users WHERE tenant_id=$1 AND id=$2',[tenant,actor]);return r.rows[0]?.data??null;},
+  async user(id){ensure(uuid(id),'INPUT');const r=await query("SELECT jsonb_build_object('id',id,'tenantId',tenant_id,'role','dispatcher','active',active) AS data FROM operations_private.dispatcher_directory WHERE tenant_id=$1 AND id=$2",[tenant,id]);return r.rows[0]?.data??null;},
   async tenant(){const r=await query('SELECT id,name,timezone FROM operations_private.tenants WHERE id=$1',[tenant]);return r.rows[0]??null;},
   async list(kindValue,{limit=200,afterId=null}={}){
    ensure(kind(kindValue)&&Number.isInteger(limit)&&limit>=1&&limit<=500&&(afterId===null||uuid(afterId)),'INPUT');
@@ -114,6 +127,8 @@ export class AsyncOperationsPgStore{
    client=await this.#pool.connect();await verifiedClient(client,this.#config);
    await client.query('BEGIN');started=true;
    await client.query("SELECT set_config('iway.tenant_id',$1,true),set_config('iway.actor_id',$2,true),set_config('statement_timeout',$3,true),set_config('lock_timeout',$4,true)",[bound.tenantId,bound.actorId,'5000','2000']);
+   // Serialize before principal and replay checks; the lock releases on commit/rollback.
+   await client.query('SELECT pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended($1,0))',[bound.tenantId]);
    const principal=await client.query("SELECT id FROM operations_private.users WHERE tenant_id=$1 AND id=$2 AND data->>'active'='true'",[bound.tenantId,bound.actorId]);
    ensure(principal.rowCount===1,'AUTHORIZATION');
    open=true;

@@ -1,0 +1,18 @@
+{
+  "originalBranch": "feat/ai-native-decision-plane",
+  "originalHead": "036d72564bad1d14b272fd3dd9ce2b533535ee71",
+  "stash": "abd9f85372709ed761f2c11b612c7dbb732212ef",
+  "files": {
+    "domain/operations-integration.mjs": "efbd047cd586e17fe9b82280908a5d0d99e617d52025068d7fae41d562f58bd1",
+    "domain/operations-projection.mjs": "c2725c3f8e4a23b14fec12a66364bad98dc63250c1b2bd1306433cf13dfa507e",
+    "domain/operations-provider.mjs": "faf1ee6ffad547aed1584ddb3c50051666a38a6b94a6e458023a78ce7f462102",
+    "scripts/operations-rls-local-probe.mjs": "e6e23ca0389dee2e7af848ef18c7d0ce6e8872ba35e993c3504fccbed2c1a4d0",
+    "tests/operations-provider.test.mjs": "6764fc7d54005c4b642f7d433d7184ab3b865a38c171fb880dd2309d034ed6bc",
+    "domain/operations-transport.mjs": "74f796f5cabf6b24267721aca0af4be9037abd4e97c2f1221c3eafe2142da2a2"
+  },
+  "priorManifests": {
+    "batches-88-100": "88aef9156d0bbb3a7869c069792e0a42172883cf0d0cdff06e7ed6f50daddb28",
+    "performance-recovery": "f98a4230c456388229ee3f218d5e5def360d833f7b93fdbe54f996497bb01f33"
+  },
+  "startingCommit": "d8208f459e2414dea6d9d85ad5e3ed964c9b991f"
+}

@@ -1,3 +1,4 @@
+import {evaluateDecision} from '../lib/intelligence/decision-plane.mjs';
 import {randomUUID} from 'node:crypto';
 import {authorize} from './authorization.mjs';
 import {fields,text,integer,requireValue} from './operations-errors.mjs';
@@ -35,6 +36,18 @@ function authorized(ops,job){
   try{validateConnectorInput(ops,actor,load,job.capability,job.input)}catch{return {error:'CONNECTOR_AUTHORITY_CHANGED'};}
  }
  return {actor,load,policyVersion:current.version};
+}
+// Classify a checkpoint against an explicitly provisioned tenant AI policy.
+// Missing or malformed AI policy never inherits the legacy automation switch.
+function checkpointAIPolicy(ops,job,output){
+ const configured=ops.store.list('aipolicy',job.tenantId).find(p=>p.lifecycle==='APPROVED'&&p.enabled===true);
+ const input={tenantId:job.tenantId,eventId:job.id+':'+job.runNumber+':'+job.checkpoint,
+  action:'review_'+output.role,confidence:1,estimatedCost:0,evidence:[]};
+ if(!configured)return {status:'BLOCKED',reason:'AI_POLICY_NOT_CONFIGURED'};
+ try{
+  const result=evaluateDecision(input,configured);
+  return {status:result.status,...(result.reason?{reason:result.reason}:{}),policyVersion:result.policyVersion??null,policyId:configured.id};
+ }catch{return {status:'BLOCKED',reason:'AI_POLICY_INVALID'};}
 }
 function writeJob(ops,job,patch,action,reason=''){
  const next=ops.store.update(job.kind,job.id,job.tenantId,job.version,patch);
@@ -198,7 +211,7 @@ export function completeJob(ops,claim,result){
   const {job}=current;
   if(current.error){writeJob(ops,job,{status:'blocked',lastError:current.error,leaseOwner:null,leaseUntil:null,fence:job.fence+1},'runtime:blocked',current.error);return {accepted:false,reason:current.error};}
   let output;try{output=safeOutput(ops,job,current.actor,current.load,result)}catch{writeJob(ops,job,{status:'blocked',lastError:'EVIDENCE_CHANGED',leaseOwner:null,leaseUntil:null,fence:job.fence+1},'runtime:blocked','EVIDENCE_CHANGED');return {accepted:false,reason:'EVIDENCE_CHANGED'};}
-  const evidence=ops.store.insert(job.kind==='orchestration'?'agentdecision':'connectorresult',job.tenantId,{loadId:job.loadId,loadVersion:job.loadVersion,jobId:job.id,runNumber:job.runNumber,checkpoint:job.checkpoint,fence:job.fence,policyVersion:current.policyVersion,...output,createdAt:ops.now().toISOString()});
+  const evidence=ops.store.insert(job.kind==='orchestration'?'agentdecision':'connectorresult',job.tenantId,{loadId:job.loadId,loadVersion:job.loadVersion,jobId:job.id,runNumber:job.runNumber,checkpoint:job.checkpoint,fence:job.fence,policyVersion:current.policyVersion,...(job.kind==='orchestration'?{decisionGovernance:{schemaVersion:1,status:'ADVISORY_ONLY',policyVersion:current.policyVersion,policyEnabled:true,allowedTool:tool(job),aiDecision:checkpointAIPolicy(ops,job,output),requiresWorkflowAuthorization:true,executionPerformed:false,source:'server-verified-runtime-checkpoint'}}:{}),...output,createdAt:ops.now().toISOString()});
   ops.store.audit(service(job.tenantId),'runtime:decision',evidence.id,'success',{jobId:job.id,loadId:job.loadId,role:output.role??null,tool:tool(job),checkpoint:job.checkpoint,fence:job.fence,provider:output.provenance.provider,model:null,consequentialAction:false},ops.now().toISOString());
   const checkpoint=job.checkpoint+1,completed=job.kind==='connectorjob'||checkpoint===job.plan.length;
   const next=writeJob(ops,job,{status:completed?'completed':'pending',checkpoint,attempts:0,lastError:null,nextAttemptAt:null,leaseOwner:null,leaseUntil:null,decisionIds:[...job.decisionIds,evidence.id],...(completed?{completedAt:ops.now().toISOString()}: {})},'runtime:checkpoint');
@@ -221,7 +234,8 @@ export async function runRuntimeTick(ops,{workerId='local-'+randomUUID(),adapter
  for(const tenant of ops.store.db.prepare('SELECT id FROM tenants').all()){
   for(const kind of jobKinds){
    const now=ops.now().toISOString();
-   const candidates=ops.store.list(kind,tenant.id).filter(j=>j.status==='pending'||j.status==='retry'&&j.nextAttemptAt<=now||j.status==='running'&&j.leaseUntil<=now).slice(0,20);
+   // Preserve rowid ordering and the 20-job bound, but avoid decoding terminal jobs.
+   const candidates=ops.store.db.prepare(`SELECT data FROM resources WHERE kind=? AND tenant_id=? AND (json_extract(data,'$.status')='pending' OR (json_extract(data,'$.status')='retry' AND json_extract(data,'$.nextAttemptAt')<=?) OR (json_extract(data,'$.status')='running' AND json_extract(data,'$.leaseUntil')<=?)) ORDER BY rowid LIMIT 20`).all(kind,tenant.id,now,now).map(row=>JSON.parse(row.data));
    for(const candidate of candidates){
     const claim=claimJob(ops,{tenantId:tenant.id,kind,jobId:candidate.id,workerId,adapters,leaseMs});if(!claim)continue;
     let heartbeatError;

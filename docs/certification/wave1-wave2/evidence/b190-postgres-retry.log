@@ -1,0 +1,69 @@
+
+> iway-platform@0.1.0 test:pg:local
+> node scripts/certify-postgres.mjs local --operations-isolated
+
+Running LOCAL PostgreSQL checks; this cannot certify hosted operation
+▶ disposable PostgreSQL Operations certification
+  ✔ verified TLS, restricted role, migrations and forced RLS (475.6878ms)
+  ✔ atomic load/shipment/audit/command and concurrent replay (1584.9515ms)
+  ✔ concurrent conflicting commands commit exactly one pair (179.8517ms)
+  ✔ resources persistence failure rolls back all records and permits retry (315.2056ms)
+  ✔ commands persistence failure rolls back all records and permits retry (186.7666ms)
+  ✔ audit persistence failure rolls back all records and permits retry (159.151ms)
+  ✔ optimistic concurrency permits one update and rejects stale version (50.2243ms)
+  ✔ cross-tenant, missing and inactive principals cannot read or write (715.681ms)
+  ✔ actor spoofing denied for audit, command evidence and sessions (33.1176ms)
+  ✔ audit and command mutation and role escalation denied (471.5077ms)
+  ✔ dispatcher lookup reveals only active directory data; user records remain self-only (646.7531ms)
+  ✔ migration history is atomic, idempotent and rejects changed checksums (84.9468ms)
+  ✖ forced RLS denies all logistics resource kinds and ownership reassignment (182.041ms)
+  ✔ concurrent approval evidence updates have one optimistic winner (175.7945ms)
+  ✔ pool exhaustion times out and pool recovers without writes (3516.298ms)
+✖ disposable PostgreSQL Operations certification (87675.3859ms)
+ℹ {"scope":"disposable PostgreSQL same-key contention","requests":12,"elapsedMs":1325.5445999999938}
+ℹ tests 16
+ℹ suites 0
+ℹ pass 14
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88705.5275
+
+✖ failing tests:
+
+test at tests\local\operations-postgres.test.mjs:93:10
+✖ forced RLS denies all logistics resource kinds and ownership reassignment (182.041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: '42P08'
+  -   code: '42501'
+    }
+  
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async raw (file:///C:/Cdev/I-WAY-wave1-wave2/tests/local/operations-postgres.test.mjs:27:225)
+      at async TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/local/operations-postgres.test.mjs:98:4)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/local/operations-postgres.test.mjs:93:2)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: error: inconsistent types deduced for parameter $1
+        at C:\Cdev\I-WAY-app\node_modules\pg\lib\client.js:694:17
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async raw (file:///C:/Cdev/I-WAY-wave1-wave2/tests/local/operations-postgres.test.mjs:27:225)
+        at async TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/local/operations-postgres.test.mjs:98:4)
+        at async Test.run (node:internal/test_runner/test:1313:7)
+        at async TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/local/operations-postgres.test.mjs:93:2)
+        at async Test.run (node:internal/test_runner/test:1313:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3),
+    expected: { code: '42501' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+NO-GO: PostgreSQL certification failed

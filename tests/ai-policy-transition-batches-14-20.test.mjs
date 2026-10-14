@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {transitionAIPolicy} from '../lib/intelligence/policy-lifecycle.mjs';
+const owner={id:'carrier-one',tenantId:'t1',role:'carrier',active:true,permissions:['governance:manage']};
+const reviewer={...owner,id:'carrier-two'};
+const base={tenantId:'t1',enabled:true,allowedActions:['review_tracking'],autonomyLevel:4,minimumConfidence:0.9,maximumCost:0};
+const propose=(current=null,actor=owner)=>transitionAIPolicy(current,{action:'propose',policy:base},actor);
+const approve=(p,actor=reviewer)=>transitionAIPolicy(p,{action:'approve',expectedVersion:p.version},actor);
+const revoke=(p,actor=owner)=>transitionAIPolicy(p,{action:'revoke',expectedVersion:p.version},actor);
+test('batch 14: empty actor identity fails closed',()=>assert.equal(propose(null,{...owner,id:'  '}).reason,'UNAUTHORIZED'));
+test('batch 15: empty tenant identity fails closed',()=>assert.equal(propose(null,{...owner,tenantId:' '}).reason,'UNAUTHORIZED'));
+test('batch 16: pending policy cannot be overwritten',()=>assert.equal(propose(propose().policy).reason,'INVALID_TRANSITION'));
+test('batch 17: approved policy cannot be overwritten without revocation',()=>{const p=approve(propose().policy).policy;assert.equal(propose(p).reason,'INVALID_TRANSITION')});
+test('batch 18: revoked policy can be reproposed only as inert new version',()=>{const old=revoke(approve(propose().policy).policy).policy;const next=propose(old).policy;assert.equal(next.enabled,false);assert.equal(next.lifecycle,'PENDING_APPROVAL');assert.equal(next.version,old.version+1);assert.equal(next.approvedBy,null)});
+test('batch 19: missing proposer identity blocks approval',()=>{const p={...propose().policy,proposedBy:null};assert.equal(approve(p).reason,'SEPARATION_OF_DUTIES')});
+test('batch 20: reapproval after revocation requires independent fresh approval',()=>{const old=revoke(approve(propose().policy).policy).policy;const pending=propose(old).policy;assert.equal(approve(pending,owner).reason,'SEPARATION_OF_DUTIES');const approved=approve(pending).policy;assert.equal(approved.enabled,true);assert.equal(approved.version,pending.version+1)});

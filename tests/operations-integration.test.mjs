@@ -102,3 +102,16 @@ test('B54 competing processes claim one durable message, with current tenant aut
  assert.throws(()=>f.store.update('integrationjob',job.id,load.tenantId,current.version,{event:null}),/immutable/);
  assert.throws(()=>f.store.db.prepare('DELETE FROM resources WHERE id=?').run(job.id),/cannot be deleted/);
 });
+
+ test('carrier governance revocation fences queued and running integration work; timeout aborts fixture adapter',async t=>{
+  const {createRuntimeExtensions}=await import('../domain/operations-runtime.mjs');
+  const f=install(await fixture(t));Object.assign(f.ops.extensions,createRuntimeExtensions());const load=f.assign(),job=queue(f,load);
+  const claim=claimIntegration(f.ops,{tenantId:load.tenantId,jobId:job.id,workerId:'fixture-worker',providers:f.providers});assert.ok(claim);
+  let policy=f.command(f.manager,'governance:update',null,{enabled:false,disabledTools:[],reason:'Human disables integration'});
+  assert.equal(completeIntegration(f.ops,claim,{status:'local_recorded',externalDelivery:false},{providers:f.providers}).reason,'POLICY_BLOCKED');
+  assert.throws(()=>queue(f,load,event(f,'blocked-event')),code('POLICY_BLOCKED'));
+  policy=f.command(f.manager,'governance:update',policy,{enabled:true,disabledTools:[],reason:'Human permits local test'});
+  let signal;f.providers[0].adapter={...localSignedMessageAdapter,deliver:async r=>{signal=r.signal;return new Promise(()=>{})}};
+  const next=queue(f,load,event(f,'timeout-event'));await runIntegrationTick(f.ops,{providers:f.providers,timeoutMs:5});
+  assert.equal(signal.aborted,true);assert.equal(f.store.get('integrationjob',next.id,load.tenantId).status,'retry');
+ });

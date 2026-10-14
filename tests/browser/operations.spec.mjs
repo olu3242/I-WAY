@@ -39,6 +39,8 @@ for(const persona of [
 }
 
 test('browser journey creates, dispatches, executes and approves an invoice with real persistence',async({browser,workspace})=>{
+ // Full multi-view/persona journey includes repeated axe scans; assertion deadlines remain unchanged.
+ test.setTimeout(180000);
  const customer=workspace.command(workspace.manager,'customer:create',null,{name:'Illustrative journey customer'});
  const customerReader=workspace.command(workspace.manager,'user:create',null,{username:'journey-customer@illustrative.invalid',name:'Illustrative Journey Reader',role:'customer',customerId:customer.id,password});
  const pages={},contexts=[];
@@ -369,3 +371,15 @@ test('Wave 4 browser joins advisory analysis, human assignment approval and boun
   expect(errors).toEqual([]);
  }finally{for(const context of contexts)await context.close();}
 });
+
+ test('dispatcher can mark ready and cancel an assignment without duplicate active claims',async({page,workspace})=>{
+  let load=workspace.command(workspace.dispatcher,'load:validate',workspace.createLoad());
+  await signIn(page,workspace,workspace.dispatcher);await page.getByRole('button',{name:'Loads',exact:true}).click();await page.getByRole('button',{name:'Open',exact:true}).click();
+  await page.getByRole('button',{name:'Mark ready',exact:true}).click();await expect(page.locator('h1')).toHaveText(load.reference);
+  await expect(page.getByRole('button',{name:'Mark ready',exact:true})).toHaveCount(0);
+  load=workspace.store.get('load',load.id,workspace.manager.tenantId);expect(load.lifecycleState).toBe('ready');
+  workspace.command(workspace.dispatcher,'load:assign',load,{driverId:workspace.driver.id,vehicleId:workspace.vehicle.id,reason:'Synthetic assignment'});
+  await page.reload();await page.getByRole('button',{name:'Loads',exact:true}).click();await page.getByRole('button',{name:'Open',exact:true}).click();page.once('dialog',dialog=>dialog.accept('Human cancels synthetic assignment'));
+  await page.getByRole('button',{name:'Cancel assignment',exact:true}).click();await expect(page.getByRole('button',{name:'Cancel assignment',exact:true})).toHaveCount(0);
+  expect(workspace.store.list('assignment',workspace.manager.tenantId).filter(a=>a.status==='active')).toHaveLength(0);await basicAccessibility(page);
+ });

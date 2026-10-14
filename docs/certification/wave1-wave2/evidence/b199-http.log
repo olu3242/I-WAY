@@ -1,0 +1,32 @@
+✖ concurrent tenant HTTP journeys close independently; API and SQLite scope deny all foreign evidence (7922.3801ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9450.5504
+
+✖ failing tests:
+
+test at tests\operations-multitenant-journey.test.mjs:9:1
+✖ concurrent tenant HTTP journeys close independently; API and SQLite scope deny all foreign evidence (7922.3801ms)
+  AssertionError [ERR_ASSERTION]: {"error":"Operation could not be committed.","code":"STORAGE"}
+  
+  503 !== 200
+  
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-multitenant-journey.test.mjs:17:321)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async journey (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-multitenant-journey.test.mjs:23:12)
+      at async Promise.all (index 0)
+      at async TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-multitenant-journey.test.mjs:41:14)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 503,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,1014 @@
+{
+  "schemaVersion": 1,
+  "scope": "isolated local application; no hosted certification",
+  "startedAt": "2026-10-12T14:06:19.884Z",
+  "completedAt": "2026-10-12T14:15:35.803Z",
+  "durationMs": 564164.09,
+  "status": "failed",
+  "counts": {
+    "total": 12,
+    "passed": 11,
+    "failed": 1,
+    "skipped": 0
+  },
+  "tests": [
+    {
+      "title": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+      "status": "timedOut",
+      "expectedStatus": "passed",
+      "durationMs": 209837,
+      "retry": 0
+    },
+    {
+      "title": "sign-in failure is announced and focused and recovers with keyboard input",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 13810,
+      "retry": 0
+    },
+    {
+      "title": "fleet completes employment and equipment work and server errors remain recoverable",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 19948,
+      "retry": 0
+    },
+    {
+      "title": "carrier has an accessible role-scoped workspace at 1440px",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 35690,
+      "retry": 0
+    },
+    {
+      "title": "dispatcher has an accessible role-scoped workspace at 1440px",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 27662,
+      "retry": 0
+    },
+    {
+      "title": "driver has an accessible role-scoped workspace at 390px",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 18659,
+      "retry": 0
+    },
+    {
+      "title": "fleet has an accessible role-scoped workspace at 390px",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 15881,
+      "retry": 0
+    },
+    {
+      "title": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 68652,
+      "retry": 0
+    },
+    {
+      "title": "browser rejects unauthorized sessions and preserves tenant isolation",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 8866,
+      "retry": 0
+    },
+    {
+      "title": "customer portal exposes only its latest reviewed BOL and protects revision history",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 21870,
+      "retry": 0
+    },
+    {
+      "title": "Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 51542,
+      "retry": 0
+    },
+    {
+      "title": "dispatcher can mark ready and cancel an assignment without duplicate active claims",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 15067,
+      "retry": 0
+    }
+  ],
+  "accessibility": {
+    "tags": [
+      "wcag2a",
+      "wcag2aa",
+      "wcag21a",
+      "wcag21aa",
+      "wcag22aa"
+    ],
+    "scanCount": 55,
+    "violationCount": 0,
+    "incompleteRuleIds": [
+      "color-contrast"
+    ],
+    "conformance": "manual_review_required",
+    "manualChecks": [
+      "Screen-reader task flows and live announcements",
+      "Meaningful reading/focus order across complex content",
+      "400% browser zoom and user text-spacing adjustments",
+      "Touch and speech input",
+      "Native approval dialogs with assistive technology",
+      "Usability with disabled users"
+    ],
+    "scans": [
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 24
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 25
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 24
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 24
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 24
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 20
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 23
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 23
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 20
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 20
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 27
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 23
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 23
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 25
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 23
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 23
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 26
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 25
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 25
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 25
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 21
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 23
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 24
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 24
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 21
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 21
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 28
+      },
+      {
+        "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 23
+      },
+      {
+        "test": "sign-in failure is announced and focused and recovers with keyboard input",
+        "label": "login-form",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 23
+      },
+      {
+        "test": "sign-in failure is announced and focused and recovers with keyboard input",
+        "label": "login-error",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 23
+      },
+      {
+        "test": "fleet completes employment and equipment work and server errors remain recoverable",
+        "label": "fleet-stale-error",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 25
+      },
+      {
+        "test": "fleet completes employment and equipment work and server errors remain recoverable",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 25
+      },
+      {
+        "test": "carrier has an accessible role-scoped workspace at 1440px",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "carrier has an accessible role-scoped workspace at 1440px",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "dispatcher has an accessible role-scoped workspace at 1440px",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "dispatcher has an accessible role-scoped workspace at 1440px",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "driver has an accessible role-scoped workspace at 390px",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 21
+      },
+      {
+        "test": "driver has an accessible role-scoped workspace at 390px",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 21
+      },
+      {
+        "test": "fleet has an accessible role-scoped workspace at 390px",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 21
+      },
+      {
+        "test": "fleet has an accessible role-scoped workspace at 390px",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 21
+      },
+      {
+        "test": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 24
+      },
+      {
+        "test": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "passedRules": 27
+      },
+      {
+        "test": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 24
+      },
+      {
+        "test": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "customer portal exposes only its latest reviewed BOL and protects revision history",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 21
+      },
+      {
+        "test": "Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 22
+      },
+      {
+        "test": "Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 25
+      },
+      {
+        "test": "Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 24
+      },
+      {
+        "test": "dispatcher can mark ready and cancel an assignment without duplicate active claims",
+        "label": "accessibility",
+        "engine": {
+          "name": "axe-core",
+          "version": "4.13.0"
+        },
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "violations": 0,
+        "incompleteRules": [],
+        "passedRules": 24
+      }
+    ]
+  },
+  "sourceHashes": {
+    "apps/operations/extended.js": "7e2aadf3b5f6de25eef70c9da59509bd7e7390037cb98be1f8d6ef2a8fed59aa",
+    "apps/operations/i-way-logo.svg": "194f6d30e18998c37fda202cef6fd5b5ec1eb10f785179df3d77e323df4a8af4",
+    "apps/operations/index.html": "ab94d01c7303778a5d51e2c51323f89a792f171510e352639e9fb033221293e1",
+    "apps/operations/intelligence.js": "45cf4934cc393658fa05ed57e6ae881be9e0c62dbde8c39d8e72269b8128076d",
+    "apps/operations/login.html": "b3031b34d639f17f5a9c8cdbeeb05d803c87d047005182d4bd3f72909030b44d",
+    "apps/operations/login.js": "f10f679720017c8c74d6a2b0d5b012fdbd1ae296d6cc6ff9fa6b29a1ea857bb2",
+    "apps/operations/ops.css": "69ae691cd779b9972542b89a9dc86f5beea50e44e389cc845d85b7c17d4c37dd",
+    "apps/operations/ops.js": "bacf19d5241b038567d7298b99d86cf55617f29891a89182d0f1846e70e9331c",
+    "package-lock.json": "2d267000bcdd0df61cd49da48cdfbc6aa188860bdd80d085f69f214bcbd4907d",
+    "playwright.config.mjs": "0d0fb65a579d1706b0508807c6686bcef90f61ef1836e2f058cf17c65a9d7db9",
+    "tests/browser/accessibility.spec.mjs": "1dd4e6e98754ef65d87b01dc693156ea8118cef2b7672224c3a703820b6ffdee",
+    "tests/browser/evidence-reporter.mjs": "4169ab075e3597020885886e69f24f5e72b6ef3aa8c4757ae17ef70348362769",
+    "tests/browser/operations.spec.mjs": "fd33c258bb9267ec7f583adf31a15d37c0a72a78e1c1a2ca5daa52d86eb390ed",
+    "tests/browser/workspace.mjs": "0cf0a2241447202ad23d3850cb5a0bc95db5b6f37fe0d7c09a29b7cbc95897d6"
+  }
+}

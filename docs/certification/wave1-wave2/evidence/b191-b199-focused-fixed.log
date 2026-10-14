@@ -1,0 +1,56 @@
+✔ B54 signed inbox verifies local tenant binding, redacts signatures and deduplicates without operational writes (3265.8492ms)
+✔ B54 rejects tampering, expired signatures, unknown providers, cross-tenant binding and altered replay (2891.7712ms)
+✔ B54 durable local outbox completes once, rejects stale completion and never reports external delivery (2958.6857ms)
+✔ B54 retry backoff reaches dead letter and circuit cooldown admits only one recovery probe (3571.0994ms)
+✔ B54 local adapter timeout and fabricated external success fail closed (2791.4449ms)
+✔ B54 authority changes while provider runs and stale leases cannot commit results (2808.8109ms)
+✔ B54 current document grants protect queued evidence and inbox replay (4184.5857ms)
+✔ B54 competing processes claim one durable message, with current tenant authority and fencing (4428.9331ms)
+✔ carrier governance revocation fences queued and running integration work; timeout aborts fixture adapter (2474.1607ms)
+✔ canonical lifecycle persists Ready and Closed with atomic shipment mirror and mandatory BOL/POD (3423.9241ms)
+✔ assignment cancellation releases assets, retries are idempotent and reassignment remains authorized (2983.8442ms)
+✔ tracking records event time, deduplicates identifiers and retains out-of-order evidence without status regression (3160.5821ms)
+✔ all operational exception categories use durable human review and block progress until resolution (3703.9351ms)
+✔ document corruption fails retrieval and closure readiness even if storage triggers are bypassed by fixture administrator (2688.1669ms)
+✔ opted-in lifecycle notifications are local-only, authorized, versioned and duplicate-safe (3072.688ms)
+✖ concurrent tenant HTTP journeys close independently; API and SQLite scope deny all foreign evidence (11526.8109ms)
+✔ B56 server-scoped local adapter produces immutable advice with honest blocked model status and no authority gain (3163.1734ms)
+✔ B56 context minimization omits names, document bodies, commercial amounts and full operational resources (3028.5309ms)
+✔ B56 fabricated advice, oversized output and tool calls fall back deterministically with sanitized provenance (3036.0587ms)
+✔ B56 async timeout and failure use bounded local fallback, while unapproved live/model configuration is blocked (3371.6297ms)
+✔ B56 current grants govern existing advice, document/finance replay and stale persisted actor objects (2736.7631ms)
+✔ B56 actual deterministic fixture evaluation reports measured local labels, no inference cost or model pass (2741.915ms)
+✔ B66/B76 provider obeys current carrier governance switches and records reviewed policy version (4176.7751ms)
+✔ B66/B76 fallback records attempted binding and isolates evaluation hook failures (2817.882ms)
+✔ transport destination and DNS policy fail closed for credentials, redirects, local and reserved addresses (21.1224ms)
+✔ signed transport receipts bind tenant, idempotency key and exact event hash (22.386ms)
+✔ simulated HTTPS validates TLS and complete bounded responses; normalizes rate limits, outage and partial response (44.807ms)
+✔ simulated transport timeout, DNS rebinding and caller cancellation terminate without external delivery (62.1645ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 27
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 30967.8993
+
+✖ failing tests:
+
+test at tests\operations-multitenant-journey.test.mjs:9:1
+✖ concurrent tenant HTTP journeys close independently; API and SQLite scope deny all foreign evidence (11526.8109ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(view.audit.every(row=>row.tenant_id===team.manager.tenantId))
+  
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-multitenant-journey.test.mjs:48:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

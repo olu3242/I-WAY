@@ -1,0 +1,42 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {fixture,password} from './helpers/operations-fixture.mjs';
+import {addUser} from '../server/operations-auth.mjs';
+
+test('policy proposal approval revocation and reproposal use one persisted version sequence',async t=>{
+ const f=await fixture(t);
+ const approver=addUser(f.store,{tenantId:f.manager.tenantId,username:'reconcile-reviewer@illustrative.invalid',name:'Independent Reviewer',role:'carrier',password});
+ const policy={tenantId:f.manager.tenantId,enabled:true,allowedActions:['review_tracking'],autonomyLevel:4,minimumConfidence:1,maximumCost:0};
+ const proposed=f.command(f.manager,'aipolicy:propose',null,{policy});
+ assert.equal(proposed.version,1);
+ assert.equal(proposed.enabled,false);
+ assert.equal(proposed.lifecycle,'PENDING_APPROVAL');
+ const approved=f.command(approver,'aipolicy:approve',proposed);
+ assert.equal(approved.version,2);
+ assert.equal(approved.enabled,true);
+ assert.equal(approved.lifecycle,'APPROVED');
+ assert.throws(()=>f.command(f.manager,'aipolicy:revoke',proposed));
+ const revoked=f.command(f.manager,'aipolicy:revoke',approved);
+ assert.equal(revoked.version,3);
+ assert.equal(revoked.enabled,false);
+ assert.equal(revoked.lifecycle,'REVOKED');
+ const pending=f.command(f.manager,'aipolicy:propose',revoked,{policy});
+ assert.equal(pending.version,4);
+ assert.equal(pending.enabled,false);
+ assert.equal(pending.lifecycle,'PENDING_APPROVAL');
+ assert.equal(pending.approvedBy,null);
+ assert.equal(f.store.list('aipolicy',f.manager.tenantId).length,1);
+ const approvedAgain=f.command(approver,'aipolicy:approve',pending);
+ assert.equal(approvedAgain.version,5);
+ assert.equal(approvedAgain.enabled,true);
+ assert.equal(f.store.get('aipolicy',approvedAgain.id,approvedAgain.tenantId).version,5);
+});
+test('tampered persisted policy lifecycle fails closed on attempted transition',async t=>{
+ const f=await fixture(t);
+ const policy={tenantId:f.manager.tenantId,enabled:true,allowedActions:['review_tracking'],autonomyLevel:4,minimumConfidence:1,maximumCost:0};
+ const proposed=f.command(f.manager,'aipolicy:propose',null,{policy});
+ const corrupted=f.store.update('aipolicy',proposed.id,proposed.tenantId,proposed.version,{enabled:true,lifecycle:'PENDING_APPROVAL'});
+ const reviewer=addUser(f.store,{tenantId:f.manager.tenantId,username:'tamper-reviewer@illustrative.invalid',name:'Reviewer',role:'carrier',password});
+ assert.throws(()=>f.command(reviewer,'aipolicy:approve',corrupted));
+ assert.equal(f.store.get('aipolicy',corrupted.id,corrupted.tenantId).lifecycle,'PENDING_APPROVAL');
+});

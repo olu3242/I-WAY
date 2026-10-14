@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {validateAdvisoryProposal} from '../lib/intelligence/advisory-proposal.mjs';
+const context={tenantId:'tenant-one',eventId:'event-one',action:'review_tracking',authorizedEvidenceIds:['ev-1'],confidenceVerified:true,costVerified:true};
+const proposal={action:'review_tracking',confidence:0.8,estimatedCost:0.1,evidenceIds:['ev-1'],summary:'Review tracking status'};
+test('verified bounded advisory proposal remains nonexecuting',()=>{const r=validateAdvisoryProposal(context,proposal);assert.equal(r.status,'VALIDATED_ADVISORY');assert.equal(r.executionAuthorized,false)});
+test('model-supplied tenant identity is rejected',()=>assert.equal(validateAdvisoryProposal(context,{...proposal,tenantId:'other'}).status,'BLOCKED'));
+test('unverified confidence is not trusted',()=>assert.equal(validateAdvisoryProposal({...context,confidenceVerified:false},proposal).reason,'MEASUREMENTS_UNVERIFIED'));
+test('unverified cost is not trusted',()=>assert.equal(validateAdvisoryProposal({...context,costVerified:false},proposal).reason,'MEASUREMENTS_UNVERIFIED'));
+test('unauthorized evidence fails closed',()=>assert.equal(validateAdvisoryProposal(context,{...proposal,evidenceIds:['other']}).reason,'UNAUTHORIZED_EVIDENCE'));
+test('invalid confidence fails closed',()=>assert.equal(validateAdvisoryProposal(context,{...proposal,confidence:NaN}).status,'BLOCKED'));
+test('missing cost fails closed',()=>assert.equal(validateAdvisoryProposal(context,{...proposal,estimatedCost:undefined}).status,'BLOCKED'));
+test('action mismatch fails closed',()=>assert.equal(validateAdvisoryProposal(context,{...proposal,action:'review_finance'}).reason,'ACTION_MISMATCH'));

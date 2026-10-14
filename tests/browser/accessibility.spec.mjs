@@ -2,6 +2,8 @@ import {test,expect,signIn,basicAccessibility,axeAccessibility} from './workspac
 import {password} from '../helpers/operations-fixture.mjs';
 
 test('WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable',async({page,workspace})=>{
+ // Full multi-view/persona journey includes repeated axe scans; assertion deadlines remain unchanged.
+ test.setTimeout(180000);
  await signIn(page,workspace,workspace.manager);
  workspace.assign();
  await page.reload();

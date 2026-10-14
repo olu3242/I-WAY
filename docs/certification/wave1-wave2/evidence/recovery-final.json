@@ -1,0 +1,37 @@
+{
+  "format": "iway-recovery-evidence",
+  "version": 1,
+  "status": "PASS",
+  "capturedAt": "2026-10-12T14:00:00.988Z",
+  "scope": "Isolated local SQLite rehearsal; not hosted disaster-recovery certification",
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "win32"
+  },
+  "backupDurationMs": 155.07899999999972,
+  "restoreDurationMs": 1765.0847999999996,
+  "observedRpoMs": 2012,
+  "observedRtoMs": 1986.5055999999995,
+  "measurementDefinitions": {
+    "rpo": "Simulated failure timestamp minus latest recoverable audit timestamp; one deliberately committed post-snapshot load is absent.",
+    "rto": "Simulated failure to verified restore, audit-prefix validation, session revocation, and completion of a recovered five-checkpoint advisory workflow."
+  },
+  "backupBytes": 188416,
+  "manifestSha256": "3cdcad1a93342d07105ff60fd6f82e16500b800326b93bb003944188b9ac0b20",
+  "sourceAuditSequenceAtFailure": 12,
+  "recoveredAuditSequence": 10,
+  "lostAuditEvents": 2,
+  "checks": {
+    "integrity": true,
+    "auditPrefixPreserved": true,
+    "postSnapshotFixtureLoadAbsent": true,
+    "recoveredWorkflowCompleted": true,
+    "restoredSessionsRevoked": true,
+    "sourcePreserved": true
+  },
+  "budgets": {
+    "localRehearsalRtoMs": 10000,
+    "expectedLostPostSnapshotFixtureLoads": 1
+  },
+  "hostedCertified": false
+}

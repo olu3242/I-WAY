@@ -1,9 +1,9 @@
 import {createHash} from 'node:crypto';
 import {performance} from 'node:perf_hooks';
-import {authorize} from './authorization.mjs';
 import {fields,requireValue,integer,OpsError} from './operations-errors.mjs';
 import {shippingDocumentReadiness} from './operations-documents.mjs';
 const purposes=['dispatch','document','exception','finance'];
+const advisoryTools=Object.freeze({dispatch:'dispatch:summary',document:'documents:summary',exception:'exceptions:summary',finance:'finance:readiness'});
 const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const freeze=value=>{if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value)}return value};
 export const governedProviderPolicy=freeze({schemaVersion:1,mode:'local-only',modelProviderStatus:'BLOCKED',modelProviderBlocker:'No approved model provider or release evaluation is configured.',toolAllowlist:[],maxContextBytes:16384,maxOutputBytes:2048,requiresHumanApproval:true});
@@ -11,11 +11,14 @@ function purposeAccess(ops,actor,load,purpose,permission='intelligence:analyze')
  requireValue(['carrier','dispatcher'].includes(actor.role),'PROVIDER_AUTHORITY','A human operations principal is required.',403);
  requireValue(purposes.includes(purpose),'PROVIDER_PURPOSE','Choose a supported advisory purpose.');
  ops.guard(actor,permission,load);ops.guard(actor,'load:view',load);
+ if(purpose==='dispatch')ops.guard(actor,'asset:view',load);
  if(purpose==='document')ops.guard(actor,'document:view',load);
  if(purpose==='finance'){ops.guard(actor,'billing:manage',load);ops.guard(actor,'document:view',load);}
 }
 export function buildGovernedContext(ops,actor,load,purpose){
  actor=ops.actor(actor.id);load=ops.read('load',load.id,actor);purposeAccess(ops,actor,load,purpose);
+ const policy=ops.store.list('governancepolicy',actor.tenantId)[0];
+ requireValue(!policy||(policy.enabled===true&&Array.isArray(policy.disabledTools)&&!policy.disabledTools.includes(advisoryTools[purpose])),'POLICY_BLOCKED','The carrier policy blocks this advisory purpose.',409);
  let facts;
  if(purpose==='dispatch'){
   const drivers=ops.store.list('driver',actor.tenantId).filter(item=>item.active),vehicles=ops.store.list('vehicle',actor.tenantId).filter(item=>item.active);
@@ -66,28 +69,28 @@ function validate(result,request){
  return expected(request);
 }
 const failureCode=error=>error?.code==='PROVIDER_TIMEOUT'?'PROVIDER_TIMEOUT':error?.code==='PROVIDER_OUTPUT'||error?.code==='FIELDS'?'PROVIDER_OUTPUT':'PROVIDER_FAILURE';
-function finish(context,result,provenance,start,{fallback=false,failure=null,evaluationHook}={}){
- const output={...result,...provenance,contextHash:hash(context),latencyMs:Math.max(0,performance.now()-start),fallback,failureCode:failure,modelProviderStatus:'BLOCKED',modelInferenceCount:0,inferenceCostUSD:null};
- if(typeof evaluationHook==='function'){try{evaluationHook(freeze({schemaVersion:1,purpose:context.purpose,label:output.label,contextHash:output.contextHash,provider:output.provider,providerVersion:output.providerVersion,model:null,latencyMs:output.latencyMs,fallback,policyPassed:true}))}catch{}}
+function finish(context,result,provenance,start,{fallback=false,failure=null,attempted=null,evaluationHook}={}){
+ const output={...result,...provenance,contextHash:hash(context),latencyMs:Math.max(0,performance.now()-start),fallback,failureCode:failure,attemptedProvider:attempted?.provider??null,attemptedProviderVersion:attempted?.providerVersion??null,modelProviderStatus:'BLOCKED',modelInferenceCount:0,inferenceCostUSD:null};
+ if(typeof evaluationHook==='function'){try{const observed=evaluationHook(freeze({schemaVersion:1,purpose:context.purpose,label:output.label,contextHash:output.contextHash,provider:output.provider,providerVersion:output.providerVersion,model:null,latencyMs:output.latencyMs,fallback,policyPassed:true}));if(observed&&typeof observed.then==='function')Promise.resolve(observed).catch(()=>{});}catch{}}
  return output;
 }
 export function recommendWithProvider(context,{adapter=localGovernedAdapter,evaluationHook}={}){
  const provenance=binding(adapter),request=validateContext(context),start=performance.now();
  try{const result=adapter.recommend(request);if(result&&typeof result.then==='function'){Promise.resolve(result).catch(()=>{});throw new OpsError(503,'PROVIDER_FAILURE','Asynchronous provider requires a worker.');}return finish(request,validate(result,request),provenance,start,{evaluationHook});}
- catch(error){return finish(request,expected(request),binding(localGovernedAdapter),start,{fallback:true,failure:failureCode(error),evaluationHook});}
+ catch(error){return finish(request,expected(request),binding(localGovernedAdapter),start,{fallback:true,failure:failureCode(error),attempted:provenance,evaluationHook});}
 }
 export async function invokeGovernedProvider(context,{adapter=localGovernedAdapter,timeoutMs=2000,evaluationHook}={}){
  const provenance=binding(adapter),request=validateContext(context),start=performance.now();integer(timeoutMs,1,10000);let timer;
  try{
   const result=await Promise.race([Promise.resolve().then(()=>adapter.recommend(request)),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new OpsError(503,'PROVIDER_TIMEOUT','Local advisory execution timed out.')),timeoutMs)})]);
   return finish(request,validate(result,request),provenance,start,{evaluationHook});
- }catch(error){return finish(request,expected(request),binding(localGovernedAdapter),start,{fallback:true,failure:failureCode(error),evaluationHook});}finally{clearTimeout(timer)}
+ }catch(error){return finish(request,expected(request),binding(localGovernedAdapter),start,{fallback:true,failure:failureCode(error),attempted:provenance,evaluationHook});}finally{clearTimeout(timer)}
 }
 export function createProviderExtensions(options={}){return {
  'provider:recommend':(ops,actor,c)=>{
   fields(c.payload??{},['purpose']);const load=ops.read('load',c.resourceId,actor);ops.version(load,c.expectedVersion);
   const context=buildGovernedContext(ops,actor,load,c.payload.purpose),result=recommendWithProvider(context,options);
-  const record=ops.store.insert('providerrecommendation',actor.tenantId,{loadId:load.id,loadVersion:load.version,purpose:context.purpose,...result,requestedBy:actor.id,createdAt:ops.now().toISOString(),status:'advisory'});
+  const record=ops.store.insert('providerrecommendation',actor.tenantId,{loadId:load.id,loadVersion:load.version,purpose:context.purpose,...result,governancePolicyVersion:ops.store.list('governancepolicy',actor.tenantId)[0]?.version??0,requestedBy:actor.id,createdAt:ops.now().toISOString(),status:'advisory'});
   ops.store.audit(actor,c.action,record.id,'success',{loadId:load.id,purpose:record.purpose,label:record.label,provider:record.provider,model:null,contextHash:record.contextHash,fallback:record.fallback},ops.now().toISOString());return record;
  }
 };}
