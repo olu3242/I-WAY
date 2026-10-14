@@ -1,1 +1,141 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>I-way | Early access</title><link rel="stylesheet" href="/assets/css/styles.css"><script src="/assets/js/site.js" defer></script></head><body><header><nav><a class="brand" href="/">I-way</a></nav></header><main><section><h1>Join I-way early access</h1><p>Register your interest. We will only use your details to follow up about I-way.</p><form id="early-access" method="post" action="/api/early-access"><label>Full name<input name="name" required minlength="2" maxlength="120" autocomplete="name"></label><label>Work email<input name="email" type="email" required maxlength="254" autocomplete="email"></label><label>Company (optional)<input name="company" maxlength="120" autocomplete="organization"></label><label>Your role<select name="role" required><option value="">Choose your role</option><option value="driver">Driver</option><option value="carrier">Carrier</option><option value="fleet">Fleet company</option><option value="other">Other</option></select></label><label class="consent"><input name="consent" type="checkbox" required> I agree to be contacted about I-way early access.</label><button class="button" type="submit">Submit interest</button><p id="form-status" role="status" aria-live="polite"></p></form></section></main><footer><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></footer></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Join I-way early access. Tell us what you need from a simpler shipment experience.">
+	<title>I-way | Join early access</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<link rel="stylesheet" href="/assets/css/early-access.css">
+	<script src="/assets/js/site.js" defer></script>
+</head>
+<body class="early-access-page">
+	<a class="ea-skip" href="#main">Skip to main content</a>
+	<header class="ea-header">
+		<div class="ea-shell ea-header-inner">
+			<a class="ea-brand" href="/" aria-label="I-way home">I-way</a>
+			<a class="ea-header-cta" href="#join">Join the waitlist</a>
+		</div>
+	</header>
+
+	<main class="ea-main" id="main">
+		<section class="ea-hero" aria-labelledby="ea-title">
+			<div class="ea-shell ea-hero-grid">
+				<div class="ea-intro">
+					<p class="ea-eyebrow">I-way early access</p>
+					<h1 id="ea-title">Move Smarter.<span>Go Further.</span></h1>
+					<p class="ea-lede">I-way helps businesses plan shipments, stay informed about progress, and keep delivery details organized. Tell us a little about your needs.</p>
+					<ul class="ea-highlights" aria-label="I-way benefits">
+						<li><span aria-hidden="true">✓</span>Plan shipment details with less guesswork</li>
+						<li><span aria-hidden="true">✓</span>Stay informed about delivery progress</li>
+						<li><span aria-hidden="true">✓</span>Keep delivery details together</li>
+					</ul>
+					<p class="ea-signin">Already have access? <a href="/">Visit I-way</a></p>
+				</div>
+
+				<div class="ea-card" id="join">
+					<div class="ea-card-heading">
+						<p class="ea-eyebrow">Get started</p>
+						<h2>Join early access</h2>
+						<p>Share a few details about yourself and your work.</p>
+					</div>
+					<p class="ea-preview-note" role="note">Early access registration is subject to availability. Please do not submit sensitive personal information.</p>
+					<noscript><p class="ea-noscript">Enable JavaScript to submit your registration.</p></noscript>
+
+					<form id="early-access" method="post" action="/api/early-access">
+						<fieldset>
+							<div class="ea-field">
+								<label for="name">Full name</label>
+								<input id="name" name="name" type="text" required minlength="2" maxlength="120" autocomplete="name">
+							</div>
+							<div class="ea-field">
+								<label for="email">Work email</label>
+								<input id="email" name="email" type="email" required maxlength="254" autocomplete="email" inputmode="email">
+							</div>
+							<div class="ea-field">
+								<label for="company">Company <span>(optional)</span></label>
+								<input id="company" name="company" type="text" maxlength="120" autocomplete="organization">
+							</div>
+							<div class="ea-field">
+								<label for="role">I’m joining as</label>
+								<select id="role" name="role" required>
+									<option value="">Choose your role</option>
+									<option value="shipper">A business that ships goods</option>
+									<option value="carrier">A carrier or dispatcher</option>
+									<option value="fleet">A fleet company</option>
+									<option value="driver">A driver</option>
+									<option value="other">Something else</option>
+								</select>
+							</div>
+							<label class="consent"><input name="consent" type="checkbox" required> I agree to be contacted about I-way early access.</label>
+							<button class="ea-submit" type="submit">Join the waitlist</button>
+						</fieldset>
+						<p id="form-status" class="ea-form-status" role="status" aria-live="polite"></p>
+					</form>
+
+					<div class="ea-success" id="early-access-success" role="status" tabindex="-1" hidden>
+						<span class="ea-success-mark" aria-hidden="true">✓</span>
+						<h2>Registration received</h2>
+						<p>Your interest has been received.</p>
+						<button class="ea-restart" id="ea-restart" type="button">Try again</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="ea-audience" aria-labelledby="ea-audience-title">
+			<div class="ea-shell">
+				<div class="ea-section-heading">
+					<p class="ea-eyebrow">Who it’s for</p>
+					<h2 id="ea-audience-title">Built for the teams behind every delivery</h2>
+					<p>I-way brings shipment plans and progress into a clearer experience for the people sending and moving goods.</p>
+				</div>
+				<div class="ea-role-grid">
+					<article class="ea-role ea-role-primary">
+						<span class="ea-role-mark" aria-hidden="true">01</span>
+						<h3>Businesses that ship</h3>
+						<p>Keep shipment plans and delivery progress easier to follow.</p>
+					</article>
+					<article class="ea-role">
+						<span class="ea-role-mark ea-role-mark-cyan" aria-hidden="true">02</span>
+						<h3>Carriers and dispatchers</h3>
+						<p>Coordinate shipment details and keep teams informed.</p>
+					</article>
+					<article class="ea-role">
+						<span class="ea-role-mark ea-role-mark-orange" aria-hidden="true">03</span>
+						<h3>Drivers and fleets</h3>
+						<p>Stay connected to the shipment details that matter on the move.</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="ea-next" aria-labelledby="ea-next-title">
+			<div class="ea-shell">
+				<div class="ea-section-heading">
+					<p class="ea-eyebrow">What happens next</p>
+					<h2 id="ea-next-title">A clear next step, by email</h2>
+					<p>When early access registration is open, the process is simple:</p>
+				</div>
+				<ol class="ea-journey">
+					<li><span>01</span><div><h3>Share your details</h3><p>Tell us who you are and what kind of work you do.</p></div></li>
+					<li><span>02</span><div><h3>We review your request</h3><p>We’ll use your details to understand what you’re looking for.</p></div></li>
+					<li><span>03</span><div><h3>We follow up</h3><p>We’ll email you with relevant next steps as access opens.</p></div></li>
+				</ol>
+				<p class="ea-bottom-cta"><a href="#join">Join early access <span aria-hidden="true">→</span></a></p>
+			</div>
+		</section>
+	</main>
+
+	<footer class="ea-footer">
+		<div class="ea-shell ea-footer-inner">
+			<a class="ea-brand" href="/">I-way</a>
+			<nav aria-label="Legal"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></nav>
+			<span>© 2026 I-way</span>
+		</div>
+	</footer>
+</body>
+</html>
