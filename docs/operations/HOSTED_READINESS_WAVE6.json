@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "status": "BLOCKED",
+  "executed": false,
+  "networkCalls": 0,
+  "reason": "Hosted authorization, credentials, consent and deployment evidence remain unresolved.",
+  "prerequisites": {
+    "explicitHostedTestAuthorization": "BLOCKED",
+    "restrictedPostgresAuthentication": "BLOCKED",
+    "approvedConsent": "BLOCKED",
+    "exposedCredentialRotation": "BLOCKED",
+    "approvedHostedIdentity": "BLOCKED",
+    "dedicatedOperationsPersistence": "BLOCKED",
+    "approvedIntegrationFixtures": "BLOCKED",
+    "approvedDeploymentAndRollback": "BLOCKED"
+  },
+  "scenarios": [
+    {
+      "id": "identity",
+      "steps": [
+        "authenticate approved fixture identity",
+        "verify MFA and server-owned tenant binding",
+        "revoke session and retry"
+      ],
+      "checks": [
+        "verifiedMfa",
+        "tenantBound",
+        "revokedSessionDenied"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "registration",
+      "steps": [
+        "use separately approved consent and restricted registration login",
+        "create authorized synthetic registration",
+        "read back only its receipt"
+      ],
+      "checks": [
+        "restrictedIdentity",
+        "approvedConsent",
+        "receiptPersisted"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "persistence",
+      "steps": [
+        "commit authorized synthetic operation",
+        "restart application connection",
+        "read back same operation"
+      ],
+      "checks": [
+        "commitPersisted",
+        "restartReadMatched"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "isolation",
+      "steps": [
+        "read own synthetic tenant",
+        "attempt foreign tenant read and write",
+        "verify audit remains unchanged by rejected write"
+      ],
+      "checks": [
+        "ownReadAllowed",
+        "foreignReadDenied",
+        "foreignWriteDenied",
+        "noForeignMutation"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "workflow",
+      "steps": [
+        "claim authorized synthetic queue item",
+        "renew lease",
+        "restart worker after expiry",
+        "reject stale completion"
+      ],
+      "checks": [
+        "heartbeatPersisted",
+        "restartRecovered",
+        "staleFenceDenied",
+        "exactlyOneCompletion"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "integrations",
+      "steps": [
+        "deliver approved signed fixture",
+        "repeat the identical fixture",
+        "exercise failure and dead letter without real recipient delivery"
+      ],
+      "checks": [
+        "signatureVerified",
+        "duplicateSuppressed",
+        "retryBounded",
+        "deadLetterVisible"
+      ],
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "id": "rollback",
+      "steps": [
+        "validate previous artifact and trusted backup",
+        "rehearse rollback in isolated approved environment",
+        "verify health and audit continuity"
+      ],
+      "checks": [
+        "artifactVerified",
+        "restoreIntegrity",
+        "healthPassed",
+        "auditContinuity"
+      ],
+      "status": "NOT_EXECUTED"
+    }
+  ]
+}
