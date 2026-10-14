@@ -1,0 +1,14 @@
+%% Governing hierarchy and tenancy (INTERNAL)
+flowchart TB
+  P["I-way PLATFORM"] --> PA["I-way Platform Admin"]
+  P --> C["CARRIERS (tenant)"]
+  C --> CF["Carrier Fleet"]
+  C --> MF["Managed Fleet"]
+  CF --> CTD["Carrier trucks and drivers"]
+  MF --> FC["Fleet Company (via Fleet Management Agreement)"]
+  FC --> FT["Fleet trucks"]
+  FC --> FD["Fleet drivers"]
+  CTD --> APP["Driver Mobile App"]
+  FT --> APP
+  FD --> APP
+  C --> LOADS["Loads, customers, brokers, invoices, settlements, escrow"]

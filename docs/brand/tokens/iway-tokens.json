@@ -1,0 +1,47 @@
+{
+  "$comment": "I-way design tokens. 'source: kit' = supplied in brand-tokens.json (authoritative). 'source: derived' = introduced for UI/accessibility, pending brand-owner approval.",
+  "name": "I-way",
+  "version": "1.0",
+  "color": {
+    "navy":   { "value": "#092448", "rgb": "9 36 72",    "role": "Primary: text, headers, dark surfaces", "source": "kit" },
+    "blue":   { "value": "#1261F3", "rgb": "18 97 243",  "role": "Interaction, links, emphasis",          "source": "kit" },
+    "cyan":   { "value": "#00BCE8", "rgb": "0 188 232",  "role": "Tracking and data accent",              "source": "kit" },
+    "orange": { "value": "#FF681C", "rgb": "255 104 28", "role": "Primary action, movement accent",       "source": "kit" },
+    "amber":  { "value": "#FFB000", "rgb": "255 176 0",  "role": "Highlight and warning surfaces",        "source": "kit" },
+    "cloud":  { "value": "#F5F8FC", "rgb": "245 248 252","role": "Background",                            "source": "kit" },
+    "ink":    { "value": "#111827", "rgb": "17 24 39",   "role": "Body text on light",                    "source": "kit" },
+    "white":  { "value": "#FFFFFF", "role": "Surface", "source": "derived" },
+    "muted":  { "value": "#475569", "role": "Secondary text (7.6:1 on white)", "source": "derived" },
+    "line":   { "value": "#DCE7F3", "role": "Borders and dividers", "source": "derived" },
+    "navy-800": { "value": "#12396F", "role": "Raised dark surface", "source": "derived" },
+    "navy-700": { "value": "#0F2F5C", "role": "Dark panel / map surface", "source": "derived" },
+    "success": { "value": "#0B7A4B", "bg": "#E3F6EC", "source": "derived" },
+    "warning": { "value": "#8A5300", "bg": "#FFF3D6", "source": "derived" },
+    "danger":  { "value": "#B42318", "bg": "#FDECEA", "source": "derived" },
+    "info":    { "value": "#1E40AF", "bg": "#E0EAFF", "source": "derived" }
+  },
+  "typography": {
+    "family": "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif",
+    "weights": { "regular": 400, "medium": 500, "semibold": 600, "bold": 700, "extrabold": 800 },
+    "scale": {
+      "display": { "size": "clamp(42px, 6vw, 76px)", "line": 1.06, "weight": 800, "tracking": "-0.02em" },
+      "h1":      { "size": "clamp(34px, 4.6vw, 56px)", "line": 1.1, "weight": 800, "tracking": "-0.02em" },
+      "h2":      { "size": "clamp(30px, 3.6vw, 44px)", "line": 1.1, "weight": 800, "tracking": "-0.02em" },
+      "h3":      { "size": "20px", "line": 1.3, "weight": 700, "tracking": "-0.01em" },
+      "lead":    { "size": "clamp(18px, 1.6vw, 21px)", "line": 1.65, "weight": 400 },
+      "body":    { "size": "17px", "line": 1.6, "weight": 400 },
+      "small":   { "size": "14px", "line": 1.5, "weight": 400 },
+      "eyebrow": { "size": "13px", "line": 1.2, "weight": 800, "tracking": "0.14em", "transform": "uppercase" },
+      "button":  { "size": "16px", "line": 1.2, "weight": 700 }
+    }
+  },
+  "radius": { "card": "20px", "button": "12px", "field": "10px", "chip": "999px" },
+  "spacing": [4, 8, 12, 16, 24, 32, 48, 72, 104],
+  "shadow": {
+    "1": "0 8px 24px rgba(9,36,72,.06)",
+    "2": "0 24px 60px rgba(9,36,72,.14)"
+  },
+  "motion": { "fast": "150ms", "base": "200ms", "reveal": "600ms", "easing": "ease", "reducedMotion": "disable" },
+  "icon": { "grid": 24, "stroke": 1.75, "cap": "round", "join": "round" },
+  "targets": { "min": "44px", "button": "48px", "driverPrimary": "52px" }
+}

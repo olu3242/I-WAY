@@ -1,0 +1,17 @@
+%% Settlement and payment paths (INTERNAL)
+sequenceDiagram
+  autonumber
+  participant L as Completed load
+  participant CAR as Carrier
+  participant FLT as Fleet Company
+  participant DRV as Driver
+  Note over CAR: Carrier owns settlement calculation
+  L->>CAR: Load revenue attributed
+  alt Carrier driver
+    CAR->>DRV: Driver settlement (statement + PDF)
+  else Managed fleet driver
+    CAR->>FLT: Fleet settlement (gross, fees, deductions, escrow, net)
+    FLT->>CAR: Acknowledge or dispute
+    CAR->>FLT: Approve and pay
+    FLT->>DRV: Driver pay (Fleet Company controls)
+  end

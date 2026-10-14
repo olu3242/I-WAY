@@ -1,0 +1,19 @@
+%% Master load status architecture (INTERNAL)
+stateDiagram-v2
+  [*] --> Draft
+  Draft --> Unassigned
+  Unassigned --> Assigned: dispatcher assigns driver and truck
+  Assigned --> Accepted: driver accepts
+  Assigned --> Unassigned: driver rejects (reason)
+  Accepted --> EnRouteToPickup
+  EnRouteToPickup --> AtPickup: geofence or manual confirm
+  AtPickup --> Loaded: BOL captured and signed
+  Loaded --> InTransit
+  InTransit --> AtDelivery: geofence or manual confirm
+  AtDelivery --> Delivered
+  Delivered --> PODSubmitted
+  PODSubmitted --> Completed: carrier review
+  Completed --> Invoiced
+  Invoiced --> Settled
+  Settled --> Closed
+  Closed --> [*]

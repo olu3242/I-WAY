@@ -1,0 +1,56 @@
+%% I-way — system context (INTERNAL). Proposed target architecture; see docs/ARCHITECTURE.md
+flowchart TB
+  subgraph PUBLIC["Public zone (separate deployable, no internal data)"]
+    SITE["Public website<br/>landing + early access + sign-in chooser"]
+  end
+
+  subgraph CLIENTS["Client applications"]
+    DRV["Driver Mobile App<br/>all driver types"]
+    CAR["Carrier Admin Portal<br/>dispatch, loads, compliance, settlements"]
+    FLT["Fleet Company Portal<br/>trucks, drivers, driver pay"]
+    ADM["I-way Platform Admin<br/>governs platform"]
+  end
+
+  subgraph API["Single shared API (modular monolith)"]
+    GW["API gateway<br/>authN, rate limits, request context"]
+    AUTHZ["Authorization layer<br/>role + permission + tenant + relationship + ownership"]
+    subgraph MODULES["Domain modules"]
+      IDM["Identity and access"]
+      ORG["Carriers, fleet companies, agreements"]
+      DRM["Drivers and onboarding"]
+      EQP["Equipment and maintenance"]
+      LDS["Loads and dispatch"]
+      EXE["Load execution and tracking"]
+      DOC["Documents, BOL and POD"]
+      FIN["Invoicing, settlements, escrow"]
+      NTF["Notifications"]
+      RPT["Reporting"]
+      CASE["Cases and audit"]
+    end
+  end
+
+  subgraph DATA["Data and platform services"]
+    DB[("Primary database<br/>tenant-scoped")]
+    OBJ[("Object storage<br/>documents, photos, PDFs")]
+    BUS["Event outbox / queue"]
+    AUD[("Append-only audit store")]
+    SEC["Secrets manager"]
+  end
+
+  subgraph EXT["External integrations (to be selected)"]
+    MAPS["Maps and geofencing"]
+    PUSH["Push, email, SMS"]
+    PAY["Banking and payments"]
+    FAC["Factoring partners"]
+    ELD["ELD / GPS feeds"]
+  end
+
+  SITE -. "links to sign-in only" .-> DRV & CAR & FLT
+  DRV & CAR & FLT & ADM --> GW --> AUTHZ --> MODULES
+  MODULES --> DB & OBJ & BUS & AUD
+  BUS --> NTF --> PUSH
+  EXE --> MAPS
+  FIN --> PAY
+  FIN --> FAC
+  EXE --> ELD
+  GW --> SEC
