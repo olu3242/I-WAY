@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "referenceUrl": "http://localhost:4174/early-access.html",
+  "sourceRoot": "C:/Cdev/I-WAY/pkg/site/public",
+  "entry": "early-access.html",
+  "entrySha256": "a97b681a1c8938f91a7b391d38254d2bdab9194b2e5f822f0db16b8b2940b5a3",
+  "deploymentExecuted": false,
+  "reason": "User-selected canonical public page; I-WAY-app copy does not match."
+}

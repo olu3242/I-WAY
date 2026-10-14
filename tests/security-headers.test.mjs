@@ -1,0 +1,1 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {securityHeaders} from '../server/security-headers.mjs';test('security headers deny framing and sniffing',()=>{const h=securityHeaders();assert.equal(h['X-Frame-Options'],'DENY');assert.equal(h['X-Content-Type-Options'],'nosniff');assert.equal(h['Cache-Control'],'no-store')});
