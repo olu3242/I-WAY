@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "sourceHash": "9d42b324a77ce068b6c495243cf197aa76ed8eb4f83796e27dd7add2bab79fd5",
+  "scope": "offline-hosted-readiness",
+  "localScenarioStatus": "PASS",
+  "matrix": {
+    "schemaVersion": 1,
+    "scope": "offline-hosted-readiness-plan",
+    "networkCalls": 0,
+    "hostedExecuted": false,
+    "executionAuthorized": false,
+    "decision": "NO-GO",
+    "prerequisites": {
+      "explicitHostedTestAuthorization": {
+        "status": "BLOCKED",
+        "reason": "EVIDENCE_MISSING"
+      },
+      "restrictedPostgresAuthentication": {
+        "status": "BLOCKED",
+        "reason": "EVIDENCE_MISSING"
+      },
+      "approvedConsent": {
+        "status": "BLOCKED",
+        "reason": "EVIDENCE_MISSING"
+      },
+      "exposedCredentialRotation": {
+        "status": "BLOCKED",
+        "reason": "EVIDENCE_MISSING"
+      },
+      "approvedHostedIdentity": {
+        "status": "BLOCKED",
+        "reason": "EVIDENCE_MISSING"
+      },
+      "dedicatedOperationsPersistence": {
+        "status": "BLOCKED",
+        "reason": "EVIDENCE_MISSING"
+      },
+      "approvedIntegrationFixtures": {
+        "status": "BLOCKED",
+        "reason": "EVIDENCE_MISSING"
+      },
+      "approvedDeploymentAndRollback": {
+        "status": "BLOCKED",
+        "reason": "EVIDENCE_MISSING"
+      }
+    },
+    "scenarios": [
+      {
+        "id": "identity",
+        "status": "NOT_EXECUTED",
+        "requiredAssertions": [
+          "verifiedMfa",
+          "tenantBound",
+          "revokedSessionDenied"
+        ],
+        "evidenceStatus": "MISSING"
+      },
+      {
+        "id": "registration",
+        "status": "NOT_EXECUTED",
+        "requiredAssertions": [
+          "restrictedIdentity",
+          "approvedConsent",
+          "receiptPersisted"
+        ],
+        "evidenceStatus": "MISSING"
+      },
+      {
+        "id": "persistence",
+        "status": "NOT_EXECUTED",
+        "requiredAssertions": [
+          "commitPersisted",
+          "restartReadMatched"
+        ],
+        "evidenceStatus": "MISSING"
+      },
+      {
+        "id": "isolation",
+        "status": "NOT_EXECUTED",
+        "requiredAssertions": [
+          "ownReadAllowed",
+          "foreignReadDenied",
+          "foreignWriteDenied",
+          "noForeignMutation"
+        ],
+        "evidenceStatus": "MISSING"
+      },
+      {
+        "id": "workflow",
+        "status": "NOT_EXECUTED",
+        "requiredAssertions": [
+          "heartbeatPersisted",
+          "restartRecovered",
+          "staleFenceDenied",
+          "exactlyOneCompletion"
+        ],
+        "evidenceStatus": "MISSING"
+      },
+      {
+        "id": "integrations",
+        "status": "NOT_EXECUTED",
+        "requiredAssertions": [
+          "signatureVerified",
+          "duplicateSuppressed",
+          "retryBounded",
+          "deadLetterVisible"
+        ],
+        "evidenceStatus": "MISSING"
+      },
+      {
+        "id": "rollback",
+        "status": "NOT_EXECUTED",
+        "requiredAssertions": [
+          "artifactVerified",
+          "restoreIntegrity",
+          "healthPassed",
+          "auditContinuity"
+        ],
+        "evidenceStatus": "MISSING"
+      }
+    ],
+    "unresolved": [
+      "explicitHostedTestAuthorization",
+      "restrictedPostgresAuthentication",
+      "approvedConsent",
+      "exposedCredentialRotation",
+      "approvedHostedIdentity",
+      "dedicatedOperationsPersistence",
+      "approvedIntegrationFixtures",
+      "approvedDeploymentAndRollback"
+    ],
+    "limitations": [
+      "Recorded approval metadata is not authorization to connect.",
+      "No hosted scenario can PASS without independently verified execution."
+    ]
+  },
+  "checks": [
+    {
+      "id": "identity",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "verifiedMfa",
+        "tenantBound",
+        "revokedSessionDenied"
+      ],
+      "receipt": "MISSING"
+    },
+    {
+      "id": "registration",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "restrictedIdentity",
+        "approvedConsent",
+        "receiptPersisted"
+      ],
+      "receipt": "MISSING"
+    },
+    {
+      "id": "persistence",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "commitPersisted",
+        "restartReadMatched"
+      ],
+      "receipt": "MISSING"
+    },
+    {
+      "id": "isolation",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "ownReadAllowed",
+        "foreignReadDenied",
+        "foreignWriteDenied",
+        "noForeignMutation"
+      ],
+      "receipt": "MISSING"
+    },
+    {
+      "id": "workflow",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "heartbeatPersisted",
+        "restartRecovered",
+        "staleFenceDenied",
+        "exactlyOneCompletion"
+      ],
+      "receipt": "MISSING"
+    },
+    {
+      "id": "integrations",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "signatureVerified",
+        "duplicateSuppressed",
+        "retryBounded",
+        "deadLetterVisible"
+      ],
+      "receipt": "MISSING"
+    },
+    {
+      "id": "rollback",
+      "status": "NOT_EXECUTED",
+      "requiredAssertions": [
+        "artifactVerified",
+        "restoreIntegrity",
+        "healthPassed",
+        "auditContinuity"
+      ],
+      "receipt": "MISSING"
+    }
+  ],
+  "preflight": {
+    "status": "BLOCKED",
+    "reason": "INDEPENDENT_HOSTED_AUTHORIZATION_REQUIRED",
+    "sourceHash": "9d42b324a77ce068b6c495243cf197aa76ed8eb4f83796e27dd7add2bab79fd5",
+    "restrictedIdentity": "UNVERIFIED",
+    "approvedConsent": "UNVERIFIED",
+    "integrationFixtures": "UNVERIFIED"
+  },
+  "rollback": {
+    "status": "NOT_EXECUTED",
+    "artifactIntegrity": "UNVERIFIED",
+    "restoreIntegrity": "UNVERIFIED",
+    "auditContinuity": "UNVERIFIED"
+  },
+  "prerequisiteDigest": "9fe0932d6c4718fee2297a12a69993e7b2a7c4762a8dc3cd9cac0e5b575ca9a1",
+  "hostedExecuted": false,
+  "executionAuthorized": false,
+  "decision": "NO-GO",
+  "unresolvedPrerequisites": [
+    "explicitHostedTestAuthorization",
+    "restrictedPostgresAuthentication",
+    "approvedConsent",
+    "exposedCredentialRotation",
+    "approvedHostedIdentity",
+    "dedicatedOperationsPersistence",
+    "approvedIntegrationFixtures",
+    "approvedDeploymentAndRollback"
+  ]
+}

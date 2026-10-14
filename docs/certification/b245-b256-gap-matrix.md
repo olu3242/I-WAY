@@ -18,3 +18,5 @@ Definitions derive from domain/remediation-wave.mjs and domain/operations-releas
 | B256 | hosted evidence intake foundation | Earlier offline metadata cannot confer authority | Strict signed intake, lifecycle, ledger, harness and CLI implementation |
 
 Reuse established functionality; no production migrations, public branding or early-access files need modification. Hosted execution remains 0/7 without verified authorization and installed trusted transport.
+
+Final local certification: 531/531 application tests, 16/16 browser tests, 35/35 new focused tests and isolated PostgreSQL PASS. All eleven hosted batch closures remain BLOCKED; hosted scenarios 0/7. See production-readiness-report.md and b245-b256-evidence/.
