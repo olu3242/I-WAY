@@ -1,3 +1,4 @@
+import {validateConfiguredRecord} from './operations-admin-validation.mjs';
 import {authorizeConfigured,projectConfiguredFields} from './operations-admin-policy.mjs';
 import {lifecycleState} from './operations-lifecycle.mjs';
 import {createAIPolicyExtensions,aiPolicyState} from './operations-ai-policy.mjs';
@@ -24,11 +25,15 @@ export class Operations{
  read(kind,id,actor,action){const r=this.store.get(kind,id,actor.tenantId);if(action)this.guard(actor,action,r);return r;}
  change(actor,resource,patch,action,reason=''){
   if(['load','shipment'].includes(resource.kind))patch={...patch,lifecycleState:lifecycleState({...resource,...patch})};
+  const validation=validateConfiguredRecord(this.store,actor.tenantId,resource.kind,{...resource,...patch});
+  requireValue(validation.valid,'VALIDATION_RULE','Configured validation rule rejected this update.',422);
   const next=this.store.update(resource.kind,resource.id,actor.tenantId,resource.version,patch);
   this.store.audit(actor,action,resource.id,'success',{before:resource,after:next,reason},this.now().toISOString());return next;
  }
  create(actor,kind,values,action){
   if(['load','shipment'].includes(kind))values={...values,lifecycleState:lifecycleState(values)};
+  const validation=validateConfiguredRecord(this.store,actor.tenantId,kind,values);
+  requireValue(validation.valid,'VALIDATION_RULE','Configured validation rule rejected this record.',422);
   const result=this.store.insert(kind,actor.tenantId,values);
   this.store.audit(actor,action,result.id,'success',{after:result},this.now().toISOString());return result;
  }
