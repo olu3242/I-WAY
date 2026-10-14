@@ -1,0 +1,193 @@
+{
+  "format": "iway-performance-evidence",
+  "version": 1,
+  "runId": "7f3d12bf-6d48-47e1-aa08-907581436f14",
+  "capturedAt": "2026-10-12T17:24:53.926Z",
+  "configuration": {
+    "workers": 4,
+    "rounds": 6
+  },
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64",
+    "logicalCpus": 12,
+    "cpuModel": "Intel(R) Core(TM) 7 150U"
+  },
+  "scope": "Isolated local SQLite regression workload; not hosted capacity or an SLO",
+  "scenarios": [
+    {
+      "scenario": "dispatch",
+      "concurrency": 4,
+      "startupMs": 3170.3768999999993,
+      "elapsedMs": 508.27900000000045,
+      "latency": {
+        "unit": "command and authorization",
+        "samples": 24,
+        "p50Ms": 4.8034999999999854,
+        "p95Ms": 322.3406,
+        "p99Ms": 430.6415999999999,
+        "maxMs": 430.6415999999999
+      },
+      "work": 6,
+      "throughputPerSecond": 11.804540419730097,
+      "outcomes": {
+        "success": 6,
+        "expectedConflict": 18,
+        "expectedDenial": 0,
+        "unexpectedError": 0
+      },
+      "unexpectedErrorRate": 0,
+      "resources": {
+        "workerUserCpuMs": 297,
+        "workerSystemCpuMs": 78,
+        "maxWorkerRssBytes": 65900544,
+        "maxWorkerHeapBytes": 7308560
+      },
+      "invariants": {
+        "oneActiveAssignmentPerLoad": true,
+        "exactWinners": true,
+        "expectedConflictCount": true
+      }
+    },
+    {
+      "scenario": "workflow",
+      "concurrency": 4,
+      "startupMs": 2934.1072999999997,
+      "elapsedMs": 731.0474999999988,
+      "latency": {
+        "unit": "checkpoint batch",
+        "samples": 44,
+        "p50Ms": 2.95270000000005,
+        "p95Ms": 477.60030000000006,
+        "p99Ms": 656.8523000000001,
+        "maxMs": 656.8523000000001
+      },
+      "work": 30,
+      "throughputPerSecond": 41.03700511936646,
+      "outcomes": {
+        "success": 44,
+        "expectedConflict": 0,
+        "expectedDenial": 0,
+        "unexpectedError": 0
+      },
+      "unexpectedErrorRate": 0,
+      "resources": {
+        "workerUserCpuMs": 468,
+        "workerSystemCpuMs": 173,
+        "maxWorkerRssBytes": 66174976,
+        "maxWorkerHeapBytes": 8306504
+      },
+      "invariants": {
+        "everyJobCompleted": true,
+        "exactlyOneDecisionPerCheckpoint": true,
+        "workMatchesPersistedDecisions": true
+      }
+    },
+    {
+      "scenario": "documents",
+      "concurrency": 4,
+      "startupMs": 2319.887999999999,
+      "elapsedMs": 665.8262000000013,
+      "latency": {
+        "unit": "ingest and review pair",
+        "samples": 24,
+        "p50Ms": 17.996500000000196,
+        "p95Ms": 274.6769999999999,
+        "p99Ms": 526.508,
+        "maxMs": 526.508
+      },
+      "work": 24,
+      "throughputPerSecond": 36.04544248934624,
+      "outcomes": {
+        "success": 24,
+        "expectedConflict": 0,
+        "expectedDenial": 0,
+        "unexpectedError": 0
+      },
+      "unexpectedErrorRate": 0,
+      "resources": {
+        "workerUserCpuMs": 454,
+        "workerSystemCpuMs": 173,
+        "maxWorkerRssBytes": 65978368,
+        "maxWorkerHeapBytes": 8138880
+      },
+      "invariants": {
+        "allDocumentsValidated": true,
+        "allDocumentPairsSucceeded": true
+      }
+    },
+    {
+      "scenario": "tenant_isolation",
+      "concurrency": 4,
+      "startupMs": 1745.9824000000008,
+      "elapsedMs": 418.9405999999981,
+      "latency": {
+        "unit": "command and authorization",
+        "samples": 24,
+        "p50Ms": 25.432199999999966,
+        "p95Ms": 143.96739999999988,
+        "p99Ms": 232.23260000000005,
+        "maxMs": 232.23260000000005
+      },
+      "work": 24,
+      "throughputPerSecond": 57.28735768268845,
+      "outcomes": {
+        "success": 0,
+        "expectedConflict": 0,
+        "expectedDenial": 24,
+        "unexpectedError": 0
+      },
+      "unexpectedErrorRate": 0,
+      "resources": {
+        "workerUserCpuMs": 625,
+        "workerSystemCpuMs": 157,
+        "maxWorkerRssBytes": 66027520,
+        "maxWorkerHeapBytes": 7812928
+      },
+      "invariants": {
+        "allCrossTenantRequestsDenied": true,
+        "noForeignResourcesInOtherTenant": true
+      }
+    }
+  ],
+  "correctnessPassed": true,
+  "hostedCertified": false,
+  "status": "PASS",
+  "checks": [
+    {
+      "scenario": "dispatch",
+      "latencyPassed": true,
+      "throughputPassed": true,
+      "memoryPassed": true,
+      "errorsPassed": true,
+      "invariantsPassed": true
+    },
+    {
+      "scenario": "workflow",
+      "latencyPassed": true,
+      "throughputPassed": true,
+      "memoryPassed": true,
+      "errorsPassed": true,
+      "invariantsPassed": true
+    },
+    {
+      "scenario": "documents",
+      "latencyPassed": true,
+      "throughputPassed": true,
+      "memoryPassed": true,
+      "errorsPassed": true,
+      "invariantsPassed": true
+    },
+    {
+      "scenario": "tenant_isolation",
+      "latencyPassed": true,
+      "throughputPassed": true,
+      "memoryPassed": true,
+      "errorsPassed": true,
+      "invariantsPassed": true
+    }
+  ],
+  "baselineCapturedAt": "2026-10-11T17:33:36.331Z",
+  "baselineSha256": "7477de8af4d5c006a529a729a47e0394c2f0977fa0b87e652646b01530711ddf"
+}

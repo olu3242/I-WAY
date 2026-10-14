@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { evaluateDecision } from '../lib/intelligence/decision-plane.mjs';
+const policy = { tenantId: 't1', enabled: true, allowedActions: ['update_eta'], autonomyLevel: 3, minimumConfidence: 0.9, maximumCost: 100, version: 'v1' };
+const decision = { tenantId: 't1', eventId: 'e1', action: 'update_eta', confidence: 0.95, estimatedCost: 0, evidence: ['sensor:1'] };
+test('bounded decisions are eligible, not executed', () => assert.equal(evaluateDecision(decision, policy).status, 'ELIGIBLE_FOR_ORCHESTRATION'));
+test('cross tenant decisions fail closed', () => assert.equal(evaluateDecision({ ...decision, tenantId: 't2' }, policy).status, 'BLOCKED'));
+test('unsupported action fails closed', () => assert.equal(evaluateDecision({ ...decision, action: 'pay_carrier' }, policy).status, 'BLOCKED'));
+test('uncertain decisions require approval', () => assert.equal(evaluateDecision({ ...decision, confidence: 0.4 }, policy).status, 'APPROVAL_REQUIRED'));
+test('high cost requires approval', () => assert.equal(evaluateDecision({ ...decision, estimatedCost: 101 }, policy).status, 'APPROVAL_REQUIRED'));
+test('missing policy fails closed', () => assert.throws(() => evaluateDecision(decision, null)));
+test('invalid confidence rejected', () => assert.throws(() => evaluateDecision({ ...decision, confidence: NaN }, policy)));
+test('human governed always requires approval', () => assert.equal(evaluateDecision(decision, { ...policy, autonomyLevel: 4 }).status, 'APPROVAL_REQUIRED'));

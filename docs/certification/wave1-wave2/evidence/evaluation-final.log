@@ -1,0 +1,10 @@
+
+> iway-platform@0.1.0 ops:evaluate
+> node scripts/evaluate-operations.mjs
+
+{"status":"PASS","total":12,"passed":12,"failed":0,"skipped":0,"correctLabels":12,"labelAccuracy":1,"policyPassed":12,"policyCompliance":1,"latencyMs":{"count":12,"min":25.68069999999716,"max":160.45480000000316,"p50":37.91990000000078,"p95":160.45480000000316},"inferenceCostEstimateUSD":null,"modelInferenceCount":0,"modelEvaluation":"BLOCKED","artifact":"dist\\operations-evidence\\evaluation.json"}
+npm notice
+npm notice New major version of npm available! 11.13.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

@@ -1,10 +1,10 @@
 import {spawn} from 'node:child_process';
 import {loadProjectEnv} from './load-env.mjs';
 import {certificationConfig} from './pg-certification-config.mjs';
-const mode=process.argv[2];
-try{loadProjectEnv();certificationConfig(mode)}catch(e){console.error('NO-GO: '+e.message);process.exit(1)}
+const mode=process.argv[2],isolated=mode==='local'&&process.argv[3]==='--operations-isolated';
+try{if(isolated){if(process.env.IWAY_OPERATIONS_LOCAL_OPT_IN!=='1')throw Error('Disposable Operations fixture opt-in required')}else{loadProjectEnv();certificationConfig(mode)}}catch(e){console.error('NO-GO: '+e.message);process.exit(1)}
 console.log(mode==='hosted'?'Running hosted PostgreSQL certification':'Running LOCAL PostgreSQL checks; this cannot certify hosted operation');
-const child=spawn(process.execPath,['--test','tests/hosted/postgres.test.mjs'],{
+const child=spawn(process.execPath,['--test',isolated?'tests/local/operations-postgres.test.mjs':'tests/hosted/postgres.test.mjs'],{
  cwd:new URL('../',import.meta.url),stdio:'inherit',env:{...process.env,IWAY_PG_TEST_MODE:mode}
 });
 child.on('error',()=>{console.error('NO-GO: test process could not start');process.exitCode=1});

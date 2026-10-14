@@ -1,0 +1,355 @@
+✖ B54 signed inbox verifies local tenant binding, redacts signatures and deduplicates without operational writes (9939.2869ms)
+✖ B54 rejects tampering, expired signatures, unknown providers, cross-tenant binding and altered replay (6855.2162ms)
+✖ B54 durable local outbox completes once, rejects stale completion and never reports external delivery (6340.5902ms)
+✖ B54 retry backoff reaches dead letter and circuit cooldown admits only one recovery probe (8269.3838ms)
+✖ B54 local adapter timeout and fabricated external success fail closed (7047.5555ms)
+✖ B54 authority changes while provider runs and stale leases cannot commit results (2946.5666ms)
+✖ B54 current document grants protect queued evidence and inbox replay (3092.9238ms)
+✖ B54 competing processes claim one durable message, with current tenant authority and fencing (2925.6958ms)
+✖ carrier governance revocation fences queued and running integration work; timeout aborts fixture adapter (2522.3602ms)
+✖ canonical lifecycle persists Ready and Closed with atomic shipment mirror and mandatory BOL/POD (8303.9849ms)
+✖ assignment cancellation releases assets, retries are idempotent and reassignment remains authorized (7299.2114ms)
+✖ tracking records event time, deduplicates identifiers and retains out-of-order evidence without status regression (6285.879ms)
+✖ all operational exception categories use durable human review and block progress until resolution (8539.4757ms)
+✖ document corruption fails retrieval and closure readiness even if storage triggers are bypassed by fixture administrator (6652.7485ms)
+✖ opted-in lifecycle notifications are local-only, authorized, versioned and duplicate-safe (2971.9351ms)
+✖ B56 server-scoped local adapter produces immutable advice with honest blocked model status and no authority gain (8104.8599ms)
+✖ B56 context minimization omits names, document bodies, commercial amounts and full operational resources (7665.7367ms)
+✖ B56 fabricated advice, oversized output and tool calls fall back deterministically with sanitized provenance (7085.3ms)
+✖ B56 async timeout and failure use bounded local fallback, while unapproved live/model configuration is blocked (7722.4637ms)
+✖ B56 current grants govern existing advice, document/finance replay and stale persisted actor objects (6163.082ms)
+✖ B56 actual deterministic fixture evaluation reports measured local labels, no inference cost or model pass (3013.9408ms)
+✖ B66/B76 provider obeys current carrier governance switches and records reviewed policy version (3103.2459ms)
+✖ B66/B76 fallback records attempted binding and isolates evaluation hook failures (2587.7674ms)
+✔ transport destination and DNS policy fail closed for credentials, redirects, local and reserved addresses (180.0984ms)
+✔ signed transport receipts bind tenant, idempotency key and exact event hash (110.1276ms)
+✔ simulated HTTPS validates TLS and complete bounded responses; normalizes rate limits, outage and partial response (264.4971ms)
+✔ simulated transport timeout, DNS rebinding and caller cancellation terminate without external delivery (502.5889ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 4
+ℹ fail 23
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 55229.7212
+
+✖ failing tests:
+
+test at tests\operations-integration.test.mjs:17:1
+✖ B54 signed inbox verifies local tenant binding, redacts signatures and deduplicates without operational writes (9939.2869ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-integration.test.mjs:18:43)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-integration.test.mjs:28:1
+✖ B54 rejects tampering, expired signatures, unknown providers, cross-tenant binding and altered replay (6855.2162ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-integration.test.mjs:29:43)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-integration.test.mjs:41:1
+✖ B54 durable local outbox completes once, rejects stale completion and never reports external delivery (6340.5902ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-integration.test.mjs:42:43)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-integration.test.mjs:51:1
+✖ B54 retry backoff reaches dead letter and circuit cooldown admits only one recovery probe (8269.3838ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-integration.test.mjs:53:28)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-integration.test.mjs:68:1
+✖ B54 local adapter timeout and fabricated external success fail closed (7047.5555ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-integration.test.mjs:70:15)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-integration.test.mjs:75:1
+✖ B54 authority changes while provider runs and stale leases cannot commit results (2946.5666ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-integration.test.mjs:76:102)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-integration.test.mjs:86:1
+✖ B54 current document grants protect queued evidence and inbox replay (3092.9238ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-integration.test.mjs:87:43)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-integration.test.mjs:96:1
+✖ B54 competing processes claim one durable message, with current tenant authority and fencing (2925.6958ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-integration.test.mjs:97:43)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-integration.test.mjs:106:2
+✖ carrier governance revocation fences queued and running integration work; timeout aborts fixture adapter (2522.3602ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-integration.test.mjs:108:108)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-lifecycle.test.mjs:22:1
+✖ canonical lifecycle persists Ready and Closed with atomic shipment mirror and mandatory BOL/POD (8303.9849ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-lifecycle.test.mjs:23:36)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-lifecycle.test.mjs:41:1
+✖ assignment cancellation releases assets, retries are idempotent and reassignment remains authorized (7299.2114ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-lifecycle.test.mjs:42:36)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-lifecycle.test.mjs:50:1
+✖ tracking records event time, deduplicates identifiers and retains out-of-order evidence without status regression (6285.879ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-lifecycle.test.mjs:51:87)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-lifecycle.test.mjs:59:1
+✖ all operational exception categories use durable human review and block progress until resolution (8539.4757ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-lifecycle.test.mjs:60:87)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-lifecycle.test.mjs:68:1
+✖ document corruption fails retrieval and closure readiness even if storage triggers are bypassed by fixture administrator (6652.7485ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at Object.assign (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:31:29)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-lifecycle.test.mjs:69:32)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-lifecycle.test.mjs:75:1
+✖ opted-in lifecycle notifications are local-only, authorized, versioned and duplicate-safe (2971.9351ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-lifecycle.test.mjs:78:62)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-provider.test.mjs:11:1
+✖ B56 server-scoped local adapter produces immutable advice with honest blocked model status and no authority gain (8104.8599ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at validated (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:9:34)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:12:100)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-provider.test.mjs:22:1
+✖ B56 context minimization omits names, document bodies, commercial amounts and full operational resources (7665.7367ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at validated (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:9:34)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:23:180)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-provider.test.mjs:34:1
+✖ B56 fabricated advice, oversized output and tool calls fall back deterministically with sanitized provenance (7085.3ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at validated (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:9:34)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:35:41)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-provider.test.mjs:41:1
+✖ B56 async timeout and failure use bounded local fallback, while unapproved live/model configuration is blocked (7722.4637ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at validated (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:9:34)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:42:32)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-provider.test.mjs:49:1
+✖ B56 current grants govern existing advice, document/finance replay and stale persisted actor objects (6163.082ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at validated (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:9:34)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:50:41)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-provider.test.mjs:59:1
+✖ B56 actual deterministic fixture evaluation reports measured local labels, no inference cost or model pass (3013.9408ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at validated (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:9:34)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:60:102)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-provider.test.mjs:69:1
+✖ B66/B76 provider obeys current carrier governance switches and records reviewed policy version (3103.2459ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at validated (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:9:34)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:70:41)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }
+
+test at tests\operations-provider.test.mjs:84:1
+✖ B66/B76 fallback records attempted binding and isolates evaluation hook failures (2587.7674ms)
+  Error: Operation could not be committed.
+      at Operations.execute (file:///C:/Cdev/I-WAY-wave1-wave2/domain/operations.mjs:98:40)
+      at command (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:20:73)
+      at Object.createLoad (file:///C:/Cdev/I-WAY-wave1-wave2/tests/helpers/operations-fixture.mjs:30:23)
+      at validated (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:9:34)
+      at TestContext.<anonymous> (file:///C:/Cdev/I-WAY-wave1-wave2/tests/operations-provider.test.mjs:85:32)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    status: 503,
+    code: 'STORAGE'
+  }

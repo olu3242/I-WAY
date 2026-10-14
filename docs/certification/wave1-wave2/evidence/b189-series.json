@@ -1,0 +1,51 @@
+{
+  "format": "iway-performance-series-assessment",
+  "version": 1,
+  "scope": "Read-only local regression evidence; not hosted certification or an SLO",
+  "runCount": 5,
+  "runIds": [
+    "343fc8ba-c3cb-42b4-922e-3626e25cb139",
+    "004bbe81-47ba-4bde-a14e-134629fe30da",
+    "4178fc83-bc00-46a4-896e-874eabb95731",
+    "f58f5989-404e-4847-92ec-0fbebc841668",
+    "c9e59f65-590c-41ae-82c6-8be67c0a49c7"
+  ],
+  "scenarios": [
+    {
+      "scenario": "dispatch",
+      "minimumThroughputPerSecond": 9.132321401092929,
+      "maximumThroughputPerSecond": 14.41877901779275,
+      "throughputPasses": 2,
+      "throughputFailures": 3,
+      "allRunsPassed": false
+    },
+    {
+      "scenario": "workflow",
+      "minimumThroughputPerSecond": 31.582517855176498,
+      "maximumThroughputPerSecond": 38.64099118779317,
+      "throughputPasses": 5,
+      "throughputFailures": 0,
+      "allRunsPassed": true
+    },
+    {
+      "scenario": "documents",
+      "minimumThroughputPerSecond": 29.76161688912239,
+      "maximumThroughputPerSecond": 38.84925904750683,
+      "throughputPasses": 3,
+      "throughputFailures": 2,
+      "allRunsPassed": false
+    },
+    {
+      "scenario": "tenant_isolation",
+      "minimumThroughputPerSecond": 44.70865604289625,
+      "maximumThroughputPerSecond": 63.61668824774457,
+      "throughputPasses": 5,
+      "throughputFailures": 0,
+      "allRunsPassed": true
+    }
+  ],
+  "allRunsPassed": false,
+  "status": "LOCAL_REPEAT_FAIL",
+  "hostedCertified": false,
+  "certificationGranted": false
+}

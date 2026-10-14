@@ -28,7 +28,8 @@
     "verify:public-target": "node scripts/verify-public-release.mjs",
     "ops:hosted:plan": "node scripts/operations-release-readiness.mjs hosted-plan",
     "ops:release:check": "node scripts/operations-release-readiness.mjs",
-    "ops:release:validate": "node scripts/operations-release-readiness.mjs validate"
+    "ops:release:validate": "node scripts/operations-release-readiness.mjs validate",
+    "test:pg:operations:local": "node --test tests/local/operations-postgres.test.mjs"
   },
   "dependencies": {
     "pg": "^8.16.3"

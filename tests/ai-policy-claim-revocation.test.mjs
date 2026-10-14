@@ -1,0 +1,41 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {fixture,password} from './helpers/operations-fixture.mjs';
+import {addUser} from '../server/operations-auth.mjs';
+import {createRuntimeExtensions,claimJob,executeAdvisory,completeJob} from '../domain/operations-runtime.mjs';
+
+test('revoking approved AI policy between claim and completion fails closed',async t=>{
+ const f=await fixture(t,{extensions:{...createRuntimeExtensions()}});
+ const second=addUser(f.store,{tenantId:f.manager.tenantId,username:'revocation-approver@illustrative.invalid',name:'Independent Approver',role:'carrier',password});
+ const load=f.assign();
+ const policy={tenantId:load.tenantId,enabled:true,allowedActions:['review_dispatch'],autonomyLevel:4,minimumConfidence:1,maximumCost:0};
+ const proposed=f.command(f.manager,'aipolicy:propose',null,{policy});
+ const approved=f.command(second,'aipolicy:approve',proposed);
+ const job=f.command(f.manager,'orchestration:request',load);
+ const claim=claimJob(f.ops,{tenantId:load.tenantId,kind:'orchestration',jobId:job.id,workerId:'revocation-worker'});
+ assert.ok(claim);
+ const advisory=executeAdvisory(f.ops,claim);
+ f.command(f.manager,'aipolicy:revoke',approved);
+ const completed=completeJob(f.ops,claim,advisory);
+ assert.equal(completed.accepted,true);
+ const evidence=f.store.get('agentdecision',completed.evidenceId,load.tenantId);
+ assert.equal(evidence.decisionGovernance.aiDecision.status,'BLOCKED');
+ assert.equal(evidence.decisionGovernance.aiDecision.reason,'AI_POLICY_NOT_CONFIGURED');
+ assert.equal(evidence.decisionGovernance.executionPerformed,false);
+ assert.equal(completeJob(f.ops,claim,advisory).accepted,false);
+ assert.equal(f.store.list('agentdecision',load.tenantId).length,1);
+});
+test('approved AI policy at completion requires human approval and never executes',async t=>{
+ const f=await fixture(t,{extensions:{...createRuntimeExtensions()}});
+ const second=addUser(f.store,{tenantId:f.manager.tenantId,username:'approval-at-completion@illustrative.invalid',name:'Independent Approver',role:'carrier',password});
+ const load=f.assign(),policy={tenantId:load.tenantId,enabled:true,allowedActions:['review_dispatch'],autonomyLevel:4,minimumConfidence:1,maximumCost:0};
+ const proposed=f.command(f.manager,'aipolicy:propose',null,{policy});
+ const approved=f.command(second,'aipolicy:approve',proposed);
+ const job=f.command(f.manager,'orchestration:request',load);
+ const claim=claimJob(f.ops,{tenantId:load.tenantId,kind:'orchestration',jobId:job.id,workerId:'approval-worker'});
+ const completed=completeJob(f.ops,claim,executeAdvisory(f.ops,claim));
+ const evidence=f.store.get('agentdecision',completed.evidenceId,load.tenantId);
+ assert.equal(evidence.decisionGovernance.aiDecision.status,'APPROVAL_REQUIRED');
+ assert.equal(evidence.decisionGovernance.aiDecision.policyVersion,approved.version);
+ assert.equal(evidence.decisionGovernance.executionPerformed,false);
+});

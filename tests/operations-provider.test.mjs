@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fixture} from './helpers/operations-fixture.mjs';
+import {createRuntimeExtensions} from '../domain/operations-runtime.mjs';
 import {OperationsStore} from '../server/operations-store.mjs';
 import {createProviderExtensions,providerState,providerIntegritySQL,buildGovernedContext,localGovernedAdapter,recommendWithProvider,invokeGovernedProvider,governedProviderPolicy} from '../domain/operations-provider.mjs';
 const code=value=>error=>error.code===value;
@@ -63,4 +64,27 @@ test('B56 actual deterministic fixture evaluation reports measured local labels,
  assert.ok(evaluated.every(record=>record.latencyMs>=0&&Number.isFinite(record.latencyMs)&&record.model===null&&record.policyPassed));
  const driver=f.store.get('driver',f.driver.id,load.tenantId);f.command(f.manager,'driver:update',driver,{compliance:'critical',reason:'Illustrative eligibility change'});
  assert.equal(f.command(f.dispatcher,'provider:recommend',load,{purpose:'dispatch'}).label,'no_eligible_capacity');
+});
+
+test('B66/B76 provider obeys current carrier governance switches and records reviewed policy version',async t=>{
+ const f=install(await fixture(t)),load=validated(f);Object.assign(f.ops.extensions,createRuntimeExtensions());
+ let policy=f.command(f.manager,'governance:update',null,{enabled:false,disabledTools:[],reason:'Illustrative carrier pause'});
+ assert.throws(()=>f.command(f.dispatcher,'provider:recommend',load,{purpose:'dispatch'}),code('POLICY_BLOCKED'));
+ policy=f.command(f.manager,'governance:update',policy,{enabled:true,disabledTools:['dispatch:summary'],reason:'Keep dispatch advisory disabled'});
+ assert.throws(()=>f.command(f.dispatcher,'provider:recommend',load,{purpose:'dispatch'}),code('POLICY_BLOCKED'));
+ const allowed=f.command(f.dispatcher,'provider:recommend',load,{purpose:'exception'});
+ assert.equal(allowed.governancePolicyVersion,policy.version);assert.equal(allowed.modelProviderStatus,'BLOCKED');
+ policy=f.command(f.manager,'governance:update',policy,{enabled:true,disabledTools:[],reason:'Allow local advisory again'});
+ const dispatch=f.command(f.dispatcher,'provider:recommend',load,{purpose:'dispatch'},'dispatch-grant-replay');
+ assert.equal(dispatch.governancePolicyVersion,policy.version);
+ revoke(f,f.dispatcher,'asset:view');
+ assert.throws(()=>f.command(f.dispatcher,'provider:recommend',load,{purpose:'dispatch'},'dispatch-grant-replay'),code('FORBIDDEN'));
+ assert.equal(providerState(f.ops,f.dispatcher,[load]).providerRecommendations.some(record=>record.id===dispatch.id),false);
+});
+test('B66/B76 fallback records attempted binding and isolates evaluation hook failures',async t=>{
+ const f=await fixture(t),load=validated(f),context=buildGovernedContext(f.ops,f.dispatcher,load,'dispatch');
+ const result=recommendWithProvider(context,{adapter:{...localGovernedAdapter,provider:'illustrative-provider',version:'2',recommend:()=>{throw new Error('private failure')}},evaluationHook:async()=>{throw new Error('private observer failure')}});
+ assert.equal(result.provider,'local-governed-rules');assert.equal(result.attemptedProvider,'illustrative-provider');assert.equal(result.attemptedProviderVersion,'2');
+ assert.equal(result.failureCode,'PROVIDER_FAILURE');assert.ok(!JSON.stringify(result).includes('private'));
+ await new Promise(resolve=>setImmediate(resolve));
 });

@@ -11,6 +11,7 @@ import {OperationsStore} from '../server/operations-store.mjs';
 import {Operations} from '../domain/operations.mjs';
 import {createOperationsFeatures} from '../domain/operations-features.mjs';
 import {runRuntimeTick} from '../domain/operations-runtime.mjs';
+import {createTransactionTimingCollector} from '../domain/operations-transaction-timing.mjs';
 
 const scriptPath=fileURLToPath(import.meta.url);
 const hash=value=>createHash('sha256').update(value).digest('hex');
@@ -22,7 +23,8 @@ async function performanceWorker(taskPath){
  if(!child.startsWith('iway-ops-test-')||child.includes(sep)||(await lstat(file)).isSymbolicLink()||typeof process.send!=='function')throw new Error('An isolated performance fixture and parent IPC are required');
  const task=JSON.parse(await readFile(file,'utf8'));
  if(task.purpose!=='isolated-performance-fixture'||!['dispatch','workflow','documents','tenant_isolation'].includes(task.scenario)||!Array.isArray(task.items)||task.items.length>100)throw new Error('Invalid performance fixture');
- const store=new OperationsStore(join(root,'operations.sqlite')),ops=new Operations(store,createOperationsFeatures());
+ const collector=task.transactionDiagnostics===true?createTransactionTimingCollector():null;
+ const store=new OperationsStore(join(root,'operations.sqlite'),collector?{onTransactionTiming:sample=>collector.record(sample)}:{}),ops=new Operations(store,createOperationsFeatures());
  process.send({type:'ready'});await new Promise(accept=>process.once('message',message=>{if(message?.type==='start')accept();else process.exit(2)}));
  const cpuStart=process.cpuUsage(),samplesMs=[],outcomes={success:0,expectedConflict:0,expectedDenial:0,unexpectedError:0};let work=0,maxRssBytes=process.memoryUsage().rss,maxHeapBytes=process.memoryUsage().heapUsed;
  try{
@@ -51,14 +53,15 @@ async function performanceWorker(taskPath){
  }finally{store.close()}
  const cpu=process.cpuUsage(cpuStart),usage=process.resourceUsage();
  const result={samplesMs,outcomes,work,resources:{userCpuMs:cpu.user/1000,systemCpuMs:cpu.system/1000,peakRssBytes:Math.max(maxRssBytes,(usage.maxRSS||0)*1024),sampledPeakHeapBytes:maxHeapBytes}};
+ if(collector)result.transactionDiagnostics=collector.snapshot();
  process.send({type:'result',result},()=>process.disconnect());
 }
-async function executeWorkers(root,scenario,tasks){
+async function executeWorkers(root,scenario,tasks,transactionDiagnostics=false){
  const children=[],started=performance.now();
  try{
   for(let index=0;index<tasks.length;index++){
    const taskFile=join(root,'performance-'+scenario+'-'+index+'.json');
-   await writeFile(taskFile,JSON.stringify({purpose:'isolated-performance-fixture',scenario,...tasks[index]}));
+   await writeFile(taskFile,JSON.stringify({purpose:'isolated-performance-fixture',scenario,transactionDiagnostics,...tasks[index]}));
    const child=spawn(process.execPath,[scriptPath,'--worker',taskFile],{windowsHide:true,stdio:['ignore','ignore','pipe','ipc']});children.push(child);
    child.done=new Promise((accept,reject)=>{
     let report=null,ready=false,stderr=false;
@@ -76,14 +79,16 @@ async function executeWorkers(root,scenario,tasks){
   const results=await Promise.race([Promise.all(children.map(c=>c.done)),timeout]),elapsedMs=performance.now()-workStarted;
   const samples=results.flatMap(r=>r.samplesMs),outcomes=results.reduce((sum,r)=>Object.fromEntries(Object.keys(sum).map(key=>[key,sum[key]+r.outcomes[key]])),{success:0,expectedConflict:0,expectedDenial:0,unexpectedError:0});
   const work=results.reduce((sum,r)=>sum+r.work,0);
-  return {scenario,concurrency:tasks.length,startupMs:workStarted-started,elapsedMs,latency:{unit:scenario==='workflow'?'checkpoint batch':scenario==='documents'?'ingest and review pair':'command and authorization',samples:samples.length,p50Ms:percentile(samples,.5),p95Ms:percentile(samples,.95),maxMs:Math.max(...samples)},work,throughputPerSecond:work/(elapsedMs/1000),outcomes,unexpectedErrorRate:outcomes.unexpectedError/samples.length,
+  const timing=transactionDiagnostics?{workers:results.map(r=>r.transactionDiagnostics)}:{};
+  return {scenario,...(transactionDiagnostics?{transactionDiagnostics:timing}:{}),concurrency:tasks.length,startupMs:workStarted-started,elapsedMs,latency:{unit:scenario==='workflow'?'checkpoint batch':scenario==='documents'?'ingest and review pair':'command and authorization',samples:samples.length,p50Ms:percentile(samples,.5),p95Ms:percentile(samples,.95),p99Ms:percentile(samples,.99),maxMs:Math.max(...samples)},work,throughputPerSecond:work/(elapsedMs/1000),outcomes,unexpectedErrorRate:outcomes.unexpectedError/samples.length,
    resources:{workerUserCpuMs:results.reduce((s,r)=>s+r.resources.userCpuMs,0),workerSystemCpuMs:results.reduce((s,r)=>s+r.resources.systemCpuMs,0),maxWorkerRssBytes:Math.max(...results.map(r=>r.resources.peakRssBytes)),maxWorkerHeapBytes:Math.max(...results.map(r=>r.resources.sampledPeakHeapBytes))}};
  }finally{
   for(const child of children)if(child.exitCode===null&&child.signalCode===null)child.kill('SIGTERM');
   await Promise.all(children.map(child=>child.exitCode!==null||child.signalCode!==null?Promise.resolve():new Promise(accept=>child.once('close',accept))));
  }
 }
-export async function runPerformanceScenarios({workers=4,rounds=6}={}){
+export async function runPerformanceScenarios({workers=4,rounds=6,transactionDiagnostics=false}={}){
+ if(typeof transactionDiagnostics!=='boolean')throw new TypeError('transactionDiagnostics must be boolean');
  if(!Number.isInteger(workers)||workers<2||workers>4||!Number.isInteger(rounds)||rounds<2||rounds>20)throw new Error('Use 2–4 local workers and 2–20 rounds');
  const cleanup=[],f=await fixture({after:callback=>cleanup.push(callback)},createOperationsFeatures()),reports=[],runId=randomUUID();
  try{
@@ -94,17 +99,17 @@ export async function runPerformanceScenarios({workers=4,rounds=6}={}){
    let vehicle=f.command(f.manager,'vehicle:create',null,{name:'Illustrative performance vehicle '+i,capacityLb:45000});vehicle=f.command(f.manager,'vehicle:approve',vehicle,{approved:true,reason:'Illustrative carrier approval'});
    let load=f.createLoad();load=f.command(f.dispatcher,'load:validate',load);pairs.push({id:load.id,version:load.version,driverId:driver.id,vehicleId:vehicle.id});
   }
-  const dispatch=await executeWorkers(f.root,'dispatch',Array.from({length:workers},()=>({actorId:f.dispatcher.id,tenantId:f.manager.tenantId,items:pairs})));
+  const dispatch=await executeWorkers(f.root,'dispatch',Array.from({length:workers},()=>({actorId:f.dispatcher.id,tenantId:f.manager.tenantId,items:pairs})),transactionDiagnostics);
   const claims=f.store.list('assignment',f.manager.tenantId).filter(a=>a.status==='active');
   dispatch.invariants={oneActiveAssignmentPerLoad:claims.length===rounds&&new Set(claims.map(a=>a.loadId)).size===rounds,exactWinners:dispatch.outcomes.success===rounds,expectedConflictCount:dispatch.outcomes.expectedConflict===rounds*(workers-1)};reports.push(dispatch);
   const jobs=[];for(let i=0;i<rounds;i++){const load=f.createLoad();jobs.push(f.command(f.manager,'orchestration:request',load))}
-  const workflow=await executeWorkers(f.root,'workflow',Array.from({length:workers},()=>({actorId:f.manager.id,tenantId:f.manager.tenantId,items:Array.from({length:rounds+5},()=>({}))})));
+  const workflow=await executeWorkers(f.root,'workflow',Array.from({length:workers},()=>({actorId:f.manager.id,tenantId:f.manager.tenantId,items:Array.from({length:rounds+5},()=>({}))})),transactionDiagnostics);
   const jobIds=new Set(jobs.map(j=>j.id)),decisions=f.store.list('agentdecision',f.manager.tenantId).filter(d=>jobIds.has(d.jobId));
   workflow.invariants={everyJobCompleted:jobs.every(j=>f.store.get('orchestration',j.id,f.manager.tenantId).status==='completed'),exactlyOneDecisionPerCheckpoint:decisions.length===rounds*5&&new Set(decisions.map(d=>d.jobId+':'+d.checkpoint)).size===rounds*5,workMatchesPersistedDecisions:workflow.work===decisions.length};reports.push(workflow);
   const documentTasks=Array.from({length:workers},()=>({actorId:f.manager.id,tenantId:f.manager.tenantId,items:Array.from({length:rounds},()=>{const load=f.createLoad();return {id:load.id,version:load.version}})}));
-  const documents=await executeWorkers(f.root,'documents',documentTasks);
+  const documents=await executeWorkers(f.root,'documents',documentTasks,transactionDiagnostics);
   documents.invariants={allDocumentsValidated:f.store.list('document',f.manager.tenantId).filter(d=>d.status==='validated').length===workers*rounds,allDocumentPairsSucceeded:documents.outcomes.success===workers*rounds};reports.push(documents);
-  const isolation=await executeWorkers(f.root,'tenant_isolation',Array.from({length:workers},()=>({actorId:f.outsider.id,tenantId:f.outsider.tenantId,items:pairs})));
+  const isolation=await executeWorkers(f.root,'tenant_isolation',Array.from({length:workers},()=>({actorId:f.outsider.id,tenantId:f.outsider.tenantId,items:pairs})),transactionDiagnostics);
   isolation.invariants={allCrossTenantRequestsDenied:isolation.outcomes.expectedDenial===workers*rounds,noForeignResourcesInOtherTenant:f.store.list('load',f.outsider.tenantId).length===0};reports.push(isolation);
   return {format:'iway-performance-evidence',version:1,runId,capturedAt:new Date().toISOString(),configuration:{workers,rounds},environment:{node:process.version,platform:process.platform,arch:process.arch,logicalCpus:availableParallelism(),cpuModel:cpus()[0]?.model??'unavailable'},scope:'Isolated local SQLite regression workload; not hosted capacity or an SLO',scenarios:reports,correctnessPassed:reports.every(r=>r.outcomes.unexpectedError===0&&Object.values(r.invariants).every(Boolean)),hostedCertified:false};
  }finally{for(const callback of cleanup)await callback()}
@@ -125,6 +130,16 @@ export function evaluatePerformance(report,baseline){
 async function main(){
  if(process.argv[2]==='--worker'){await performanceWorker(process.argv[3]);return;}
  const args=process.argv.slice(2),calibrating=args[0]==='--calibrate';
+ if(args.length===1&&args[0]==='--diagnose-transactions'){
+  const report=await runPerformanceScenarios({transactionDiagnostics:true});
+  const outputPath=resolve('dist/operations-evidence/performance-diagnostic-'+report.runId+'.json');
+  await mkdir(dirname(outputPath),{recursive:true});
+  const diagnostic={...report,diagnosticOnly:true,certificationComparable:false,certificationStatus:'NOT_EVALUATED'};
+  await writeFile(outputPath,JSON.stringify(diagnostic,null,2)+'\n',{flag:'wx'});
+  console.log(JSON.stringify({status:report.correctnessPassed?'DIAGNOSTIC_COMPLETE':'DIAGNOSTIC_CORRECTNESS_FAIL',path:outputPath,runId:report.runId}));
+  if(!report.correctnessPassed)process.exitCode=1;
+  return;
+ }
  if(args.length&&(!calibrating||args.length!==2))throw new Error('Usage: node scripts/operations-benchmark.mjs [--calibrate NEW_BASELINE_FILE]');
  const report=await runPerformanceScenarios(),outputPath=resolve('dist/operations-evidence/performance.json');await mkdir(dirname(outputPath),{recursive:true});
  if(calibrating){

@@ -1,0 +1,72 @@
+{
+  "capturedAt": "2026-10-12T14:08:36.204Z",
+  "originalHead": "036d72564bad1d14b272fd3dd9ce2b533535ee71",
+  "headUnchanged": true,
+  "stashUnchanged": true,
+  "branch": "feat/ai-native-decision-plane",
+  "files": [
+    {
+      "path": "domain/operations-integration.mjs",
+      "sha256": "efbd047cd586e17fe9b82280908a5d0d99e617d52025068d7fae41d562f58bd1",
+      "unchanged": true
+    },
+    {
+      "path": "domain/operations-projection.mjs",
+      "sha256": "c2725c3f8e4a23b14fec12a66364bad98dc63250c1b2bd1306433cf13dfa507e",
+      "unchanged": true
+    },
+    {
+      "path": "domain/operations-provider.mjs",
+      "sha256": "faf1ee6ffad547aed1584ddb3c50051666a38a6b94a6e458023a78ce7f462102",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/operations-rls-local-probe.mjs",
+      "sha256": "e6e23ca0389dee2e7af848ef18c7d0ce6e8872ba35e993c3504fccbed2c1a4d0",
+      "unchanged": true
+    },
+    {
+      "path": "tests/operations-provider.test.mjs",
+      "sha256": "6764fc7d54005c4b642f7d433d7184ab3b865a38c171fb880dd2309d034ed6bc",
+      "unchanged": true
+    },
+    {
+      "path": "domain/operations-transport.mjs",
+      "sha256": "74f796f5cabf6b24267721aca0af4be9037abd4e97c2f1221c3eafe2142da2a2",
+      "unchanged": true
+    }
+  ],
+  "prior": [
+    {
+      "name": "batches-88-100",
+      "manifestUnchanged": true,
+      "keys": [
+        "scope",
+        "sourceHash",
+        "productionDecision",
+        "overallStatus",
+        "commands",
+        "artifacts",
+        "implementationCommits",
+        "evidenceIntegrityCommit"
+      ]
+    },
+    {
+      "name": "performance-recovery",
+      "manifestUnchanged": true,
+      "keys": [
+        "scope",
+        "capturedAt",
+        "sourceHash",
+        "certificationSourceMatches",
+        "implementationCommit",
+        "overallStatus",
+        "localDecision",
+        "productionDecision",
+        "commands",
+        "preservation",
+        "artifacts"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+✔ lock acquisition timeout is bounded, never executes callback, and is not a rollback or execution sample (603.4779ms)
+✔ interrupted SQLite writer loses no committed state and leaves no partial write (1312.8328ms)
+✔ independent concurrent workers exercise dispatch, workflows, documents and tenant isolation with measured resources (9904.9316ms)
+✔ cached statements observe other connections, rollback, tenant scope and current principal authority (2933.75ms)
+✔ bounded timing aggregation never exposes caller-supplied identities (13.3317ms)
+✔ rejects invalid telemetry and sample bounds (5.7006ms)
+✔ opt-in timing records transaction phases without exposing business data (244.156ms)
+✔ timing callback failure never changes committed transaction result (308.642ms)
+✔ failed transaction rolls back and emits noncommitted timing (274.2102ms)
+✔ default transaction behavior remains available without instrumentation (225.0552ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11817.0915

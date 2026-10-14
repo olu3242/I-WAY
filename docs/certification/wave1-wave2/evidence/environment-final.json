@@ -1,0 +1,18 @@
+{
+  "capturedAt": "2026-10-12T14:07:46.509Z",
+  "node": "v24.16.0",
+  "sqlite": "3.53.0",
+  "platform": "win32",
+  "release": "10.0.26200",
+  "arch": "x64",
+  "logicalCpus": 12,
+  "cpuModel": "Intel(R) Core(TM) 7 150U",
+  "totalMemoryBytes": 16847921152,
+  "freeMemoryBytes": 738570240,
+  "volume": {
+    "blockSize": 4096,
+    "availableBytes": 131315032064,
+    "totalBytes": 493021556736
+  },
+  "scope": "Local shared host snapshot; excludes process names, credentials and tenant/customer data"
+}
