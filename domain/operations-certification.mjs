@@ -5,7 +5,7 @@ export const artifactNames=Object.freeze({browser:'browser-evidence.json',perfor
 export const parkedGates=Object.freeze(['restrictedPostgresAuthentication','approvedConsent','exposedCredentialRotation','hostedIdentityAndPersistence','approvedAIProvider','deploymentAuthorization']);
 export function sourceFingerprint(root=process.cwd()){
  const list=args=>execFileSync('git',args,{cwd:root,encoding:'utf8'}).trim().split(/\r?\n/).filter(Boolean);
- const files=[...new Set([...list(['ls-files']),...list(['ls-files','--others','--exclude-standard'])])].filter(p=>/^(domain|server|scripts|apps|tests|site|supabase)\//.test(p)||['package.json','package-lock.json','playwright.config.mjs','docs/operations/PERFORMANCE_BASELINE.json','docs/operations/PUBLIC_RELEASE_TARGET.json'].includes(p)).sort();
+ const files=[...new Set([...list(['ls-files']),...list(['ls-files','--others','--exclude-standard'])])].filter(p=>/^(domain|server|scripts|apps|tests|site|supabase|lib|migrations|execution)\//.test(p)||['package.json','package-lock.json','playwright.config.mjs','docs/operations/PERFORMANCE_BASELINE.json','docs/operations/PUBLIC_RELEASE_TARGET.json'].includes(p)).sort();
  return sha256(Buffer.concat(files.flatMap(p=>[Buffer.from(p+'\0'),readFileSync(new URL(p.replaceAll('\\','/'),new URL('file:///'+root.replaceAll('\\','/')+'/'))),Buffer.from('\0')])));
 }
 export function parseCounts(log,kind){

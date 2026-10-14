@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "sourceHash": "9d42b324a77ce068b6c495243cf197aa76ed8eb4f83796e27dd7add2bab79fd5",
+  "scope": "validated-local-gate-evidence",
+  "localDecision": "PARTIAL",
+  "hostedDecision": "NO-GO",
+  "hostedExecuted": false,
+  "executionAuthorized": false,
+  "batches": {
+    "B245": {
+      "capability": "restricted database authentication",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": "persistence",
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "verify",
+          "logSha256": "3e72610ae5a18747e21f1c6113621bf2607e9d512d2ce60295f6a4c5f0cb175a"
+        }
+      ]
+    },
+    "B246": {
+      "capability": "versioned consent activation",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": "registration",
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "verify",
+          "logSha256": "3e72610ae5a18747e21f1c6113621bf2607e9d512d2ce60295f6a4c5f0cb175a"
+        }
+      ]
+    },
+    "B247": {
+      "capability": "identity MFA and session revocation",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": "identity",
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "verify",
+          "logSha256": "3e72610ae5a18747e21f1c6113621bf2607e9d512d2ce60295f6a4c5f0cb175a"
+        },
+        {
+          "gate": "browser",
+          "logSha256": "93964d9bf0f98b955370609473045fc5b2d0266842972c512064375f0a15cb93",
+          "artifactSha256": "ecafb49036c2e6365bd38935d7054890f15762950a7deda4539f3ac4996afb5a"
+        }
+      ]
+    },
+    "B248": {
+      "capability": "hosted persistence and RLS",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": "isolation",
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "verify",
+          "logSha256": "3e72610ae5a18747e21f1c6113621bf2607e9d512d2ce60295f6a4c5f0cb175a"
+        }
+      ]
+    },
+    "B249": {
+      "capability": "queue lease recovery and fencing",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": "workflow",
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "verify",
+          "logSha256": "3e72610ae5a18747e21f1c6113621bf2607e9d512d2ce60295f6a4c5f0cb175a"
+        }
+      ]
+    },
+    "B250": {
+      "capability": "signed integration replay and dead letters",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": "integrations",
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "verify",
+          "logSha256": "3e72610ae5a18747e21f1c6113621bf2607e9d512d2ce60295f6a4c5f0cb175a"
+        }
+      ]
+    },
+    "B251": {
+      "capability": "AI provider governance",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": null,
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "evaluation",
+          "logSha256": "cd63ac5b4c4766418b422e076335691b4a30cf0670cdaa9b2c850b0487958065",
+          "artifactSha256": "bc659f3f6c59608379339bffd0005262a62225043cb84ea984271f3a9e86ee6c"
+        },
+        {
+          "gate": "verify",
+          "logSha256": "3e72610ae5a18747e21f1c6113621bf2607e9d512d2ce60295f6a4c5f0cb175a"
+        }
+      ]
+    },
+    "B252": {
+      "capability": "deployment backup and rollback",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": "rollback",
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "recovery",
+          "logSha256": "c3f988b6ef3b0b2a0720ef82c4e6af20214045da5e050feea38a31d12f465c1b",
+          "artifactSha256": "1fb169cf42e79f99699ae7f2e46d9547357781b5f3d631b9e59dcfddeb112ae6"
+        }
+      ]
+    },
+    "B253": {
+      "capability": "aggregate release evidence integrity",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": null,
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "verify",
+          "logSha256": "3e72610ae5a18747e21f1c6113621bf2607e9d512d2ce60295f6a4c5f0cb175a"
+        },
+        {
+          "gate": "browser",
+          "logSha256": "93964d9bf0f98b955370609473045fc5b2d0266842972c512064375f0a15cb93",
+          "artifactSha256": "ecafb49036c2e6365bd38935d7054890f15762950a7deda4539f3ac4996afb5a"
+        },
+        {
+          "gate": "performance",
+          "logSha256": "319e9a4692aee038450a3eda450fd413d6961cf85772e9300f102c84a213bbbf",
+          "artifactSha256": "863c6e1c5eb541af768ca96b16fcad1e646cc48db12214b4152e248aaa6ebb82"
+        },
+        {
+          "gate": "recovery",
+          "logSha256": "c3f988b6ef3b0b2a0720ef82c4e6af20214045da5e050feea38a31d12f465c1b",
+          "artifactSha256": "1fb169cf42e79f99699ae7f2e46d9547357781b5f3d631b9e59dcfddeb112ae6"
+        },
+        {
+          "gate": "evaluation",
+          "logSha256": "cd63ac5b4c4766418b422e076335691b4a30cf0670cdaa9b2c850b0487958065",
+          "artifactSha256": "bc659f3f6c59608379339bffd0005262a62225043cb84ea984271f3a9e86ee6c"
+        },
+        {
+          "gate": "publicTarget",
+          "logSha256": "21ea8805331ba41ca59718bb2839bb23e7b199d21c042cfddf546eb77a648b95"
+        }
+      ]
+    },
+    "B254": {
+      "capability": "credential rotation attestation",
+      "status": "BLOCKED",
+      "hostedScenario": null,
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "No local execution evidence mapped.",
+      "artifacts": []
+    },
+    "B255": {
+      "capability": "final go no-go decision",
+      "status": "LOCAL_GATE_EVIDENCE_ONLY",
+      "hostedScenario": null,
+      "hostedExecuted": false,
+      "checksVerified": false,
+      "remaining": "Scenario-specific checks require independently executed assertions.",
+      "artifacts": [
+        {
+          "gate": "verify",
+          "logSha256": "3e72610ae5a18747e21f1c6113621bf2607e9d512d2ce60295f6a4c5f0cb175a"
+        },
+        {
+          "gate": "browser",
+          "logSha256": "93964d9bf0f98b955370609473045fc5b2d0266842972c512064375f0a15cb93",
+          "artifactSha256": "ecafb49036c2e6365bd38935d7054890f15762950a7deda4539f3ac4996afb5a"
+        },
+        {
+          "gate": "performance",
+          "logSha256": "319e9a4692aee038450a3eda450fd413d6961cf85772e9300f102c84a213bbbf",
+          "artifactSha256": "863c6e1c5eb541af768ca96b16fcad1e646cc48db12214b4152e248aaa6ebb82"
+        },
+        {
+          "gate": "recovery",
+          "logSha256": "c3f988b6ef3b0b2a0720ef82c4e6af20214045da5e050feea38a31d12f465c1b",
+          "artifactSha256": "1fb169cf42e79f99699ae7f2e46d9547357781b5f3d631b9e59dcfddeb112ae6"
+        },
+        {
+          "gate": "evaluation",
+          "logSha256": "cd63ac5b4c4766418b422e076335691b4a30cf0670cdaa9b2c850b0487958065",
+          "artifactSha256": "bc659f3f6c59608379339bffd0005262a62225043cb84ea984271f3a9e86ee6c"
+        },
+        {
+          "gate": "publicTarget",
+          "logSha256": "21ea8805331ba41ca59718bb2839bb23e7b199d21c042cfddf546eb77a648b95"
+        }
+      ]
+    }
+  }
+}

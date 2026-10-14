@@ -1,0 +1,27 @@
+
+> iway-platform@0.1.0 test:browser
+> playwright test
+
+
+Running 16 tests using 1 worker
+
+(node:42456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\browser\accessibility.spec.mjs:4:1 › WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable (29.5s)
+  ok  2 tests\browser\accessibility.spec.mjs:21:1 › sign-in failure is announced and focused and recovers with keyboard input (2.4s)
+  ok  3 tests\browser\accessibility.spec.mjs:38:1 › fleet completes employment and equipment work and server errors remain recoverable (3.4s)
+  ok  4 tests\browser\administration.spec.mjs:4:2 › carrier administration settings persist at 1440px (1.8s)
+  ok  5 tests\browser\administration.spec.mjs:4:2 › carrier administration settings persist at 390px (1.6s)
+  ok  6 tests\browser\administration.spec.mjs:18:1 › noncarrier cannot open administration page or read its APIs (1.1s)
+  ok  7 tests\browser\administration.spec.mjs:28:1 › anonymous administration redirects to sign in (608ms)
+  ok  8 tests\browser\operations.spec.mjs:11:2 › carrier has an accessible role-scoped workspace at 1440px (3.0s)
+  ok  9 tests\browser\operations.spec.mjs:11:2 › dispatcher has an accessible role-scoped workspace at 1440px (2.8s)
+  ok 10 tests\browser\operations.spec.mjs:11:2 › driver has an accessible role-scoped workspace at 390px (2.6s)
+  ok 11 tests\browser\operations.spec.mjs:11:2 › fleet has an accessible role-scoped workspace at 390px (2.3s)
+  ok 12 tests\browser\operations.spec.mjs:41:1 › browser journey creates, dispatches, executes and approves an invoice with real persistence (13.5s)
+  ok 13 tests\browser\operations.spec.mjs:182:1 › browser rejects unauthorized sessions and preserves tenant isolation (1.5s)
+  ok 14 tests\browser\operations.spec.mjs:200:1 › customer portal exposes only its latest reviewed BOL and protects revision history (3.9s)
+  ok 15 tests\browser\operations.spec.mjs:254:1 › Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery (8.3s)
+  ok 16 tests\browser\operations.spec.mjs:375:2 › dispatcher can mark ready and cancel an assignment without duplicate active claims (2.9s)
+
+  16 passed (1.4m)
