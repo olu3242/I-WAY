@@ -8,6 +8,7 @@ import {AsyncOperationsPgStore,buildLocalOperationsPgConfig} from '../../server/
 import {createAsyncLoad} from '../../domain/operations-async-load.mjs';
 import {renameAsyncLoad} from '../../domain/operations-async-load-rename.mjs';
 import {noteAsyncLoad} from '../../domain/operations-async-load-note.mjs';
+import {noteAsyncShipment} from '../../domain/operations-async-shipment-note.mjs';
 
 // Explicit opt-in; never load environment files or connect to an existing database.
 test('disposable PostgreSQL Operations certification',async t=>{
@@ -80,6 +81,21 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await assert.rejects(note({...c,idempotencyKey:randomUUID()}),{code:'STALE'});
   await assert.rejects(note({...c,idempotencyKey:randomUUID(),payload:{note:'x',status:'delivered'}}),{code:'FIELDS'});
   await assert.rejects(noteAsyncLoad({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeLoad:async()=>true}),{code:'NOT_FOUND'});
+  assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
+ });
+ await t.test('shipment note requires same-tenant parent, authorization and atomic replay',async()=>{
+  const shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===load.id);
+  assert.ok(shipment);
+  const before=await counts();
+  const c={action:'shipment:note',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{note:'Pickup appointment confirmed'}};
+  const note=(command=c,extra={})=>noteAsyncShipment({store,scope:a,command,authorizeShipment:async({principal})=>principal.active&&principal.permissions.includes('load:create'),...extra});
+  const first=await note();assert.equal(first.note,'Pickup appointment confirmed');assert.equal(first.version,shipment.version+1);
+  assert.deepEqual(await note(),first);
+  await assert.rejects(note(c,{authorizeShipment:async()=>false}),{code:'FORBIDDEN'});
+  await assert.rejects(note({...c,payload:{note:'Other'}}),{code:'IDEMPOTENCY_CONFLICT'});
+  await assert.rejects(note({...c,idempotencyKey:randomUUID()}),{code:'STALE'});
+  await assert.rejects(note({...c,idempotencyKey:randomUUID(),payload:{note:'Valid',loadId:randomUUID()}}),{code:'FIELDS'});
+  await assert.rejects(noteAsyncShipment({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeShipment:async()=>true}),{code:'NOT_FOUND'});
   assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
