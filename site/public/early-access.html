@@ -103,7 +103,7 @@
           <label for="role">I’m joining as <span class="opt">(optional)</span></label>
           <select id="role" name="role">
             <option value="">Choose one</option>
-            <option value="shipper">A business that ships goods</option>
+            <option value="other">A business that ships goods</option>
             <option value="carrier">A carrier</option>
             <option value="fleet">A fleet company</option>
             <option value="driver">A driver</option>
@@ -114,7 +114,7 @@
           <label for="notes">What are you moving? <span class="opt">(optional)</span></label>
           <textarea id="notes" name="notes" maxlength="600"></textarea>
         </div>
-        <p class="consent">By continuing, you agree that I-way may contact you about early access. See our <a href="privacy.html">Privacy Policy</a>.</p>
+        <p class="consent"><label><input type="checkbox" name="consent" required> I agree that I-way may contact me about early access.</label> See our <a href="privacy.html">Privacy Policy</a>.</p>
         <button class="btn btn-primary btn-lg" type="submit" id="ea-submit" style="width:100%"><span class="spinner" aria-hidden="true"></span><span id="ea-submit-label">Get Started</span></button>
       </form>
 
