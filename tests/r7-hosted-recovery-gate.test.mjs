@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {assessHostedRecovery as assess} from '../scripts/r7-hosted-recovery-gate.mjs';
+const good=()=>({environment:'hosted-nonproduction',sourceCommit:'a'.repeat(40),backup:{completed:true,manifestDigest:'sha256:'+'b'.repeat(64)},restore:{completed:true,manifestVerified:true,auditChainVerified:true,tenantIsolationVerified:true},recovery:{rpoMs:500,rtoMs:900,applicationHealthy:true},slo:{approved:true,maxRpoMs:1000,maxRtoMs:1500},review:{approved:true,reviewer:'Security reviewer',evidenceDigest:'sha256:'+'c'.repeat(64)}});
+test('R7 rejects absent hosted recovery evidence',()=>assert.equal(assess(null).decision,'NO-GO'));
+test('R7 rejects exceeded RPO and RTO',()=>{const e=good();e.recovery.rpoMs=2000;e.recovery.rtoMs=2000;assert.equal(assess(e).decision,'NO-GO');assert.equal(assess(e).reasons.filter(x=>x.includes('exceeds')).length,2);});
+test('R7 rejects missing audit chain or tenant verification',()=>{const e=good();e.restore.auditChainVerified=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R7 rejects unapproved recovery objectives',()=>{const e=good();e.slo.approved=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R7 requires independent review',()=>{const e=good();e.review.approved=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R7 returns review eligibility for complete passing evidence only',()=>assert.equal(assess(good()).decision,'ELIGIBLE_FOR_REVIEW'));
