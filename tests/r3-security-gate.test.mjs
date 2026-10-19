@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {assessAuthorization as assess} from '../scripts/r3-security-gate.mjs';
+const group=()=>({passed:true,assertions:4,deniedByDefault:true});
+const good=()=>({environment:'hosted-nonproduction',sourceCommit:'a'.repeat(40),authentication:group(),authorization:group(),tenantIsolation:group(),rls:group(),qaDelegation:{productionDenied:true,verifiedActorRequired:true,qaOnlyTargets:true,tenantBound:true,reasonRequired:true,maxMinutes:15,revocationVerified:true,auditVerified:true},review:{approved:true,reviewer:'Security reviewer',evidenceDigest:'sha256:'+'b'.repeat(64)}});
+test('R3 rejects missing security evidence',()=>assert.equal(assess(null).decision,'NO-GO'));
+test('R3 rejects cross-tenant and RLS gaps',()=>{const e=good();e.tenantIsolation.passed=false;e.rls.deniedByDefault=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R3 rejects production persona switching',()=>{const e=good();e.qaDelegation.productionDenied=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R3 rejects unbounded delegation and missing audit',()=>{const e=good();e.qaDelegation.maxMinutes=60;e.qaDelegation.auditVerified=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R3 requires independent security review',()=>{const e=good();e.review.approved=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R3 only returns review eligibility for complete evidence',()=>assert.equal(assess(good()).decision,'ELIGIBLE_FOR_REVIEW'));
