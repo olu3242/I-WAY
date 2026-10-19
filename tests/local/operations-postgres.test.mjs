@@ -12,6 +12,7 @@ import {noteAsyncShipment} from '../../domain/operations-async-shipment-note.mjs
 import {dispatchAsyncShipment} from '../../domain/operations-async-shipment-dispatch.mjs';
 import {assignAsyncShipment} from '../../domain/operations-async-shipment-assign.mjs';
 import {releaseAsyncShipment} from '../../domain/operations-async-shipment-release.mjs';
+import {reassignAsyncShipment} from '../../domain/operations-async-shipment-reassign.mjs';
 
 // Explicit opt-in; never load environment files or connect to an existing database.
 test('disposable PostgreSQL Operations certification',async t=>{
@@ -155,6 +156,29 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await assert.rejects(release({...c,idempotencyKey:randomUUID()}),{code:'STALE'});
   await assert.rejects(release({...c,idempotencyKey:randomUUID(),payload:{force:true}}),{code:'FIELDS'});
   await assert.rejects(releaseAsyncShipment({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeRelease:async()=>true}),{code:'NOT_FOUND'});
+  assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
+ });
+ await t.test('shipment reassignment atomically swaps reservations and synchronizes load',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const oldDriver=await store.transaction(a,tx=>tx.insert('driver',{active:true,available:true}));
+  const oldVehicle=await store.transaction(a,tx=>tx.insert('vehicle',{active:true,available:true}));
+  const newDriver=await store.transaction(a,tx=>tx.insert('driver',{active:true,available:true}));
+  const newVehicle=await store.transaction(a,tx=>tx.insert('vehicle',{active:true,available:true}));
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const assigned=await assignAsyncShipment({store,scope:a,command:{action:'shipment:assign',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{driverId:oldDriver.id,vehicleId:oldVehicle.id}},authorizeAssignment:auth});
+  const before=await counts();
+  const c={action:'shipment:reassign',resourceId:shipment.id,expectedVersion:assigned.version,idempotencyKey:randomUUID(),payload:{driverId:newDriver.id,vehicleId:newVehicle.id}};
+  const reassign=(cmd=c,extra={})=>reassignAsyncShipment({store,scope:a,command:cmd,authorizeReassignment:auth,...extra});
+  const result=await reassign();assert.equal(result.driverId,newDriver.id);assert.equal(result.vehicleId,newVehicle.id);
+  const state=await store.transaction(a,async tx=>({load:await tx.get('load',created.id),oldDriver:await tx.get('driver',oldDriver.id),oldVehicle:await tx.get('vehicle',oldVehicle.id),newDriver:await tx.get('driver',newDriver.id),newVehicle:await tx.get('vehicle',newVehicle.id)}));
+  assert.equal(state.load.driverId,newDriver.id);assert.equal(state.load.vehicleId,newVehicle.id);
+  assert.equal(state.oldDriver.available,true);assert.equal(state.oldVehicle.available,true);
+  assert.equal(state.newDriver.available,false);assert.equal(state.newVehicle.available,false);
+  assert.deepEqual(await reassign(),result);
+  await assert.rejects(reassign(c,{authorizeReassignment:async()=>false}),{code:'FORBIDDEN'});
+  await assert.rejects(reassign({...c,idempotencyKey:randomUUID()}),{code:'STALE'});
+  await assert.rejects(reassign({...c,idempotencyKey:randomUUID(),payload:{...c.payload,force:true}}),{code:'FIELDS'});
+  await assert.rejects(reassignAsyncShipment({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeReassignment:async()=>true}),{code:'NOT_FOUND'});
   assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
