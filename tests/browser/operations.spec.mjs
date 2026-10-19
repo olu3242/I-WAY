@@ -88,6 +88,9 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await driver.getByRole('button',{name:'Accept assignment',exact:true}).click();
   await driver.getByRole('button',{name:'Complete pickup',exact:true}).click();
   await driver.getByRole('button',{name:'Start transit',exact:true}).click();
+  // Wait for the asynchronous command refresh to finish before entering form data;
+  // otherwise render() replaces the form and discards the first field's value.
+  await expect(driver.getByRole('button',{name:'Start transit',exact:true})).toHaveCount(0);
   await driver.locator('#tracking input[name="note"]').fill('Illustrative recorded progress, no live GPS');
   await driver.locator('#tracking input[name="location"]').fill('Illustrative driver-reported waypoint');
   const trackingForm=driver.locator('form#tracking');
