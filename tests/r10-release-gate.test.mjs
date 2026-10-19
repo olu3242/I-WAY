@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {assessRelease as assess} from '../scripts/r10-release-gate.mjs';
+const sha='a'.repeat(40);
+const good=()=>({sourceCommit:sha,sourceReconciliation:{verified:true,archiveDigestVerified:true,branchDiffReviewed:true},ci:{conclusion:'success',commitSha:sha,browserPassed:19,securityChecksPassed:true},gates:Object.fromEntries(Array.from({length:8},(_,i)=>['R'+(i+2),{status:'ACCEPTED',sourceCommit:sha,evidenceDigest:'sha256:'+'b'.repeat(64),reviewer:'Independent reviewer'}])),approvals:{security:true,operations:true,product:true,productionRelease:true,changeReference:'CHG-001'}});
+test('R10 rejects missing release dossier',()=>assert.equal(assess(null).decision,'NO-GO'));
+test('R10 rejects unverified R1 archive',()=>{const e=good();e.sourceReconciliation.archiveDigestVerified=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R10 rejects CI for another commit',()=>{const e=good();e.ci.commitSha='c'.repeat(40);assert.equal(assess(e).decision,'NO-GO');});
+test('R10 rejects unaccepted or missing preceding gates',()=>{const e=good();delete e.gates.R4;e.gates.R7.status='BLOCKED';assert.equal(assess(e).decision,'NO-GO');});
+test('R10 rejects missing production approval',()=>{const e=good();e.approvals.productionRelease=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R10 only returns eligibility for complete release review',()=>assert.equal(assess(good()).decision,'ELIGIBLE_FOR_RELEASE_REVIEW'));
