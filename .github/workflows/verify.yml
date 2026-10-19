@@ -19,7 +19,7 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: node scripts/check-merge-conflicts.mjs
-      - run: node --test tests/r2-r10-gates.test.mjs
+      - run: node --test tests/r2-r10-gates.test.mjs tests/tracking-slo-gate.test.mjs
       - run: node scripts/r2-r10-gates.mjs --json
       - run: npm run verify
       - run: node --test tests/r2-app-support-integration.test.mjs
