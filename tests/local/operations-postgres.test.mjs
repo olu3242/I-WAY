@@ -9,6 +9,7 @@ import {createAsyncLoad} from '../../domain/operations-async-load.mjs';
 import {renameAsyncLoad} from '../../domain/operations-async-load-rename.mjs';
 import {noteAsyncLoad} from '../../domain/operations-async-load-note.mjs';
 import {noteAsyncShipment} from '../../domain/operations-async-shipment-note.mjs';
+import {dispatchAsyncShipment} from '../../domain/operations-async-shipment-dispatch.mjs';
 
 // Explicit opt-in; never load environment files or connect to an existing database.
 test('disposable PostgreSQL Operations certification',async t=>{
@@ -96,6 +97,23 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await assert.rejects(note({...c,idempotencyKey:randomUUID()}),{code:'STALE'});
   await assert.rejects(note({...c,idempotencyKey:randomUUID(),payload:{note:'Valid',loadId:randomUUID()}}),{code:'FIELDS'});
   await assert.rejects(noteAsyncShipment({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeShipment:async()=>true}),{code:'NOT_FOUND'});
+  assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
+ });
+ await t.test('shipment dispatch atomically transitions load and shipment with replay and tenant fences',async()=>{
+  const c0=command(),created=await create(c0);
+  const shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  assert.ok(shipment);
+  const before=await counts();
+  const c={action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}};
+  const dispatch=(cmd=c,extra={})=>dispatchAsyncShipment({store,scope:a,command:cmd,authorizeDispatch:async({principal})=>principal.active&&principal.permissions.includes('load:create'),...extra});
+  const first=await dispatch();assert.equal(first.status,'dispatched');
+  assert.equal((await store.transaction(a,tx=>tx.get('load',created.id))).status,'dispatched');
+  assert.deepEqual(await dispatch(),first);
+  await assert.rejects(dispatch(c,{authorizeDispatch:async()=>false}),{code:'FORBIDDEN'});
+  await assert.rejects(dispatch({...c,payload:{force:true}}),{code:'IDEMPOTENCY_CONFLICT'});
+  await assert.rejects(dispatch({...c,idempotencyKey:randomUUID()}),{code:'INVALID_TRANSITION'});
+  await assert.rejects(dispatch({...c,idempotencyKey:randomUUID(),payload:{force:true}}),{code:'FIELDS'});
+  await assert.rejects(dispatchAsyncShipment({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeDispatch:async()=>true}),{code:'NOT_FOUND'});
   assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
