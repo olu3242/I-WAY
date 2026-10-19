@@ -88,8 +88,8 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await driver.getByRole('button',{name:'Accept assignment',exact:true}).click();
   await driver.getByRole('button',{name:'Complete pickup',exact:true}).click();
   await driver.getByRole('button',{name:'Start transit',exact:true}).click();
-  await driver.getByLabel('Current location',{exact:true}).fill('Illustrative driver-reported waypoint');
-  await driver.getByLabel('Milestone note',{exact:true}).fill('Illustrative recorded progress, no live GPS');
+  await driver.locator('#tracking input[name="note"]').fill('Illustrative recorded progress, no live GPS');
+  await driver.locator('#tracking input[name="location"]').fill('Illustrative driver-reported waypoint');
   const trackingForm=driver.locator('form#tracking');
   const trackingValidity=await trackingForm.evaluate(form=>({valid:form.checkValidity(),fields:[...form.elements].filter(el=>el.willValidate).map(el=>({name:el.name,value:el.value,valid:el.validity.valid,message:el.validationMessage})),buttonType:form.querySelector('button')?.type}));
   expect(trackingValidity,JSON.stringify(trackingValidity)).toMatchObject({valid:true,buttonType:'submit'});
