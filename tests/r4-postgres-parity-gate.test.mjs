@@ -7,3 +7,6 @@ test('R4 rejects partial command coverage',()=>{const e=good();e.commands.tested
 test('R4 rejects missing RLS and tenant isolation',()=>{const e=good();e.rls.passed=false;e.tenantIsolation.assertions=0;assert.equal(assess(e).decision,'NO-GO');});
 test('R4 rejects unapproved evidence',()=>{const e=good();e.review.approved=false;assert.equal(assess(e).decision,'NO-GO');});
 test('R4 only makes complete evidence eligible for review',()=>assert.equal(assess(good()).decision,'ELIGIBLE_FOR_REVIEW'));
+
+test('R4 rejects self-declared smaller inventories even when every declared command passes',()=>{const e=good();e.commands.expected=1;e.commands.tested=1;assert.equal(assess(e).decision,'NO-GO');});
+test('R4 rejects a truncated inventory of 39 commands reported as complete',()=>{const e=good();e.commands.expected=39;e.commands.tested=39;assert.equal(assess(e).decision,'NO-GO');});
