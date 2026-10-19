@@ -17,3 +17,14 @@ jobs:
       - run: node --test tests/r2-app-support-integration.test.mjs
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test tests/browser/early-access.spec.mjs tests/browser/operations.spec.mjs tests/browser/accessibility.spec.mjs tests/browser/administration.spec.mjs
+
+      - name: Preserve browser failure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chromium-browser-evidence
+          path: |
+            dist/browser-results/
+            dist/browser-report/
+          if-no-files-found: ignore
+          retention-days: 7
