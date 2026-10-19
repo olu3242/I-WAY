@@ -12,5 +12,6 @@ jobs:
           node-version: '24.16.0'
           cache: npm
       - run: npm ci --ignore-scripts
+      - run: node scripts/check-merge-conflicts.mjs
       - run: npm run verify
       - run: node --test tests/r2-app-support-integration.test.mjs
