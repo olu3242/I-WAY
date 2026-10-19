@@ -6,6 +6,7 @@ import {Pool} from 'pg';
 import {isolatedPostgres} from '../../scripts/lib/isolated-postgres.mjs';
 import {AsyncOperationsPgStore,buildLocalOperationsPgConfig} from '../../server/operations-postgres.mjs';
 import {createAsyncLoad} from '../../domain/operations-async-load.mjs';
+import {renameAsyncLoad} from '../../domain/operations-async-load-rename.mjs';
 
 // Explicit opt-in; never load environment files or connect to an existing database.
 test('disposable PostgreSQL Operations certification',async t=>{
@@ -49,6 +50,22 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await f.admin.query(`CREATE TRIGGER fixture_failure BEFORE INSERT ON operations_private.${table} FOR EACH ROW ${table==='resources'?"WHEN (NEW.kind='shipment')":''} EXECUTE FUNCTION operations_private.fixture_failure()`);
   try{await assert.rejects(create(c),{code:'RETRY_TRANSACTION'});assert.deepEqual(await counts(),before)}finally{await f.admin.query(`DROP TRIGGER fixture_failure ON operations_private.${table}`);await f.admin.query('DROP FUNCTION operations_private.fixture_failure()')}
   await create(c);assert.deepEqual(await counts(),{resources:before.resources+2,commands:before.commands+1,audit:before.audit+1});
+ });
+ await t.test('load rename uses real PostgreSQL transaction, audit and idempotent replay',async()=>{
+  const before=await counts(),existing=await store.transaction(a,tx=>tx.get('load',load.id));
+  const c={action:'load:rename',resourceId:load.id,expectedVersion:existing.version,idempotencyKey:randomUUID(),payload:{reference:'Renamed fixture'}};
+  const rename=(command=c,extra={})=>renameAsyncLoad({store,scope:a,command,authorizeLoad:async({principal})=>principal.role==='carrier'&&principal.permissions.includes('load:create'),...extra});
+  const first=await rename();
+  assert.equal(first.reference,'Renamed fixture');assert.equal(first.version,existing.version+1);
+  assert.deepEqual(await rename(),first);
+  assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
+  await assert.rejects(rename({...c,payload:{reference:'Changed'}}),{code:'IDEMPOTENCY_CONFLICT'});
+  await assert.rejects(rename(c,{authorizeLoad:async()=>false}),{code:'FORBIDDEN'});
+  await assert.rejects(rename({...c,idempotencyKey:randomUUID()}),{code:'STALE'});
+  await assert.rejects(rename({...c,idempotencyKey:randomUUID(),payload:{reference:'Invalid',tenantId:b.tenantId}}),{code:'FIELDS'});
+  await assert.rejects(renameAsyncLoad({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeLoad:async()=>true}),{code:'NOT_FOUND'});
+  assert.equal((await store.transaction(a,tx=>tx.get('load',load.id))).reference,'Renamed fixture');
+  assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,1,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,1,{status:'validated'}))]);
