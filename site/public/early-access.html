@@ -84,7 +84,7 @@
       <div id="form-error" class="alert error" role="alert" hidden><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span id="form-error-text">Something went wrong. Your details are still here. Please try again.</span></div>
 
       <noscript><div class="alert error"><span>This form needs JavaScript. Please enable it, or use the Contact page.</span></div></noscript>
-      <form id="ea-form" novalidate data-form="early_access">
+      <form id="ea-form" action="/api/early-access" method="post" data-form="early_access">
         <div class="field" data-field="name">
           <label for="name">Full name</label>
           <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-err">
