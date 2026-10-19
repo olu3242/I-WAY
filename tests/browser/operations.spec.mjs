@@ -90,6 +90,8 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await driver.getByRole('button',{name:'Start transit',exact:true}).click();
   await driver.getByLabel('Current location',{exact:true}).fill('Illustrative driver-reported waypoint');
   await driver.getByLabel('Milestone note',{exact:true}).fill('Illustrative recorded progress, no live GPS');
+  const trackingForm=driver.locator('form#tracking');
+  expect(await trackingForm.evaluate(form=>({valid:form.checkValidity(),fields:[...form.elements].filter(el=>el.willValidate).map(el=>({name:el.name,valid:el.validity.valid,message:el.validationMessage})),buttonType:form.querySelector('button')?.type}))).toMatchObject({valid:true,buttonType:'submit'});
   const trackingRequests=[];
   const onTrackingResponse=response=>{if(response.url().includes('/api/ops/commands')&&response.request().method()==='POST')trackingRequests.push(response);};
   driver.on('response',onTrackingResponse);
