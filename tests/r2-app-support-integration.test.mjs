@@ -53,3 +53,28 @@ test('non-support registration still uses injected handler',async()=>{
  });
  assert.equal(invoked,1);
 });
+
+test('registration rejects invalid JSON without invoking storage',async()=>{
+ let invoked=0;
+ await withServer({register:async()=>{invoked++;return {created:true}}},async base=>{
+  const response=await fetch(base+'/api/early-access',{method:'POST',headers:{'Content-Type':'application/json'},body:'{invalid'});
+  assert.equal(response.status,400);
+ });
+ assert.equal(invoked,0);
+});
+
+test('registration returns service unavailable when persistence fails',async()=>{
+ await withServer({register:async()=>{throw new Error('Database offline')}},async base=>{
+  const response=await fetch(base+'/api/early-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'Test',email:'qa@example.com',role:'other',consent:true})});
+  assert.equal(response.status,503);
+  assert.deepEqual(await response.json(),{error:'Registration unavailable'});
+ });
+});
+
+test('registration responds with existing status for duplicate lead',async()=>{
+ await withServer({register:async()=>({created:false})},async base=>{
+  const response=await fetch(base+'/api/early-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'Test',email:'qa@example.com',role:'other',consent:true})});
+  assert.equal(response.status,200);
+  assert.deepEqual(await response.json(),{status:'received'});
+ });
+});
