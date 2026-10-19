@@ -15,3 +15,5 @@ jobs:
       - run: node scripts/check-merge-conflicts.mjs
       - run: npm run verify
       - run: node --test tests/r2-app-support-integration.test.mjs
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test tests/browser/early-access.spec.mjs
