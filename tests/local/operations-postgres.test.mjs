@@ -7,6 +7,7 @@ import {isolatedPostgres} from '../../scripts/lib/isolated-postgres.mjs';
 import {AsyncOperationsPgStore,buildLocalOperationsPgConfig} from '../../server/operations-postgres.mjs';
 import {createAsyncLoad} from '../../domain/operations-async-load.mjs';
 import {renameAsyncLoad} from '../../domain/operations-async-load-rename.mjs';
+import {noteAsyncLoad} from '../../domain/operations-async-load-note.mjs';
 
 // Explicit opt-in; never load environment files or connect to an existing database.
 test('disposable PostgreSQL Operations certification',async t=>{
@@ -65,6 +66,20 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await assert.rejects(rename({...c,idempotencyKey:randomUUID(),payload:{reference:'Invalid',tenantId:b.tenantId}}),{code:'FIELDS'});
   await assert.rejects(renameAsyncLoad({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeLoad:async()=>true}),{code:'NOT_FOUND'});
   assert.equal((await store.transaction(a,tx=>tx.get('load',load.id))).reference,'Renamed fixture');
+  assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
+ });
+ await t.test('load note is authorized, replay-safe, versioned and tenant-isolated on PostgreSQL',async()=>{
+  const before=await counts(),existing=await store.transaction(a,tx=>tx.get('load',load.id));
+  const c={action:'load:note',resourceId:load.id,expectedVersion:existing.version,idempotencyKey:randomUUID(),payload:{note:'Verified delivery window'}};
+  const note=(command=c,extra={})=>noteAsyncLoad({store,scope:a,command,authorizeLoad:async({principal})=>principal.active&&principal.permissions.includes('load:create'),...extra});
+  const result=await note();
+  assert.equal(result.note,'Verified delivery window');assert.equal(result.version,existing.version+1);
+  assert.deepEqual(await note(),result);
+  await assert.rejects(note({...c,payload:{note:'Different'}}),{code:'IDEMPOTENCY_CONFLICT'});
+  await assert.rejects(note(c,{authorizeLoad:async()=>false}),{code:'FORBIDDEN'});
+  await assert.rejects(note({...c,idempotencyKey:randomUUID()}),{code:'STALE'});
+  await assert.rejects(note({...c,idempotencyKey:randomUUID(),payload:{note:'x',status:'delivered'}}),{code:'FIELDS'});
+  await assert.rejects(noteAsyncLoad({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeLoad:async()=>true}),{code:'NOT_FOUND'});
   assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
