@@ -1,6 +1,7 @@
 import {X509Certificate,randomUUID} from 'node:crypto';
 import {checkServerIdentity} from 'node:tls';
 import {AsyncCommandError} from '../domain/operations-async-command.mjs';
+import {OpsError} from '../domain/operations-errors.mjs';
 import {postgresTlsOptions} from './postgres-tls.mjs';
 
 // Readiness adapter only. The synchronous SQLite Operations engine cannot consume this contract.
@@ -18,6 +19,7 @@ export class OperationsPgError extends Error{
 function ensure(value,code='CONFIGURATION'){if(!value)throw new OperationsPgError(code);}
 function sanitized(error){
  if(error instanceof OperationsPgError||error instanceof AsyncCommandError)return error;
+ if(error instanceof OpsError)return new AsyncCommandError(error.code);
  const code=String(error?.code??'');
  return new OperationsPgError(code==='28P01'||code==='28000'?'AUTHENTICATION':/CERT|TLS|SSL|SELF_SIGNED/.test(code)?'TLS':/^(ECONN|ENOTFOUND|EAI_|ETIMEDOUT)/.test(code)?'NETWORK':code==='23505'?'CONFLICT':code==='42501'?'AUTHORIZATION':code==='40001'||code==='40P01'?'RETRY_TRANSACTION':'DATABASE_FAILURE');
 }

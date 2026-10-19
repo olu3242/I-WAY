@@ -68,7 +68,8 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
-  const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,1,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,1,{status:'validated'}))]);
+  const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
+  const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
   assert.equal(r.filter(x=>x.status==='fulfilled').length,1);assert.equal(r.find(x=>x.status==='rejected').reason.code,'STALE');
  });
  await t.test('cross-tenant, missing and inactive principals cannot read or write',async()=>{
