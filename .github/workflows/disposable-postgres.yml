@@ -1,0 +1,31 @@
+name: Disposable PostgreSQL Operations
+on:
+  push:
+    branches:
+      - work/iway-r1-r10-consolidated-certification-20261019
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  isolated-postgres:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24.16.0'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Install disposable PostgreSQL prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-16 openssl
+          test -x /usr/lib/postgresql/16/bin/initdb
+          test -x /usr/bin/openssl
+      - name: Exercise local PostgreSQL operations and RLS
+        env:
+          IWAY_OPERATIONS_LOCAL_OPT_IN: '1'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: node scripts/certify-postgres.mjs local --operations-isolated
