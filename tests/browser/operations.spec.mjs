@@ -90,7 +90,13 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await driver.getByRole('button',{name:'Start transit',exact:true}).click();
   await driver.getByLabel('Current location',{exact:true}).fill('Illustrative driver-reported waypoint');
   await driver.getByLabel('Milestone note',{exact:true}).fill('Illustrative recorded progress, no live GPS');
+  const trackingResponse=driver.waitForResponse(response=>response.url().includes('/api/ops/commands')&&response.request().method()==='POST');
   await driver.getByRole('button',{name:'Record update',exact:true}).click();
+  const trackingResult=await trackingResponse;
+  expect(trackingResult.status(),await trackingResult.text()).toBe(200);
+  const persistedTracking=await driver.evaluate(async()=>{const response=await fetch('/api/ops/state');return {status:response.status,data:await response.json()};});
+  expect(persistedTracking.status).toBe(200);
+  expect(persistedTracking.data.trackings.some(t=>t.location==='Illustrative driver-reported waypoint')).toBe(true);
   await expect(driver.locator('#view')).toContainText('Illustrative driver-reported waypoint');
   await driver.getByLabel('What needs attention?',{exact:true}).fill('Illustrative weather needs human review');
   await driver.locator('#exception').getByLabel('Type',{exact:true}).selectOption('weather');
