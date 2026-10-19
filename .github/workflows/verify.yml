@@ -16,4 +16,4 @@ jobs:
       - run: npm run verify
       - run: node --test tests/r2-app-support-integration.test.mjs
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test tests/browser/early-access.spec.mjs
+      - run: npx playwright test tests/browser/early-access.spec.mjs tests/browser/operations.spec.mjs tests/browser/accessibility.spec.mjs tests/browser/administration.spec.mjs
