@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {assessAgentRuntime as assess} from '../scripts/r5-agent-runtime-gate.mjs';
+const good=()=>({sourceCommit:'a'.repeat(40),environment:'approved-nonproduction',agents:['MAX','PULSE','CLARA','GUARDIAN','FINN','SAGE','ATLAS'].map(name=>({name,executed:true,identityVerified:true})),jobs:{durable:true,idempotentRetries:true,completed:7,failed:0},handoffs:{authorized:true,verified:3,crossTenantDenied:true},recovery:{retryVerified:true,deadLetterVerified:true,resumeVerified:true,auditVerified:true},consent:{liveModelUsed:false,approved:false},review:{approved:true,reviewer:'QA reviewer',evidenceDigest:'sha256:'+'b'.repeat(64)}});
+test('R5 rejects absent agent evidence',()=>assert.equal(assess(null).decision,'NO-GO'));
+test('R5 rejects incomplete agent roster',()=>{const e=good();e.agents.pop();assert.equal(assess(e).decision,'NO-GO');});
+test('R5 rejects non-durable execution and missing recovery',()=>{const e=good();e.jobs.durable=false;e.recovery.deadLetterVerified=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R5 rejects unauthorized cross-tenant handoffs',()=>{const e=good();e.handoffs.crossTenantDenied=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R5 requires consent for live-model use',()=>{const e=good();e.consent.liveModelUsed=true;assert.equal(assess(e).decision,'NO-GO');});
+test('R5 permits review of complete deterministic offline execution',()=>assert.equal(assess(good()).decision,'ELIGIBLE_FOR_REVIEW'));
