@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {assessHostedOperations as assess} from '../scripts/r9-hosted-operations-gate.mjs';
+const good=()=>({environment:'hosted-nonproduction',sourceCommit:'a'.repeat(40),transport:{trusted:true,authorized:true,signedObservations:true},configuration:{secretsExternalized:true,tlsVerified:true,tenantBound:true,leastPrivilegeVerified:true},observability:{auditDurable:true,alertsTested:true,errorBudgetDefined:true,tracesVerified:true},operations:{rollbackRehearsed:true,incidentRunbookTested:true,backupRestoreVerified:true,capacityReviewed:true},security:{vulnerabilityReviewApproved:true,accessReviewApproved:true,dataRetentionApproved:true},review:{approved:true,reviewer:'Operations reviewer',evidenceDigest:'sha256:'+'b'.repeat(64)}});
+test('R9 rejects missing hosted operations evidence',()=>assert.equal(assess(null).decision,'NO-GO'));
+test('R9 rejects untrusted transport',()=>{const e=good();e.transport.trusted=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R9 rejects unsafe secret and tenant configuration',()=>{const e=good();e.configuration.secretsExternalized=false;e.configuration.tenantBound=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R9 rejects absent observability and rollback',()=>{const e=good();e.observability.alertsTested=false;e.operations.rollbackRehearsed=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R9 requires independent security and operations approval',()=>{const e=good();e.security.accessReviewApproved=false;e.review.approved=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R9 permits review of complete hosted operations evidence',()=>assert.equal(assess(good()).decision,'ELIGIBLE_FOR_REVIEW'));
