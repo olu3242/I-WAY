@@ -10,6 +10,7 @@ import {renameAsyncLoad} from '../../domain/operations-async-load-rename.mjs';
 import {noteAsyncLoad} from '../../domain/operations-async-load-note.mjs';
 import {noteAsyncShipment} from '../../domain/operations-async-shipment-note.mjs';
 import {dispatchAsyncShipment} from '../../domain/operations-async-shipment-dispatch.mjs';
+import {assignAsyncShipment} from '../../domain/operations-async-shipment-assign.mjs';
 
 // Explicit opt-in; never load environment files or connect to an existing database.
 test('disposable PostgreSQL Operations certification',async t=>{
@@ -114,6 +115,24 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await assert.rejects(dispatch({...c,idempotencyKey:randomUUID()}),{code:'INVALID_TRANSITION'});
   await assert.rejects(dispatch({...c,idempotencyKey:randomUUID(),payload:{force:true}}),{code:'FIELDS'});
   await assert.rejects(dispatchAsyncShipment({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeDispatch:async()=>true}),{code:'NOT_FOUND'});
+  assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
+ });
+ await t.test('shipment assignment atomically reserves driver and vehicle and updates parent load',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const driver=await store.transaction(a,tx=>tx.insert('driver',{active:true,available:true}));
+  const vehicle=await store.transaction(a,tx=>tx.insert('vehicle',{active:true,available:true}));
+  const before=await counts();
+  const c={action:'shipment:assign',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{driverId:driver.id,vehicleId:vehicle.id}};
+  const assign=(cmd=c,extra={})=>assignAsyncShipment({store,scope:a,command:cmd,authorizeAssignment:async({principal})=>principal.active&&principal.permissions.includes('load:create'),...extra});
+  const result=await assign();assert.equal(result.driverId,driver.id);assert.equal(result.vehicleId,vehicle.id);
+  const state=await store.transaction(a,async tx=>({load:await tx.get('load',created.id),driver:await tx.get('driver',driver.id),vehicle:await tx.get('vehicle',vehicle.id)}));
+  assert.equal(state.load.driverId,driver.id);assert.equal(state.load.vehicleId,vehicle.id);
+  assert.equal(state.driver.available,false);assert.equal(state.vehicle.available,false);
+  assert.deepEqual(await assign(),result);
+  await assert.rejects(assign(c,{authorizeAssignment:async()=>false}),{code:'FORBIDDEN'});
+  await assert.rejects(assign({...c,idempotencyKey:randomUUID()}),{code:'ALREADY_ASSIGNED'});
+  await assert.rejects(assign({...c,idempotencyKey:randomUUID(),payload:{...c.payload,force:true}}),{code:'FIELDS'});
+  await assert.rejects(assignAsyncShipment({store,scope:b,command:{...c,idempotencyKey:randomUUID()},authorizeAssignment:async()=>true}),{code:'NOT_FOUND'});
   assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
