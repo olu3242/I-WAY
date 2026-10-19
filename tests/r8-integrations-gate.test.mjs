@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {assessIntegrations as assess} from '../scripts/r8-integrations-gate.mjs';
+const good=()=>({environment:'approved-sandbox',sourceCommit:'a'.repeat(40),adapters:[{name:'sandbox-carrier',authorized:true,contractPassed:true,failureHandlingPassed:true}],payments:{sandboxOnly:true,idempotencyVerified:true,reconciliationVerified:true,duplicateChargeDenied:true,refundOrReversalVerified:true},webhooks:{signatureVerified:true,replayDenied:true,outOfOrderHandled:true,retryVerified:true},security:{noLiveCredentials:true,tenantIsolationVerified:true,auditVerified:true},review:{approved:true,reviewer:'QA reviewer',evidenceDigest:'sha256:'+'b'.repeat(64)}});
+test('R8 rejects absent integration evidence',()=>assert.equal(assess(null).decision,'NO-GO'));
+test('R8 rejects unauthorized adapters',()=>{const e=good();e.adapters[0].authorized=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R8 rejects duplicate payment risk',()=>{const e=good();e.payments.duplicateChargeDenied=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R8 rejects replayable webhooks',()=>{const e=good();e.webhooks.replayDenied=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R8 rejects live credentials and unapproved evidence',()=>{const e=good();e.security.noLiveCredentials=false;e.review.approved=false;assert.equal(assess(e).decision,'NO-GO');});
+test('R8 only returns review eligibility for complete sandbox evidence',()=>assert.equal(assess(good()).decision,'ELIGIBLE_FOR_REVIEW'));
