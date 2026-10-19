@@ -48,7 +48,7 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   stage='LOCAL_FIXTURE_TLS_SIGN';
   run(openssl,['x509','-req','-in',join(root,'server.csr'),'-CA',join(root,'ca.crt'),'-CAkey',join(root,'ca.key'),'-CAcreateserial','-out',join(data,'server.crt'),'-days','1','-extfile',join(root,'extensions')]);
   writeFileSync(join(data,'pg_hba.conf'),'hostssl all all 127.0.0.1/32 scram-sha-256\nhost all all 0.0.0.0/0 reject\nhost all all ::0/0 reject\n');
-  writeFileSync(join(data,'postgresql.auto.conf'),"listen_addresses='127.0.0.1'\nport=5433\nunix_socket_directories='${root}'\nssl=on\nssl_min_protocol_version='TLSv1.2'\nlog_statement='none'\nlog_min_error_statement='panic'\n");
+  writeFileSync(join(data,'postgresql.auto.conf'),"listen_addresses='127.0.0.1'\nport=5433\nunix_socket_directories='"+root+"'\nssl=on\nssl_min_protocol_version='TLSv1.2'\nlog_statement='none'\nlog_min_error_statement='panic'\n");
   stage='LOCAL_FIXTURE_START';
   run(join(bin,'pg_ctl'),['-D',data,'-l',join(root,'server.log'),'-w','start']);started=true;
   const ssl={ca:readFileSync(join(root,'ca.crt'),'utf8'),rejectUnauthorized:true,minVersion:'TLSv1.2'};
