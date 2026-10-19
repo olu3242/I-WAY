@@ -102,7 +102,6 @@ test('B54 competing processes claim one durable message, with current tenant aut
  assert.throws(()=>f.store.update('integrationjob',job.id,load.tenantId,current.version,{event:null}),/immutable/);
  assert.throws(()=>f.store.db.prepare('DELETE FROM resources WHERE id=?').run(job.id),/cannot be deleted/);
 });
-<<<<<<< HEAD
 
  test('carrier governance revocation fences queued and running integration work; timeout aborts fixture adapter',async t=>{
   const {createRuntimeExtensions}=await import('../domain/operations-runtime.mjs');
@@ -116,5 +115,3 @@ test('B54 competing processes claim one durable message, with current tenant aut
   const next=queue(f,load,event(f,'timeout-event'));await runIntegrationTick(f.ops,{providers:f.providers,timeoutMs:5});
   assert.equal(signal.aborted,true);assert.equal(f.store.get('integrationjob',next.id,load.tenantId).status,'retry');
  });
-=======
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
