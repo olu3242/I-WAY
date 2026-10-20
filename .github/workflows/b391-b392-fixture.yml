@@ -70,6 +70,8 @@ jobs:
         run: node --test tests/operations-nonce-cleanup-reconciler-experimental.test.mjs
       - name: Run B412 ephemeral nonce custody lifecycle tests
         run: node --test tests/operations-ephemeral-nonce-store-experimental.test.mjs
+      - name: Run B422 two-session PostgreSQL cleanup job lease race
+        run: node scripts/test-b422-pg-job-leases.mjs
       - name: Run B410 two-session PostgreSQL nonce issuance race
         run: node scripts/test-b410-pg-concurrent-nonce.mjs
       - name: Run B406 authenticated challenge custody tests
