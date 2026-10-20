@@ -20,7 +20,7 @@ export function createVerifiedProvisioningFlow({provisioner,verifyIdentity,expec
     ||claims.audience!==expectedAudience)
     throw Error('IDENTITY_PROOF_REJECTED');
    return provisioner.provision({invitationId,tenantId,actorId,role,
-    issuer:claims.issuer,subjectHash:hash(claims.subject)});
+    issuer:claims.issuer,subjectHash:hash(claims.subject),proofHash:hash(token)});
   }
  });
 }
