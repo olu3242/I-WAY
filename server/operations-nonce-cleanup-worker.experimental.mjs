@@ -1,9 +1,10 @@
 import {randomUUID} from 'node:crypto';
 // B419 experimental bounded cleanup worker. Invoke from a trusted isolated runner.
 // Durable job state is authoritative; this does not schedule or deploy a worker.
-export function createNonceCleanupWorker({jobs,reconciler,logger=()=>{}}){
+export function createNonceCleanupWorker({jobs,reconciler,logger=()=>{},finalizeDatabase=false}){
  if(!jobs||typeof jobs.claim!=='function'||typeof jobs.complete!=='function'||typeof jobs.ownsLease!=='function'||typeof jobs.renewLease!=='function'
-  ||!reconciler||typeof reconciler.reconcile!=='function'||typeof logger!=='function')
+  ||!reconciler||typeof reconciler.reconcile!=='function'||typeof logger!=='function'
+  ||(finalizeDatabase&&typeof jobs.finalizeConsumedChallenges!=='function'))
   throw Error('NONCE_WORKER_CONFIGURATION_REQUIRED');
  return Object.freeze({
   async runOnce({limit=25,ownerId=randomUUID()}={}){
@@ -16,7 +17,10 @@ export function createNonceCleanupWorker({jobs,reconciler,logger=()=>{}}){
      if(!await jobs.renewLease({...scope,ownerId})){skipped++;continue;}
      const result=await reconciler.reconcile({...scope,ownerId});
      if(!result.reconciled){skipped++;continue;}
-     if(await jobs.complete({...scope,ownerId}))completed++;
+     const done=finalizeDatabase
+      ?await jobs.finalizeConsumedChallenges({...scope,ownerId})
+      :await jobs.complete({...scope,ownerId});
+     if(done)completed++;
      else failed++;
     }catch(error){
      failed++;
