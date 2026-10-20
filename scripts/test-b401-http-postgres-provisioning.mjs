@@ -97,6 +97,8 @@ try{
  const success=elevatedRole;
  if((await success.json()).state!=='ACTIVE')throw Error('B401_HTTP_ACTIVATION_FAILED');
  if(await nonceStore.readNonce({invitationId,tenantId})!==null)throw Error('B413_NONCE_CUSTODY_NOT_CLEARED');
+ const postCommitReplay=await post(body);
+ if(postCommitReplay.status!==403)throw Error('B414_POST_COMMIT_REPLAY_ALLOWED');
  const forged=await post({...body,token:token.slice(0,-2)+'xx'});
  if(forged.status!==403)throw Error('B402_FORGED_SIGNATURE_ALLOWED');
  const wrongNonce=await post({...body,expectedNonce:'attacker-nonce'});
