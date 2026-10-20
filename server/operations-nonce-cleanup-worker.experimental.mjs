@@ -14,7 +14,7 @@ export function createNonceCleanupWorker({jobs,reconciler,logger=()=>{}}){
     try{
      if(!await jobs.ownsLease({...scope,ownerId})){skipped++;continue;}
      if(!await jobs.renewLease({...scope,ownerId})){skipped++;continue;}
-     const result=await reconciler.reconcile(scope);
+     const result=await reconciler.reconcile({...scope,ownerId});
      if(!result.reconciled){skipped++;continue;}
      if(await jobs.complete({...scope,ownerId}))completed++;
      else failed++;
