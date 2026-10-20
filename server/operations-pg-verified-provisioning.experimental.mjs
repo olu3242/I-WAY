@@ -10,10 +10,10 @@ export function createVerifiedProvisioningFlow({provisioner,verifyIdentity,expec
  ||!(allowedIssuers instanceof Set)||allowedIssuers.size===0)
   throw Error('VERIFIED_PROVISIONING_CONFIGURATION_REQUIRED');
  return Object.freeze({
-  async provision({invitationId,tenantId,actorId,role,token}){
-   if(!invitationId||!tenantId||!actorId||!role||typeof token!=='string'||!token)
+  async provision({invitationId,tenantId,actorId,role,token,expectedNonce}){
+   if(!invitationId||!tenantId||!actorId||!role||typeof token!=='string'||!token||typeof expectedNonce!=='string'||!expectedNonce)
     throw Error('IDENTITY_PROOF_REQUIRED');
-   const claims=await verifyIdentity(token);
+   const claims=await verifyIdentity(token,{nonce:expectedNonce});
    if(!claims||claims.verified!==true||claims.mfaVerified!==true
     ||typeof claims.issuer!=='string'||!allowedIssuers.has(claims.issuer)
     ||typeof claims.subject!=='string'||!claims.subject
