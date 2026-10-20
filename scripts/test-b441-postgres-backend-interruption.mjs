@@ -8,6 +8,10 @@ const invitationId=randomUUID(),tenantId=randomUUID(),actorId=randomUUID();
 const oldOwner=randomUUID(),newOwner=randomUUID();
 const admin=new Client(),worker=new Client(),recovered=new Client();
 await admin.connect();await worker.connect();await recovered.connect();
+// Expected asynchronous error after pg_terminate_backend; otherwise Node
+// emits an unhandled EventEmitter 'error' before the recovery assertions.
+let workerConnectionError=null;
+worker.on('error',error=>{workerConnectionError=error;});
 try{
  await admin.query(`INSERT INTO operations_onboarding.invitations
  (id,tenant_id,creator_id,recipient,assignment,issuer,subject_hash,state,expires_at)
@@ -24,7 +28,7 @@ try{
  let interrupted=false;
  try{await oldJobs.ownsFence({invitationId,tenantId,ownerId:oldOwner,fenceToken:oldClaim[0].fenceToken});}
  catch{interrupted=true;}
- if(!interrupted)throw Error('B441_DISCONNECTED_WORKER_STILL_QUERIED_DATABASE');
+ if(!interrupted&&!workerConnectionError)throw Error('B441_DISCONNECTED_WORKER_STILL_QUERIED_DATABASE');
  const recoveryJobs=createPgNonceCleanupJobs((sql,params)=>recovered.query(sql,params));
  if((await recoveryJobs.claim({ownerId:newOwner})).length!==0)
   throw Error('B441_PREMATURE_TAKEOVER');
