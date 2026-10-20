@@ -22,10 +22,18 @@ try{
  const loser=claimA.length?{jobs:b,ownerId:ownerB}:{jobs:a,ownerId:ownerA};
  if(await loser.jobs.complete({invitationId,tenantId,ownerId:loser.ownerId}))
   throw Error('B422_NON_OWNER_COMPLETION_ALLOWED');
- if(!await winner.jobs.complete({invitationId,tenantId,ownerId:winner.ownerId}))
-  throw Error('B422_LEASE_OWNER_COMPLETION_FAILED');
+ // Simulate an interrupted worker whose lease has expired.
+ await clients[0].query(`UPDATE operations_onboarding.nonce_cleanup_jobs
+  SET lease_until=now()-interval '1 second' WHERE invitation_id=$1`,[invitationId]);
+ const recovered=await loser.jobs.claim({ownerId:loser.ownerId});
+ if(recovered.length!==1||recovered[0].invitationId!==invitationId)
+  throw Error('B423_EXPIRED_LEASE_NOT_RECLAIMED');
+ if(await winner.jobs.complete({invitationId,tenantId,ownerId:winner.ownerId}))
+  throw Error('B423_STALE_OWNER_COMPLETION_ALLOWED');
+ if(!await loser.jobs.complete({invitationId,tenantId,ownerId:loser.ownerId}))
+  throw Error('B423_RECOVERY_OWNER_COMPLETION_FAILED');
  if((await admin.pending()).length!==0)throw Error('B422_COMPLETED_JOB_PENDING');
- console.log('PASS: B422 two-session job claiming and lease-owner completion');
+ console.log('PASS: B422/B423 two-session job claiming, expired lease recovery, stale-owner denial');
 }finally{
  for(const client of clients)await client.end();
 }
