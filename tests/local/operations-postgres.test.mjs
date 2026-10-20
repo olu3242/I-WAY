@@ -723,6 +723,50 @@ test('disposable PostgreSQL Operations certification',async t=>{
   }
   console.log('R5_POSTGRES_TRACKING_LOAD '+JSON.stringify(evidence));
  });
+ await t.test('R5 loopback HTTP PostgreSQL tracking bridge passes twenty request checks',async t=>{
+  const {createServer}=await import('node:http');
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  await store.transaction(a,async tx=>{
+   for(let i=0;i<48;i++)await tx.insert('tracking',{shipmentId:shipment.id,loadId:created.id,eventType:'in_transit',occurredAt:new Date(Date.UTC(2026,10,1,10,0,i)).toISOString(),location:'HTTP '+i,recordedBy:a.actorId});
+  });
+  const token=randomUUID(),before=await counts();
+  const server=createServer(async(req,res)=>{
+   const respond=(status,body)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(body))};
+   if(req.headers.host!=='127.0.0.1:'+server.address().port)return respond(403,{error:'host'});
+   if(req.method!=='GET')return respond(405,{error:'method'});
+   if(req.headers.authorization!=='Bearer '+token)return respond(401,{error:'unauthorized'});
+   try{
+    const url=new URL(req.url,'http://127.0.0.1');
+    if(url.pathname!=='/tracking')return respond(404,{error:'route'});
+    const limit=Number(url.searchParams.get('limit')??20);
+    if(!Number.isInteger(limit)||limit<1||limit>200)return respond(400,{error:'limit'});
+    const result=await projectAsyncShipmentTracking({store,scope:a,shipmentId:shipment.id,limit,authorizeTracking:async({principal})=>principal.active&&principal.permissions.includes('load:create')});
+    return respond(200,result);
+   }catch{return respond(503,{error:'unavailable'})}
+  });
+  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+  t.after(()=>new Promise(resolve=>server.close(resolve)));
+  const base='http://127.0.0.1:'+server.address().port;
+  const headers={Authorization:'Bearer '+token},times=[];
+  for(const concurrency of [1,4,8,16]){
+   const results=await Promise.all(Array.from({length:concurrency},async()=>{
+    const started=performance.now(),response=await fetch(base+'/tracking?limit=20',{headers});
+    const body=await response.json();times.push(performance.now()-started);return {response,body};
+   }));
+   assert.equal(results.length,concurrency);
+   assert.ok(results.every(x=>x.response.status===200));
+   assert.ok(results.every(x=>x.body.history.length===20));
+   assert.ok(results.every(x=>x.body.latestLocation==='HTTP 47'));
+   assert.ok(results.every(x=>x.body.hasMore===true));
+  }
+  assert.equal((await fetch(base+'/tracking')).status,401);
+  assert.equal((await fetch(base+'/tracking',{headers:{Authorization:'Bearer invalid'}})).status,401);
+  assert.equal((await fetch(base+'/tracking?limit=0',{headers})).status,400);
+  assert.equal((await fetch(base+'/wrong',{headers})).status,404);
+  assert.deepEqual(await counts(),before);
+  const sorted=times.sort((x,y)=>x-y),pct=p=>sorted[Math.ceil(p*sorted.length)-1];
+  console.log('R5_PG_LOOPBACK_HTTP '+JSON.stringify({scope:'disposable-test-only-http-postgresql',requests:times.length,p50Ms:pct(.5),p95Ms:pct(.95),p99Ms:pct(.99),productionSloCertified:false}));
+ });
  await t.test('tracking EXPLAIN ANALYZE and query statistics pass twenty checkpoints',async()=>{
   const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
   await store.transaction(a,async tx=>{
