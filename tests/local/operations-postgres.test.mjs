@@ -383,6 +383,39 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.deepEqual(await counts(),snapshot); // 10
   assert.equal(before.resources+2,snapshot.resources);
  });
+ await t.test('shipment-scoped tracking cursor and index pass twenty checkpoints',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const dispatched=await dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}}});
+  const add=async(eventType,occurredAt,location)=>recordAsyncTrackingEvent({store,scope:a,authorizeTracking:auth,command:{action:'tracking:record',resourceId:shipment.id,expectedVersion:dispatched.version,idempotencyKey:randomUUID(),payload:{eventType,occurredAt,location}}});
+  const t0='2026-11-01T10:00:00.000Z',t1='2026-11-01T11:00:00.000Z',t2='2026-11-01T12:00:00.000Z';
+  const e0=await add('arrived',t0,'Austin'),e1=await add('departed',t1,'Austin'),e2=await add('in_transit',t2,'Dallas');
+  const history=(options={})=>store.transaction(a,tx=>tx.trackingHistory(shipment.id,options));
+  const all=await history();
+  assert.equal(all.length,3); // 1
+  assert.deepEqual(all.map(x=>x.id),[e2.id,e1.id,e0.id]); // 2
+  assert.equal(all[0].shipmentId,shipment.id); // 3
+  assert.equal(all[0].loadId,created.id); // 4
+  assert.equal(all[0].occurredAt,t2); // 5
+  assert.equal((await history({limit:1})).length,1); // 6
+  assert.equal((await history({limit:1}))[0].id,e2.id); // 7
+  const p2=await history({limit:1,before:{occurredAt:t2,id:e2.id}});
+  assert.equal(p2.length,1); // 8
+  assert.equal(p2[0].id,e1.id); // 9
+  const p3=await history({limit:1,before:{occurredAt:t1,id:e1.id}});
+  assert.equal(p3[0].id,e0.id); // 10
+  assert.deepEqual(await history({limit:1,before:{occurredAt:t0,id:e0.id}}),[]); // 11
+  assert.deepEqual(await history({limit:3}),all); // 12
+  await assert.rejects(history({limit:0}),{code:'INPUT'}); // 13
+  await assert.rejects(history({limit:501}),{code:'INPUT'}); // 14
+  await assert.rejects(history({limit:1,before:{occurredAt:'invalid',id:e2.id}}),{code:'INPUT'}); // 15
+  await assert.rejects(history({limit:1,before:{occurredAt:t2,id:'invalid'}}),{code:'INPUT'}); // 16
+  assert.deepEqual(await store.transaction(b,tx=>tx.trackingHistory(shipment.id)),[]); // 17
+  assert.deepEqual(await store.transaction(a,tx=>tx.trackingHistory(randomUUID())),[]); // 18
+  const idx=await f.admin.query("SELECT indexname FROM pg_indexes WHERE schemaname='operations_private' AND indexname='operations_tracking_history_idx'");
+  assert.equal(idx.rowCount,1); // 19
+  const snapshot=await counts();await history({limit:2});assert.deepEqual(await counts(),snapshot); // 20
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);

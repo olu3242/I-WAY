@@ -1,7 +1,7 @@
 // Explicit pool only. Does not load environment files or choose a database.
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-export const operationsMigrationFiles=Object.freeze(['20261011174100_operations_persistence_readiness.sql','20261011210552_operations_active_principal_rls.sql','20261011220000_operations_actor_evidence.sql','20261011221000_operations_dispatcher_directory.sql']);
+export const operationsMigrationFiles=Object.freeze(['20261011174100_operations_persistence_readiness.sql','20261011210552_operations_active_principal_rls.sql','20261011220000_operations_actor_evidence.sql','20261011221000_operations_dispatcher_directory.sql','20261020100000_operations_tracking_history_index.sql']);
 export async function applyOperationsMigrations(pool){
  const client=await pool.connect(),result={applied:[],skipped:[]};let locked=false;
  try{
