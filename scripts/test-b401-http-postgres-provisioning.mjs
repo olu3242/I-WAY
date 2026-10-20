@@ -9,6 +9,7 @@ import {createPgProvisioner} from '../server/operations-pg-provisioning.experime
 import {createVerifiedProvisioningFlow} from '../server/operations-pg-verified-provisioning.experimental.mjs';
 import {createIsolatedOnboardingHttpServer} from '../server/operations-onboarding-http.experimental.mjs';
 import {createPgInvitationContextResolver} from '../server/operations-pg-invitation-context.experimental.mjs';
+import {createAuthenticatedChallengeCustody} from '../server/operations-authenticated-challenge.experimental.mjs';
 import {createTrustedNonceResolver} from '../server/operations-pg-trusted-nonce.experimental.mjs';
 const digest=x=>createHash('sha256').update(x).digest('hex');
 const invitationId='a1010101-0101-4101-8101-010101010101';
@@ -60,11 +61,27 @@ try{
   query:(sql,params)=>client.query(sql,params),
   resolveNonce:trustedNonce
  });
- server=createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext});
+ const custody=createAuthenticatedChallengeCustody({
+  issueNonce:async()=>nonce,
+  resolveInvitation:async requested=>{
+   const r=await client.query('SELECT id,tenant_id,issuer,subject_hash,state FROM operations_onboarding.invitations WHERE id=$1',[requested]);
+   const row=r.rows[0];return row?{id:row.id,tenantId:row.tenant_id,issuer:row.issuer,subjectHash:row.subject_hash,state:row.state}:null;
+  },
+  storeNonce:async()=>{},
+  readNonce:async()=>nonce,
+  verifySession:async token=>token==='fixture-session'?{verified:true,issuer,subjectHash:digest(subject),subject}:null
+ });
+ server=createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext,challengeCustody:custody});
  server.listen(0,'127.0.0.1');await once(server,'listening');
  const url='http://127.0.0.1:'+server.address().port+'/experimental/onboarding/provision';
  const body={invitationId,tenantId,actorId,role:'driver',token,expectedNonce:nonce};
  const post=async data=>fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)});
+ const challengeUrl=url.replace('/provision','/challenge');
+ const challengePost=authorization=>fetch(challengeUrl,{method:'POST',headers:{'content-type':'application/json',...(authorization?{authorization}:{})},body:JSON.stringify({invitationId})});
+ if((await challengePost()).status!==403)throw Error('B407_ANONYMOUS_CHALLENGE_ALLOWED');
+ if((await challengePost('Bearer invalid')).status!==403)throw Error('B407_INVALID_SESSION_CHALLENGE_ALLOWED');
+ const challengeResponse=await challengePost('Bearer fixture-session');
+ if(challengeResponse.status!==200||(await challengeResponse.json()).nonce!==nonce)throw Error('B407_CHALLENGE_ISSUANCE_FAILED');
  const expired=await post({...body,token:signClaims({...claims,exp:now-1})});
  if(expired.status!==403)throw Error('B402_EXPIRED_TOKEN_ALLOWED');
  const wrongAudience=await post({...body,token:signClaims({...claims,aud:'untrusted-client'})});
