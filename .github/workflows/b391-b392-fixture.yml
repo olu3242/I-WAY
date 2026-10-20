@@ -112,6 +112,8 @@ jobs:
           B442_FIXTURE_SCOPE="$scope" node scripts/test-b442-postgres-restart.mjs recover
       - name: Run B441 real PostgreSQL backend interruption and recovery
         run: node scripts/test-b441-postgres-backend-interruption.mjs
+      - name: Run B447 Supabase tenant-role persistence tests
+        run: node --test tests/operations-supabase-tenant-role-store-experimental.test.mjs
       - name: Run B446 Supabase Auth test invitation tests
         run: node --test tests/operations-supabase-test-invitations-experimental.test.mjs
       - name: Run B445 recovery readiness certification tests
