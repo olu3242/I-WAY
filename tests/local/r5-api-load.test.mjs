@@ -47,7 +47,7 @@ test('R5 bounded authenticated API load evidence is reproducible and fail-closed
  if(process.env.IWAY_R5_API_LOAD_REPORT){
   const target=process.env.IWAY_R5_API_LOAD_REPORT;
   mkdirSync(dirname(target),{recursive:true});
-  writeFileSync(target,JSON.stringify(evidence,null,2)+'\\n');
+  writeFileSync(target,JSON.stringify(evidence,null,2)+'\n');
  }
  console.log('R5_LOCAL_API_LOAD '+JSON.stringify(evidence));
  assert.equal(evidence.scenarios.length,4);
