@@ -13,6 +13,7 @@ import {dispatchAsyncShipment} from '../../domain/operations-async-shipment-disp
 import {assignAsyncShipment} from '../../domain/operations-async-shipment-assign.mjs';
 import {releaseAsyncShipment} from '../../domain/operations-async-shipment-release.mjs';
 import {reassignAsyncShipment} from '../../domain/operations-async-shipment-reassign.mjs';
+import {recordAsyncTrackingEvent} from '../../domain/operations-async-tracking-event.mjs';
 
 // Explicit opt-in; never load environment files or connect to an existing database.
 test('disposable PostgreSQL Operations certification',async t=>{
@@ -292,6 +293,27 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(state.a.driverId,state.loadA.driverId);assert.equal(state.b.driverId,state.loadB.driverId);
   assert.equal(state.driver.available,false);assert.equal(state.vehicle.available,false);
   assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
+ });
+ await t.test('tracking event command enforces ten transactional checkpoints',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const base={action:'tracking:record',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{eventType:'arrived',occurredAt:'2026-11-01T10:00:00.000Z',location:'Austin terminal'}};
+  const record=(cmd=base,extra={})=>recordAsyncTrackingEvent({store,scope:a,command:cmd,authorizeTracking:auth,...extra});
+  const before=await counts();
+  const first=await record();
+  assert.equal(first.kind,'tracking'); // 1
+  assert.equal(first.shipmentId,shipment.id); // 2
+  assert.equal(first.eventType,'arrived'); // 3
+  assert.equal(first.occurredAt,base.payload.occurredAt); // 4
+  assert.deepEqual(await record(),first); // 5
+  await assert.rejects(record(base,{authorizeTracking:async()=>false}),{code:'FORBIDDEN'}); // 6
+  await assert.rejects(record({...base,payload:{...base.payload,location:'Changed'}}),{code:'IDEMPOTENCY_CONFLICT'}); // 7
+  await assert.rejects(record({...base,idempotencyKey:randomUUID(),expectedVersion:shipment.version+1}),{code:'STALE'}); // 8
+  await assert.rejects(record({...base,idempotencyKey:randomUUID(),payload:{...base.payload,extra:'unexpected'}}),{code:'FIELDS'}); // 9
+  await assert.rejects(recordAsyncTrackingEvent({store,scope:b,command:{...base,idempotencyKey:randomUUID()},authorizeTracking:async()=>true}),{code:'NOT_FOUND'});
+  const events=await store.transaction(a,tx=>tx.list('tracking'));
+  assert.equal(events.filter(x=>x.shipmentId===shipment.id&&x.id===first.id).length,1);
+  assert.deepEqual(await counts(),{resources:before.resources+1,commands:before.commands+1,audit:before.audit+1}); // 10
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
