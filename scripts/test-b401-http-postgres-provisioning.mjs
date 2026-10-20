@@ -13,6 +13,8 @@ import {createAuthenticatedChallengeCustody} from '../server/operations-authenti
 import {createEphemeralNonceStore} from '../server/operations-ephemeral-nonce-store.experimental.mjs';
 import {createNonceCleanupReconciler} from '../server/operations-nonce-cleanup-reconciler.experimental.mjs';
 import {createPgActivationLookup} from '../server/operations-pg-activation-lookup.experimental.mjs';
+import {createPgNonceCleanupJobs} from '../server/operations-pg-nonce-cleanup-jobs.experimental.mjs';
+import {createNonceCleanupWorker} from '../server/operations-nonce-cleanup-worker.experimental.mjs';
 import {createTrustedNonceResolver} from '../server/operations-pg-trusted-nonce.experimental.mjs';
 const digest=x=>createHash('sha256').update(x).digest('hex');
 const invitationId='a1010101-0101-4101-8101-010101010101';
@@ -116,9 +118,18 @@ try{
  try{await reconciler.reconcile({invitationId,tenantId});throw Error('B416_OUTAGE_NOT_PROPAGATED');}
  catch(error){if(error.message!=='B416_SIMULATED_CUSTODY_OUTAGE')throw error;}
  if(await nonceStore.readNonce({invitationId,tenantId})!==nonce)throw Error('B416_OUTAGE_DID_NOT_PRESERVE_RETRY');
- const recovery=await reconciler.reconcile({invitationId,tenantId});
- if(!recovery.reconciled||await nonceStore.readNonce({invitationId,tenantId})!==null)
-  throw Error('B416_POSTGRES_RECONCILIATION_FAILED');
+ // Simulate a worker crash/restart: first pass sees cleanup outage and
+ // leaves the durable job pending; a new worker instance completes it.
+ const jobs=createPgNonceCleanupJobs((sql,params)=>client.query(sql,params));
+ const worker=createNonceCleanupWorker({jobs,reconciler});
+ const recovered=await worker.runOnce({limit:10});
+ if(recovered.completed!==1||recovered.failed!==0)throw Error('B420_WORKER_RESTART_RECOVERY_FAILED');
+ if(await nonceStore.readNonce({invitationId,tenantId})!==null)
+  throw Error('B420_NONCE_NOT_CLEARED');
+ const finished=await client.query('SELECT state FROM operations_onboarding.nonce_cleanup_jobs WHERE invitation_id=$1',[invitationId]);
+ if(finished.rows[0]?.state!=='COMPLETE')throw Error('B420_JOB_NOT_COMPLETED');
+ const rerun=await createNonceCleanupWorker({jobs,reconciler}).runOnce({limit:10});
+ if(rerun.scanned!==0)throw Error('B420_COMPLETED_JOB_REPROCESSED');
  const postCommitReplay=await post(body);
  if(postCommitReplay.status!==403)throw Error('B414_POST_COMMIT_REPLAY_ALLOWED');
  const forged=await post({...body,token:token.slice(0,-2)+'xx'});
