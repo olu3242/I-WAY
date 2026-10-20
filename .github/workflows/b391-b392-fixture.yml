@@ -50,5 +50,7 @@ jobs:
           psql -v ON_ERROR_STOP=1 -c "DELETE FROM operations_onboarding.invitation_events" > /tmp/audit-delete.out 2>&1 && { echo "FAIL: audit delete allowed"; exit 1; } || grep -q 'INVITATION_AUDIT_IMMUTABLE' /tmp/audit-delete.out
       - name: Validate disposable tenant RLS regression
         run: psql -v ON_ERROR_STOP=1 -f docs/certification/b391-tenant-rls-regression.sql
+      - name: Run eight-session PostgreSQL transition race
+        run: bash scripts/test-b392-postgres-concurrency.sh
       - name: Run experimental repository tests
         run: node --test tests/operations-pg-invitations-experimental.test.mjs
