@@ -215,6 +215,30 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(state.newDriver.available,true);assert.equal(state.unavailableVehicle.available,false);
   assert.deepEqual(await counts(),before);
  });
+ await t.test('concurrent reassignments serialize and preserve a single reserved replacement',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const oldDriver=await store.transaction(a,tx=>tx.insert('driver',{active:true,available:true}));
+  const oldVehicle=await store.transaction(a,tx=>tx.insert('vehicle',{active:true,available:true}));
+  const firstDriver=await store.transaction(a,tx=>tx.insert('driver',{active:true,available:true}));
+  const firstVehicle=await store.transaction(a,tx=>tx.insert('vehicle',{active:true,available:true}));
+  const secondDriver=await store.transaction(a,tx=>tx.insert('driver',{active:true,available:true}));
+  const secondVehicle=await store.transaction(a,tx=>tx.insert('vehicle',{active:true,available:true}));
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const assigned=await assignAsyncShipment({store,scope:a,authorizeAssignment:auth,command:{action:'shipment:assign',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{driverId:oldDriver.id,vehicleId:oldVehicle.id}}});
+  const before=await counts();
+  const invoke=(driverId,vehicleId)=>reassignAsyncShipment({store,scope:a,authorizeReassignment:auth,command:{action:'shipment:reassign',resourceId:shipment.id,expectedVersion:assigned.version,idempotencyKey:randomUUID(),payload:{driverId,vehicleId}}});
+  const results=await Promise.allSettled([invoke(firstDriver.id,firstVehicle.id),invoke(secondDriver.id,secondVehicle.id)]);
+  assert.equal(results.filter(x=>x.status==='fulfilled').length,1);
+  assert.equal(results.filter(x=>x.status==='rejected'&&x.reason.code==='STALE').length,1);
+  const state=await store.transaction(a,async tx=>({shipment:await tx.get('shipment',shipment.id),load:await tx.get('load',created.id),oldDriver:await tx.get('driver',oldDriver.id),oldVehicle:await tx.get('vehicle',oldVehicle.id),firstDriver:await tx.get('driver',firstDriver.id),firstVehicle:await tx.get('vehicle',firstVehicle.id),secondDriver:await tx.get('driver',secondDriver.id),secondVehicle:await tx.get('vehicle',secondVehicle.id)}));
+  assert.equal(state.load.driverId,state.shipment.driverId);assert.equal(state.load.vehicleId,state.shipment.vehicleId);
+  assert.equal(state.oldDriver.available,true);assert.equal(state.oldVehicle.available,true);
+  assert.equal([state.firstDriver,state.secondDriver].filter(x=>x.available===false).length,1);
+  assert.equal([state.firstVehicle,state.secondVehicle].filter(x=>x.available===false).length,1);
+  assert.equal(state.shipment.driverId===firstDriver.id||state.shipment.driverId===secondDriver.id,true);
+  assert.equal(state.shipment.vehicleId===firstVehicle.id||state.shipment.vehicleId===secondVehicle.id,true);
+  assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
