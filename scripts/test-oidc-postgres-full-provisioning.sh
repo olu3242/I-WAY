@@ -22,7 +22,7 @@ INSERT INTO operations_onboarding.identity_proof_uses(proof_hash,invitation_id,t
 UPDATE operations_onboarding.invitations SET state='ACCEPTED'
  WHERE id='10101010-1010-4010-8010-101010101010' AND state='VERIFIED';
 INSERT INTO operations_onboarding.provisioned_accounts(id,issuer,subject_hash)
- VALUES ('40404040-4040-4040-8040-404040404040','fixture',repeat('a',64));
+ VALUES ('40404040-4040-4040-8040-404040404040','fixture',repeat('9',64));
 INSERT INTO operations_onboarding.tenant_role_bindings(tenant_id,account_id,role,invitation_id)
  VALUES ('20202020-2020-4020-8020-202020202020','40404040-4040-4040-8040-404040404040',
  'driver','10101010-1010-4010-8010-101010101010');
