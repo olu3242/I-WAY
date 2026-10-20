@@ -316,6 +316,27 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(events.filter(x=>x.shipmentId===shipment.id&&x.id===first.id).length,1);
   assert.deepEqual(await counts(),{resources:before.resources+1,commands:before.commands+1,audit:before.audit+1}); // 10
  });
+ await t.test('tracking ingestion accepts distinct concurrent events and deduplicates replay',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const dispatched=await dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}}});
+  const first={action:'tracking:record',resourceId:shipment.id,expectedVersion:dispatched.version,idempotencyKey:randomUUID(),payload:{eventType:'arrived',occurredAt:'2026-11-01T10:00:00.000Z',location:'Austin'}};
+  const second={action:'tracking:record',resourceId:shipment.id,expectedVersion:dispatched.version,idempotencyKey:randomUUID(),payload:{eventType:'departed',occurredAt:'2026-11-01T11:00:00.000Z',location:'Austin'}};
+  const record=command=>recordAsyncTrackingEvent({store,scope:a,command,authorizeTracking:auth});
+  const before=await counts();
+  const results=await Promise.allSettled([record(first),record(second),record(first)]);
+  assert.equal(results.filter(x=>x.status==='fulfilled').length,3);
+  const [aResult,bResult,replay]=results.map(x=>x.value);
+  assert.deepEqual(aResult,replay);
+  assert.notEqual(aResult.id,bResult.id);
+  assert.equal(aResult.occurredAt< bResult.occurredAt,true);
+  const events=(await store.transaction(a,tx=>tx.list('tracking'))).filter(x=>x.shipmentId===shipment.id);
+  assert.equal(events.length,2);
+  assert.equal(events.filter(x=>x.eventType==='arrived').length,1);
+  assert.equal(events.filter(x=>x.eventType==='departed').length,1);
+  assert.equal((await store.transaction(a,tx=>tx.get('shipment',shipment.id))).version,dispatched.version);
+  assert.deepEqual(await counts(),{resources:before.resources+2,commands:before.commands+2,audit:before.audit+2});
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
