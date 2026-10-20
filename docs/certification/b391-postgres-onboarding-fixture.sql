@@ -52,6 +52,18 @@ CREATE TABLE operations_onboarding.tenant_role_bindings (
  created_at timestamptz NOT NULL DEFAULT now(),
  PRIMARY KEY(tenant_id,account_id,role)
 );
+-- B417 durable reconciliation intent; fixture-only, no application grants.
+CREATE TABLE operations_onboarding.nonce_cleanup_jobs (
+ invitation_id uuid PRIMARY KEY REFERENCES operations_onboarding.invitations(id),
+ tenant_id uuid NOT NULL,
+ state text NOT NULL DEFAULT 'PENDING' CHECK(state IN ('PENDING','COMPLETE')),
+ attempts integer NOT NULL DEFAULT 0 CHECK(attempts>=0),
+ last_attempt_at timestamptz,
+ completed_at timestamptz,
+ created_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE operations_onboarding.nonce_cleanup_jobs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE operations_onboarding.nonce_cleanup_jobs FORCE ROW LEVEL SECURITY;
 -- B397 single-use proof ledger. Insert and provisioning must share a transaction.
 CREATE TABLE operations_onboarding.identity_proof_uses (
  proof_hash text PRIMARY KEY CHECK(length(proof_hash)=64),
