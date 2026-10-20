@@ -717,7 +717,7 @@ test('disposable PostgreSQL Operations certification',async t=>{
   if(process.env.IWAY_TRACKING_BASELINE_REPORT){
    const target=process.env.IWAY_TRACKING_BASELINE_REPORT;
    mkdirSync(dirname(target),{recursive:true});
-   writeFileSync(target,JSON.stringify(report,null,2)+'\\n');
+   writeFileSync(target,JSON.stringify(report,null,2)+'\n');
   }
   console.log('TRACKING_BASELINE '+JSON.stringify(report));
   assert.ok(one.Plan); // 1
