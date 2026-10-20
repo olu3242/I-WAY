@@ -60,6 +60,8 @@ jobs:
         run: |
           npm ci --ignore-scripts
           node scripts/test-b401-http-postgres-provisioning.mjs
+      - name: Run B405 server-owned nonce binding tests
+        run: node --test tests/operations-pg-trusted-nonce-experimental.test.mjs
       - name: Run B404 trusted PostgreSQL invitation context tests
         run: node --test tests/operations-pg-invitation-context-experimental.test.mjs
       - name: Run B400 isolated HTTP onboarding boundary tests
