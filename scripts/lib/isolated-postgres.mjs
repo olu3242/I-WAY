@@ -18,17 +18,15 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
  if(!existsSync(openssl))throw Error('LOCAL_OPENSSL_REQUIRED');
  await new Promise((ok,no)=>{const s=createServer();s.once('error',()=>no(Error('LOCAL_FIXTURE_PORT_5433_UNAVAILABLE')));s.listen(5433,'127.0.0.1',()=>s.close(ok));});
  const base=realpathSync(tmpdir()),root=mkdtempSync(join(base,'iway-pg-fixture-')),data=join(root,'data'),password=randomBytes(32).toString('hex'),restrictedPassword=randomBytes(32).toString('hex');
- let started=false,admin;const pools=[];const poolErrors=[];let expectedRestart=false;
+ let started=false,admin;const pools=[];const ownedPools=[];const poolErrors=[];let expectedRestart=false;
  const registerPool=p=>{if(!pools.includes(p))pools.push(p);p.on('error',error=>poolErrors.push({error,expected:expectedRestart}));return p;};
  const cleanup=async()=>{
   // Registered pools include the current and former admin pools. Each pool
   // must be ended once; the initial admin pool was already closed at setup.
-  const unique=[...new Set(pools)];
-  const results=await Promise.allSettled(unique.map(async p=>{
-   if(p.ended||p.ending)return;
-   await p.end();
-  }));
-  const unexpected=results.find(r=>r.status==='rejected'&&!/Called end on pool more than once/i.test(String(r.reason?.message??r.reason)));
+  // The fixture owns only pools it creates. Externally registered pools
+  // (including the test's own pool) are closed by their original owner.
+  const results=await Promise.allSettled([...new Set(ownedPools)].map(p=>p.end()));
+  const unexpected=results.find(r=>r.status==='rejected');
   if(unexpected)throw unexpected.reason;
   if(started||existsSync(join(data,'postmaster.pid'))){run(join(bin,'pg_ctl'),['-D',data,'-m','immediate','-w','stop']);started=false;}
   const target=resolve(root);
@@ -61,10 +59,10 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   run(join(bin,'pg_ctl'),['-D',data,'-l',join(root,'server.log'),'-w','start']);started=true;
   const ssl={ca:readFileSync(join(root,'ca.crt'),'utf8'),rejectUnauthorized:true,minVersion:'TLSv1.2'};
   const common={host:'127.0.0.1',port:5433,ssl,connectionTimeoutMillis:5000,max:6};
-  admin=registerPool(new Pool({...common,user:'iway_fixture_admin',password,database:'postgres'}));
+  admin=registerPool(new Pool({...common,user:'iway_fixture_admin',password,database:'postgres'}));ownedPools.push(admin);
   stage='LOCAL_FIXTURE_SCHEMA';
   await admin.query('CREATE DATABASE iway_fixture');
-  await admin.end();admin=registerPool(new Pool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'}));
+  await admin.end();ownedPools.pop();admin=registerPool(new Pool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'}));ownedPools.push(admin);
   // Password originates only from randomBytes hex above, not input. No credentials reach command arguments/logs.
   await admin.query("CREATE ROLE iway_operations_fixture LOGIN PASSWORD '"+restrictedPassword+"' NOSUPERUSER NOBYPASSRLS NOCREATEROLE NOCREATEDB NOREPLICATION");
   await applyOperationsMigrations(admin);
@@ -74,7 +72,7 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   await admin.query('GRANT SELECT,INSERT ON operations_private.commands,operations_private.audit TO iway_operations_fixture');
   await admin.query('GRANT USAGE ON ALL SEQUENCES IN SCHEMA operations_private TO iway_operations_fixture');
   const restricted={...common,user:'iway_operations_fixture',password:restrictedPassword,database:'iway_fixture'};
-  const pool=registerPool(new Pool(restricted));
+  const pool=registerPool(new Pool(restricted));ownedPools.push(pool);
   return {admin,pool,ssl,restricted,caPath:join(root,'ca.crt'),
   // Available only on a fresh, explicitly opted-in disposable cluster.
   async restartForRecoveryTest(){
@@ -94,7 +92,7 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
    return {terminatedPoolConnections:errors.length};
   },
   registerPool,
-  createPool(options={}){return registerPool(new Pool({...restricted,...options}))},cleanup};
+  createPool(options={}){const p=registerPool(new Pool({...restricted,...options}));ownedPools.push(p);return p},cleanup};
  }catch(error){
   let diagnostic='';
   if(stage==='LOCAL_FIXTURE_INITDB'&&existsSync(join(root,'initdb.log')))diagnostic=readFileSync(join(root,'initdb.log'),'utf8').slice(-700).replaceAll(root,'[fixture]').replaceAll(password,'[redacted]');
