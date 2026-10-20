@@ -8,7 +8,7 @@ test('B457 token cipher encrypts, authenticates and uses unique nonce',()=>{
  assert.notEqual(a,b);assert.ok(!a.includes('secret-refresh-token'));
  assert.equal(cipher.decrypt(a),'secret-refresh-token');
  assert.equal(cipher.decrypt(b),'secret-refresh-token');
- const parts=a.split('.');parts[3]=parts[3].slice(0,-1)+(parts[3].endsWith('A')?'B':'A');
+ const parts=a.split('.');parts[2]=(parts[2][0]==='A'?'B':'A')+parts[2].slice(1);
  assert.throws(()=>cipher.decrypt(parts.join('.')),/TOKEN_CIPHERTEXT_INVALID/);
 });
 test('B457 rejects absent keys and invalid ciphertext',()=>{
