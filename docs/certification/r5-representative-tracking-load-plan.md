@@ -36,3 +36,29 @@
 ## Status
 
 R4 local database performance evidence exists. **R5 representative hosted/API execution: not run.** Numeric production SLO: **not approved**. Release decision: **NO-GO**.
+
+## R5 next execution: hosted evidence admission contract (October 2026)
+
+The three-run disposable PostgreSQL restart and tracking regression is locally certified on commit `6129a02` (Verify and Disposable PostgreSQL Operations succeeded). This **does not** satisfy hosted load certification.
+
+### Hosted staging admission (fail closed)
+
+A hosted load exercise is authorized only after the release owner records all of the following:
+
+- Dedicated staging cluster identity, PostgreSQL major version, network region and capacity; no production or customer database endpoint.
+- Named operator approval, test-data provenance, retention and deletion plan, and a maximum allowed request rate.
+- Separate read-only tracking credentials, verified tenant RLS, deny-by-default authorization and TLS chain verification.
+- Explicit numeric latency/error-rate SLOs, concurrency ceilings, and abort thresholds approved **before** measurement.
+- A rollback/kill switch, database recovery procedure and observability owner.
+
+**Missing any field = NOT ADMITTED.** Never derive hosted endpoints, credentials, SLOs or approval from local CI defaults.
+
+### Evidence manifest required for each hosted run
+
+Store a machine-readable record with `sourceCommit`, `environmentId`, `postgresVersion`, `runnerRegion`, `fixtureDigest`, `historyEvents`, `concurrency`, `durationSeconds`, `warmupSeconds`, `sampleCount`, `p50Ms`, `p95Ms`, `p99Ms`, `requestsPerSecond`, `errorCount`, `tenantIsolationPassed`, `tlsVerified`, `rlsVerified`, `operatorApprovalId` and `productionSloCertified:false` until separately signed off.
+
+Use the 64/1,000/10,000/100,000 history matrix and 1/4/16/32 concurrency matrix. Run three independent comparable iterations per profile. Record API-facing latency rather than substituting SQL or test-only loopback measurements. Record failures and aborted profiles; do not discard outliers.
+
+### Release gate
+
+`HOSTED_LOAD_NOT_RUN` until dedicated hosted runs, artifacts and independent QA sign-off exist. The passing local recovery evidence is necessary but insufficient for production GO.
