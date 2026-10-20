@@ -34,7 +34,7 @@ try{
   const finish=(error,value)=>{if(settled)return;settled=true;error?reject(error):resolve(value);};
   child.stdout.on('data',data=>{
    stdout+=data.toString();
-   if(stdout.includes('\\n')){try{finish(null,JSON.parse(stdout.split('\\n')[0]));}catch(error){finish(error);}}
+   if(stdout.includes('\n')){try{finish(null,JSON.parse(stdout.split('\n')[0]));}catch(error){finish(error);}}
   });
   child.stderr.on('data',data=>{stderr+=data.toString();});
   child.on('error',error=>finish(error));
