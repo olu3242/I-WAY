@@ -22,7 +22,7 @@ try{
  const jobs=createPgNonceCleanupJobs((sql,params)=>c.query(sql,params));
  const claimed=await jobs.claim({ownerId:process.env.B439_OWNER,leaseSeconds:30});
  if(claimed.length!==1)process.exit(4);
- process.stdout.write(JSON.stringify(claimed[0])+'\\n');
+ process.stdout.write(JSON.stringify(claimed[0])+String.fromCharCode(10));
  setInterval(()=>{},1000);
  `;
  const child=spawn(process.execPath,['--input-type=module','-e',childScript],{
