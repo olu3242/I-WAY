@@ -1,7 +1,8 @@
 // B400 experimental HTTP boundary; isolated fixture use only.
 // The server owns verifier and provisioning dependencies. No public route wiring.
 import {createServer} from 'node:http';
-export function createIsolatedOnboardingHttpServer({verifiedProvisioning}){
+export function createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext}){
+ if(typeof resolveInvitationContext!=='function')throw Error('TRUSTED_INVITATION_RESOLVER_REQUIRED');
  if(!verifiedProvisioning||typeof verifiedProvisioning.provision!=='function')
   throw Error('HTTP_PROVISIONING_CONFIGURATION_REQUIRED');
  return createServer(async(req,res)=>{
@@ -16,10 +17,18 @@ export function createIsolatedOnboardingHttpServer({verifiedProvisioning}){
    }
    const body=JSON.parse(raw);
    if(!body||typeof body!=='object'||Array.isArray(body))throw Error('INVALID_REQUEST');
-   // No client-provided verified identity is accepted; verifier owns claims.
+   if(typeof body.invitationId!=='string'||!body.invitationId||typeof body.token!=='string'||!body.token)
+    throw Error('INVALID_REQUEST');
+   // Resolve tenant, role, actor and challenge on the trusted server side.
+   // Never forward authority supplied in the HTTP request body.
+   const context=await resolveInvitationContext({invitationId:body.invitationId});
+   if(!context||context.invitationId!==body.invitationId||!context.tenantId
+    ||!context.actorId||!context.role||!context.expectedNonce)
+    throw Error('INVITATION_CONTEXT_REJECTED');
    const result=await verifiedProvisioning.provision({
-    invitationId:body.invitationId,tenantId:body.tenantId,actorId:body.actorId,
-    role:body.role,token:body.token,expectedNonce:body.expectedNonce
+    invitationId:context.invitationId,tenantId:context.tenantId,
+    actorId:context.actorId,role:context.role,
+    token:body.token,expectedNonce:context.expectedNonce
    });
    return respond(200,{state:result.state,invitationId:result.invitationId});
   }catch{
