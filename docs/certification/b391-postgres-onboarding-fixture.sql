@@ -70,6 +70,11 @@ CREATE TABLE operations_onboarding.identity_nonce_challenges (
  consumed_at timestamptz,
  created_at timestamptz NOT NULL DEFAULT now()
 );
+-- B409: at most one unconsumed challenge per invitation. An expired row
+-- must be consumed or retired transactionally before a new challenge is issued.
+CREATE UNIQUE INDEX identity_nonce_one_active_per_invitation
+ ON operations_onboarding.identity_nonce_challenges(invitation_id)
+ WHERE consumed_at IS NULL;
 ALTER TABLE operations_onboarding.identity_nonce_challenges ENABLE ROW LEVEL SECURITY;
 ALTER TABLE operations_onboarding.identity_nonce_challenges FORCE ROW LEVEL SECURITY;
 ALTER TABLE operations_onboarding.provisioned_accounts ENABLE ROW LEVEL SECURITY;
