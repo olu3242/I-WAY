@@ -15,6 +15,11 @@ export function createPgNonceChallenges(transaction){
      WHERE id=$1 AND tenant_id=$2 AND state='VERIFIED' AND expires_at>now()
      FOR UPDATE`,[invitationId,tenantId]);
     if(invitation.rowCount!==1)throw Error('NONCE_INVITATION_NOT_ELIGIBLE');
+    // Retire only expired challenges while holding the invitation lock.
+    // A still-live challenge is never replaced or exposed.
+    await client.query(`UPDATE operations_onboarding.identity_nonce_challenges
+     SET consumed_at=now() WHERE invitation_id=$1 AND tenant_id=$2
+     AND consumed_at IS NULL AND expires_at<=now()`,[invitationId,tenantId]);
     const pending=await client.query(`SELECT nonce_hash FROM operations_onboarding.identity_nonce_challenges
      WHERE invitation_id=$1 AND consumed_at IS NULL LIMIT 1`,[invitationId]);
     if(pending.rowCount!==0)throw Error('NONCE_ALREADY_PENDING');
