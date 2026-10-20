@@ -10,9 +10,12 @@ for(const r of reports){
  const ordered=[...r.executionSamplesMs].sort((a,b)=>a-b);
  if(r.executionTimeMs.min!==ordered[0]||r.executionTimeMs.median!==ordered[10]||r.executionTimeMs.p95!==ordered[19]||r.executionTimeMs.max!==ordered[20])throw Error('Reported statistics do not match raw samples');
  if(!Number.isFinite(r.planningTimeMs?.median)||r.planningTimeMs.median<0)throw Error('Invalid planning median');
- if(r.unit!=='ms'||r.planNode!=='Limit'||r.sharedHitBlocks<0||r.sharedReadBlocks<0)throw Error('Invalid plan metadata');
+ if(r.unit!=='ms'||r.planNode!=='Limit'||!Number.isInteger(r.sharedHitBlocks)||r.sharedHitBlocks<0||!Number.isInteger(r.sharedReadBlocks)||r.sharedReadBlocks<0)throw Error('Invalid plan metadata');
+ if(!Number.isFinite(r.executionTimeMs.p90)||r.executionTimeMs.p90!==ordered[18])throw Error('Invalid p90');
+ if(!Number.isFinite(r.executionTimeMs.min)||r.executionTimeMs.min<0)throw Error('Invalid minimum');
+ if(r.executionTimeMs.min>r.executionTimeMs.median||r.executionTimeMs.median>r.executionTimeMs.p90||r.executionTimeMs.p90>r.executionTimeMs.p95||r.executionTimeMs.p95>r.executionTimeMs.max)throw Error('Non-monotonic quantiles');
 }
-if(new Set(reports.map(x=>x.workload)).size!==1)throw Error('Incomparable workloads');
+if(reports.some(x=>typeof x.workload!=='string'||!x.workload.trim())||new Set(reports.map(x=>x.workload)).size!==1)throw Error('Incomparable workloads');
 const medianValues=reports.map(x=>x.executionTimeMs.median),p95Values=reports.map(x=>x.executionTimeMs.p95);
 const spread=values=>({min:Math.min(...values),max:Math.max(...values),ratio:Math.min(...values)>0?Math.max(...values)/Math.min(...values):null});
 const stability={medianRatio:spread(medianValues).ratio,p95Ratio:spread(p95Values).ratio};

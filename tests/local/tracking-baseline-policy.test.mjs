@@ -28,5 +28,25 @@ const cases=[
  ['negative planning median rejected',r=>r.planningTimeMs.median=-1,false],
  ['wrong unit rejected',r=>r.unit='seconds',false],
  ['incomparable workload rejected',(r,i)=>{if(i===1)r.workload='other'},false]
+ ,['invalid p90 rejected',r=>r.executionTimeMs.p90=0.03,false]
+ ,['invalid minimum rejected',r=>r.executionTimeMs.min=0.03,false]
+ ,['missing p90 rejected',r=>delete r.executionTimeMs.p90,false]
+ ,['wrong plan rejected',r=>r.planNode='Seq Scan',false]
+ ,['negative hit blocks rejected',r=>r.sharedHitBlocks=-1,false]
+ ,['negative read blocks rejected',r=>r.sharedReadBlocks=-1,false]
+ ,['fractional hit blocks rejected',r=>r.sharedHitBlocks=0.5,false]
+ ,['fractional read blocks rejected',r=>r.sharedReadBlocks=0.5,false]
+ ,['missing plan rejected',r=>delete r.planNode,false]
+ ,['missing planning median rejected',r=>delete r.planningTimeMs,false]
+ ,['inconsistent maximum rejected',r=>r.executionTimeMs.max=0.03,false]
+ ,['inconsistent minimum rejected',r=>r.executionTimeMs.min=0.01,false]
+ ,['infinite planning median rejected',r=>r.planningTimeMs.median='Infinity',false]
+ ,['null sample rejected',r=>r.executionSamplesMs[0]=null,false]
+ ,['string sample rejected',r=>r.executionSamplesMs[0]='0.02',false]
+ ,['wrong number of rows rejected',r=>r.rowsReturned=21,false]
+ ,['wrong number of warmups rejected',r=>r.warmupCount=4,false]
+ ,['missing workload rejected',r=>delete r.workload,false]
+ ,['missing sample count rejected',r=>delete r.sampleCount,false]
+ ,['missing environment rejected',r=>delete r.environment,false]
 ];
 for(const [name,mutate,valid,count] of cases)test(name,()=>{const x=run(mutate??(()=>{}),count??3);assert.equal(x.status,valid?0:1,x.stderr);if(valid){assert.equal(x.report.performanceGateEnabled,false);assert.equal(x.report.gateDecision.eligible,false);if(count===2)assert.ok(x.report.gateDecision.reasons.includes('insufficient-independent-runs'))}});
