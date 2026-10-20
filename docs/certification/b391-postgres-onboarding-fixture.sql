@@ -44,6 +44,6 @@ ALTER TABLE operations_onboarding.invitation_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE operations_onboarding.invitation_events FORCE ROW LEVEL SECURITY;
 -- Deliberately no access policies or application grants. Fail closed until
 -- a reviewed restricted role and transaction-scoped tenant context exist.
-REVOKE ALL ON ALL TABLES IN SCHEMA operations_onboarding FROM PUBLIC, anon, authenticated;
-REVOKE ALL ON ALL SEQUENCES IN SCHEMA operations_onboarding FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON ALL TABLES IN SCHEMA operations_onboarding FROM PUBLIC;
+REVOKE ALL ON ALL SEQUENCES IN SCHEMA operations_onboarding FROM PUBLIC;
 COMMIT;
