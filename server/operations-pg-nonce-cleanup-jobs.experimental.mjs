@@ -63,6 +63,41 @@ export function createPgNonceCleanupJobs(query){
     RETURNING invitation_id`,[invitationId,tenantId,ownerId,leaseSeconds]);
    return result.rowCount===1;
   },
+  // Atomic PostgreSQL-only cleanup: remove consumed challenge hashes and
+  // complete the leased job in one statement. This does NOT clear raw
+  // nonce custody in an external/in-memory store.
+  async finalizeConsumedChallenges({invitationId,tenantId,ownerId,fenceToken}={}){
+   if(!invitationId||!tenantId||typeof ownerId!=='string'
+    ||!/^[0-9a-f-]{36}$/i.test(ownerId)
+    ||!Number.isSafeInteger(fenceToken)||fenceToken<1)
+    throw Error('INVALID_NONCE_FINALIZATION');
+   const result=await query(`WITH eligible AS MATERIALIZED (
+     SELECT j.invitation_id,j.tenant_id
+     FROM operations_onboarding.nonce_cleanup_jobs j
+     JOIN operations_onboarding.invitations i
+      ON i.id=j.invitation_id AND i.tenant_id=j.tenant_id
+     WHERE j.invitation_id=$1 AND j.tenant_id=$2
+      AND j.lease_owner=$3::uuid AND j.fence_token=$4::bigint
+      AND j.lease_until>now() AND j.state='PENDING' AND i.state='ACTIVE'
+      AND (SELECT count(*) FROM operations_onboarding.tenant_role_bindings b
+       WHERE b.invitation_id=j.invitation_id AND b.tenant_id=j.tenant_id)=1
+     FOR UPDATE OF j
+    ), removed AS (
+     DELETE FROM operations_onboarding.identity_nonce_challenges n
+     USING eligible e
+     WHERE n.invitation_id=e.invitation_id AND n.tenant_id=e.tenant_id
+      AND n.consumed_at IS NOT NULL
+     RETURNING n.nonce_hash
+    )
+    UPDATE operations_onboarding.nonce_cleanup_jobs j
+    SET state='COMPLETE',completed_at=now(),last_attempt_at=now(),
+     attempts=attempts+1
+    FROM eligible e
+    WHERE j.invitation_id=e.invitation_id
+     AND (SELECT count(*) FROM removed)>=0
+    RETURNING j.invitation_id`,[invitationId,tenantId,ownerId,fenceToken]);
+   return result.rowCount===1;
+  },
   async complete({invitationId,tenantId,ownerId}){
    if(!ownerId)throw Error('NONCE_JOB_OWNER_REQUIRED');
    const result=await query(`UPDATE operations_onboarding.nonce_cleanup_jobs
