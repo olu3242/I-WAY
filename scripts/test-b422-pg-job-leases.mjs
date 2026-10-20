@@ -34,6 +34,10 @@ try{
   throw Error('B424_RECOVERY_OWNER_LEASE_INVALID');
  if(await winner.jobs.complete({invitationId,tenantId,ownerId:winner.ownerId}))
   throw Error('B423_STALE_OWNER_COMPLETION_ALLOWED');
+ if(await winner.jobs.renewLease({invitationId,tenantId,ownerId:winner.ownerId}))
+  throw Error('B425_STALE_OWNER_RENEWED_LEASE');
+ if(!await loser.jobs.renewLease({invitationId,tenantId,ownerId:loser.ownerId,leaseSeconds:30}))
+  throw Error('B425_VALID_OWNER_RENEWAL_FAILED');
  if(!await loser.jobs.complete({invitationId,tenantId,ownerId:loser.ownerId}))
   throw Error('B423_RECOVERY_OWNER_COMPLETION_FAILED');
  if((await admin.pending()).length!==0)throw Error('B422_COMPLETED_JOB_PENDING');
