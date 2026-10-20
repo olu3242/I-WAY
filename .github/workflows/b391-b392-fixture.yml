@@ -60,6 +60,8 @@ jobs:
         run: bash scripts/test-b397-postgres-proof-replay.sh
       - name: Run B395 PostgreSQL provisioning rollback and tenant regression
         run: bash scripts/test-b395-postgres-provisioning.sh
+      - name: Run isolated hosted OIDC cryptographic verification tests
+        run: node --test tests/operations-hosted-oidc-experimental.test.mjs
       - name: Run B398 tenant session authorization tests
         run: node --test tests/operations-pg-session-authorization-experimental.test.mjs
       - name: Run B396 verified provisioning boundary tests
