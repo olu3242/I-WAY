@@ -58,7 +58,8 @@ try{
   provisioner,expectedAudience:'iway-fixture',allowedIssuers:new Set([issuer]),
   verifyIdentity:createHostedOidcVerifier({issuer,audience:'iway-fixture',jwks:{keys:[jwk]},enabled:true})
  });
- const nonceStore=createEphemeralNonceStore();
+ const nonceStore=createEphemeralNonceStore({authorizeFence:scope=>
+  createPgNonceCleanupJobs((sql,params)=>client.query(sql,params)).ownsFence(scope)});
  await nonceStore.storeNonce({invitationId,tenantId,nonce});
  const trustedNonce=createTrustedNonceResolver({
   readServerNonce:nonceStore.readNonce,
