@@ -8,7 +8,7 @@ INSERT INTO operations_onboarding.invitations
 VALUES ('10101010-1010-4010-8010-101010101010',
  '20202020-2020-4020-8020-202020202020',
  '30303030-3030-4030-8030-303030303030',
- 'atomic-e2e@example.invalid','{"role":"driver"}','fixture',repeat('a',64),
+ 'atomic-e2e@example.invalid','{"role":"driver"}','fixture',repeat('9',64),
  'VERIFIED',now()+interval '1 hour');
 INSERT INTO operations_onboarding.identity_nonce_challenges
 (nonce_hash,invitation_id,tenant_id,expires_at)
