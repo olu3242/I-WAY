@@ -58,3 +58,32 @@ test('simulated concurrent conditional transition permits only one winner',async
  assert.equal(attempts.filter(x=>x.status==='rejected').length,7);
  assert.equal(audits,1);
 });
+
+test('verified acceptance binds issuer and subject and appends audit atomically',async()=>{
+ const queries=[];
+ const repo=createPgInvitationRepository(async fn=>fn({query:async(sql,args)=>{
+  queries.push({sql,args});
+  if(sql.includes('UPDATE operations_onboarding.invitations'))return {rowCount:1,rows:[{id,state:'ACCEPTED'}]};
+  return {rowCount:1,rows:[]};
+ }}));
+ const result=await repo.acceptVerified({id,tenantId:id,actorId:id,verifiedSubjectHash:hex,verifiedIssuer:'test-issuer'});
+ assert.equal(result.state,'ACCEPTED');
+ assert.match(queries[0].sql,/state='VERIFIED'/);
+ assert.match(queries[0].sql,/subject_hash=\$3 AND issuer=\$4/);
+ assert.equal(queries[1].args[2],'ACCEPTED');
+});
+test('acceptance rejects mismatched identity or replay without audit',async()=>{
+ let audits=0;
+ const repo=createPgInvitationRepository(async fn=>fn({query:async sql=>{
+  if(sql.includes('UPDATE operations_onboarding.invitations'))return {rowCount:0,rows:[]};
+  audits++;return {rowCount:1,rows:[]};
+ }}));
+ await assert.rejects(repo.acceptVerified({id,tenantId:id,actorId:id,verifiedSubjectHash:hex,verifiedIssuer:'wrong-issuer'}),/ACCEPTANCE_REJECTED/);
+ assert.equal(audits,0);
+});
+test('acceptance rejects absent trusted identity proof before transaction',async()=>{
+ let invoked=false;
+ const repo=createPgInvitationRepository(async()=>{invoked=true});
+ await assert.rejects(repo.acceptVerified({id,tenantId:id,actorId:id,verifiedSubjectHash:'bad',verifiedIssuer:'test-issuer'}),/VERIFIED_IDENTITY_REQUIRED/);
+ assert.equal(invoked,false);
+});
