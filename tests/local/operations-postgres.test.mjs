@@ -239,6 +239,37 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(state.shipment.vehicleId===firstVehicle.id||state.shipment.vehicleId===secondVehicle.id,true);
   assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+1,audit:before.audit+1});
  });
+ await t.test('ten-checkpoint shipment lifecycle: assign, dispatch, reassign, release and reuse',async()=>{
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const first=await create(command()),second=await create(command());
+  const shipments=await store.transaction(a,tx=>tx.list('shipment'));
+  const one=shipments.find(x=>x.loadId===first.id),two=shipments.find(x=>x.loadId===second.id);
+  const driverA=await store.transaction(a,tx=>tx.insert('driver',{active:true,available:true}));
+  const vehicleA=await store.transaction(a,tx=>tx.insert('vehicle',{active:true,available:true}));
+  const driverB=await store.transaction(a,tx=>tx.insert('driver',{active:true,available:true}));
+  const vehicleB=await store.transaction(a,tx=>tx.insert('vehicle',{active:true,available:true}));
+  const before=await counts();
+  const assigned=await assignAsyncShipment({store,scope:a,authorizeAssignment:auth,command:{action:'shipment:assign',resourceId:one.id,expectedVersion:one.version,idempotencyKey:randomUUID(),payload:{driverId:driverA.id,vehicleId:vehicleA.id}}});
+  assert.equal(assigned.driverId,driverA.id); // 1
+  assert.equal(assigned.vehicleId,vehicleA.id); // 2
+  const dispatched=await dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:one.id,expectedVersion:assigned.version,idempotencyKey:randomUUID(),payload:{}}});
+  assert.equal(dispatched.status,'dispatched'); // 3
+  assert.equal((await store.transaction(a,tx=>tx.get('load',first.id))).status,'dispatched'); // 4
+  const reassigned=await reassignAsyncShipment({store,scope:a,authorizeReassignment:auth,command:{action:'shipment:reassign',resourceId:one.id,expectedVersion:dispatched.version,idempotencyKey:randomUUID(),payload:{driverId:driverB.id,vehicleId:vehicleB.id}}});
+  assert.equal(reassigned.driverId,driverB.id); // 5
+  assert.equal((await store.transaction(a,tx=>tx.get('driver',driverA.id))).available,true); // 6
+  const released=await releaseAsyncShipment({store,scope:a,authorizeRelease:auth,command:{action:'shipment:release',resourceId:one.id,expectedVersion:reassigned.version,idempotencyKey:randomUUID(),payload:{}}});
+  assert.equal(released.driverId,null); // 7
+  assert.equal((await store.transaction(a,tx=>tx.get('vehicle',vehicleB.id))).available,true); // 8
+  const reused=await assignAsyncShipment({store,scope:a,authorizeAssignment:auth,command:{action:'shipment:assign',resourceId:two.id,expectedVersion:two.version,idempotencyKey:randomUUID(),payload:{driverId:driverB.id,vehicleId:vehicleB.id}}});
+  assert.equal(reused.driverId,driverB.id); // 9
+  const state=await store.transaction(a,async tx=>({first:await tx.get('load',first.id),second:await tx.get('load',second.id),driverA:await tx.get('driver',driverA.id),vehicleA:await tx.get('vehicle',vehicleA.id),driverB:await tx.get('driver',driverB.id),vehicleB:await tx.get('vehicle',vehicleB.id)}));
+  assert.equal(state.first.driverId,null);assert.equal(state.first.vehicleId,null);
+  assert.equal(state.second.driverId,driverB.id);assert.equal(state.second.vehicleId,vehicleB.id);
+  assert.equal(state.driverA.available,true);assert.equal(state.vehicleA.available,true);
+  assert.equal(state.driverB.available,false);assert.equal(state.vehicleB.available,false);
+  assert.deepEqual(await counts(),{resources:before.resources,commands:before.commands+5,audit:before.audit+5}); // 10
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
