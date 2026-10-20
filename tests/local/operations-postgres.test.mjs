@@ -381,7 +381,7 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(projection.status,'dispatched'); // 8
   await assert.rejects(view(b),{code:'NOT_FOUND'}); // 9
   assert.deepEqual(await counts(),snapshot); // 10
-  assert.equal(before.resources+4,snapshot.resources);
+  assert.equal(before.resources+2,snapshot.resources);
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
