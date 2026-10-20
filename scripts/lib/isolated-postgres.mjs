@@ -54,10 +54,10 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   run(join(bin,'pg_ctl'),['-D',data,'-l',join(root,'server.log'),'-w','start']);started=true;
   const ssl={ca:readFileSync(join(root,'ca.crt'),'utf8'),rejectUnauthorized:true,minVersion:'TLSv1.2'};
   const common={host:'127.0.0.1',port:5433,ssl,connectionTimeoutMillis:5000,max:6};
-  admin=new Pool({...common,user:'iway_fixture_admin',password,database:'postgres'});
+  admin=registerPool(new Pool({...common,user:'iway_fixture_admin',password,database:'postgres'}));
   stage='LOCAL_FIXTURE_SCHEMA';
   await admin.query('CREATE DATABASE iway_fixture');
-  await admin.end();admin=new Pool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
+  await admin.end();admin=registerPool(new Pool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'}));
   // Password originates only from randomBytes hex above, not input. No credentials reach command arguments/logs.
   await admin.query("CREATE ROLE iway_operations_fixture LOGIN PASSWORD '"+restrictedPassword+"' NOSUPERUSER NOBYPASSRLS NOCREATEROLE NOCREATEDB NOREPLICATION");
   await applyOperationsMigrations(admin);
