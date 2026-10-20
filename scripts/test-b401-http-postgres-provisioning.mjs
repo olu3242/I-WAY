@@ -123,7 +123,7 @@ try{
  // Simulate a worker crash/restart: first pass sees cleanup outage and
  // leaves the durable job pending; a new worker instance completes it.
  const jobs=createPgNonceCleanupJobs((sql,params)=>client.query(sql,params));
- const worker=createNonceCleanupWorker({jobs,reconciler});
+ const worker=createNonceCleanupWorker({jobs,reconciler,finalizeDatabase:true});
  const recovered=await worker.runOnce({limit:10});
  if(recovered.completed!==1||recovered.failed!==0)throw Error('B420_WORKER_RESTART_RECOVERY_FAILED');
  if(await nonceStore.readNonce({invitationId,tenantId})!==null)
