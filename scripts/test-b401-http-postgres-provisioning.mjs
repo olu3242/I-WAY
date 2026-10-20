@@ -11,6 +11,8 @@ import {createIsolatedOnboardingHttpServer} from '../server/operations-onboardin
 import {createPgInvitationContextResolver} from '../server/operations-pg-invitation-context.experimental.mjs';
 import {createAuthenticatedChallengeCustody} from '../server/operations-authenticated-challenge.experimental.mjs';
 import {createEphemeralNonceStore} from '../server/operations-ephemeral-nonce-store.experimental.mjs';
+import {createNonceCleanupReconciler} from '../server/operations-nonce-cleanup-reconciler.experimental.mjs';
+import {createPgActivationLookup} from '../server/operations-pg-activation-lookup.experimental.mjs';
 import {createTrustedNonceResolver} from '../server/operations-pg-trusted-nonce.experimental.mjs';
 const digest=x=>createHash('sha256').update(x).digest('hex');
 const invitationId='a1010101-0101-4101-8101-010101010101';
@@ -97,6 +99,23 @@ try{
  const success=elevatedRole;
  if((await success.json()).state!=='ACTIVE')throw Error('B401_HTTP_ACTIVATION_FAILED');
  if(await nonceStore.readNonce({invitationId,tenantId})!==null)throw Error('B413_NONCE_CUSTODY_NOT_CLEARED');
+ // Simulate a post-commit orphaned raw nonce after a custody outage,
+ // then reconcile using the actual persisted ACTIVE invitation and role binding.
+ await nonceStore.storeNonce({invitationId,tenantId,nonce});
+ let cleanupAttempts=0;
+ const reconciler=createNonceCleanupReconciler({
+  lookupActivation:createPgActivationLookup((sql,params)=>client.query(sql,params)),
+  clearNonce:async scope=>{
+   if(++cleanupAttempts===1)throw Error('B416_SIMULATED_CUSTODY_OUTAGE');
+   await nonceStore.clearNonce(scope);
+  }
+ });
+ try{await reconciler.reconcile({invitationId,tenantId});throw Error('B416_OUTAGE_NOT_PROPAGATED');}
+ catch(error){if(error.message!=='B416_SIMULATED_CUSTODY_OUTAGE')throw error;}
+ if(await nonceStore.readNonce({invitationId,tenantId})!==nonce)throw Error('B416_OUTAGE_DID_NOT_PRESERVE_RETRY');
+ const recovery=await reconciler.reconcile({invitationId,tenantId});
+ if(!recovery.reconciled||await nonceStore.readNonce({invitationId,tenantId})!==null)
+  throw Error('B416_POSTGRES_RECONCILIATION_FAILED');
  const postCommitReplay=await post(body);
  if(postCommitReplay.status!==403)throw Error('B414_POST_COMMIT_REPLAY_ALLOWED');
  const forged=await post({...body,token:token.slice(0,-2)+'xx'});
