@@ -21,3 +21,4 @@ export async function recordAsyncTrackingEvent({store,scope,command,authorizeTra
    return tx.insert('tracking',{shipmentId:shipment.id,loadId:load.id,eventType,occurredAt,location,recordedBy:scope.actorId});
   }
  });
+}
