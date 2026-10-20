@@ -78,6 +78,8 @@ jobs:
         run: node --test tests/operations-nonce-cleanup-reconciler-experimental.test.mjs
       - name: Run B412 ephemeral nonce custody lifecycle tests
         run: node --test tests/operations-ephemeral-nonce-store-experimental.test.mjs
+      - name: Run B440 PostgreSQL outage and recovery regressions
+        run: node --test tests/operations-pg-outage-recovery-experimental.test.mjs
       - name: Run B439 real worker process interruption and lease recovery
         run: node scripts/test-b439-process-restart.mjs
       - name: Run B422 two-session PostgreSQL cleanup job lease race
