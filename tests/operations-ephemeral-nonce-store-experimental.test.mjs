@@ -46,3 +46,16 @@ test('B428 rejects unauthorized fence even when generation increases',async()=>{
  await store.clearNonceFenced({invitationId,tenantId,ownerId:'authorized',fenceToken:2});
  assert.equal(await store.readNonce({invitationId,tenantId}),null);
 });
+
+test('B429 denies deletion when PostgreSQL lease is revoked after fence installation',async()=>{
+ let leaseActive=true;
+ const store=createEphemeralNonceStore({authorizeFence:async()=>leaseActive});
+ await store.storeNonce({invitationId,tenantId,nonce});
+ await store.setFence({invitationId,tenantId,ownerId:'worker-a',fenceToken:1});
+ leaseActive=false;
+ await assert.rejects(store.clearNonceFenced({invitationId,tenantId,ownerId:'worker-a',fenceToken:1}),/NONCE_FENCE_NOT_AUTHORIZED/);
+ assert.equal(await store.readNonce({invitationId,tenantId}),nonce);
+ leaseActive=true;
+ await store.clearNonceFenced({invitationId,tenantId,ownerId:'worker-a',fenceToken:1});
+ assert.equal(await store.readNonce({invitationId,tenantId}),null);
+});
