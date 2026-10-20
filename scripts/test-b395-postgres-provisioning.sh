@@ -49,4 +49,21 @@ BEGIN
 END;
 $assert$;
 SQL
-echo 'PASS: cross-tenant denial and account provisioning rollback'
+# Assert that a real invalid-role constraint failure occurred, not just rollback.
+# This separate transaction deliberately raises SQLSTATE 23514 and catches it.
+psql -v ON_ERROR_STOP=1 <<'SQL'
+DO $check$
+BEGIN
+ BEGIN
+  INSERT INTO operations_onboarding.tenant_role_bindings
+   (tenant_id,account_id,role,invitation_id)
+  VALUES ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+   'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+   'unauthorized_role','99999999-9999-4999-8999-999999999999');
+  RAISE EXCEPTION 'EXPECTED_ROLE_CONSTRAINT_FAILURE';
+ EXCEPTION WHEN check_violation THEN NULL;
+ END;
+END;
+$check$;
+SQL
+echo 'PASS: cross-tenant denial, invalid-role constraint and provisioning rollback'
