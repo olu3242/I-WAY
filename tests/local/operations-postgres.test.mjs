@@ -767,6 +767,22 @@ test('disposable PostgreSQL Operations certification',async t=>{
   const sorted=times.sort((x,y)=>x-y),pct=p=>sorted[Math.ceil(p*sorted.length)-1];
   console.log('R5_PG_LOOPBACK_HTTP '+JSON.stringify({scope:'disposable-test-only-http-postgresql',requests:times.length,p50Ms:pct(.5),p95Ms:pct(.95),p99Ms:pct(.99),productionSloCertified:false}));
  });
+ await t.test('R5 governed adapter enforces persisted PostgreSQL identity and cross-tenant isolation',async()=>{
+  const {createGovernedTrackingProjection}=await import('../../server/operations-tracking-adapter.mjs');
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  await store.transaction(a,tx=>tx.insert('tracking',{shipmentId:shipment.id,loadId:created.id,eventType:'in_transit',occurredAt:'2026-11-01T12:00:00.000Z',location:'Governed PG',recordedBy:a.actorId}));
+  const adapter=createGovernedTrackingProjection({store});
+  const principal={id:a.actorId,tenantId:a.tenantId,role:'carrier',permissions:['load:create','load:view'],active:true};
+  // The fixture persisted principal has load:create but not load:view; reads must fail closed.
+  await assert.rejects(adapter({scope:a,actor:principal,shipmentId:shipment.id}),{code:'FORBIDDEN'});
+  await f.admin.query('UPDATE operations_private.users SET data=jsonb_set(data,\'{permissions}\',\'["load:create","load:view"]\'::jsonb) WHERE tenant_id=$1 AND id=$2',[a.tenantId,a.actorId]);
+  const result=await adapter({scope:a,actor:principal,shipmentId:shipment.id});
+  assert.equal(result.shipmentId,shipment.id);
+  assert.equal(result.latestLocation,'Governed PG');
+  await assert.rejects(adapter({scope:b,actor:{...principal,id:b.actorId,tenantId:b.tenantId},shipmentId:shipment.id}),{code:'FORBIDDEN'});
+  await assert.rejects(adapter({scope:a,actor:{...principal,id:b.actorId},shipmentId:shipment.id}),{code:'UNAUTHORIZED'});
+  await assert.rejects(adapter({scope:a,actor:{...principal,permissions:[]},shipmentId:shipment.id}),{code:'FORBIDDEN'});
+ });
  await t.test('tracking EXPLAIN ANALYZE and query statistics pass twenty checkpoints',async()=>{
   const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
   await store.transaction(a,async tx=>{
