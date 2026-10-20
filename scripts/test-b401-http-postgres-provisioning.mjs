@@ -163,8 +163,24 @@ try{
  if(b437Run.scanned!==0)throw Error('B437_ALREADY_LEASED_JOB_RECLAIMED');
  if(!(await b437Reconciler.reconcile({invitationId,tenantId})).reconciled)
   throw Error('B437_ACTIVATION_NOT_ELIGIBLE');
- if(!await jobs.finalizeConsumedChallenges({invitationId,tenantId,ownerId:b430Owner,fenceToken:b430Claim[0].fenceToken}))
-  throw Error('B430_ATOMIC_FINALIZATION_FAILED');
+ // B438: two independent PostgreSQL sessions race to finalize the same
+ // leased job. Exactly one must commit deletion and completion.
+ const competingClient=new Client();
+ await competingClient.connect();
+ try{
+  const competingJobs=createPgNonceCleanupJobs((sql,params)=>competingClient.query(sql,params));
+  const scope={invitationId,tenantId,ownerId:b430Owner,fenceToken:b430Claim[0].fenceToken};
+  const results=await Promise.all([
+   jobs.finalizeConsumedChallenges(scope),
+   competingJobs.finalizeConsumedChallenges(scope)
+  ]);
+  if(results.filter(Boolean).length!==1)
+   throw Error('B438_DUPLICATE_OR_MISSING_ATOMIC_FINALIZATION');
+  if(await competingJobs.finalizeConsumedChallenges(scope))
+   throw Error('B438_COMPLETED_JOB_FINALIZED_AGAIN');
+ }finally{
+  await competingClient.end();
+ }
  const b430State=await client.query(`SELECT
   (SELECT count(*)::int FROM operations_onboarding.identity_nonce_challenges WHERE invitation_id=$1 AND consumed_at IS NOT NULL) AS remaining,
   (SELECT state FROM operations_onboarding.nonce_cleanup_jobs WHERE invitation_id=$1) AS job_state`,[invitationId]);
