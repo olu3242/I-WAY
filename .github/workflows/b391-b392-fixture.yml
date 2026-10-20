@@ -1,5 +1,7 @@
 name: B391 B392 isolated PostgreSQL verification
 on:
+  pull_request:
+    branches: [fix/iway-e2e-identity-access-remediation]
   push:
     branches: [work/b391-b398-hosted-identity-certification]
   workflow_dispatch:
