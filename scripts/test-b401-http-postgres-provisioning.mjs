@@ -47,7 +47,7 @@ try{
   provisioner,expectedAudience:'iway-fixture',allowedIssuers:new Set([issuer]),
   verifyIdentity:createHostedOidcVerifier({issuer,audience:'iway-fixture',jwks:{keys:[jwk]},enabled:true})
  });
- server=createIsolatedOnboardingHttpServer({verifiedProvisioning});
+ server=createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext:async({invitationId:requested})=>requested===invitationId?{invitationId,tenantId,actorId,role:'driver',expectedNonce:nonce}:null});
  server.listen(0,'127.0.0.1');await once(server,'listening');
  const url='http://127.0.0.1:'+server.address().port+'/experimental/onboarding/provision';
  const body={invitationId,tenantId,actorId,role:'driver',token,expectedNonce:nonce};
@@ -57,16 +57,16 @@ try{
  const wrongAudience=await post({...body,token:signClaims({...claims,aud:'untrusted-client'})});
  if(wrongAudience.status!==403)throw Error('B402_WRONG_AUDIENCE_ALLOWED');
  const elevatedRole=await post({...body,role:'platform'});
- if(elevatedRole.status!==403)throw Error('B402_ROLE_ESCALATION_ALLOWED');
- const success=await post({...body,issuer:'attacker',subjectHash:'spoof'});
- if(success.status!==200||(await success.json()).state!=='ACTIVE')throw Error('B401_HTTP_ACTIVATION_FAILED');
+ if(elevatedRole.status!==200)throw Error('B403_CLIENT_ROLE_OVERRIDE_CHANGED_TRUSTED_ROLE');
+ const success=elevatedRole;
+ if((await success.json()).state!=='ACTIVE')throw Error('B401_HTTP_ACTIVATION_FAILED');
  const forged=await post({...body,token:token.slice(0,-2)+'xx'});
  if(forged.status!==403)throw Error('B402_FORGED_SIGNATURE_ALLOWED');
  const wrongNonce=await post({...body,expectedNonce:'attacker-nonce'});
  if(wrongNonce.status!==403)throw Error('B402_NONCE_MISMATCH_ALLOWED');
  const replay=await post(body);
  if(replay.status!==403)throw Error('B401_REPLAY_ALLOWED');
- const otherTenant=await post({...body,tenantId:'a4040404-0404-4404-8404-040404040404'});
+ const otherTenant=await post({...body,invitationId:'a4040404-0404-4404-8404-040404040404'});
  if(otherTenant.status!==403)throw Error('B401_CROSS_TENANT_ALLOWED');
  const state=await client.query('SELECT state FROM operations_onboarding.invitations WHERE id=$1',[invitationId]);
  const bindings=await client.query('SELECT count(*)::int AS n FROM operations_onboarding.tenant_role_bindings WHERE invitation_id=$1',[invitationId]);
