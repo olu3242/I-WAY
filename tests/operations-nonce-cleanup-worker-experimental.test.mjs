@@ -5,7 +5,7 @@ const scopes=[{invitationId:'a',tenantId:'t'},{invitationId:'b',tenantId:'t'},{i
 test('bounded worker completes only reconciled jobs and isolates failures',async()=>{
  const done=[],logs=[];
  const worker=createNonceCleanupWorker({
-  jobs:{ownsLease:async()=>true,claim:async({limit})=>scopes.slice(0,limit),complete:async scope=>{done.push(scope.invitationId);return true;}},
+  jobs:{ownsLease:async()=>true,renewLease:async()=>true,claim:async({limit})=>scopes.slice(0,limit),complete:async scope=>{done.push(scope.invitationId);return true;}},
   reconciler:{reconcile:async scope=>{
    if(scope.invitationId==='b')throw Error('SENSITIVE_TOKEN_NOT_FOR_LOGS');
    return {reconciled:scope.invitationId==='a'};
@@ -18,12 +18,12 @@ test('bounded worker completes only reconciled jobs and isolates failures',async
  assert.equal(JSON.stringify(logs).includes('SENSITIVE_TOKEN_NOT_FOR_LOGS'),false);
 });
 test('worker rejects unbounded batches',async()=>{
- const worker=createNonceCleanupWorker({jobs:{ownsLease:async()=>true,claim:async()=>[],complete:async()=>true},reconciler:{reconcile:async()=>({reconciled:true})}});
+ const worker=createNonceCleanupWorker({jobs:{ownsLease:async()=>true,renewLease:async()=>true,claim:async()=>[],complete:async()=>true},reconciler:{reconcile:async()=>({reconciled:true})}});
  await assert.rejects(worker.runOnce({limit:101}),/INVALID_NONCE_WORKER_LIMIT/);
 });
 test('job completion failure stays pending for retry',async()=>{
  const worker=createNonceCleanupWorker({
-  jobs:{ownsLease:async()=>true,claim:async()=>[scopes[0]],complete:async()=>false},
+  jobs:{ownsLease:async()=>true,renewLease:async()=>true,claim:async()=>[scopes[0]],complete:async()=>false},
   reconciler:{reconcile:async()=>({reconciled:true})}
  });
  assert.deepEqual(await worker.runOnce(),{scanned:1,completed:0,skipped:0,failed:1});
@@ -32,7 +32,18 @@ test('job completion failure stays pending for retry',async()=>{
 test('B424 stale lease blocks cleanup execution',async()=>{
  let invoked=0;
  const worker=createNonceCleanupWorker({
-  jobs:{claim:async()=>[{invitationId:'stale',tenantId:'tenant'}],ownsLease:async()=>false,complete:async()=>{throw Error('must not complete');}},
+  jobs:{claim:async()=>[{invitationId:'stale',tenantId:'tenant'}],ownsLease:async()=>false,renewLease:async()=>true,complete:async()=>{throw Error('must not complete');}},
+  reconciler:{reconcile:async()=>{invoked++;return {reconciled:true};}}
+ });
+ assert.deepEqual(await worker.runOnce(),{scanned:1,completed:0,skipped:1,failed:0});
+ assert.equal(invoked,0);
+});
+
+test('B425 rejected renewal blocks nonce cleanup',async()=>{
+ let invoked=0;
+ const worker=createNonceCleanupWorker({
+  jobs:{claim:async()=>[{invitationId:'stale',tenantId:'tenant'}],
+   ownsLease:async()=>true,renewLease:async()=>false,complete:async()=>{throw Error('unexpected');}},
   reconciler:{reconcile:async()=>{invoked++;return {reconciled:true};}}
  });
  assert.deepEqual(await worker.runOnce(),{scanned:1,completed:0,skipped:1,failed:0});
