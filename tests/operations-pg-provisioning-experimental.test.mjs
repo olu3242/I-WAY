@@ -17,11 +17,12 @@ test('account, binding, activation and audit share restricted transaction',async
  }}),{consumeNonce:async()=>{}});
  const result=await repo.provision(request);
  assert.equal(result.state,'ACTIVE');
- assert.equal(sql.length,6);
+ assert.equal(sql.length,7);
  assert.match(sql[0],/identity_proof_uses/);assert.match(sql[1],/state='VERIFIED'/);
  assert.match(sql[1],/assignment->>'role'/);
  assert.match(sql[3],/tenant_role_bindings/);
  assert.match(sql[5],/invitation_events/);
+ assert.match(sql[6],/nonce_cleanup_jobs/);
 });
 test('mismatched identity prevents account creation',async()=>{
  let calls=0;
@@ -53,4 +54,12 @@ test('nonce consumption failure blocks all provisioning writes',async()=>{
   {consumeNonce:async()=>{throw Error('NONCE_CONSUMPTION_REJECTED')}});
  await assert.rejects(repo.provision(request),/NONCE_CONSUMPTION_REJECTED/);
  assert.equal(queries,0);
+});
+
+test('cleanup job insertion failure aborts activation transaction',async()=>{
+ const repo=createPgProvisioner(async fn=>fn({query:async sql=>{
+  if(sql.includes('nonce_cleanup_jobs'))throw Error('CLEANUP_JOB_INSERT_FAILED');
+  return {rowCount:1,rows:[{id}]};
+ }}),{consumeNonce:async()=>{}});
+ await assert.rejects(repo.provision(request),/CLEANUP_JOB_INSERT_FAILED/);
 });
