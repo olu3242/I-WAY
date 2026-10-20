@@ -23,3 +23,17 @@ test('marks only pending matching tenant jobs complete',async()=>{
  assert.equal(await jobs.complete({invitationId:'invite',tenantId:'tenant',ownerId:'11111111-1111-4111-8111-111111111111'}),true);
  assert.equal(await jobs.complete({invitationId:'invite',tenantId:'wrong',ownerId:'11111111-1111-4111-8111-111111111111'}),false);
 });
+
+test('claim requires valid owner and bounded lease duration',async()=>{
+ const jobs=createPgNonceCleanupJobs(async()=>{throw Error('unexpected query')});
+ await assert.rejects(jobs.claim({ownerId:'invalid'}),/INVALID_NONCE_JOB_CLAIM/);
+ await assert.rejects(jobs.claim({ownerId:'11111111-1111-4111-8111-111111111111',leaseSeconds:601}),/INVALID_NONCE_JOB_CLAIM/);
+});
+test('claim query excludes unexpired leases and uses SKIP LOCKED',async()=>{
+ let sql,params;
+ const jobs=createPgNonceCleanupJobs(async(q,p)=>{sql=q;params=p;return {rows:[]};});
+ await jobs.claim({ownerId:'11111111-1111-4111-8111-111111111111',limit:2,leaseSeconds:30});
+ assert.match(sql,/FOR UPDATE SKIP LOCKED/);
+ assert.match(sql,/lease_until<now\(\)/);
+ assert.deepEqual(params,[2,'11111111-1111-4111-8111-111111111111',30]);
+});
