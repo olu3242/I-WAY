@@ -4,6 +4,7 @@ import {Client} from 'pg';
 import {randomUUID} from 'node:crypto';
 import {createPgNonceCleanupJobs} from '../server/operations-pg-nonce-cleanup-jobs.experimental.mjs';
 import {createEphemeralNonceStore} from '../server/operations-ephemeral-nonce-store.experimental.mjs';
+import {createPgNonceCustody} from '../server/operations-pg-nonce-custody.experimental.mjs';
 const invitationId=randomUUID(),tenantId=randomUUID(),actorId=randomUUID();
 const clients=[new Client(),new Client(),new Client()];
 for(const client of clients)await client.connect();
@@ -20,6 +21,8 @@ try{
  const [claimA,claimB]=await Promise.all([a.claim({ownerId:ownerA}),b.claim({ownerId:ownerB})]);
  if(claimA.length+claimB.length!==1)throw Error('B422_DUPLICATE_LEASE_CLAIM');
  const originalFence=(claimA[0]||claimB[0]).fenceToken;
+ const durableCustody=createPgNonceCustody((sql,args)=>clients[0].query(sql,args));
+ if(await durableCustody.consumedCount({invitationId,tenantId})!==0)throw Error('B437_UNEXPECTED_CONSUMED_NONCE');
  if(!Number.isSafeInteger(originalFence)||originalFence<1)throw Error('B426_MISSING_FENCE_TOKEN');
  const winner=claimA.length?{jobs:a,ownerId:ownerA}:{jobs:b,ownerId:ownerB};
  const loser=claimA.length?{jobs:b,ownerId:ownerB}:{jobs:a,ownerId:ownerA};
