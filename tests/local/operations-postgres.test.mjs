@@ -850,6 +850,21 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(logoutResponse.status,200);
   assert.equal((await fetch(url,{headers:{Cookie:ownCookie}})).status,401);
  });
+ await t.test('R5 real PostgreSQL restart restores tenant-scoped tracking reads',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  await store.transaction(a,tx=>tx.insert('tracking',{shipmentId:shipment.id,loadId:created.id,eventType:'in_transit',occurredAt:'2026-11-01T15:00:00.000Z',location:'Before restart',recordedBy:a.actorId}));
+  const read=()=>projectAsyncShipmentTracking({store,scope:a,shipmentId:shipment.id,authorizeTracking:async({principal})=>principal.active&&principal.permissions.includes('load:create')});
+  const before=await read();
+  assert.equal(before.latestLocation,'Before restart');
+  await f.restartForRecoveryTest();
+  // The same pool must reconnect rather than relying on a new store or a mocked adapter.
+  const after=await read();
+  assert.equal(after.shipmentId,shipment.id);
+  assert.equal(after.latestLocation,'Before restart');
+  assert.equal(after.history.length,1);
+  await assert.rejects(projectAsyncShipmentTracking({store,scope:b,shipmentId:shipment.id,authorizeTracking:async()=>true}),{code:'NOT_FOUND'});
+  console.log('R5_POSTGRES_RESTART_RECOVERY '+JSON.stringify({scope:'disposable-postgresql',recovered:true,tenantIsolation:true,productionSloCertified:false}));
+ });
  await t.test('tracking EXPLAIN ANALYZE and query statistics pass twenty checkpoints',async()=>{
   const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
   await store.transaction(a,async tx=>{

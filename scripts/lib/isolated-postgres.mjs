@@ -67,7 +67,18 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   await admin.query('GRANT USAGE ON ALL SEQUENCES IN SCHEMA operations_private TO iway_operations_fixture');
   const restricted={...common,user:'iway_operations_fixture',password:restrictedPassword,database:'iway_fixture'};
   const pool=new Pool(restricted);pools.push(pool);
-  return {admin,pool,ssl,restricted,caPath:join(root,'ca.crt'),createPool(options={}){const p=new Pool({...restricted,...options});pools.push(p);return p},cleanup};
+  return {admin,pool,ssl,restricted,caPath:join(root,'ca.crt'),
+  // Available only on a fresh, explicitly opted-in disposable cluster.
+  async restartForRecoveryTest(){
+   if(!started)throw Error('DISPOSABLE_CLUSTER_NOT_RUNNING');
+   run(join(bin,'pg_ctl'),['-D',data,'-m','immediate','-w','stop']);started=false;
+   try{
+    await new Promise(resolve=>setTimeout(resolve,200));
+   }finally{
+    run(join(bin,'pg_ctl'),['-D',data,'-l',join(root,'server.log'),'-w','start']);started=true;
+   }
+  },
+  createPool(options={}){const p=new Pool({...restricted,...options});pools.push(p);return p},cleanup};
  }catch(error){
   let diagnostic='';
   if(stage==='LOCAL_FIXTURE_INITDB'&&existsSync(join(root,'initdb.log')))diagnostic=readFileSync(join(root,'initdb.log'),'utf8').slice(-700).replaceAll(root,'[fixture]').replaceAll(password,'[redacted]');
