@@ -6,7 +6,7 @@ import {createPgNonceChallenges} from '../server/operations-pg-nonce-challenges.
 const id='92929292-9292-4929-8929-929292929292';
 const tenant='93939393-9393-4939-8939-939393939393';
 const actor='94949494-9494-4949-8949-949494949494';
-const hash='a'.repeat(64),proof='b'.repeat(64),nonce='b399-fixture-nonce';
+const hash='7'.repeat(64),proof='8'.repeat(64),nonce='b399-fixture-nonce';
 const crypto=await import('node:crypto');
 const nonceHash=crypto.createHash('sha256').update(nonce).digest('hex');
 const client=new Client();
