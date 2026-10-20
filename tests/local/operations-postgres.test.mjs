@@ -23,7 +23,7 @@ test('disposable PostgreSQL Operations certification',async t=>{
  assert.equal(process.env.IWAY_OPERATIONS_LOCAL_OPT_IN,'1','Explicit disposable-cluster approval required');
  const f=await isolatedPostgres({optIn:true});t.after(()=>f.cleanup());
  const config=buildLocalOperationsPgConfig({optIn:true,connection:f.restricted,ca:f.ssl.ca});
- const pool=new Pool(config);t.after(()=>pool.end());
+ const pool=f.registerPool(new Pool(config));t.after(()=>pool.end());
  const store=new AsyncOperationsPgStore(pool,{config});
  const a={tenantId:randomUUID(),actorId:randomUUID()},b={tenantId:randomUUID(),actorId:randomUUID()},other=randomUUID();
  for(const scope of [a,b]){
