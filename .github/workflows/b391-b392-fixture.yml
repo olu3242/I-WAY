@@ -56,6 +56,8 @@ jobs:
         run: bash scripts/test-b393-postgres-acceptance.sh
       - name: Run B394 trusted identity boundary tests
         run: node --test tests/operations-pg-identity-boundary-experimental.test.mjs
+      - name: Run OIDC nonce atomicity PostgreSQL regression
+        run: bash scripts/test-oidc-postgres-nonce-atomicity.sh
       - name: Run B397 concurrent PostgreSQL proof replay regression
         run: bash scripts/test-b397-postgres-proof-replay.sh
       - name: Run B395 PostgreSQL provisioning rollback and tenant regression
