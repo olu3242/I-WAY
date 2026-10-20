@@ -819,6 +819,36 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal((await fetch(url+'?limit=0',{headers:{Cookie:ownCookie}})).status,400);
   const mismatch=Buffer.from(JSON.stringify({shipmentId:randomUUID(),occurredAt:'2026-11-01T12:00:00.000Z',id:randomUUID()})).toString('base64url');
   assert.equal((await fetch(url+'?before='+mismatch,{headers:{Cookie:ownCookie}})).status,400);
+  // Concurrent authenticated requests share a session but must not mutate history.
+  const concurrent=await Promise.all(Array.from({length:16},()=>fetch(url,{headers:{Cookie:ownCookie}})));
+  assert.ok(concurrent.every(response=>response.status===200));
+  const bodies=await Promise.all(concurrent.map(response=>response.json()));
+  assert.ok(bodies.every(body=>body.shipmentId===shipmentId&&body.history.length===1));
+  // Cursor pagination is evaluated by the real PostgreSQL projection, not a mock.
+  await store.transaction(scope,async tx=>{
+   for(let i=1;i<=5;i++)await tx.insert('tracking',{shipmentId,loadId,eventType:'in_transit',occurredAt:new Date(Date.UTC(2026,10,1,12,i)).toISOString(),location:'Governed HTTP '+i,recordedBy:actor.id});
+  });
+  let cursor=null;const visited=[];
+  for(let page=0;page<3;page++){
+   const query=cursor?'?limit=2&before='+encodeURIComponent(Buffer.from(JSON.stringify(cursor)).toString('base64url')):'?limit=2';
+   const response=await fetch(url+query,{headers:{Cookie:ownCookie}});
+   assert.equal(response.status,200);
+   const body=await response.json();
+   assert.equal(body.history.length,2);
+   assert.equal(body.latestLocation,'Governed HTTP 5');
+   visited.push(...body.history.map(event=>event.location));
+   cursor=body.nextCursor;
+   assert.equal(body.hasMore,page<2);
+  }
+  assert.equal(new Set(visited).size,6);
+  assert.deepEqual(new Set(visited),new Set(['Governed HTTP','Governed HTTP 1','Governed HTTP 2','Governed HTTP 3','Governed HTTP 4','Governed HTTP 5']));
+  // Explicit session revocation blocks all subsequent tracking requests.
+  const stateResponse=await fetch(base+'/api/ops/state',{headers:{Cookie:ownCookie}});
+  assert.equal(stateResponse.status,200);
+  const state=await stateResponse.json();
+  const logoutResponse=await fetch(base+'/api/ops/logout',{method:'POST',headers:{Cookie:ownCookie,Origin:base,'X-CSRF-Token':state.csrf}});
+  assert.equal(logoutResponse.status,200);
+  assert.equal((await fetch(url,{headers:{Cookie:ownCookie}})).status,401);
  });
  await t.test('tracking EXPLAIN ANALYZE and query statistics pass twenty checkpoints',async()=>{
   const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
