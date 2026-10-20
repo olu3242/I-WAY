@@ -14,6 +14,7 @@ import {assignAsyncShipment} from '../../domain/operations-async-shipment-assign
 import {releaseAsyncShipment} from '../../domain/operations-async-shipment-release.mjs';
 import {reassignAsyncShipment} from '../../domain/operations-async-shipment-reassign.mjs';
 import {recordAsyncTrackingEvent} from '../../domain/operations-async-tracking-event.mjs';
+import {projectAsyncShipmentTracking} from '../../domain/operations-async-tracking-projection.mjs';
 
 // Explicit opt-in; never load environment files or connect to an existing database.
 test('disposable PostgreSQL Operations certification',async t=>{
@@ -359,6 +360,28 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(history.length,3); // 8
   assert.equal((await store.transaction(a,tx=>tx.get('shipment',shipment.id))).version,dispatched.version); // 9
   assert.deepEqual(await counts(),{resources:before.resources+2,commands:before.commands+2,audit:before.audit+2}); // 10
+ });
+ await t.test('shipment tracking projection enforces ten read-only checkpoints',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const view=scope=>projectAsyncShipmentTracking({store,scope,shipmentId:shipment.id,authorizeTracking:auth});
+  const before=await counts(),empty=await view(a);
+  assert.equal(empty.shipmentId,shipment.id); // 1
+  assert.equal(empty.latestEvent,null); // 2
+  assert.deepEqual(empty.history,[]); // 3
+  const dispatched=await dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}}});
+  const record=(eventType,occurredAt,location)=>recordAsyncTrackingEvent({store,scope:a,authorizeTracking:auth,command:{action:'tracking:record',resourceId:shipment.id,expectedVersion:dispatched.version,idempotencyKey:randomUUID(),payload:{eventType,occurredAt,location}}});
+  await record('arrived','2026-11-01T10:00:00.000Z','Austin');
+  await record('departed','2026-11-01T11:00:00.000Z','Austin');
+  const snapshot=await counts(),projection=await view(a);
+  assert.equal(projection.history.length,2); // 4
+  assert.deepEqual(projection.history.map(x=>x.eventType),['arrived','departed']); // 5
+  assert.equal(projection.latestEvent.eventType,'departed'); // 6
+  assert.equal(projection.latestLocation,'Austin'); // 7
+  assert.equal(projection.status,'dispatched'); // 8
+  await assert.rejects(view(b),{code:'NOT_FOUND'}); // 9
+  assert.deepEqual(await counts(),snapshot); // 10
+  assert.equal(before.resources+2+1,snapshot.resources);
  });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
