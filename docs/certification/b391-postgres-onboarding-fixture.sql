@@ -38,11 +38,11 @@ CREATE TABLE operations_onboarding.invitation_events (
 );
 -- Append-only event history: even the owner must not mutate or delete audit rows.
 CREATE FUNCTION operations_onboarding.reject_event_mutation() RETURNS trigger
-LANGUAGE plpgsql SECURITY INVOKER SET search_path = pg_catalog AS $
+LANGUAGE plpgsql SECURITY INVOKER SET search_path = pg_catalog AS $audit_guard$
 BEGIN
  RAISE EXCEPTION 'INVITATION_AUDIT_IMMUTABLE' USING ERRCODE = '42501';
 END;
-$;
+$audit_guard$;
 REVOKE ALL ON FUNCTION operations_onboarding.reject_event_mutation() FROM PUBLIC;
 CREATE TRIGGER invitation_events_immutable BEFORE UPDATE OR DELETE ON operations_onboarding.invitation_events
 FOR EACH ROW EXECUTE FUNCTION operations_onboarding.reject_event_mutation();
