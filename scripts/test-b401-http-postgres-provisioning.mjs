@@ -49,6 +49,10 @@ try{
  const post=async data=>fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)});
  const success=await post({...body,issuer:'attacker',subjectHash:'spoof'});
  if(success.status!==200||(await success.json()).state!=='ACTIVE')throw Error('B401_HTTP_ACTIVATION_FAILED');
+ const forged=await post({...body,token:token.slice(0,-2)+'xx'});
+ if(forged.status!==403)throw Error('B402_FORGED_SIGNATURE_ALLOWED');
+ const wrongNonce=await post({...body,expectedNonce:'attacker-nonce'});
+ if(wrongNonce.status!==403)throw Error('B402_NONCE_MISMATCH_ALLOWED');
  const replay=await post(body);
  if(replay.status!==403)throw Error('B401_REPLAY_ALLOWED');
  const otherTenant=await post({...body,tenantId:'a4040404-0404-4404-8404-040404040404'});
