@@ -3,6 +3,7 @@
 import {Client} from 'pg';
 import {randomUUID} from 'node:crypto';
 import {createPgNonceCleanupJobs} from '../server/operations-pg-nonce-cleanup-jobs.experimental.mjs';
+import {createEphemeralNonceStore} from '../server/operations-ephemeral-nonce-store.experimental.mjs';
 const invitationId=randomUUID(),tenantId=randomUUID(),actorId=randomUUID();
 const clients=[new Client(),new Client(),new Client()];
 for(const client of clients)await client.connect();
@@ -22,6 +23,10 @@ try{
  if(!Number.isSafeInteger(originalFence)||originalFence<1)throw Error('B426_MISSING_FENCE_TOKEN');
  const winner=claimA.length?{jobs:a,ownerId:ownerA}:{jobs:b,ownerId:ownerB};
  const loser=claimA.length?{jobs:b,ownerId:ownerB}:{jobs:a,ownerId:ownerA};
+ const nonceStore=createEphemeralNonceStore({authorizeFence:scope=>admin.ownsFence(scope)});
+ const nonce='b429-fixture-nonce-0123456789';
+ await nonceStore.storeNonce({invitationId,tenantId,nonce});
+ await nonceStore.setFence({invitationId,tenantId,ownerId:winner.ownerId,fenceToken:originalFence});
  if(await loser.jobs.complete({invitationId,tenantId,ownerId:loser.ownerId}))
   throw Error('B422_NON_OWNER_COMPLETION_ALLOWED');
  // Simulate an interrupted worker whose lease has expired.
@@ -30,6 +35,14 @@ try{
  const recovered=await loser.jobs.claim({ownerId:loser.ownerId});
  if(recovered.length!==1||recovered[0].invitationId!==invitationId||recovered[0].fenceToken<=originalFence)
   throw Error('B423_EXPIRED_LEASE_NOT_RECLAIMED');
+ try{
+  await nonceStore.clearNonceFenced({invitationId,tenantId,ownerId:winner.ownerId,fenceToken:originalFence});
+  throw Error('B429_STALE_OWNER_DELETED_NONCE');
+ }catch(error){if(error.message!=='NONCE_FENCE_NOT_AUTHORIZED')throw error;}
+ if(await nonceStore.readNonce({invitationId,tenantId})!==nonce)throw Error('B429_NONCE_MISSING_AFTER_STALE_DELETE');
+ await nonceStore.setFence({invitationId,tenantId,ownerId:loser.ownerId,fenceToken:recovered[0].fenceToken});
+ await nonceStore.clearNonceFenced({invitationId,tenantId,ownerId:loser.ownerId,fenceToken:recovered[0].fenceToken});
+ if(await nonceStore.readNonce({invitationId,tenantId})!==null)throw Error('B429_NEW_OWNER_COULD_NOT_CLEAR_NONCE');
  if(await winner.jobs.ownsLease({invitationId,tenantId,ownerId:winner.ownerId}))
   throw Error('B424_STALE_OWNER_LEASE_VALID');
  if(!await loser.jobs.ownsLease({invitationId,tenantId,ownerId:loser.ownerId}))
