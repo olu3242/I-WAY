@@ -7,10 +7,14 @@ const roles=new Set(['carrier','fleet','driver','platform']);
 export function createPgProvisioner(transaction){
  if(typeof transaction!=='function')throw Error('RESTRICTED_TRANSACTION_REQUIRED');
  return Object.freeze({
-  async provision({invitationId,tenantId,actorId,issuer,subjectHash,role}){
-   if(!invitationId||!tenantId||!actorId||!issuer||!hex64(subjectHash)||!roles.has(role))
+  async provision({invitationId,tenantId,actorId,issuer,subjectHash,role,proofHash}){
+   if(!invitationId||!tenantId||!actorId||!issuer||!hex64(subjectHash)||!hex64(proofHash)||!roles.has(role))
     throw Error('INVALID_PROVISIONING_REQUEST');
    return transaction(async client=>{
+    // Unique ledger key serializes concurrent proof reuse; rollback restores it.
+    await client.query(`INSERT INTO operations_onboarding.identity_proof_uses
+      (proof_hash,invitation_id,tenant_id) VALUES($1,$2,$3)`,
+      [proofHash,invitationId,tenantId]);
     // The conditional update serializes competing acceptance attempts.
     const accepted=await client.query(`UPDATE operations_onboarding.invitations
       SET state='ACCEPTED' WHERE id=$1 AND tenant_id=$2
