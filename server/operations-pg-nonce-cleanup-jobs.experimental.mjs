@@ -18,11 +18,29 @@ export function createPgNonceCleanupJobs(query){
     WHERE state='PENDING' ORDER BY created_at,invitation_id LIMIT $1`,[limit]);
    return result.rows.map(row=>({invitationId:row.invitation_id,tenantId:row.tenant_id}));
   },
-  async complete({invitationId,tenantId}){
+  async claim({ownerId,limit=25,leaseSeconds=60}={}){
+   if(typeof ownerId!=='string'||!/^[0-9a-f-]{36}$/i.test(ownerId)
+    ||!Number.isInteger(limit)||limit<1||limit>100
+    ||!Number.isInteger(leaseSeconds)||leaseSeconds<5||leaseSeconds>600)
+    throw Error('INVALID_NONCE_JOB_CLAIM');
+   const result=await query(`WITH eligible AS (
+    SELECT invitation_id FROM operations_onboarding.nonce_cleanup_jobs
+    WHERE state='PENDING' AND (lease_until IS NULL OR lease_until<now())
+    ORDER BY created_at,invitation_id FOR UPDATE SKIP LOCKED LIMIT $1
+   )
+   UPDATE operations_onboarding.nonce_cleanup_jobs j
+    SET lease_owner=$2::uuid,lease_until=now()+($3::int * interval '1 second')
+   FROM eligible WHERE j.invitation_id=eligible.invitation_id
+   RETURNING j.invitation_id,j.tenant_id`,[limit,ownerId,leaseSeconds]);
+   return result.rows.map(row=>({invitationId:row.invitation_id,tenantId:row.tenant_id}));
+  },
+  async complete({invitationId,tenantId,ownerId}){
+   if(!ownerId)throw Error('NONCE_JOB_OWNER_REQUIRED');
    const result=await query(`UPDATE operations_onboarding.nonce_cleanup_jobs
     SET state='COMPLETE',completed_at=now(),attempts=attempts+1,last_attempt_at=now()
     WHERE invitation_id=$1 AND tenant_id=$2 AND state='PENDING'
-    RETURNING invitation_id`,[invitationId,tenantId]);
+    AND lease_owner=$3::uuid AND lease_until>now()
+    RETURNING invitation_id`,[invitationId,tenantId,ownerId]);
    return result.rowCount===1;
   }
  });
