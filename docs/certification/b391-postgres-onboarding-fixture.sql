@@ -36,6 +36,16 @@ CREATE TABLE operations_onboarding.invitation_events (
  occurred_at timestamptz NOT NULL DEFAULT now(),
  detail jsonb NOT NULL DEFAULT '{}'::jsonb
 );
+-- Append-only event history: even the owner must not mutate or delete audit rows.
+CREATE FUNCTION operations_onboarding.reject_event_mutation() RETURNS trigger
+LANGUAGE plpgsql SECURITY INVOKER SET search_path = pg_catalog AS $
+BEGIN
+ RAISE EXCEPTION 'INVITATION_AUDIT_IMMUTABLE' USING ERRCODE = '42501';
+END;
+$;
+REVOKE ALL ON FUNCTION operations_onboarding.reject_event_mutation() FROM PUBLIC;
+CREATE TRIGGER invitation_events_immutable BEFORE UPDATE OR DELETE ON operations_onboarding.invitation_events
+FOR EACH ROW EXECUTE FUNCTION operations_onboarding.reject_event_mutation();
 ALTER TABLE operations_onboarding.invitations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE operations_onboarding.invitations FORCE ROW LEVEL SECURITY;
 ALTER TABLE operations_onboarding.delivery_requests ENABLE ROW LEVEL SECURITY;
