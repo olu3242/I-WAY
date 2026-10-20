@@ -10,6 +10,7 @@ import {createVerifiedProvisioningFlow} from '../server/operations-pg-verified-p
 import {createIsolatedOnboardingHttpServer} from '../server/operations-onboarding-http.experimental.mjs';
 import {createPgInvitationContextResolver} from '../server/operations-pg-invitation-context.experimental.mjs';
 import {createAuthenticatedChallengeCustody} from '../server/operations-authenticated-challenge.experimental.mjs';
+import {createEphemeralNonceStore} from '../server/operations-ephemeral-nonce-store.experimental.mjs';
 import {createTrustedNonceResolver} from '../server/operations-pg-trusted-nonce.experimental.mjs';
 const digest=x=>createHash('sha256').update(x).digest('hex');
 const invitationId='a1010101-0101-4101-8101-010101010101';
@@ -53,8 +54,10 @@ try{
   provisioner,expectedAudience:'iway-fixture',allowedIssuers:new Set([issuer]),
   verifyIdentity:createHostedOidcVerifier({issuer,audience:'iway-fixture',jwks:{keys:[jwk]},enabled:true})
  });
+ const nonceStore=createEphemeralNonceStore();
+ await nonceStore.storeNonce({invitationId,tenantId,nonce});
  const trustedNonce=createTrustedNonceResolver({
-  readServerNonce:async({invitationId:requested,tenantId:requestedTenant})=>requested===invitationId&&requestedTenant===tenantId?nonce:null,
+  readServerNonce:nonceStore.readNonce,
   lookupChallenge:async({invitationId:requested,tenantId:requestedTenant,nonceHash})=>{
    const r=await client.query(`SELECT nonce_hash FROM operations_onboarding.identity_nonce_challenges WHERE invitation_id=$1 AND tenant_id=$2 AND nonce_hash=$3 AND consumed_at IS NULL AND expires_at>now()`,[requested,requestedTenant,nonceHash]);
    return r.rowCount===1?{active:true,invitationId:requested,tenantId:requestedTenant,nonceHash:r.rows[0].nonce_hash}:null;
@@ -71,10 +74,10 @@ try{
    const row=r.rows[0];return row?{id:row.id,tenantId:row.tenant_id,issuer:row.issuer,subjectHash:row.subject_hash,state:row.state,expiresAt:row.expires_at}:null;
   },
   storeNonce:async()=>{},
-  readNonce:async()=>nonce,
+  readNonce:nonceStore.readNonce,
   verifySession:async token=>token==='fixture-session'?{verified:true,issuer,subjectHash:digest(subject),subject}:null
  });
- server=createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext,challengeCustody:custody});
+ server=createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext,challengeCustody:custody,clearNonce:nonceStore.clearNonce});
  server.listen(0,'127.0.0.1');await once(server,'listening');
  const url='http://127.0.0.1:'+server.address().port+'/experimental/onboarding/provision';
  const body={invitationId,tenantId,actorId,role:'driver',token,expectedNonce:nonce};
@@ -93,6 +96,7 @@ try{
  if(elevatedRole.status!==200)throw Error('B403_CLIENT_ROLE_OVERRIDE_CHANGED_TRUSTED_ROLE');
  const success=elevatedRole;
  if((await success.json()).state!=='ACTIVE')throw Error('B401_HTTP_ACTIVATION_FAILED');
+ if(await nonceStore.readNonce({invitationId,tenantId})!==null)throw Error('B413_NONCE_CUSTODY_NOT_CLEARED');
  const forged=await post({...body,token:token.slice(0,-2)+'xx'});
  if(forged.status!==403)throw Error('B402_FORGED_SIGNATURE_ALLOWED');
  const wrongNonce=await post({...body,expectedNonce:'attacker-nonce'});
