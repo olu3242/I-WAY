@@ -47,3 +47,13 @@ test('B424 checks tenant-scoped live lease ownership',async()=>{
  assert.deepEqual(params,['invite','tenant',ownerId]);
  assert.equal(await jobs.ownsLease({invitationId:'invite',tenantId:'tenant',ownerId:'invalid'}),false);
 });
+
+test('B425 lease renewal requires current unexpired owner',async()=>{
+ let sql,params;
+ const jobs=createPgNonceCleanupJobs(async(q,p)=>{sql=q;params=p;return {rowCount:1,rows:[{}]};});
+ const ownerId='11111111-1111-4111-8111-111111111111';
+ assert.equal(await jobs.renewLease({invitationId:'invite',tenantId:'tenant',ownerId,leaseSeconds:30}),true);
+ assert.match(sql,/lease_owner=\$3::uuid AND lease_until>now\(\)/);
+ assert.deepEqual(params,['invite','tenant',ownerId,30]);
+ await assert.rejects(jobs.renewLease({invitationId:'invite',tenantId:'tenant',ownerId,leaseSeconds:601}),/INVALID_NONCE_LEASE_RENEWAL/);
+});
