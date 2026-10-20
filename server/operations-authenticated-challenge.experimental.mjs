@@ -12,7 +12,8 @@ export function createAuthenticatedChallengeCustody({issueNonce,resolveInvitatio
   if(!principal||principal.verified!==true||!principal.subject||!principal.issuer)return null;
   const invitation=await resolveInvitation(invitationId);
   if(!invitation||invitation.id!==invitationId||invitation.state!=='VERIFIED'||!invitation.tenantId
-   ||!same(principal.issuer,invitation.issuer)||!same(principal.subjectHash,invitation.subjectHash))return null;
+   ||!same(principal.issuer,invitation.issuer)||!same(principal.subjectHash,invitation.subjectHash)
+   ||!Number.isFinite(new Date(invitation.expiresAt).getTime())||new Date(invitation.expiresAt).getTime()<=Date.now())return null;
   return invitation;
  }
  return Object.freeze({
