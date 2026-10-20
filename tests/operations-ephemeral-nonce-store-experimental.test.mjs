@@ -36,3 +36,13 @@ test('B426 stale worker cannot clear nonce after fence takeover',async()=>{
  assert.equal(await store.clearNonceFenced({invitationId,tenantId,ownerId:'worker-b',fenceToken:2}),true);
  assert.equal(await store.readNonce({invitationId,tenantId}),null);
 });
+
+test('B428 rejects unauthorized fence even when generation increases',async()=>{
+ const store=createEphemeralNonceStore({authorizeFence:async({ownerId})=>ownerId==='authorized'});
+ await store.storeNonce({invitationId,tenantId,nonce});
+ await store.setFence({invitationId,tenantId,ownerId:'authorized',fenceToken:2});
+ await assert.rejects(store.setFence({invitationId,tenantId,ownerId:'stale',fenceToken:3}),/NONCE_FENCE_NOT_AUTHORIZED/);
+ assert.equal(await store.readNonce({invitationId,tenantId}),nonce);
+ await store.clearNonceFenced({invitationId,tenantId,ownerId:'authorized',fenceToken:2});
+ assert.equal(await store.readNonce({invitationId,tenantId}),null);
+});
