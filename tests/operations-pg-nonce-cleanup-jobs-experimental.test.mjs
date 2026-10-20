@@ -37,3 +37,13 @@ test('claim query excludes unexpired leases and uses SKIP LOCKED',async()=>{
  assert.match(sql,/lease_until<now\(\)/);
  assert.deepEqual(params,[2,'11111111-1111-4111-8111-111111111111',30]);
 });
+
+test('B424 checks tenant-scoped live lease ownership',async()=>{
+ let sql,params;
+ const jobs=createPgNonceCleanupJobs(async(q,p)=>{sql=q;params=p;return {rowCount:1,rows:[{}]};});
+ const ownerId='11111111-1111-4111-8111-111111111111';
+ assert.equal(await jobs.ownsLease({invitationId:'invite',tenantId:'tenant',ownerId}),true);
+ assert.match(sql,/lease_until>now\(\)/);
+ assert.deepEqual(params,['invite','tenant',ownerId]);
+ assert.equal(await jobs.ownsLease({invitationId:'invite',tenantId:'tenant',ownerId:'invalid'}),false);
+});
