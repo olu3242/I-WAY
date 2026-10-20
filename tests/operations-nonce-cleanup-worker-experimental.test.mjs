@@ -78,3 +78,30 @@ test('B431 optional atomic database finalization requires fence and never calls 
  assert.equal((await worker.runOnce({ownerId})).completed,1);
  assert.deepEqual(calls,[{invitationId:'invite',tenantId:'tenant',fenceToken:9,ownerId}]);
 });
+
+test('B432 atomic finalization rejection leaves job uncompleted',async()=>{
+ let legacyCompletions=0,finalizations=0;
+ const worker=createNonceCleanupWorker({
+  finalizeDatabase:true,
+  jobs:{claim:async()=>[{invitationId:'invite',tenantId:'tenant',fenceToken:4}],
+   ownsLease:async()=>true,renewLease:async()=>true,
+   complete:async()=>{legacyCompletions++;return true;},
+   finalizeConsumedChallenges:async()=>{finalizations++;return false;}},
+  reconciler:{reconcile:async()=>({reconciled:true})}
+ });
+ assert.deepEqual(await worker.runOnce(),{scanned:1,completed:0,skipped:0,failed:1});
+ assert.equal(finalizations,1);
+ assert.equal(legacyCompletions,0);
+});
+test('B432 failed atomic finalization can be retried by a new worker',async()=>{
+ let attempt=0;
+ const jobs={claim:async()=>[{invitationId:'invite',tenantId:'tenant',fenceToken:5}],
+  ownsLease:async()=>true,renewLease:async()=>true,
+  complete:async()=>{throw Error('legacy path');},
+  finalizeConsumedChallenges:async()=>++attempt>1};
+ const reconciler={reconcile:async()=>({reconciled:true})};
+ const first=createNonceCleanupWorker({jobs,reconciler,finalizeDatabase:true});
+ const second=createNonceCleanupWorker({jobs,reconciler,finalizeDatabase:true});
+ assert.equal((await first.runOnce()).failed,1);
+ assert.equal((await second.runOnce()).completed,1);
+});
