@@ -54,5 +54,7 @@ jobs:
         run: bash scripts/test-b392-postgres-concurrency.sh
       - name: Run B393 concurrent acceptance and rollback regression
         run: bash scripts/test-b393-postgres-acceptance.sh
+      - name: Run B394 trusted identity boundary tests
+        run: node --test tests/operations-pg-identity-boundary-experimental.test.mjs
       - name: Run experimental repository tests
         run: node --test tests/operations-pg-invitations-experimental.test.mjs
