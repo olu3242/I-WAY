@@ -692,6 +692,40 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.deepEqual(await fetch({limit:10,before:{occurredAt:p3.at(-1).occurredAt,id:p3.at(-1).id}}),[]); // 19
   assert.deepEqual(await counts(),before); // 20
  });
+ await t.test('tracking EXPLAIN ANALYZE and query statistics pass twenty checkpoints',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  await store.transaction(a,async tx=>{
+   for(let i=0;i<64;i++)await tx.insert('tracking',{shipmentId:shipment.id,loadId:created.id,eventType:'in_transit',occurredAt:new Date(Date.UTC(2026,10,1,10,0,i)).toISOString(),location:'Timing '+i,recordedBy:a.actorId});
+  });
+  const before=await counts();
+  const statement="SELECT data FROM operations_private.resources WHERE tenant_id=$1 AND kind='tracking' AND data->>'shipmentId'=$2 ORDER BY data->>'occurredAt' DESC,id DESC LIMIT 20";
+  const explain=async options=>{
+   const result=await f.admin.query("EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) "+statement,[a.tenantId,shipment.id]);
+   return result.rows[0]['QUERY PLAN'][0];
+  };
+  const one=await explain(),two=await explain();
+  assert.ok(one.Plan); // 1
+  assert.equal(one.Plan['Node Type'],'Limit'); // 2
+  assert.ok(Number.isFinite(one['Planning Time'])); // 3
+  assert.ok(Number.isFinite(one['Execution Time'])); // 4
+  assert.ok(one['Execution Time']>=0); // 5
+  assert.ok(Number.isFinite(two['Execution Time'])); // 6
+  assert.ok(two['Execution Time']>=0); // 7
+  assert.ok(Number.isFinite(one.Plan['Actual Rows'])); // 8
+  assert.equal(one.Plan['Actual Rows'],20); // 9
+  assert.equal(two.Plan['Actual Rows'],20); // 10
+  assert.ok(Number.isFinite(one.Plan['Actual Total Time'])); // 11
+  assert.ok(Number.isFinite(two.Plan['Actual Total Time'])); // 12
+  assert.ok(Number.isFinite(one.Plan['Shared Hit Blocks'])); // 13
+  assert.ok(one.Plan['Shared Hit Blocks']>=0); // 14
+  assert.ok(Number.isFinite(one.Plan['Shared Read Blocks'])); // 15
+  assert.ok(one.Plan['Shared Read Blocks']>=0); // 16
+  const history=await store.transaction(a,tx=>tx.trackingHistory(shipment.id,{limit:20}));
+  assert.equal(history.length,20); // 17
+  assert.equal(history[0].location,'Timing 63'); // 18
+  assert.equal(history.at(-1).location,'Timing 44'); // 19
+  assert.deepEqual(await counts(),before); // 20
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
