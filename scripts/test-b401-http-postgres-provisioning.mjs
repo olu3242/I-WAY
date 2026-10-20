@@ -99,6 +99,9 @@ try{
  const success=elevatedRole;
  if((await success.json()).state!=='ACTIVE')throw Error('B401_HTTP_ACTIVATION_FAILED');
  if(await nonceStore.readNonce({invitationId,tenantId})!==null)throw Error('B413_NONCE_CUSTODY_NOT_CLEARED');
+ const durableJob=await client.query(`SELECT state,tenant_id FROM operations_onboarding.nonce_cleanup_jobs WHERE invitation_id=$1`,[invitationId]);
+ if(durableJob.rowCount!==1||durableJob.rows[0].state!=='PENDING'||durableJob.rows[0].tenant_id!==tenantId)
+  throw Error('B418_ACTIVATION_DID_NOT_COMMIT_CLEANUP_JOB');
  // Simulate a post-commit orphaned raw nonce after a custody outage,
  // then reconcile using the actual persisted ACTIVE invitation and role binding.
  await nonceStore.storeNonce({invitationId,tenantId,nonce});
