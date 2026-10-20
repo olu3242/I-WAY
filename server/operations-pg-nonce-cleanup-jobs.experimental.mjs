@@ -35,6 +35,15 @@ export function createPgNonceCleanupJobs(query){
    RETURNING j.invitation_id,j.tenant_id,j.fence_token`,[limit,ownerId,leaseSeconds]);
    return result.rows.map(row=>({invitationId:row.invitation_id,tenantId:row.tenant_id,fenceToken:Number(row.fence_token)}));
   },
+  async ownsFence({invitationId,tenantId,ownerId,fenceToken}){
+   if(!invitationId||!tenantId||typeof ownerId!=='string'||!/^[0-9a-f-]{36}$/i.test(ownerId)
+    ||!Number.isSafeInteger(fenceToken)||fenceToken<1)return false;
+   const result=await query(`SELECT 1 FROM operations_onboarding.nonce_cleanup_jobs
+    WHERE invitation_id=$1 AND tenant_id=$2 AND state='PENDING'
+    AND lease_owner=$3::uuid AND fence_token=$4::bigint AND lease_until>now()`,
+    [invitationId,tenantId,ownerId,fenceToken]);
+   return result.rowCount===1;
+  },
   async ownsLease({invitationId,tenantId,ownerId}){
    if(!invitationId||!tenantId||typeof ownerId!=='string'||!/^[0-9a-f-]{36}$/i.test(ownerId))
     return false;
