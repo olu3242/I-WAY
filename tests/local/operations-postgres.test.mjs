@@ -652,6 +652,46 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal((await projectAsyncShipmentTracking({store,scope:a,shipmentId:shipment.id,authorizeTracking:auth,limit:20})).history.length,20); // 19
   assert.deepEqual(await counts(),before); // 20
  });
+ await t.test('tracking index forced-plan verification passes twenty checkpoints',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  await store.transaction(a,async tx=>{
+   for(let i=0;i<24;i++)await tx.insert('tracking',{shipmentId:shipment.id,loadId:created.id,eventType:'in_transit',occurredAt:new Date(Date.UTC(2026,10,1,10,0,i)).toISOString(),location:'Plan '+i,recordedBy:a.actorId});
+  });
+  const before=await counts(),client=await f.admin.connect();
+  let plan;
+  try{
+   await client.query('BEGIN');
+   await client.query('SET LOCAL enable_seqscan = off');
+   const result=await client.query("EXPLAIN (FORMAT JSON) SELECT data FROM operations_private.resources WHERE tenant_id=$1 AND kind='tracking' AND data->>'shipmentId'=$2 ORDER BY data->>'occurredAt' DESC,id DESC LIMIT 20",[a.tenantId,shipment.id]);
+   plan=result.rows[0]['QUERY PLAN'][0].Plan;
+   await client.query('ROLLBACK');
+  }finally{client.release()}
+  const nodes=[],visit=node=>{nodes.push(node);for(const child of node.Plans??[])visit(child)};visit(plan);
+  assert.equal(plan['Node Type'],'Limit'); // 1
+  assert.ok(nodes.length>=2); // 2
+  assert.ok(nodes.some(x=>x['Node Type']==='Index Scan'||x['Node Type']==='Bitmap Index Scan')); // 3
+  assert.ok(nodes.some(x=>x['Index Name']==='operations_tracking_history_idx')); // 4
+  assert.ok(nodes.some(x=>String(x['Index Cond']??'').includes('tenant_id'))); // 5
+  assert.ok(nodes.some(x=>String(x['Index Cond']??'').includes('shipmentId'))); // 6
+  assert.ok(nodes.every(x=>typeof x['Node Type']==='string')); // 7
+  assert.ok(Number.isFinite(plan['Plan Rows'])); // 8
+  const fetch=(options={})=>store.transaction(a,tx=>tx.trackingHistory(shipment.id,options));
+  const p1=await fetch({limit:10});
+  assert.equal(p1.length,10); // 9
+  assert.equal(p1[0].location,'Plan 23'); // 10
+  assert.equal(p1.at(-1).location,'Plan 14'); // 11
+  const p2=await fetch({limit:10,before:{occurredAt:p1.at(-1).occurredAt,id:p1.at(-1).id}});
+  assert.equal(p2.length,10); // 12
+  assert.equal(p2[0].location,'Plan 13'); // 13
+  assert.equal(p2.at(-1).location,'Plan 4'); // 14
+  const p3=await fetch({limit:10,before:{occurredAt:p2.at(-1).occurredAt,id:p2.at(-1).id}});
+  assert.equal(p3.length,4); // 15
+  assert.equal(p3[0].location,'Plan 3'); // 16
+  assert.equal(p3.at(-1).location,'Plan 0'); // 17
+  assert.equal(new Set([...p1,...p2,...p3].map(x=>x.id)).size,24); // 18
+  assert.deepEqual(await fetch({limit:10,before:{occurredAt:p3.at(-1).occurredAt,id:p3.at(-1).id}}),[]); // 19
+  assert.deepEqual(await counts(),before); // 20
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
