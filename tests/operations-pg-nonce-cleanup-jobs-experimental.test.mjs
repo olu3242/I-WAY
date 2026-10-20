@@ -57,3 +57,17 @@ test('B425 lease renewal requires current unexpired owner',async()=>{
  assert.deepEqual(params,['invite','tenant',ownerId,30]);
  await assert.rejects(jobs.renewLease({invitationId:'invite',tenantId:'tenant',ownerId,leaseSeconds:601}),/INVALID_NONCE_LEASE_RENEWAL/);
 });
+
+test('B430 finalization is fenced, tenant-scoped and only deletes consumed hashes',async()=>{
+ let sql,params;
+ const jobs=createPgNonceCleanupJobs(async(q,p)=>{sql=q;params=p;return {rowCount:1,rows:[{}]};});
+ const ownerId='11111111-1111-4111-8111-111111111111';
+ assert.equal(await jobs.finalizeConsumedChallenges({invitationId:'invite',tenantId:'tenant',ownerId,fenceToken:4}),true);
+ assert.match(sql,/FOR UPDATE OF j/);
+ assert.match(sql,/j.fence_token=\$4::bigint/);
+ assert.match(sql,/n.consumed_at IS NOT NULL/);
+ assert.match(sql,/i.state='ACTIVE'/);
+ assert.match(sql,/state='COMPLETE'/);
+ assert.deepEqual(params,['invite','tenant',ownerId,4]);
+ await assert.rejects(jobs.finalizeConsumedChallenges({invitationId:'invite',tenantId:'tenant',ownerId,fenceToken:0}),/INVALID_NONCE_FINALIZATION/);
+});
