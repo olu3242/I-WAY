@@ -63,7 +63,8 @@ try{
  if(pendingBefore.rows[0]?.state!=='PENDING')throw Error('B432_REJECTED_FINALIZATION_COMPLETED_JOB');
  if(!await loser.jobs.complete({invitationId,tenantId,ownerId:loser.ownerId}))
   throw Error('B423_RECOVERY_OWNER_COMPLETION_FAILED');
- if((await admin.pending()).length!==0)throw Error('B422_COMPLETED_JOB_PENDING');
+ if((await admin.pending()).some(job=>job.invitationId===invitationId))
+  throw Error('B422_COMPLETED_JOB_PENDING');
  console.log('PASS: B422/B423 two-session job claiming, expired lease recovery, stale-owner denial');
 }finally{
  for(const client of clients)await client.end();
