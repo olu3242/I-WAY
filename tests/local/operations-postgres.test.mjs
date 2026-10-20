@@ -705,12 +705,15 @@ test('disposable PostgreSQL Operations certification',async t=>{
    const result=await f.admin.query("EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) "+statement,[a.tenantId,shipment.id]);
    return result.rows[0]['QUERY PLAN'][0];
   };
+  const warmups=[];
+  for(let i=0;i<3;i++)warmups.push(await explain());
   const samples=[];
-  for(let i=0;i<7;i++)samples.push(await explain());
+  for(let i=0;i<21;i++)samples.push(await explain());
   const one=samples[0],two=samples[1];
   const times=samples.map(x=>x['Execution Time']).sort((a,b)=>a-b);
   const median=times[Math.floor(times.length/2)];
-  const report={schemaVersion:1,workload:'tracking-history-indexed-64-events-limit-20',environment:'disposable-postgresql',sampleCount:samples.length,unit:'ms',executionTimeMs:{min:times[0],median,max:times.at(-1)},planningTimeMs:{median:samples.map(x=>x['Planning Time']).sort((a,b)=>a-b)[3]},rowsReturned:one.Plan['Actual Rows'],planNode:one.Plan['Node Type'],sharedHitBlocks:one.Plan['Shared Hit Blocks'],sharedReadBlocks:one.Plan['Shared Read Blocks'],productionSloCertified:false};
+  const percentile=p=>times[Math.ceil(p*times.length)-1];
+  const report={schemaVersion:2,workload:'tracking-history-indexed-64-events-limit-20',environment:'disposable-postgresql',warmupCount:warmups.length,sampleCount:samples.length,unit:'ms',executionTimeMs:{min:times[0],median,p90:percentile(.9),p95:percentile(.95),max:times.at(-1)},executionSamplesMs:samples.map(x=>x['Execution Time']),planningTimeMs:{median:samples.map(x=>x['Planning Time']).sort((a,b)=>a-b)[Math.floor(samples.length/2)]},rowsReturned:one.Plan['Actual Rows'],planNode:one.Plan['Node Type'],sharedHitBlocks:one.Plan['Shared Hit Blocks'],sharedReadBlocks:one.Plan['Shared Read Blocks'],productionSloCertified:false};
   if(process.env.IWAY_TRACKING_BASELINE_REPORT){
    const target=process.env.IWAY_TRACKING_BASELINE_REPORT;
    mkdirSync(dirname(target),{recursive:true});
