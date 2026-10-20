@@ -28,6 +28,10 @@ try{
  const recovered=await loser.jobs.claim({ownerId:loser.ownerId});
  if(recovered.length!==1||recovered[0].invitationId!==invitationId)
   throw Error('B423_EXPIRED_LEASE_NOT_RECLAIMED');
+ if(await winner.jobs.ownsLease({invitationId,tenantId,ownerId:winner.ownerId}))
+  throw Error('B424_STALE_OWNER_LEASE_VALID');
+ if(!await loser.jobs.ownsLease({invitationId,tenantId,ownerId:loser.ownerId}))
+  throw Error('B424_RECOVERY_OWNER_LEASE_INVALID');
  if(await winner.jobs.complete({invitationId,tenantId,ownerId:winner.ownerId}))
   throw Error('B423_STALE_OWNER_COMPLETION_ALLOWED');
  if(!await loser.jobs.complete({invitationId,tenantId,ownerId:loser.ownerId}))
