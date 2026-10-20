@@ -28,11 +28,10 @@ DO $$ BEGIN
  IF (SELECT count(*) FROM operations_onboarding.invitations) <> 0 THEN RAISE EXCEPTION 'cross tenant read exposed'; END IF;
  IF EXISTS (SELECT 1 FROM operations_onboarding.invitations WHERE id='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa') THEN RAISE EXCEPTION 'cross tenant id exposed'; END IF;
 END $$;
+UPDATE operations_onboarding.invitations SET state='OPENED' WHERE id='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+SET LOCAL iway.fixture_tenant = '11111111-1111-4111-8111-111111111111';
 DO $$ BEGIN
- IF (SELECT count(*) FROM (
-   UPDATE operations_onboarding.invitations SET state='OPENED'
-   WHERE id='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa' RETURNING id
- ) AS attempted) <> 0 THEN RAISE EXCEPTION 'cross tenant update succeeded'; END IF;
+ IF (SELECT state FROM operations_onboarding.invitations WHERE id='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa') <> 'CREATED' THEN RAISE EXCEPTION 'cross tenant update succeeded'; END IF;
 END $$;
 RESET ROLE;
 ROLLBACK;
