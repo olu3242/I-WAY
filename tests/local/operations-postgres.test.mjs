@@ -632,7 +632,7 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.match(idx.rows[0].indexdef,/DESC/); // 5
   assert.match(idx.rows[0].indexdef,/tracking/); // 6
   const plan=await f.admin.query("EXPLAIN (FORMAT JSON) SELECT data FROM operations_private.resources WHERE tenant_id=$1 AND kind='tracking' AND data->>'shipmentId'=$2 ORDER BY data->>'occurredAt' DESC,id DESC LIMIT 20",[a.tenantId,shipment.id]);
-  assert.equal(plan.rowCount,1); // 7
+  assert.equal(plan.rows.length,1); // 7
   const root=plan.rows[0]['QUERY PLAN'][0].Plan;
   assert.ok(root); // 8
   assert.equal(root['Node Type'],'Limit'); // 9
