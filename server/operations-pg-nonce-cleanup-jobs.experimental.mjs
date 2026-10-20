@@ -34,6 +34,14 @@ export function createPgNonceCleanupJobs(query){
    RETURNING j.invitation_id,j.tenant_id`,[limit,ownerId,leaseSeconds]);
    return result.rows.map(row=>({invitationId:row.invitation_id,tenantId:row.tenant_id}));
   },
+  async ownsLease({invitationId,tenantId,ownerId}){
+   if(!invitationId||!tenantId||typeof ownerId!=='string'||!/^[0-9a-f-]{36}$/i.test(ownerId))
+    return false;
+   const result=await query(`SELECT 1 FROM operations_onboarding.nonce_cleanup_jobs
+    WHERE invitation_id=$1 AND tenant_id=$2 AND state='PENDING'
+    AND lease_owner=$3::uuid AND lease_until>now()`,[invitationId,tenantId,ownerId]);
+   return result.rowCount===1;
+  },
   async complete({invitationId,tenantId,ownerId}){
    if(!ownerId)throw Error('NONCE_JOB_OWNER_REQUIRED');
    const result=await query(`UPDATE operations_onboarding.nonce_cleanup_jobs
