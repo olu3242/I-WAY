@@ -3,6 +3,7 @@
 // verified restricted transaction client; no privileged fallback is allowed.
 import {randomUUID} from 'node:crypto';
 const states=new Set(['CREATED','SENT','OPENED','VERIFIED','ACCEPTED','ACTIVE','EXPIRED','REVOKED','REJECTED','FAILED']);
+const allowed=Object.freeze({CREATED:['SENT','REVOKED','EXPIRED','FAILED'],SENT:['OPENED','VERIFIED','REVOKED','EXPIRED','FAILED'],OPENED:['VERIFIED','REVOKED','EXPIRED','FAILED'],VERIFIED:['ACCEPTED','REVOKED','EXPIRED','FAILED'],ACCEPTED:['ACTIVE','REVOKED','FAILED'],FAILED:['SENT','REVOKED','EXPIRED']});
 const hex64=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
 export function createPgInvitationRepository(transaction){
  if(typeof transaction!=='function')throw Error('RESTRICTED_TRANSACTION_REQUIRED');
@@ -20,7 +21,7 @@ export function createPgInvitationRepository(transaction){
    });
   },
   async recordTransition({id,tenantId,actorId,from,to}){
-   if(!states.has(from)||!states.has(to)||!id||!tenantId||!actorId)throw Error('INVALID_TRANSITION');
+   if(!states.has(from)||!states.has(to)||!allowed[from]?.includes(to)||!id||!tenantId||!actorId)throw Error('INVALID_TRANSITION');
    return transaction(async client=>{
     const r=await client.query(`UPDATE operations_onboarding.invitations SET state=$4
       WHERE id=$1 AND tenant_id=$2 AND state=$3 AND expires_at>now()
