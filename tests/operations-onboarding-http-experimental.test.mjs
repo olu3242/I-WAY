@@ -90,3 +90,20 @@ test('B413 never clears nonce after rejected provisioning',async()=>{
   assert.equal(cleared,0);
  }finally{server.close();}
 });
+
+test('B414 cleanup failure denies response after committed provisioning',async()=>{
+ let provisioned=0;
+ const server=createIsolatedOnboardingHttpServer({
+  resolveInvitationContext:async()=>({invitationId:'invite',tenantId:'tenant',actorId:'actor',role:'driver',expectedNonce:'nonce'}),
+  verifiedProvisioning:{async provision(){provisioned++;return {state:'ACTIVE',invitationId:'invite'};}},
+  clearNonce:async()=>{throw Error('NONCE_CLEANUP_UNAVAILABLE');}
+ });
+ server.listen(0,'127.0.0.1');await once(server,'listening');
+ try{
+  const response=await fetch('http://127.0.0.1:'+server.address().port+'/experimental/onboarding/provision',{
+   method:'POST',body:JSON.stringify({invitationId:'invite',token:'signed-token'})});
+  assert.equal(response.status,403);
+  assert.deepEqual(await response.json(),{error:'PROVISIONING_DENIED'});
+  assert.equal(provisioned,1);
+ }finally{server.close();}
+});
