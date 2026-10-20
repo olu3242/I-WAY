@@ -416,6 +416,38 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(idx.rowCount,1); // 19
   const snapshot=await counts();await history({limit:2});assert.deepEqual(await counts(),snapshot); // 20
  });
+ await t.test('tracking projection cursor pagination passes twenty read-only checkpoints',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const view=(options={})=>projectAsyncShipmentTracking({store,scope:a,shipmentId:shipment.id,authorizeTracking:auth,...options});
+  const empty=await view({limit:1});
+  assert.equal(empty.history.length,0); // 1
+  assert.equal(empty.latestEvent,null); // 2
+  assert.equal(empty.hasMore,false); // 3
+  assert.equal(empty.nextCursor,null); // 4
+  const dispatched=await dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}}});
+  const record=(eventType,occurredAt,location)=>recordAsyncTrackingEvent({store,scope:a,authorizeTracking:auth,command:{action:'tracking:record',resourceId:shipment.id,expectedVersion:dispatched.version,idempotencyKey:randomUUID(),payload:{eventType,occurredAt,location}}});
+  const first=await record('arrived','2026-11-01T10:00:00.000Z','Austin'),second=await record('departed','2026-11-01T11:00:00.000Z','Austin'),third=await record('in_transit','2026-11-01T12:00:00.000Z','Dallas');
+  const before=await counts(),page1=await view({limit:1});
+  assert.equal(page1.history.length,1); // 5
+  assert.equal(page1.history[0].id,third.id); // 6
+  assert.equal(page1.hasMore,true); // 7
+  assert.equal(page1.nextCursor.id,third.id); // 8
+  assert.equal(page1.latestEvent.id,third.id); // 9
+  assert.equal(page1.latestLocation,'Dallas'); // 10
+  const page2=await view({limit:1,before:page1.nextCursor});
+  assert.equal(page2.history[0].id,second.id); // 11
+  assert.equal(page2.hasMore,true); // 12
+  const page3=await view({limit:1,before:page2.nextCursor});
+  assert.equal(page3.history[0].id,first.id); // 13
+  assert.equal(page3.hasMore,false); // 14
+  assert.equal(page3.nextCursor,null); // 15
+  assert.equal(page3.latestEvent.id,third.id); // 16
+  assert.deepEqual((await view({limit:3})).history.map(x=>x.id),[first.id,second.id,third.id]); // 17
+  await assert.rejects(view({limit:0}),{code:'INVALID_PAGE'}); // 18
+  await assert.rejects(view({limit:201}),{code:'INVALID_PAGE'}); // 19
+  assert.deepEqual(await counts(),before); // 20
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
