@@ -58,3 +58,35 @@ test('B407 challenge endpoint requires bearer session and returns minimal nonce'
   assert.deepEqual(await response.json(),{nonce:'fixture-issued-nonce'});
  }finally{server.close();}
 });
+
+test('B413 clears nonce only after successful provisioning',async()=>{
+ let cleared=0;
+ const context={invitationId:'invite',tenantId:'tenant',actorId:'actor',role:'driver',expectedNonce:'nonce'};
+ const server=createIsolatedOnboardingHttpServer({
+  resolveInvitationContext:async()=>context,
+  verifiedProvisioning:{async provision(){return {state:'ACTIVE',invitationId:'invite'};}},
+  clearNonce:async()=>{cleared++;}
+ });
+ server.listen(0,'127.0.0.1');await once(server,'listening');
+ try{
+  const response=await fetch('http://127.0.0.1:'+server.address().port+'/experimental/onboarding/provision',{
+   method:'POST',body:JSON.stringify({invitationId:'invite',token:'signed-token'})});
+  assert.equal(response.status,200);
+  assert.equal(cleared,1);
+ }finally{server.close();}
+});
+test('B413 never clears nonce after rejected provisioning',async()=>{
+ let cleared=0;
+ const server=createIsolatedOnboardingHttpServer({
+  resolveInvitationContext:async()=>({invitationId:'invite',tenantId:'tenant',actorId:'actor',role:'driver',expectedNonce:'nonce'}),
+  verifiedProvisioning:{async provision(){throw Error('DENIED');}},
+  clearNonce:async()=>{cleared++;}
+ });
+ server.listen(0,'127.0.0.1');await once(server,'listening');
+ try{
+  const response=await fetch('http://127.0.0.1:'+server.address().port+'/experimental/onboarding/provision',{
+   method:'POST',body:JSON.stringify({invitationId:'invite',token:'invalid'})});
+  assert.equal(response.status,403);
+  assert.equal(cleared,0);
+ }finally{server.close();}
+});
