@@ -57,7 +57,9 @@ jobs:
       - name: Run B394 trusted identity boundary tests
         run: node --test tests/operations-pg-identity-boundary-experimental.test.mjs
       - name: Run B399 real JavaScript PostgreSQL provisioning integration
-        run: node scripts/test-b399-pg-js-provisioning.mjs
+        run: |
+          npm ci --ignore-scripts
+          node scripts/test-b399-pg-js-provisioning.mjs
       - name: Run OIDC full PostgreSQL provisioning rollback regression
         run: bash scripts/test-oidc-postgres-full-rollback.sh
       - name: Run OIDC full PostgreSQL provisioning transaction regression
