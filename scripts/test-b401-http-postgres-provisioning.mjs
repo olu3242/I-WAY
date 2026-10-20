@@ -130,6 +130,29 @@ try{
   throw Error('B420_NONCE_NOT_CLEARED');
  const finished=await client.query('SELECT state FROM operations_onboarding.nonce_cleanup_jobs WHERE invitation_id=$1',[invitationId]);
  if(finished.rows[0]?.state!=='COMPLETE')throw Error('B420_JOB_NOT_COMPLETED');
+ // B430: use a second durable cleanup job for the already ACTIVE invitation
+ // and assert atomic consumed-challenge deletion plus completion.
+ await client.query(`UPDATE operations_onboarding.nonce_cleanup_jobs
+  SET state='PENDING',lease_owner=NULL,lease_until=NULL,completed_at=NULL
+  WHERE invitation_id=$1`,[invitationId]);
+ const consumed=await client.query(`SELECT count(*)::int AS n
+  FROM operations_onboarding.identity_nonce_challenges
+  WHERE invitation_id=$1 AND consumed_at IS NOT NULL`,[invitationId]);
+ if(consumed.rows[0].n<1)throw Error('B430_MISSING_CONSUMED_CHALLENGE_FIXTURE');
+ const b430Owner=randomUUID();
+ const b430Claim=await jobs.claim({ownerId:b430Owner,limit:10});
+ if(b430Claim.length!==1)throw Error('B430_CLAIM_FAILED');
+ if(await jobs.finalizeConsumedChallenges({invitationId,tenantId,ownerId:randomUUID(),fenceToken:b430Claim[0].fenceToken}))
+  throw Error('B430_NON_OWNER_FINALIZED');
+ if(await jobs.finalizeConsumedChallenges({invitationId,tenantId,ownerId:b430Owner,fenceToken:b430Claim[0].fenceToken-1}))
+  throw Error('B430_STALE_FENCE_FINALIZED');
+ if(!await jobs.finalizeConsumedChallenges({invitationId,tenantId,ownerId:b430Owner,fenceToken:b430Claim[0].fenceToken}))
+  throw Error('B430_ATOMIC_FINALIZATION_FAILED');
+ const b430State=await client.query(`SELECT
+  (SELECT count(*)::int FROM operations_onboarding.identity_nonce_challenges WHERE invitation_id=$1 AND consumed_at IS NOT NULL) AS remaining,
+  (SELECT state FROM operations_onboarding.nonce_cleanup_jobs WHERE invitation_id=$1) AS job_state`,[invitationId]);
+ if(b430State.rows[0].remaining!==0||b430State.rows[0].job_state!=='COMPLETE')
+  throw Error('B430_ATOMIC_CLEANUP_INVARIANT_FAILED');
  const rerun=await createNonceCleanupWorker({jobs,reconciler}).runOnce({limit:10});
  if(rerun.scanned!==0)throw Error('B420_COMPLETED_JOB_REPROCESSED');
  const postCommitReplay=await post(body);
