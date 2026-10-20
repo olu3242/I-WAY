@@ -64,8 +64,8 @@ try{
  const custody=createAuthenticatedChallengeCustody({
   issueNonce:async()=>nonce,
   resolveInvitation:async requested=>{
-   const r=await client.query('SELECT id,tenant_id,issuer,subject_hash,state FROM operations_onboarding.invitations WHERE id=$1',[requested]);
-   const row=r.rows[0];return row?{id:row.id,tenantId:row.tenant_id,issuer:row.issuer,subjectHash:row.subject_hash,state:row.state}:null;
+   const r=await client.query('SELECT id,tenant_id,issuer,subject_hash,state,expires_at FROM operations_onboarding.invitations WHERE id=$1',[requested]);
+   const row=r.rows[0];return row?{id:row.id,tenantId:row.tenant_id,issuer:row.issuer,subjectHash:row.subject_hash,state:row.state,expiresAt:row.expires_at}:null;
   },
   storeNonce:async()=>{},
   readNonce:async()=>nonce,
