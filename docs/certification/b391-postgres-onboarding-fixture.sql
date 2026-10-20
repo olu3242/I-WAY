@@ -61,6 +61,17 @@ CREATE TABLE operations_onboarding.identity_proof_uses (
 );
 ALTER TABLE operations_onboarding.identity_proof_uses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE operations_onboarding.identity_proof_uses FORCE ROW LEVEL SECURITY;
+-- Experimental server-issued nonce challenge, consumed once per invitation.
+CREATE TABLE operations_onboarding.identity_nonce_challenges (
+ nonce_hash text PRIMARY KEY CHECK(length(nonce_hash)=64),
+ invitation_id uuid NOT NULL REFERENCES operations_onboarding.invitations(id),
+ tenant_id uuid NOT NULL,
+ expires_at timestamptz NOT NULL,
+ consumed_at timestamptz,
+ created_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE operations_onboarding.identity_nonce_challenges ENABLE ROW LEVEL SECURITY;
+ALTER TABLE operations_onboarding.identity_nonce_challenges FORCE ROW LEVEL SECURITY;
 ALTER TABLE operations_onboarding.provisioned_accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE operations_onboarding.provisioned_accounts FORCE ROW LEVEL SECURITY;
 ALTER TABLE operations_onboarding.tenant_role_bindings ENABLE ROW LEVEL SECURITY;
