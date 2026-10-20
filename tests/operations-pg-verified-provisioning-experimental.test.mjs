@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {createVerifiedProvisioningFlow} from '../server/operations-pg-verified-provisioning.experimental.mjs';
 const issuer='https://identity.fixture.invalid';
 const claims={issuer,subject:'subject-fixture',audience:'iway-test',verified:true,mfaVerified:true};
-const request={invitationId:'invite',tenantId:'tenant',actorId:'actor',role:'driver',token:'opaque-test-token'};
+const request={invitationId:'invite',tenantId:'tenant',actorId:'actor',role:'driver',token:'opaque-test-token',expectedNonce:'trusted-fixture-nonce'};
 function setup(verifier){
  const calls=[];
  const provisioner={async provision(input){calls.push(input);return {state:'ACTIVE'}}};
@@ -34,4 +34,17 @@ test('missing token rejected before verification',async()=>{
  const {flow,calls}=setup(async()=>{called=true;return claims});
  await assert.rejects(flow.provision({...request,token:''}),/IDENTITY_PROOF_REQUIRED/);
  assert.equal(called,false);assert.equal(calls.length,0);
+});
+
+test('missing trusted nonce rejects provisioning',async()=>{
+ let invoked=false;
+ const {flow,calls}=setup(async()=>{invoked=true;return claims});
+ await assert.rejects(flow.provision({...request,expectedNonce:''}),/IDENTITY_PROOF_REQUIRED/);
+ assert.equal(invoked,false);assert.equal(calls.length,0);
+});
+test('passes expected nonce to trusted verifier',async()=>{
+ let received;
+ const {flow}=setup(async(_token,options)=>{received=options.nonce;return claims});
+ await flow.provision(request);
+ assert.equal(received,'trusted-fixture-nonce');
 });
