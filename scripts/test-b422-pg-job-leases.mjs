@@ -53,6 +53,11 @@ try{
   throw Error('B425_STALE_OWNER_RENEWED_LEASE');
  if(!await loser.jobs.renewLease({invitationId,tenantId,ownerId:loser.ownerId,leaseSeconds:30}))
   throw Error('B425_VALID_OWNER_RENEWAL_FAILED');
+ // A VERIFIED (not ACTIVE) invitation cannot be atomically finalized.
+ if(await loser.jobs.finalizeConsumedChallenges({invitationId,tenantId,ownerId:loser.ownerId,fenceToken:recovered[0].fenceToken}))
+  throw Error('B432_UNACTIVATED_INVITATION_FINALIZED');
+ const pendingBefore=await clients[0].query('SELECT state FROM operations_onboarding.nonce_cleanup_jobs WHERE invitation_id=$1',[invitationId]);
+ if(pendingBefore.rows[0]?.state!=='PENDING')throw Error('B432_REJECTED_FINALIZATION_COMPLETED_JOB');
  if(!await loser.jobs.complete({invitationId,tenantId,ownerId:loser.ownerId}))
   throw Error('B423_RECOVERY_OWNER_COMPLETION_FAILED');
  if((await admin.pending()).length!==0)throw Error('B422_COMPLETED_JOB_PENDING');
