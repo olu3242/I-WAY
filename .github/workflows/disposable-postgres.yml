@@ -28,4 +28,13 @@ jobs:
           IWAY_OPERATIONS_LOCAL_OPT_IN: '1'
           IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
           IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+          IWAY_TRACKING_BASELINE_REPORT: artifacts/tracking-baseline.json
         run: node scripts/certify-postgres.mjs local --operations-isolated
+      - name: Upload tracking performance baseline
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tracking-postgres-baseline
+          path: artifacts/tracking-baseline.json
+          if-no-files-found: warn
+          retention-days: 14

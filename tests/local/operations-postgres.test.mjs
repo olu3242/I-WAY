@@ -2,6 +2,8 @@ import {applyOperationsMigrations,operationsMigrationFiles} from '../../scripts/
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {dirname} from 'node:path';
 import {Pool} from 'pg';
 import {isolatedPostgres} from '../../scripts/lib/isolated-postgres.mjs';
 import {AsyncOperationsPgStore,buildLocalOperationsPgConfig} from '../../server/operations-postgres.mjs';
@@ -703,7 +705,18 @@ test('disposable PostgreSQL Operations certification',async t=>{
    const result=await f.admin.query("EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) "+statement,[a.tenantId,shipment.id]);
    return result.rows[0]['QUERY PLAN'][0];
   };
-  const one=await explain(),two=await explain();
+  const samples=[];
+  for(let i=0;i<7;i++)samples.push(await explain());
+  const one=samples[0],two=samples[1];
+  const times=samples.map(x=>x['Execution Time']).sort((a,b)=>a-b);
+  const median=times[Math.floor(times.length/2)];
+  const report={schemaVersion:1,workload:'tracking-history-indexed-64-events-limit-20',environment:'disposable-postgresql',sampleCount:samples.length,unit:'ms',executionTimeMs:{min:times[0],median,max:times.at(-1)},planningTimeMs:{median:samples.map(x=>x['Planning Time']).sort((a,b)=>a-b)[3]},rowsReturned:one.Plan['Actual Rows'],planNode:one.Plan['Node Type'],sharedHitBlocks:one.Plan['Shared Hit Blocks'],sharedReadBlocks:one.Plan['Shared Read Blocks'],productionSloCertified:false};
+  if(process.env.IWAY_TRACKING_BASELINE_REPORT){
+   const target=process.env.IWAY_TRACKING_BASELINE_REPORT;
+   mkdirSync(dirname(target),{recursive:true});
+   writeFileSync(target,JSON.stringify(report,null,2)+'\\n');
+  }
+  console.log('TRACKING_BASELINE '+JSON.stringify(report));
   assert.ok(one.Plan); // 1
   assert.equal(one.Plan['Node Type'],'Limit'); // 2
   assert.ok(Number.isFinite(one['Planning Time'])); // 3
