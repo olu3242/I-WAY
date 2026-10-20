@@ -35,6 +35,10 @@ try{
  let rejected=false;
  try{await repo.provision(request);}catch{rejected=true;}
  if(!rejected)throw Error('B399_REPLAY_ALLOWED');
+ const nonceRows=await client.query('SELECT count(*)::int AS n FROM operations_onboarding.identity_nonce_challenges WHERE nonce_hash=$1 AND consumed_at IS NOT NULL',[nonceHash]);
+ if(nonceRows.rows[0].n!==1)throw Error('B399_NONCE_NOT_CONSUMED');
+ const events=await client.query('SELECT count(*)::int AS n FROM operations_onboarding.invitation_events WHERE invitation_id=$1 AND event_type=$2',[id,'ACTIVE']);
+ if(events.rows[0].n!==1)throw Error('B399_AUDIT_MISSING');
  const proofs=await client.query('SELECT count(*)::int AS n FROM operations_onboarding.identity_proof_uses WHERE proof_hash=$1',[proof]);
  if(proofs.rows[0].n!==1)throw Error('B399_REPLAY_LEDGER_INVALID');
  console.log('PASS: real JS PostgreSQL provisioning, binding, activation, and replay rejection');
