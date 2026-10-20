@@ -49,3 +49,15 @@ test('B425 rejected renewal blocks nonce cleanup',async()=>{
  assert.deepEqual(await worker.runOnce(),{scanned:1,completed:0,skipped:1,failed:0});
  assert.equal(invoked,0);
 });
+
+test('B427 forwards database fence generation and owner to reconciler',async()=>{
+ let received;
+ const worker=createNonceCleanupWorker({
+  jobs:{claim:async()=>[{invitationId:'invite',tenantId:'tenant',fenceToken:7}],
+   ownsLease:async()=>true,renewLease:async()=>true,complete:async()=>true},
+  reconciler:{reconcile:async scope=>{received=scope;return {reconciled:true};}}
+ });
+ const ownerId='11111111-1111-4111-8111-111111111111';
+ assert.equal((await worker.runOnce({ownerId})).completed,1);
+ assert.deepEqual(received,{invitationId:'invite',tenantId:'tenant',fenceToken:7,ownerId});
+});
