@@ -27,7 +27,7 @@ async function sample(base,path,headers,requests,concurrency){
 test('R5 bounded authenticated API load evidence is reproducible and fail-closed',async t=>{
  assert.equal(process.env.IWAY_R5_LOCAL_LOAD_OPT_IN,'1','R5 load requires explicit local opt-in');
  const {base,cookie}=await start(t),headers={Cookie:cookie};
- const scenarios=[{path:'/api/ops/state',concurrency:1},{path:'/api/ops/state',concurrency:4},{path:'/api/ops/state',concurrency:8},{path:'/api/ops/health',concurrency:1}];
+ const scenarios=[{path:'/api/ops/state',concurrency:1},{path:'/api/ops/state',concurrency:4},{path:'/api/ops/state',concurrency:8},{path:'/api/ops/state',concurrency:16}];
  const results=[];
  for(const scenario of scenarios){
   for(let i=0;i<5;i++)await fetch(base+scenario.path,{headers});
