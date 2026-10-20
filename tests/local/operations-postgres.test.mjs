@@ -814,7 +814,7 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(result.shipmentId,shipmentId);
   assert.equal(result.latestLocation,'Governed HTTP');
   assert.equal(result.history.length,1);
-  assert.equal((await fetch(url,{headers:{Cookie:otherCookie}})).status,403);
+  assert.equal((await fetch(url,{headers:{Cookie:otherCookie}})).status,404); // Tenant-inaccessible shipment is intentionally indistinguishable from a missing shipment.
   assert.equal((await fetch(url)).status,401);
   assert.equal((await fetch(url+'?limit=0',{headers:{Cookie:ownCookie}})).status,400);
   const mismatch=Buffer.from(JSON.stringify({shipmentId:randomUUID(),occurredAt:'2026-11-01T12:00:00.000Z',id:randomUUID()})).toString('base64url');
