@@ -52,5 +52,7 @@ jobs:
         run: psql -v ON_ERROR_STOP=1 -f docs/certification/b391-tenant-rls-regression.sql
       - name: Run eight-session PostgreSQL transition race
         run: bash scripts/test-b392-postgres-concurrency.sh
+      - name: Run B393 concurrent acceptance and rollback regression
+        run: bash scripts/test-b393-postgres-acceptance.sh
       - name: Run experimental repository tests
         run: node --test tests/operations-pg-invitations-experimental.test.mjs
