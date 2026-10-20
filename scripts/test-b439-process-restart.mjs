@@ -64,5 +64,8 @@ try{
   throw Error('B439_STALE_PROCESS_FINALIZED');
  if(!await jobs.ownsFence({invitationId,tenantId,ownerId:replacementOwner,fenceToken:recovered[0].fenceToken}))
   throw Error('B439_NEW_PROCESS_FENCE_NOT_OWNED');
+ // Avoid leaving a pending job that can affect later fixture suites.
+ if(!await jobs.complete({invitationId,tenantId,ownerId:replacementOwner}))
+  throw Error('B439_FIXTURE_JOB_CLEANUP_FAILED');
  console.log('PASS: B439 real process termination, persistent lease and fenced takeover');
 }finally{await client.end();}
