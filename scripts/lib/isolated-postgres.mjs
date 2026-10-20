@@ -71,11 +71,21 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   // Available only on a fresh, explicitly opted-in disposable cluster.
   async restartForRecoveryTest(){
    if(!started)throw Error('DISPOSABLE_CLUSTER_NOT_RUNNING');
-   run(join(bin,'pg_ctl'),['-D',data,'-m','immediate','-w','stop']);started=false;
+   // An immediate stop terminates idle node-postgres clients, which emit
+   // 'error' on their Pool. Capture only during the controlled restart.
+   const observed=[];
+   const onError=error=>observed.push(error);
+   const active=[admin,...pools].filter(Boolean);
+   for(const p of active)p.on('error',onError);
    try{
-    await new Promise(resolve=>setTimeout(resolve,200));
-   }finally{
+    run(join(bin,'pg_ctl'),['-D',data,'-m','immediate','-w','stop']);started=false;
+    await new Promise(resolve=>setTimeout(resolve,250));
     run(join(bin,'pg_ctl'),['-D',data,'-l',join(root,'server.log'),'-w','start']);started=true;
+    await new Promise(resolve=>setTimeout(resolve,250));
+    if(observed.some(error=>!/terminat|connect|ECONNRESET|57P01/i.test(String(error?.message??error))))throw Error('UNEXPECTED_POSTGRES_POOL_ERROR_DURING_RESTART');
+    return {terminatedPoolConnections:observed.length};
+   }finally{
+    for(const p of active)p.off('error',onError);
    }
   },
   createPool(options={}){const p=new Pool({...restricted,...options});pools.push(p);return p},cleanup};
