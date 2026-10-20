@@ -20,6 +20,21 @@ export function createPgInvitationRepository(transaction){
     return r.rows[0];
    });
   },
+  // Restricted acceptance: proof must be verified by an independent trusted
+  // identity boundary before calling. This method does not create a user,
+  // binding, session, or grant any access.
+  async acceptVerified({id,tenantId,actorId,verifiedSubjectHash,verifiedIssuer}){
+   if(!id||!tenantId||!actorId||!hex64(verifiedSubjectHash)||!verifiedIssuer)throw Error('VERIFIED_IDENTITY_REQUIRED');
+   return transaction(async client=>{
+    const r=await client.query(`UPDATE operations_onboarding.invitations
+      SET state='ACCEPTED' WHERE id=$1 AND tenant_id=$2 AND state='VERIFIED'
+      AND subject_hash=$3 AND issuer=$4 AND expires_at>now()
+      RETURNING id,state`,[id,tenantId,verifiedSubjectHash,verifiedIssuer]);
+    if(r.rowCount!==1)throw Error('ACCEPTANCE_REJECTED');
+    await client.query('INSERT INTO operations_onboarding.invitation_events(invitation_id,actor_id,event_type) VALUES($1,$2,$3)',[id,actorId,'ACCEPTED']);
+    return r.rows[0];
+   });
+  },
   async recordTransition({id,tenantId,actorId,from,to}){
    if(!states.has(from)||!states.has(to)||!allowed[from]?.includes(to)||!id||!tenantId||!actorId)throw Error('INVALID_TRANSITION');
    return transaction(async client=>{
@@ -33,6 +48,6 @@ export function createPgInvitationRepository(transaction){
   }
  });
 }
-// Activation and recipient-proof acceptance are intentionally NOT exposed.
+// Activation and proof verification are intentionally NOT exposed.
 // They require approved identity verification, user provisioning, and
 // atomic account/binding/session writes within the same restricted transaction.
