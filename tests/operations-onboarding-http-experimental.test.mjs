@@ -38,3 +38,23 @@ test('HTTP boundary rejects absent trusted invitation context',async()=>{
   assert.equal(response.status,403);assert.equal(called,false);
  }finally{server.close();}
 });
+
+test('B407 challenge endpoint requires bearer session and returns minimal nonce',async()=>{
+ let issued=0;
+ const server=createIsolatedOnboardingHttpServer({
+  resolveInvitationContext:async()=>null,
+  verifiedProvisioning:{async provision(){throw Error('unexpected');}},
+  challengeCustody:{async issue({sessionToken,invitationId}){issued++;if(sessionToken!=='valid'||invitationId!=='invite')throw Error('DENIED');return {nonce:'fixture-issued-nonce'};}}
+ });
+ server.listen(0,'127.0.0.1');await once(server,'listening');
+ try{
+  const url='http://127.0.0.1:'+server.address().port+'/experimental/onboarding/challenge';
+  const post=(authorization)=>fetch(url,{method:'POST',headers:{'content-type':'application/json',...(authorization?{authorization}:{})},body:JSON.stringify({invitationId:'invite'})});
+  assert.equal((await post()).status,403);
+  assert.equal(issued,0);
+  assert.equal((await post('Bearer invalid')).status,403);
+  const response=await post('Bearer valid');
+  assert.equal(response.status,200);
+  assert.deepEqual(await response.json(),{nonce:'fixture-issued-nonce'});
+ }finally{server.close();}
+});
