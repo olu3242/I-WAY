@@ -618,6 +618,40 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.deepEqual(all.map(x=>Number(x.location.slice(6))),Array.from({length:total},(_,i)=>i).reverse().reduce((groups,n,i)=>{groups[Math.floor(i/200)]??=[];groups[Math.floor(i/200)].unshift(n);return groups},[]).flat()); // 19
   assert.deepEqual(await counts(),before); // 20
  });
+ await t.test('tracking history index plan passes twenty database checkpoints',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  await store.transaction(a,async tx=>{
+   for(let i=0;i<30;i++)await tx.insert('tracking',{shipmentId:shipment.id,loadId:created.id,eventType:'in_transit',occurredAt:new Date(Date.UTC(2026,10,1,10,0,i)).toISOString(),location:'Index '+i,recordedBy:a.actorId});
+  });
+  const before=await counts(),idx=await f.admin.query("SELECT indexname,indexdef FROM pg_indexes WHERE schemaname='operations_private' AND indexname='operations_tracking_history_idx'");
+  assert.equal(idx.rowCount,1); // 1
+  assert.match(idx.rows[0].indexdef,/tenant_id/); // 2
+  assert.match(idx.rows[0].indexdef,/shipmentId/); // 3
+  assert.match(idx.rows[0].indexdef,/occurredAt/); // 4
+  assert.match(idx.rows[0].indexdef,/DESC/); // 5
+  assert.match(idx.rows[0].indexdef,/tracking/); // 6
+  const plan=await f.admin.query("EXPLAIN (FORMAT JSON) SELECT data FROM operations_private.resources WHERE tenant_id=$1 AND kind='tracking' AND data->>'shipmentId'=$2 ORDER BY data->>'occurredAt' DESC,id DESC LIMIT 20",[a.tenantId,shipment.id]);
+  assert.equal(plan.rowCount,1); // 7
+  const root=plan.rows[0]['QUERY PLAN'][0].Plan;
+  assert.ok(root); // 8
+  assert.equal(root['Node Type'],'Limit'); // 9
+  assert.ok(Number.isFinite(root['Plan Rows'])); // 10
+  const nodes=JSON.stringify(root);
+  assert.match(nodes,/operations_private|resources|tracking_history_idx/); // 11
+  const query=(options={})=>store.transaction(a,tx=>tx.trackingHistory(shipment.id,options));
+  const page=await query({limit:20});
+  assert.equal(page.length,20); // 12
+  assert.equal(page[0].location,'Index 29'); // 13
+  assert.equal(page.at(-1).location,'Index 10'); // 14
+  const older=await query({limit:20,before:{occurredAt:page.at(-1).occurredAt,id:page.at(-1).id}});
+  assert.equal(older.length,10); // 15
+  assert.equal(older[0].location,'Index 9'); // 16
+  assert.equal(older.at(-1).location,'Index 0'); // 17
+  assert.equal(new Set([...page,...older].map(x=>x.id)).size,30); // 18
+  assert.equal((await projectAsyncShipmentTracking({store,scope:a,shipmentId:shipment.id,authorizeTracking:auth,limit:20})).history.length,20); // 19
+  assert.deepEqual(await counts(),before); // 20
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
