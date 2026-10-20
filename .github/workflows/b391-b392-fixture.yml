@@ -60,6 +60,8 @@ jobs:
         run: |
           npm ci --ignore-scripts
           node scripts/test-b401-http-postgres-provisioning.mjs
+      - name: Run B436 PostgreSQL durable nonce custody tests
+        run: node --test tests/operations-pg-nonce-custody-experimental.test.mjs
       - name: Run B435 PostgreSQL-only recovery reconciler tests
         run: node --test tests/operations-pg-only-nonce-reconciler-experimental.test.mjs
       - name: Run B434 hosted release evidence gate tests
