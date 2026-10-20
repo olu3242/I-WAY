@@ -1,7 +1,8 @@
 // B401 isolated HTTP -> verified proof -> PostgreSQL provisioning.
 // Test-only fixture: no live identity provider, no production HTTP wiring.
 import {Client} from 'pg';
-import {createHash} from 'node:crypto';
+import {createHash,generateKeyPairSync,sign} from 'node:crypto';
+import {createHostedOidcVerifier} from '../server/operations-hosted-oidc.experimental.mjs';
 import {once} from 'node:events';
 import {createPgNonceChallenges} from '../server/operations-pg-nonce-challenges.experimental.mjs';
 import {createPgProvisioner} from '../server/operations-pg-provisioning.experimental.mjs';
@@ -12,7 +13,13 @@ const invitationId='a1010101-0101-4101-8101-010101010101';
 const tenantId='a2020202-0202-4202-8202-020202020202';
 const actorId='a3030303-0303-4303-8303-030303030303';
 const issuer='https://identity.fixture.invalid',subject='b401-subject';
-const nonce='b401-server-challenge',token='b401-test-opaque-token';
+const nonce='b401-server-challenge';
+const {privateKey,publicKey}=generateKeyPairSync('rsa',{modulusLength:2048});
+const jwk={...publicKey.export({format:'jwk'}),kid:'b401-test-key',alg:'RS256',use:'sig'};
+const now=Math.floor(Date.now()/1000);
+const header=Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT',kid:jwk.kid})).toString('base64url');
+const payload=Buffer.from(JSON.stringify({iss:issuer,aud:'iway-fixture',sub:subject,iat:now-10,exp:now+300,nonce,amr:['mfa']})).toString('base64url');
+const token=header+'.'+payload+'.'+sign('RSA-SHA256',Buffer.from(header+'.'+payload),privateKey).toString('base64url');
 const client=new Client();
 await client.connect();
 const transaction=async fn=>{
@@ -33,10 +40,7 @@ try{
  const provisioner=createPgProvisioner(transaction,{consumeNonce:nonceRepo.consume});
  const verifiedProvisioning=createVerifiedProvisioningFlow({
   provisioner,expectedAudience:'iway-fixture',allowedIssuers:new Set([issuer]),
-  verifyIdentity:async(value,{nonce:expectedNonce}={})=>{
-   if(value!==token||expectedNonce!==nonce)throw Error('INVALID_FIXTURE_PROOF');
-   return {verified:true,mfaVerified:true,issuer,subject,audience:'iway-fixture'};
-  }
+  verifyIdentity:createHostedOidcVerifier({issuer,audience:'iway-fixture',jwks:{keys:[jwk]},enabled:true})
  });
  server=createIsolatedOnboardingHttpServer({verifiedProvisioning});
  server.listen(0,'127.0.0.1');await once(server,'listening');
