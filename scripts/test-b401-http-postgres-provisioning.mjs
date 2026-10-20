@@ -130,11 +130,15 @@ try{
   throw Error('B420_NONCE_NOT_CLEARED');
  const finished=await client.query('SELECT state FROM operations_onboarding.nonce_cleanup_jobs WHERE invitation_id=$1',[invitationId]);
  if(finished.rows[0]?.state!=='COMPLETE')throw Error('B420_JOB_NOT_COMPLETED');
- // B430: use a second durable cleanup job for the already ACTIVE invitation
- // and assert atomic consumed-challenge deletion plus completion.
+ // B430: create a separate consumed challenge fixture after the worker's
+ // first atomic cleanup, then validate fenced finalization independently.
  await client.query(`UPDATE operations_onboarding.nonce_cleanup_jobs
   SET state='PENDING',lease_owner=NULL,lease_until=NULL,completed_at=NULL
   WHERE invitation_id=$1`,[invitationId]);
+ await client.query(`INSERT INTO operations_onboarding.identity_nonce_challenges
+  (nonce_hash,invitation_id,tenant_id,expires_at,consumed_at)
+  VALUES($1,$2,$3,now()-interval '1 minute',now()-interval '1 second')`,
+  [createHash('sha256').update('b430-consumed-'+invitationId).digest('hex'),invitationId,tenantId]);
  const consumed=await client.query(`SELECT count(*)::int AS n
   FROM operations_onboarding.identity_nonce_challenges
   WHERE invitation_id=$1 AND consumed_at IS NOT NULL`,[invitationId]);
