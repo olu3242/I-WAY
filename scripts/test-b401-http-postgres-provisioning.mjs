@@ -15,6 +15,9 @@ import {createNonceCleanupReconciler} from '../server/operations-nonce-cleanup-r
 import {createPgActivationLookup} from '../server/operations-pg-activation-lookup.experimental.mjs';
 import {createPgNonceCleanupJobs} from '../server/operations-pg-nonce-cleanup-jobs.experimental.mjs';
 import {createNonceCleanupWorker} from '../server/operations-nonce-cleanup-worker.experimental.mjs';
+import {createCertifiedNonceCleanupWorker} from '../server/operations-certified-nonce-cleanup-worker.experimental.mjs';
+import {createPostgresOnlyNonceReconciler} from '../server/operations-pg-only-nonce-reconciler.experimental.mjs';
+import {createPgNonceCustody} from '../server/operations-pg-nonce-custody.experimental.mjs';
 import {createTrustedNonceResolver} from '../server/operations-pg-trusted-nonce.experimental.mjs';
 const digest=x=>createHash('sha256').update(x).digest('hex');
 const invitationId='a1010101-0101-4101-8101-010101010101';
@@ -143,13 +146,23 @@ try{
   FROM operations_onboarding.identity_nonce_challenges
   WHERE invitation_id=$1 AND consumed_at IS NOT NULL`,[invitationId]);
  if(consumed.rows[0].n<1)throw Error('B430_MISSING_CONSUMED_CHALLENGE_FIXTURE');
+ const custody=createPgNonceCustody((sql,params)=>client.query(sql,params));
+ if(await custody.consumedCount({invitationId,tenantId})!==1)throw Error('B437_DURABLE_CUSTODY_MISSING_CONSUMED_NONCE');
  const b430Owner=randomUUID();
  const b430Claim=await jobs.claim({ownerId:b430Owner,limit:10});
  if(b430Claim.length!==1)throw Error('B430_CLAIM_FAILED');
+ const b437Reconciler=createPostgresOnlyNonceReconciler({activationLookup:createPgActivationLookup((sql,params)=>client.query(sql,params))});
+ const b437Worker=createCertifiedNonceCleanupWorker({jobs,reconciler:b437Reconciler});
  if(await jobs.finalizeConsumedChallenges({invitationId,tenantId,ownerId:randomUUID(),fenceToken:b430Claim[0].fenceToken}))
   throw Error('B430_NON_OWNER_FINALIZED');
  if(await jobs.finalizeConsumedChallenges({invitationId,tenantId,ownerId:b430Owner,fenceToken:b430Claim[0].fenceToken-1}))
   throw Error('B430_STALE_FENCE_FINALIZED');
+ const b437Run=await b437Worker.runOnce({limit:10,ownerId:b430Owner});
+ // Already leased jobs cannot be re-claimed until expiry. Finalize with the
+ // existing owner and fence after verifying the reconciler readiness.
+ if(b437Run.scanned!==0)throw Error('B437_ALREADY_LEASED_JOB_RECLAIMED');
+ if(!(await b437Reconciler.reconcile({invitationId,tenantId})).reconciled)
+  throw Error('B437_ACTIVATION_NOT_ELIGIBLE');
  if(!await jobs.finalizeConsumedChallenges({invitationId,tenantId,ownerId:b430Owner,fenceToken:b430Claim[0].fenceToken}))
   throw Error('B430_ATOMIC_FINALIZATION_FAILED');
  const b430State=await client.query(`SELECT
