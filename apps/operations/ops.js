@@ -25,11 +25,7 @@ async function command(action,record,payload={}){
 }
 function loadTable(loads=state.loads){
  if(!loads.length)return '<p class="empty">No loads here yet. Your next move starts with a load.</p>';
-<<<<<<< HEAD
  return '<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Load</th><th>Route</th><th>Status</th><th>Pickup</th><th></th></tr></thead><tbody>'+loads.map(load=>'<tr><td><strong>'+esc(load.reference)+'</strong><br><span class="muted">'+esc(load.commodity)+'</span></td><td>'+esc(load.stops[0].location)+' → '+esc(load.stops.at(-1).location)+'</td><td>'+chip(load.lifecycleState??load.status)+'</td><td>'+esc(date(load.stops[0].at))+'</td><td>'+button('Open','open',load.id)+'</td></tr>').join('')+'</tbody></table></div>';
-=======
- return '<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Load</th><th>Route</th><th>Status</th><th>Pickup</th><th></th></tr></thead><tbody>'+loads.map(load=>'<tr><td><strong>'+esc(load.reference)+'</strong><br><span class="muted">'+esc(load.commodity)+'</span></td><td>'+esc(load.stops[0].location)+' → '+esc(load.stops.at(-1).location)+'</td><td>'+chip(load.status)+'</td><td>'+esc(date(load.stops[0].at))+'</td><td>'+button('Open','open',load.id)+'</td></tr>').join('')+'</tbody></table></div>';
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
 }
 function overview(){
  const active=state.loads.filter(l=>!['delivered','void'].includes(l.status));
@@ -51,12 +47,9 @@ function loadDetail(){
  const load=state.loads.find(l=>l.id===selected);if(!load){selected=null;return overview();}
  const people=state.drivers.find(d=>d.id===load.driverId),vehicle=state.vehicles.find(v=>v.id===load.vehicleId);
  let actions='';
-<<<<<<< HEAD
  if(can('load:dispatch')&&load.status==='validated'&&!load.readyAt)actions+=button('Mark ready','load:ready',load.id);
  if(can('load:dispatch')&&['assigned','accepted'].includes(load.status))actions+=button('Cancel assignment','load:unassign',load.id);
  if(can('load:dispatch')&&load.status==='delivered'&&!load.closedAt)actions+=button('Close delivery','load:close',load.id);
-=======
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  if(can('load:validate')&&load.status==='draft')actions+=button('Validate load','load:validate',load.id);
  if(can('load:execute')){
   const next=load.stops.find(s=>!s.completedAt);
@@ -73,25 +66,15 @@ function loadDetail(){
    select('vehicleId','Vehicle',state.vehicles.filter(v=>v.active).map(v=>[v.id,v.name+' · '+human(v.maintenance)]))+
    field('assignmentReason','Assignment reason')+'</div><div class="actions"><button class="primary">Save assignment</button></div></form>';
  }
-<<<<<<< HEAD
  return pageHead(load.reference,'Load detail · '+human(load.lifecycleState??load.status),button('All loads','back'))+
  '<div class="split"><section class="card"><h2>Route & milestones</h2>'+load.stops.map(s=>'<div class="detail-line"><span class="stop-dot"></span><div><strong>'+esc(s.location)+'</strong><p>'+esc(human(s.type))+' · '+esc(date(s.at))+'</p><p class="muted small">'+(s.completedAt?'Completed '+esc(date(s.completedAt)):'Awaiting completion')+'</p></div></div>').join('')+
  '<div class="actions">'+actions+'</div></section><section class="card"><h2>Assignment</h2><p>'+chip(load.lifecycleState??load.status)+'</p><p><strong>Driver</strong><br>'+esc(people?.name??(load.driverId?'Assigned':'Not assigned'))+'</p><p><strong>Vehicle</strong><br>'+esc(vehicle?.name??'Not assigned')+'</p><p><strong>Cargo</strong><br>'+esc(load.commodity)+' · '+load.weightLb.toLocaleString()+' lb</p>'+
-=======
- return pageHead(load.reference,'Load detail · '+human(load.status),button('All loads','back'))+
- '<div class="split"><section class="card"><h2>Route & milestones</h2>'+load.stops.map(s=>'<div class="detail-line"><span class="stop-dot"></span><div><strong>'+esc(s.location)+'</strong><p>'+esc(human(s.type))+' · '+esc(date(s.at))+'</p><p class="muted small">'+(s.completedAt?'Completed '+esc(date(s.completedAt)):'Awaiting completion')+'</p></div></div>').join('')+
- '<div class="actions">'+actions+'</div></section><section class="card"><h2>Assignment</h2><p>'+chip(load.status)+'</p><p><strong>Driver</strong><br>'+esc(people?.name??(load.driverId?'Assigned':'Not assigned'))+'</p><p><strong>Vehicle</strong><br>'+esc(vehicle?.name??'Not assigned')+'</p><p><strong>Cargo</strong><br>'+esc(load.commodity)+' · '+load.weightLb.toLocaleString()+' lb</p>'+
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  (load.rateCents!==undefined?'<p><strong>Base charge</strong><br>'+new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(load.rateCents/100)+'</p>':'')+'</section></div>'+assignment+extraLoadPanels(load);
 }
 function extraLoadPanels(load){
  let html='';
  if(state.capabilities.includes('tracking:record')&&can('tracking:create')&&['accepted','picked_up','in_transit'].includes(load.status))html+='<div class="split"><form id="tracking" class="card"><h2>Record a milestone</h2><div class="grid">'+field('location','Current location')+field('note','Milestone note')+'</div><div class="actions"><button>Record update</button></div></form><form id="exception" class="card"><h2>Report an exception</h2><div class="grid">'+select('type','Type',[['delay','Delay'],['breakdown','Breakdown'],['cargo','Cargo'],['weather','Weather']])+field('reason','What needs attention?')+'</div><div class="actions"><button>Report exception</button></div></form></div>';
-<<<<<<< HEAD
  const tracks=state.trackings.filter(t=>t.loadId===load.id).sort((a,b)=>a.at.localeCompare(b.at)),exceptions=state.exceptions.filter(e=>e.loadId===load.id);
-=======
- const tracks=state.trackings.filter(t=>t.loadId===load.id),exceptions=state.exceptions.filter(e=>e.loadId===load.id);
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  if(tracks.length||exceptions.length)html+='<section class="card"><h2>Tracking & exceptions</h2><ul class="timeline">'+tracks.map(t=>'<li>'+esc(t.location)+' · '+esc(t.note)+'<small>'+esc(date(t.at))+'</small></li>').join('')+exceptions.map(e=>'<li>'+chip(e.status)+' '+esc(e.type)+' · '+esc(e.reason)+'</li>').join('')+'</ul></section>';
  return html+(typeof extendedLoadPanels==='function'?extendedLoadPanels(load):'');
 }
@@ -162,11 +145,7 @@ view.addEventListener('click',async event=>{
  try{
   let record=state.loads.find(l=>l.id===id),payload={};
   if(action==='user:deactivate'){record=state.users.find(u=>u.id===id);const reason=prompt('Reason for deactivating this account');if(!reason)return;payload={reason};}
-<<<<<<< HEAD
   if(['load:void','load:unassign','load:close'].includes(action)){const reason=prompt('Reason for '+human(action.split(':')[1]));if(!reason)return;payload={reason};}
-=======
-  if(action==='load:void'){const reason=prompt('Reason for voiding this load');if(!reason)return;payload={reason};}
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
   if(action==='load:pickup')payload={stopId:btn.dataset.stop};
   if(action.endsWith(':approve')&&['driver','vehicle'].includes(action.split(':')[0])){record=state[action.split(':')[0]+'s'].find(r=>r.id===id);const reason=prompt('Reason for the carrier approval decision');if(!reason)return;payload={approved:btn.dataset.approved==='true',reason};}
   if(action.startsWith('workflow:'))record=state.workflows.find(w=>w.id===id);

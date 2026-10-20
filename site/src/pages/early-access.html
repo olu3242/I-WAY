@@ -29,7 +29,7 @@
         <li id="step-2">2 · Confirmation</li>
       </ol>
 
-      <div id="preview-banner" class="alert info" hidden role="note"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span><b>Preview build.</b> This version is not connected to a sign-up service, so nothing you enter is sent or stored.</span></div>
+      <div id="preview-banner" class="alert info" role="note"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span><b>Preview build.</b> This version is not connected to a sign-up service, so nothing you enter is sent or stored.</span></div>
       <div id="form-error" class="alert error" role="alert" hidden><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span id="form-error-text">Something went wrong. Your details are still here. Please try again.</span></div>
 
       <noscript><div class="alert error"><span>This form needs JavaScript. Please enable it, or use the Contact page.</span></div></noscript>
@@ -70,11 +70,11 @@
       <div id="ea-success" class="success-panel" hidden tabindex="-1">
         <div id="ea-success-ok" class="alert ok" role="status"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span><b>You’re on the list.</b> Thanks, <span id="ea-name"></span>. We’ll email you at <b id="ea-email"></b>.</span></div>
         <div id="ea-success-preview" class="alert info" role="status" hidden><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span><b>Preview only.</b> The form works, but this build is not connected to a sign-up service, so nothing was sent.</span></div>
-        <h2 style="font-size:22px;margin:8px 0 0">What happens next</h2>
+        <div id="ea-next" hidden><h2 style="font-size:22px;margin:8px 0 0">What happens next</h2>
         <ul class="checklist">
           <li><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg><span>We review your details and reply by email.</span></li>
           <li><svg class="ic" aria-hidden="true"><use href="#i-route"/></svg><span>We confirm what is available for your needs and how to begin.</span></li>
-        </ul>
+        </ul></div>
         <p style="margin-top:24px"><a class="btn btn-secondary" href="index.html">Back to I-way</a> <button class="btn btn-ghost" type="button" id="ea-edit">Edit my details</button></p>
       </div>
       </div>
