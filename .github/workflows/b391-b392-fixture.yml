@@ -112,6 +112,8 @@ jobs:
           B442_FIXTURE_SCOPE="$scope" node scripts/test-b442-postgres-restart.mjs recover
       - name: Run B441 real PostgreSQL backend interruption and recovery
         run: node scripts/test-b441-postgres-backend-interruption.mjs
+      - name: Run B457 encrypted token storage tests
+        run: node --test tests/operations-supabase-token-cipher-experimental.test.mjs
       - name: Run B456 opaque session store tests
         run: node --test tests/operations-supabase-opaque-session-store-experimental.test.mjs
       - name: Run B455 PostgreSQL PKCE transaction store tests
