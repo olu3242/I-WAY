@@ -112,7 +112,8 @@ try{
   lookupActivation:createPgActivationLookup((sql,params)=>client.query(sql,params)),
   clearNonce:async scope=>{
    if(++cleanupAttempts===1)throw Error('B416_SIMULATED_CUSTODY_OUTAGE');
-   await nonceStore.clearNonce(scope);
+   await nonceStore.setFence(scope);
+   await nonceStore.clearNonceFenced(scope);
   }
  });
  try{await reconciler.reconcile({invitationId,tenantId});throw Error('B416_OUTAGE_NOT_PROPAGATED');}
