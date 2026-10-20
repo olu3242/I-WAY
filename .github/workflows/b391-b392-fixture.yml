@@ -39,7 +39,7 @@ jobs:
           psql -v ON_ERROR_STOP=1 -c "CREATE ROLE iway_fixture_reader LOGIN PASSWORD 'reader_fixture_only';"
           psql -v ON_ERROR_STOP=1 -c "GRANT USAGE ON SCHEMA operations_onboarding TO iway_fixture_reader;"
           PGPASSWORD=reader_fixture_only PGUSER=iway_fixture_reader psql -v ON_ERROR_STOP=1 -c "SELECT count(*) FROM operations_onboarding.invitations;" > /tmp/reader.out 2>&1 && { echo "FAIL: unexpected read"; exit 1; } || grep -q 'permission denied' /tmp/reader.out
-          psql -v ON_ERROR_STOP=1 -Atc "SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_onboarding' AND c.relkind='r' AND c.relrowsecurity AND c.relforcerowsecurity" | grep -qx 6
+          psql -v ON_ERROR_STOP=1 -Atc "SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_onboarding' AND c.relkind='r' AND c.relrowsecurity AND c.relforcerowsecurity" | grep -qx 7
       - name: Verify audit immutability as fixture owner
         run: |
           set -eu
