@@ -18,6 +18,8 @@ try{
  const b=createPgNonceCleanupJobs((sql,args)=>clients[2].query(sql,args));
  const [claimA,claimB]=await Promise.all([a.claim({ownerId:ownerA}),b.claim({ownerId:ownerB})]);
  if(claimA.length+claimB.length!==1)throw Error('B422_DUPLICATE_LEASE_CLAIM');
+ const originalFence=(claimA[0]||claimB[0]).fenceToken;
+ if(!Number.isSafeInteger(originalFence)||originalFence<1)throw Error('B426_MISSING_FENCE_TOKEN');
  const winner=claimA.length?{jobs:a,ownerId:ownerA}:{jobs:b,ownerId:ownerB};
  const loser=claimA.length?{jobs:b,ownerId:ownerB}:{jobs:a,ownerId:ownerA};
  if(await loser.jobs.complete({invitationId,tenantId,ownerId:loser.ownerId}))
@@ -26,7 +28,7 @@ try{
  await clients[0].query(`UPDATE operations_onboarding.nonce_cleanup_jobs
   SET lease_until=now()-interval '1 second' WHERE invitation_id=$1`,[invitationId]);
  const recovered=await loser.jobs.claim({ownerId:loser.ownerId});
- if(recovered.length!==1||recovered[0].invitationId!==invitationId)
+ if(recovered.length!==1||recovered[0].invitationId!==invitationId||recovered[0].fenceToken<=originalFence)
   throw Error('B423_EXPIRED_LEASE_NOT_RECLAIMED');
  if(await winner.jobs.ownsLease({invitationId,tenantId,ownerId:winner.ownerId}))
   throw Error('B424_STALE_OWNER_LEASE_VALID');
