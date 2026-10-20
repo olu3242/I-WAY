@@ -22,7 +22,18 @@ jobs:
       - name: Bounded local HTTP API load smoke
         env:
           IWAY_R5_LOCAL_LOAD_OPT_IN: '1'
+          IWAY_R5_API_LOAD_REPORT: artifacts/r5-local-api-load.json
         run: node --test tests/local/r5-api-load.test.mjs
+      - name: Validate local API load evidence
+        run: node scripts/validate-r5-api-load.mjs artifacts/r5-local-api-load.json
+      - name: Upload local API load evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r5-local-api-load
+          path: artifacts/r5-local-api-load.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Install disposable PostgreSQL prerequisites
         run: |
           sudo apt-get update

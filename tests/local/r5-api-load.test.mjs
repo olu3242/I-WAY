@@ -1,3 +1,5 @@
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {dirname} from 'node:path';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {performance} from 'node:perf_hooks';
@@ -42,6 +44,11 @@ test('R5 bounded authenticated API load evidence is reproducible and fail-closed
  assert.equal(unauthorized.errors,10);
  assert.ok(unauthorized.statuses.every(x=>x===401));
  const evidence={schemaVersion:1,environment:'disposable-local-http-sqlite',source:'makeOperationsApp',authenticated:true,productionSloCertified:false,scenarios:results,unauthorized:{requests:10,expectedStatus:401}};
+ if(process.env.IWAY_R5_API_LOAD_REPORT){
+  const target=process.env.IWAY_R5_API_LOAD_REPORT;
+  mkdirSync(dirname(target),{recursive:true});
+  writeFileSync(target,JSON.stringify(evidence,null,2)+'\\n');
+ }
  console.log('R5_LOCAL_API_LOAD '+JSON.stringify(evidence));
  assert.equal(evidence.scenarios.length,4);
 });
