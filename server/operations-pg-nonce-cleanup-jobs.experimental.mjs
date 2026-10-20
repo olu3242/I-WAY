@@ -42,6 +42,17 @@ export function createPgNonceCleanupJobs(query){
     AND lease_owner=$3::uuid AND lease_until>now()`,[invitationId,tenantId,ownerId]);
    return result.rowCount===1;
   },
+  async renewLease({invitationId,tenantId,ownerId,leaseSeconds=60}={}){
+   if(!invitationId||!tenantId||typeof ownerId!=='string'||!/^[0-9a-f-]{36}$/i.test(ownerId)
+    ||!Number.isInteger(leaseSeconds)||leaseSeconds<5||leaseSeconds>600)
+    throw Error('INVALID_NONCE_LEASE_RENEWAL');
+   const result=await query(`UPDATE operations_onboarding.nonce_cleanup_jobs
+    SET lease_until=now()+($4::int * interval '1 second')
+    WHERE invitation_id=$1 AND tenant_id=$2 AND state='PENDING'
+    AND lease_owner=$3::uuid AND lease_until>now()
+    RETURNING invitation_id`,[invitationId,tenantId,ownerId,leaseSeconds]);
+   return result.rowCount===1;
+  },
   async complete({invitationId,tenantId,ownerId}){
    if(!ownerId)throw Error('NONCE_JOB_OWNER_REQUIRED');
    const result=await query(`UPDATE operations_onboarding.nonce_cleanup_jobs
