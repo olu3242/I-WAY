@@ -552,6 +552,39 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal(nb.hasMore,false); // 19
   assert.deepEqual(await counts(),before); // 20
  });
+ await t.test('tracking projection max page and long history pass twenty checkpoints',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const dispatched=await dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}}});
+  const total=207;
+  await store.transaction(a,async tx=>{
+   for(let i=0;i<total;i++)await tx.insert('tracking',{shipmentId:shipment.id,loadId:created.id,eventType:'in_transit',occurredAt:new Date(Date.UTC(2026,10,1,10,0,i)).toISOString(),location:'Checkpoint '+i,recordedBy:a.actorId});
+  });
+  const view=(options={})=>projectAsyncShipmentTracking({store,scope:a,shipmentId:shipment.id,authorizeTracking:auth,...options});
+  const before=await counts(),first=await view({limit:200});
+  assert.equal(first.history.length,200); // 1
+  assert.equal(first.hasMore,true); // 2
+  assert.equal(first.nextCursor.shipmentId,shipment.id); // 3
+  assert.ok(first.nextCursor.id); // 4
+  assert.ok(first.nextCursor.occurredAt); // 5
+  assert.equal(first.latestLocation,'Checkpoint 206'); // 6
+  assert.equal(first.latestEvent.location,'Checkpoint 206'); // 7
+  assert.equal(first.history.at(-1).location,'Checkpoint 206'); // 8
+  assert.equal(first.history[0].location,'Checkpoint 7'); // 9
+  const second=await view({limit:200,before:first.nextCursor});
+  assert.equal(second.history.length,7); // 10
+  assert.equal(second.hasMore,false); // 11
+  assert.equal(second.nextCursor,null); // 12
+  assert.equal(second.history[0].location,'Checkpoint 0'); // 13
+  assert.equal(second.history.at(-1).location,'Checkpoint 6'); // 14
+  assert.equal(second.latestLocation,'Checkpoint 206'); // 15
+  const ids=[...first.history,...second.history].map(x=>x.id);
+  assert.equal(ids.length,total); // 16
+  assert.equal(new Set(ids).size,total); // 17
+  assert.deepEqual(ids,(await store.transaction(a,tx=>tx.trackingHistory(shipment.id,{limit:500}))).map(x=>x.id).slice(0,200).reverse().concat((await store.transaction(a,tx=>tx.trackingHistory(shipment.id,{limit:500}))).slice(200).map(x=>x.id).reverse())); // 18
+  await assert.rejects(view({limit:201}),{code:'INVALID_PAGE'}); // 19
+  assert.deepEqual(await counts(),before); // 20
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
