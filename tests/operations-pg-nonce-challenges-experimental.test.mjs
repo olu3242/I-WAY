@@ -26,3 +26,16 @@ test('nonce TTL is bounded',async()=>{
  const repo=createPgNonceChallenges(async()=>{throw Error('unexpected transaction')});
  await assert.rejects(repo.issue({invitationId:id,tenantId:id,ttlSeconds:9999}),/INVALID_NONCE_CHALLENGE/);
 });
+
+test('expired nonce retirement happens before pending challenge check',async()=>{
+ const statements=[];
+ const repo=createPgNonceChallenges(async fn=>fn({query:async sql=>{
+  statements.push(sql);
+  return {rowCount:sql.includes('SELECT nonce_hash')?0:1};
+ }}));
+ await repo.issue({invitationId:id,tenantId:id});
+ const retire=statements.findIndex(s=>s.includes('SET consumed_at=now()'));
+ const pending=statements.findIndex(s=>s.includes('SELECT nonce_hash'));
+ assert.ok(retire>=0&&pending>retire);
+ assert.match(statements[retire],/expires_at<=now\(\)/);
+});
