@@ -146,8 +146,8 @@ try{
   FROM operations_onboarding.identity_nonce_challenges
   WHERE invitation_id=$1 AND consumed_at IS NOT NULL`,[invitationId]);
  if(consumed.rows[0].n<1)throw Error('B430_MISSING_CONSUMED_CHALLENGE_FIXTURE');
- const custody=createPgNonceCustody((sql,params)=>client.query(sql,params));
- if(await custody.consumedCount({invitationId,tenantId})!==1)throw Error('B437_DURABLE_CUSTODY_MISSING_CONSUMED_NONCE');
+ const durableNonceCustody=createPgNonceCustody((sql,params)=>client.query(sql,params));
+ if(await durableNonceCustody.consumedCount({invitationId,tenantId})!==1)throw Error('B437_DURABLE_CUSTODY_MISSING_CONSUMED_NONCE');
  const b430Owner=randomUUID();
  const b430Claim=await jobs.claim({ownerId:b430Owner,limit:10});
  if(b430Claim.length!==1)throw Error('B430_CLAIM_FAILED');
