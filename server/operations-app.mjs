@@ -8,7 +8,7 @@ import {authenticate,session,logout} from './operations-auth.mjs';
 import {readDocument} from '../domain/operations-documents.mjs';
 import {OpsError,fields} from '../domain/operations-errors.mjs';
 const assets=new Map([['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/admin','admin.html'],['/assets/admin.js','admin.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
-export function makeOperationsApp({store,operations,logSink=()=>{}}){
+export function makeOperationsApp({store,operations,logSink=()=>{},trackingProjection=null}){
  const loginAttempts=new Map();
  const admin=createOperationsAdmin(store);
  const server=createServer(async(req,res)=>{
@@ -54,6 +54,31 @@ export function makeOperationsApp({store,operations,logSink=()=>{}}){
    if(path==='/api/ops/admin/items'){if(!auth)return send(401,{error:'Sign in required.'});const kind=new URL(req.url,origin).searchParams.get('kind');return sendAdmin(admin.list(auth.actor,kind));}
    if(path==='/api/ops/health'){if(!auth)return send(401,{error:'Sign in required.'});const health=operations.state(auth.actor.id).workflowHealth;if(!health)return send(403,{error:'Health access is not permitted.'});return send(200,health);}
    if(path.startsWith('/api/ops/documents/')){if(!auth)return send(401,{error:'Sign in required.'});return send(200,readDocument(operations,auth.actor,path.slice('/api/ops/documents/'.length)));}
+   if(path.startsWith('/api/ops/tracking/')){
+    if(!auth)return send(401,{error:'Sign in required.'});
+    if(!trackingProjection)return send(503,{error:'PostgreSQL tracking integration not configured.'});
+    const shipmentId=path.slice('/api/ops/tracking/'.length);
+    if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(shipmentId))return send(400,{error:'Invalid shipment ID.'});
+    const params=new URL(req.url,origin).searchParams;
+    const rawLimit=params.get('limit');
+    const limit=rawLimit===null?20:Number(rawLimit);
+    if(!Number.isInteger(limit)||limit<1||limit>200)return send(400,{error:'Invalid page size.'});
+    const cursor=params.get('before');
+    let before=null;
+    if(cursor!==null){
+     try{before=JSON.parse(Buffer.from(cursor,'base64url').toString('utf8'))}catch{return send(400,{error:'Invalid cursor.'})}
+     if(!before||before.shipmentId!==shipmentId||typeof before.occurredAt!=='string'||typeof before.id!=='string')return send(400,{error:'Invalid cursor.'});
+    }
+    const actor=auth.actor;
+    if(!actor?.active||!actor.tenantId||!actor.id)return send(403,{error:'Invalid session scope.'});
+    try{
+     const result=await trackingProjection({scope:{tenantId:actor.tenantId,actorId:actor.id},actor,shipmentId,limit,before});
+     return send(200,result);
+    }catch(e){
+     const code=e?.code;
+     return send(code==='UNAUTHORIZED'?401:code==='FORBIDDEN'?403:code==='INVALID_PAGE'||code==='INVALID_CONTEXT'?400:code==='NOT_FOUND'?404:503,{error:'Tracking request unavailable.'});
+    }
+   }
    if(path==='/api/ops/state'){if(!auth)return send(401,{error:'Sign in required.'});return send(200,{...operations.state(auth.actor.id),csrf:auth.csrf});}
    if(path==='/'){res.writeHead(302,{Location:auth?'/app':'/login',...securityHeaders()});return res.end();}
    if(path==='/portal'&&auth?.actor.role!=='customer')return send(auth?403:401,{error:'Customer access required.'});
