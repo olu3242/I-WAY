@@ -61,3 +61,20 @@ test('B427 forwards database fence generation and owner to reconciler',async()=>
  assert.equal((await worker.runOnce({ownerId})).completed,1);
  assert.deepEqual(received,{invitationId:'invite',tenantId:'tenant',fenceToken:7,ownerId});
 });
+
+test('B431 optional atomic database finalization requires fence and never calls legacy complete',async()=>{
+ const calls=[];
+ const worker=createNonceCleanupWorker({
+  finalizeDatabase:true,
+  jobs:{
+   claim:async()=>[{invitationId:'invite',tenantId:'tenant',fenceToken:9}],
+   ownsLease:async()=>true,renewLease:async()=>true,
+   complete:async()=>{throw Error('LEGACY_COMPLETE_CALLED');},
+   finalizeConsumedChallenges:async scope=>{calls.push(scope);return true;}
+  },
+  reconciler:{reconcile:async()=>({reconciled:true})}
+ });
+ const ownerId='11111111-1111-4111-8111-111111111111';
+ assert.equal((await worker.runOnce({ownerId})).completed,1);
+ assert.deepEqual(calls,[{invitationId:'invite',tenantId:'tenant',fenceToken:9,ownerId}]);
+});
