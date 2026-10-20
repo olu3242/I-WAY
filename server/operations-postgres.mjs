@@ -80,6 +80,11 @@ function scopedMethods(query,scope){
    ensure(kind(kindValue)&&Number.isInteger(limit)&&limit>=1&&limit<=500&&(afterId===null||uuid(afterId)),'INPUT');
    const r=await query('SELECT data FROM operations_private.resources WHERE tenant_id=$1 AND kind=$2 AND ($3::uuid IS NULL OR id>$3) ORDER BY id LIMIT $4',[tenant,kindValue,afterId,limit]);return r.rows.map(x=>x.data);
   },
+  async trackingHistory(shipmentId,{limit=100,before=null}={}){
+   ensure(uuid(shipmentId)&&Number.isInteger(limit)&&limit>=1&&limit<=500&&(before===null||(typeof before==='object'&&typeof before.occurredAt==='string'&&Number.isFinite(Date.parse(before.occurredAt))&&uuid(before.id))),'INPUT');
+   const r=await query("SELECT data FROM operations_private.resources WHERE tenant_id=$1 AND kind='tracking' AND data->>'shipmentId'=$2 AND ($3::text IS NULL OR (data->>'occurredAt',id::text)<($3::text,$4::text)) ORDER BY data->>'occurredAt' DESC,id DESC LIMIT $5",[tenant,shipmentId,before?.occurredAt??null,before?.id??null,limit]);
+   return r.rows.map(x=>x.data);
+  },
   async get(kindValue,id){validateResource(kindValue,id);const r=await query('SELECT data FROM operations_private.resources WHERE tenant_id=$1 AND kind=$2 AND id=$3',[tenant,kindValue,id]);ensure(r.rowCount===1,'NOT_FOUND');return r.rows[0].data;},
   async insert(kindValue,values){
    ensure(kind(kindValue),'INPUT');const id=values?.id??randomUUID();validateResource(kindValue,id);

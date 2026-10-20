@@ -11,7 +11,7 @@ export async function projectAsyncShipmentTracking({store,scope,shipmentId,autho
   const shipment=await tx.get('shipment',shipmentId);
   const load=await tx.get('load',shipment.loadId);
   if(shipment.tenantId!==scope.tenantId||load.tenantId!==scope.tenantId)throw new AsyncCommandError('RESULT_TENANT_MISMATCH');
-  const history=(await tx.list('tracking',{limit:500})).filter(event=>event.shipmentId===shipmentId).sort((a,b)=>a.occurredAt.localeCompare(b.occurredAt)||a.id.localeCompare(b.id));
+  const history=(await tx.trackingHistory(shipmentId,{limit:500})).reverse();
   const latestEvent=history.at(-1)??null;
   return {shipmentId,loadId:load.id,status:shipment.status,latestLocation:latestEvent?.location??null,latestEvent,history};
  });
