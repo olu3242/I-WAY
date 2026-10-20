@@ -60,6 +60,8 @@ jobs:
         run: |
           npm ci --ignore-scripts
           node scripts/test-b401-http-postgres-provisioning.mjs
+      - name: Run B433 strict fenced cleanup worker tests
+        run: node --test tests/operations-certified-nonce-cleanup-worker-experimental.test.mjs
       - name: Run B419 bounded cleanup worker tests
         run: node --test tests/operations-nonce-cleanup-worker-experimental.test.mjs
       - name: Run B417 durable cleanup job repository tests
