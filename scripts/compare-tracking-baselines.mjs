@@ -15,5 +15,11 @@ for(const r of reports){
 if(new Set(reports.map(x=>x.workload)).size!==1)throw Error('Incomparable workloads');
 const medianValues=reports.map(x=>x.executionTimeMs.median),p95Values=reports.map(x=>x.executionTimeMs.p95);
 const spread=values=>({min:Math.min(...values),max:Math.max(...values),ratio:Math.min(...values)>0?Math.max(...values)/Math.min(...values):null});
-const result={schemaVersion:2,workload:reports[0].workload,environment:'disposable-postgresql',independentRuns:reports.length,samplesPerRun:21,medianMs:medianValues,p95Ms:p95Values,medianSpread:spread(medianValues),p95Spread:spread(p95Values),performanceGateEnabled:false,thresholdRecommendation:'not-calibrated',productionSloCertified:false,interpretation:'Descriptive CI baseline only; do not use as a production SLO or hard regression threshold'};
+const stability={medianRatio:spread(medianValues).ratio,p95Ratio:spread(p95Values).ratio};
+const gateDecision={eligible:false,reasons:[]};
+if(reports.length<3)gateDecision.reasons.push('insufficient-independent-runs');
+if(stability.medianRatio===null||stability.medianRatio>1.25)gateDecision.reasons.push('median-run-variance');
+if(stability.p95Ratio===null||stability.p95Ratio>1.25)gateDecision.reasons.push('p95-run-variance');
+gateDecision.reasons.push('missing-representative-production-load');
+const result={schemaVersion:2,workload:reports[0].workload,environment:'disposable-postgresql',independentRuns:reports.length,samplesPerRun:21,medianMs:medianValues,p95Ms:p95Values,medianSpread:spread(medianValues),p95Spread:spread(p95Values),performanceGateEnabled:false,stability,gateDecision,thresholdRecommendation:'not-calibrated',productionSloCertified:false,interpretation:'Descriptive CI baseline only; do not use as a production SLO or hard regression threshold'};
 console.log(JSON.stringify(result,null,2));
