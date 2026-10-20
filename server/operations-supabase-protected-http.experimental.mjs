@@ -11,7 +11,7 @@ export function createIwayProtectedHttpHandler({getUser,roleStore,handleAuthoriz
    return {status:401,body:{error:'UNAUTHORIZED'}};
   // Tenant and role are route policy, not user-controlled body or query parameters.
   const tenantId=req?.policy?.tenantId,role=req?.policy?.role;
-  if(typeof tenantId!=='string'||!/^([0-9a-f]{8}-){4}[0-9a-f]{12}$/i.test(tenantId)
+  if(typeof tenantId!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(tenantId)
    ||!['carrier','fleet','platform','driver'].includes(role))
    return {status:403,body:{error:'FORBIDDEN'}};
   const result=await guard.authorize({accessToken:authorization.slice(7),tenantId,role});
