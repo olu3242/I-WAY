@@ -33,13 +33,13 @@ INSERT INTO operations_onboarding.provisioned_accounts(id,issuer,subject_hash)
  VALUES ('dddddddd-dddd-4ddd-8ddd-dddddddddddd','fixture',repeat('f',64));
 -- Deliberately violate the role CHECK constraint and assert SQLSTATE 23514.
 -- The transaction must enter an aborted state and require full rollback.
-\\set ON_ERROR_STOP off
+\set ON_ERROR_STOP off
 INSERT INTO operations_onboarding.tenant_role_bindings
  (tenant_id,account_id,role,invitation_id)
  VALUES ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
  'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
  'unauthorized_role','99999999-9999-4999-8999-999999999999');
-\\set ON_ERROR_STOP on
+\set ON_ERROR_STOP on
 ROLLBACK;
 DO $assert$
 BEGIN
