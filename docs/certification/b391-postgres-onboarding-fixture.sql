@@ -36,6 +36,26 @@ CREATE TABLE operations_onboarding.invitation_events (
  occurred_at timestamptz NOT NULL DEFAULT now(),
  detail jsonb NOT NULL DEFAULT '{}'::jsonb
 );
+-- B395 fixture-only account and tenant binding persistence. No application grants.
+CREATE TABLE operations_onboarding.provisioned_accounts (
+ id uuid PRIMARY KEY,
+ issuer text NOT NULL,
+ subject_hash text NOT NULL CHECK(length(subject_hash)=64),
+ created_at timestamptz NOT NULL DEFAULT now(),
+ UNIQUE(issuer,subject_hash)
+);
+CREATE TABLE operations_onboarding.tenant_role_bindings (
+ tenant_id uuid NOT NULL,
+ account_id uuid NOT NULL REFERENCES operations_onboarding.provisioned_accounts(id),
+ role text NOT NULL CHECK(role IN ('carrier','fleet','driver','platform')),
+ invitation_id uuid NOT NULL UNIQUE REFERENCES operations_onboarding.invitations(id),
+ created_at timestamptz NOT NULL DEFAULT now(),
+ PRIMARY KEY(tenant_id,account_id,role)
+);
+ALTER TABLE operations_onboarding.provisioned_accounts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE operations_onboarding.provisioned_accounts FORCE ROW LEVEL SECURITY;
+ALTER TABLE operations_onboarding.tenant_role_bindings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE operations_onboarding.tenant_role_bindings FORCE ROW LEVEL SECURITY;
 -- Append-only event history: even the owner must not mutate or delete audit rows.
 CREATE FUNCTION operations_onboarding.reject_event_mutation() RETURNS trigger
 LANGUAGE plpgsql SECURITY INVOKER SET search_path = pg_catalog AS $audit_guard$
