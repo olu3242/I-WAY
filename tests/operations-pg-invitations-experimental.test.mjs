@@ -30,3 +30,31 @@ test('transition and audit use one transaction callback',async()=>{
  await repo.recordTransition({id,tenantId:id,actorId:id,from:'SENT',to:'OPENED'});
  assert.equal(calls.length,2);
 });
+
+test('terminal invitation state cannot be replayed',async()=>{
+ let invoked=false;
+ const repo=createPgInvitationRepository(async()=>{invoked=true});
+ await assert.rejects(repo.recordTransition({id,tenantId:id,actorId:id,from:'ACTIVE',to:'OPENED'}),/INVALID_TRANSITION/);
+ assert.equal(invoked,false);
+});
+test('illegal state jumps fail before SQL execution',async()=>{
+ let invoked=false;
+ const repo=createPgInvitationRepository(async()=>{invoked=true});
+ await assert.rejects(repo.recordTransition({id,tenantId:id,actorId:id,from:'CREATED',to:'ACTIVE'}),/INVALID_TRANSITION/);
+ assert.equal(invoked,false);
+});
+test('simulated concurrent conditional transition permits only one winner',async()=>{
+ let current='SENT',audits=0;
+ const transaction=async fn=>fn({query:async sql=>{
+  if(sql.includes('UPDATE operations_onboarding.invitations')){
+   if(current!=='SENT')return {rowCount:0,rows:[]};
+   current='OPENED';return {rowCount:1,rows:[{id,state:current}]};
+  }
+  audits++;return {rowCount:1,rows:[]};
+ }});
+ const repo=createPgInvitationRepository(transaction);
+ const attempts=await Promise.allSettled(Array.from({length:8},()=>repo.recordTransition({id,tenantId:id,actorId:id,from:'SENT',to:'OPENED'})));
+ assert.equal(attempts.filter(x=>x.status==='fulfilled').length,1);
+ assert.equal(attempts.filter(x=>x.status==='rejected').length,7);
+ assert.equal(audits,1);
+});
