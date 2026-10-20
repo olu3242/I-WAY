@@ -78,6 +78,22 @@ jobs:
         run: node --test tests/operations-nonce-cleanup-reconciler-experimental.test.mjs
       - name: Run B412 ephemeral nonce custody lifecycle tests
         run: node --test tests/operations-ephemeral-nonce-store-experimental.test.mjs
+      - name: Run B442 real disposable PostgreSQL service restart
+        run: |
+          set -eu
+          scope=$(node scripts/test-b442-postgres-restart.mjs seed)
+          container="${{ job.services.postgres.id }}"
+          docker restart "$container"
+          ready=0
+          for attempt in $(seq 1 40); do
+            if pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          test "$ready" -eq 1
+          B442_FIXTURE_SCOPE="$scope" node scripts/test-b442-postgres-restart.mjs recover
       - name: Run B441 real PostgreSQL backend interruption and recovery
         run: node scripts/test-b441-postgres-backend-interruption.mjs
       - name: Run B440 PostgreSQL outage and recovery regressions
