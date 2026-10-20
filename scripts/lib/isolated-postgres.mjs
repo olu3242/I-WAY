@@ -21,8 +21,15 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
  let started=false,admin;const pools=[];const poolErrors=[];let expectedRestart=false;
  const registerPool=p=>{if(!pools.includes(p))pools.push(p);p.on('error',error=>poolErrors.push({error,expected:expectedRestart}));return p;};
  const cleanup=async()=>{
-  await Promise.allSettled(pools.map(p=>p.end()));
-  if(admin)await admin.end();
+  // Registered pools include the current and former admin pools. Each pool
+  // must be ended once; the initial admin pool was already closed at setup.
+  const unique=[...new Set(pools)];
+  const results=await Promise.allSettled(unique.map(async p=>{
+   if(p.ended||p.ending)return;
+   await p.end();
+  }));
+  const unexpected=results.find(r=>r.status==='rejected'&&!/Called end on pool more than once/i.test(String(r.reason?.message??r.reason)));
+  if(unexpected)throw unexpected.reason;
   if(started||existsSync(join(data,'postmaster.pid'))){run(join(bin,'pg_ctl'),['-D',data,'-m','immediate','-w','stop']);started=false;}
   const target=resolve(root);
   if(!target.startsWith(base+sep)||!target.slice(base.length+1).startsWith('iway-pg-fixture-'))throw Error('UNSAFE_FIXTURE_CLEANUP');
