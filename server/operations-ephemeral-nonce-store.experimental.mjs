@@ -1,6 +1,6 @@
 // B412 isolated in-memory challenge custody for fixture-only testing.
 // Never use as durable, distributed, or production session storage.
-export function createEphemeralNonceStore({clock=()=>Date.now(),ttlMs=300000}={}){
+export function createEphemeralNonceStore({clock=()=>Date.now(),ttlMs=300000,authorizeFence}={}){
  if(typeof clock!=='function'||!Number.isSafeInteger(ttlMs)||ttlMs<1000||ttlMs>600000)
   throw Error('NONCE_STORE_CONFIGURATION_REQUIRED');
  const entries=new Map();
@@ -31,6 +31,8 @@ export function createEphemeralNonceStore({clock=()=>Date.now(),ttlMs=300000}={}
    return true;
   },
   async setFence({invitationId,tenantId,ownerId,fenceToken}){
+   if(typeof authorizeFence==='function'&&!await authorizeFence({invitationId,tenantId,ownerId,fenceToken}))
+    throw Error('NONCE_FENCE_NOT_AUTHORIZED');
    if(!ownerId||!Number.isSafeInteger(fenceToken)||fenceToken<1)
     throw Error('INVALID_NONCE_FENCE');
    const k=key({invitationId,tenantId});
