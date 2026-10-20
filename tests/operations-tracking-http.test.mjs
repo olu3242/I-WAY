@@ -63,3 +63,37 @@ test('R5 tracking HTTP endpoint fails closed on absent adapter and projection er
   assert.equal((await response.json()).error,'Tracking request unavailable.');
  }
 });
+
+test('R5 tracking outage is fail-closed and session recovers without leaked details',async t=>{
+ let available=true,calls=0;
+ const f=await setup(t,async input=>{
+  calls++;
+  if(!available)throw Object.assign(new Error('private connection string must not leak'),{code:'DATABASE_UNAVAILABLE'});
+  return {shipmentId:input.shipmentId,history:[{id:randomUUID(),location:'Recovered'}],hasMore:false,nextCursor:null,latestLocation:'Recovered'};
+ });
+ const cookie=await f.login(f.manager.username),url=f.base+'/api/ops/tracking/'+validId;
+ const request=()=>fetch(url,{headers:{Cookie:cookie}});
+ const first=await request();
+ assert.equal(first.status,200);
+ assert.equal((await first.json()).latestLocation,'Recovered');
+ available=false;
+ const failed=await Promise.all(Array.from({length:8},()=>request()));
+ assert.ok(failed.every(response=>response.status===503));
+ for(const response of failed){
+  const body=await response.json();
+  assert.equal(body.error,'Tracking request unavailable.');
+  assert.equal(JSON.stringify(body).includes('private connection'),false);
+ }
+ const prior=calls;
+ assert.equal((await fetch(url)).status,401);
+ assert.equal((await fetch(url,{headers:{Cookie:'iway_ops=invalid'}})).status,401);
+ assert.equal(calls,prior);
+ const state=await fetch(f.base+'/api/ops/state',{headers:{Cookie:cookie}});
+ assert.equal(state.status,200);
+ available=true;
+ const recovered=await Promise.all(Array.from({length:8},()=>request()));
+ assert.ok(recovered.every(response=>response.status===200));
+ const bodies=await Promise.all(recovered.map(response=>response.json()));
+ assert.ok(bodies.every(body=>body.latestLocation==='Recovered'&&body.history.length===1));
+ assert.equal(calls,17);
+});
