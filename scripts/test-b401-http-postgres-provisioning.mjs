@@ -19,7 +19,12 @@ const jwk={...publicKey.export({format:'jwk'}),kid:'b401-test-key',alg:'RS256',u
 const now=Math.floor(Date.now()/1000);
 const header=Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT',kid:jwk.kid})).toString('base64url');
 const payload=Buffer.from(JSON.stringify({iss:issuer,aud:'iway-fixture',sub:subject,iat:now-10,exp:now+300,nonce,amr:['mfa']})).toString('base64url');
-const token=header+'.'+payload+'.'+sign('RSA-SHA256',Buffer.from(header+'.'+payload),privateKey).toString('base64url');
+const signClaims=claims=>{
+ const encoded=Buffer.from(JSON.stringify(claims)).toString('base64url');
+ return header+'.'+encoded+'.'+sign('RSA-SHA256',Buffer.from(header+'.'+encoded),privateKey).toString('base64url');
+};
+const claims={iss:issuer,aud:'iway-fixture',sub:subject,iat:now-10,exp:now+300,nonce,amr:['mfa']};
+const token=signClaims(claims);
 const client=new Client();
 await client.connect();
 const transaction=async fn=>{
@@ -47,6 +52,12 @@ try{
  const url='http://127.0.0.1:'+server.address().port+'/experimental/onboarding/provision';
  const body={invitationId,tenantId,actorId,role:'driver',token,expectedNonce:nonce};
  const post=async data=>fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)});
+ const expired=await post({...body,token:signClaims({...claims,exp:now-1})});
+ if(expired.status!==403)throw Error('B402_EXPIRED_TOKEN_ALLOWED');
+ const wrongAudience=await post({...body,token:signClaims({...claims,aud:'untrusted-client'})});
+ if(wrongAudience.status!==403)throw Error('B402_WRONG_AUDIENCE_ALLOWED');
+ const elevatedRole=await post({...body,role:'platform'});
+ if(elevatedRole.status!==403)throw Error('B402_ROLE_ESCALATION_ALLOWED');
  const success=await post({...body,issuer:'attacker',subjectHash:'spoof'});
  if(success.status!==200||(await success.json()).state!=='ACTIVE')throw Error('B401_HTTP_ACTIVATION_FAILED');
  const forged=await post({...body,token:token.slice(0,-2)+'xx'});
