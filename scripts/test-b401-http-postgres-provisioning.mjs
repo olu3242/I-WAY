@@ -1,7 +1,7 @@
 // B401 isolated HTTP -> verified proof -> PostgreSQL provisioning.
 // Test-only fixture: no live identity provider, no production HTTP wiring.
 import {Client} from 'pg';
-import {createHash,generateKeyPairSync,sign} from 'node:crypto';
+import {createHash,generateKeyPairSync,sign,randomUUID} from 'node:crypto';
 import {createHostedOidcVerifier} from '../server/operations-hosted-oidc.experimental.mjs';
 import {once} from 'node:events';
 import {createPgNonceChallenges} from '../server/operations-pg-nonce-challenges.experimental.mjs';
