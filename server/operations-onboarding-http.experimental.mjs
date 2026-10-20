@@ -1,13 +1,14 @@
 // B400 experimental HTTP boundary; isolated fixture use only.
 // The server owns verifier and provisioning dependencies. No public route wiring.
 import {createServer} from 'node:http';
-export function createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext}){
+export function createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext,challengeCustody}){
  if(typeof resolveInvitationContext!=='function')throw Error('TRUSTED_INVITATION_RESOLVER_REQUIRED');
  if(!verifiedProvisioning||typeof verifiedProvisioning.provision!=='function')
   throw Error('HTTP_PROVISIONING_CONFIGURATION_REQUIRED');
  return createServer(async(req,res)=>{
   const respond=(status,body)=>{res.writeHead(status,{'content-type':'application/json','cache-control':'no-store'});res.end(JSON.stringify(body));};
-  if(req.method!=='POST'||req.url!=='/experimental/onboarding/provision')
+  const challengeRequest=req.method==='POST'&&req.url==='/experimental/onboarding/challenge';
+  if(!challengeRequest&&(req.method!=='POST'||req.url!=='/experimental/onboarding/provision'))
    return respond(404,{error:'NOT_FOUND'});
   let raw='';
   try{
@@ -17,6 +18,13 @@ export function createIsolatedOnboardingHttpServer({verifiedProvisioning,resolve
    }
    const body=JSON.parse(raw);
    if(!body||typeof body!=='object'||Array.isArray(body))throw Error('INVALID_REQUEST');
+   if(challengeRequest){
+    if(!challengeCustody||typeof challengeCustody.issue!=='function')throw Error('CHALLENGE_ROUTE_DISABLED');
+    const authorization=req.headers.authorization;
+    if(typeof authorization!=='string'||!authorization.startsWith('Bearer '))throw Error('AUTHENTICATION_REQUIRED');
+    const issued=await challengeCustody.issue({sessionToken:authorization.slice(7),invitationId:body.invitationId});
+    return respond(200,{nonce:issued.nonce});
+   }
    if(typeof body.invitationId!=='string'||!body.invitationId||typeof body.token!=='string'||!body.token)
     throw Error('INVALID_REQUEST');
    // Resolve tenant, role, actor and challenge on the trusted server side.
