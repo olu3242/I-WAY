@@ -4,13 +4,15 @@
 import {randomUUID} from 'node:crypto';
 const hex64=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
 const roles=new Set(['carrier','fleet','driver','platform']);
-export function createPgProvisioner(transaction){
+export function createPgProvisioner(transaction,{consumeNonce}={}){
  if(typeof transaction!=='function')throw Error('RESTRICTED_TRANSACTION_REQUIRED');
+ if(typeof consumeNonce!=='function')throw Error('NONCE_CONSUMER_REQUIRED');
  return Object.freeze({
-  async provision({invitationId,tenantId,actorId,issuer,subjectHash,role,proofHash}){
-   if(!invitationId||!tenantId||!actorId||!issuer||!hex64(subjectHash)||!hex64(proofHash)||!roles.has(role))
+  async provision({invitationId,tenantId,actorId,issuer,subjectHash,role,proofHash,nonce}){
+   if(!invitationId||!tenantId||!actorId||!issuer||!hex64(subjectHash)||!hex64(proofHash)||!nonce||!roles.has(role))
     throw Error('INVALID_PROVISIONING_REQUEST');
    return transaction(async client=>{
+    await consumeNonce(client,{nonce,invitationId,tenantId});
     // Unique ledger key serializes concurrent proof reuse; rollback restores it.
     await client.query(`INSERT INTO operations_onboarding.identity_proof_uses
       (proof_hash,invitation_id,tenant_id) VALUES($1,$2,$3)`,
