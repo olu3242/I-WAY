@@ -38,6 +38,9 @@ export function createPgProvisioner(transaction,{consumeNonce}={}){
     if(activated.rowCount!==1)throw Error('ACTIVATION_REJECTED');
     await client.query('INSERT INTO operations_onboarding.invitation_events(invitation_id,actor_id,event_type) VALUES($1,$2,$3)',
       [invitationId,actorId,'ACTIVE']);
+    // Durable cleanup obligation must commit atomically with activation.
+    await client.query(`INSERT INTO operations_onboarding.nonce_cleanup_jobs
+      (invitation_id,tenant_id) VALUES($1,$2)`,[invitationId,tenantId]);
     return {invitationId,accountId:userId,tenantId,role,state:'ACTIVE'};
    });
   }
