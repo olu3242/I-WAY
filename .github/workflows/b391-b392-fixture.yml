@@ -1,0 +1,42 @@
+name: B391 B392 isolated PostgreSQL verification
+on:
+  push:
+    branches: [work/b391-b398-hosted-identity-certification]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: fixture_only_password
+          POSTGRES_DB: iway_fixture
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d iway_fixture"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGPASSWORD: fixture_only_password
+      PGHOST: 127.0.0.1
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGDATABASE: iway_fixture
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify SQL fixture applies and denies unprivileged access
+        run: |
+          set -eu
+          psql -v ON_ERROR_STOP=1 -f docs/certification/b391-postgres-onboarding-fixture.sql
+          psql -v ON_ERROR_STOP=1 -c "CREATE ROLE iway_fixture_reader LOGIN PASSWORD 'reader_fixture_only';"
+          psql -v ON_ERROR_STOP=1 -c "GRANT USAGE ON SCHEMA operations_onboarding TO iway_fixture_reader;"
+          PGPASSWORD=reader_fixture_only PGUSER=iway_fixture_reader psql -v ON_ERROR_STOP=1 -c "SELECT count(*) FROM operations_onboarding.invitations;" > /tmp/reader.out 2>&1 && { echo "FAIL: unexpected read"; exit 1; } || grep -q 'permission denied' /tmp/reader.out
+          psql -v ON_ERROR_STOP=1 -Atc "SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_onboarding' AND c.relkind='r' AND c.relrowsecurity AND c.relforcerowsecurity" | grep -qx 3
+      - name: Run experimental repository tests
+        run: node --test tests/operations-pg-invitations-experimental.test.mjs
