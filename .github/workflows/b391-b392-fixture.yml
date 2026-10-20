@@ -112,6 +112,8 @@ jobs:
           B442_FIXTURE_SCOPE="$scope" node scripts/test-b442-postgres-restart.mjs recover
       - name: Run B441 real PostgreSQL backend interruption and recovery
         run: node scripts/test-b441-postgres-backend-interruption.mjs
+      - name: Run B444 secret-free recovery telemetry tests
+        run: node --test tests/operations-nonce-cleanup-telemetry-experimental.test.mjs
       - name: Run B440 PostgreSQL outage and recovery regressions
         run: node --test tests/operations-pg-outage-recovery-experimental.test.mjs
       - name: Run B439 real worker process interruption and lease recovery
