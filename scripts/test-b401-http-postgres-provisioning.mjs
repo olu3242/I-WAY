@@ -8,6 +8,7 @@ import {createPgNonceChallenges} from '../server/operations-pg-nonce-challenges.
 import {createPgProvisioner} from '../server/operations-pg-provisioning.experimental.mjs';
 import {createVerifiedProvisioningFlow} from '../server/operations-pg-verified-provisioning.experimental.mjs';
 import {createIsolatedOnboardingHttpServer} from '../server/operations-onboarding-http.experimental.mjs';
+import {createPgInvitationContextResolver} from '../server/operations-pg-invitation-context.experimental.mjs';
 const digest=x=>createHash('sha256').update(x).digest('hex');
 const invitationId='a1010101-0101-4101-8101-010101010101';
 const tenantId='a2020202-0202-4202-8202-020202020202';
@@ -47,7 +48,12 @@ try{
   provisioner,expectedAudience:'iway-fixture',allowedIssuers:new Set([issuer]),
   verifyIdentity:createHostedOidcVerifier({issuer,audience:'iway-fixture',jwks:{keys:[jwk]},enabled:true})
  });
- server=createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext:async({invitationId:requested})=>requested===invitationId?{invitationId,tenantId,actorId,role:'driver',expectedNonce:nonce}:null});
+ const resolveInvitationContext=createPgInvitationContextResolver({
+  query:(sql,params)=>client.query(sql,params),
+  resolveNonce:async({invitationId:requested,tenantId:requestedTenant})=>
+   requested===invitationId&&requestedTenant===tenantId?nonce:null
+ });
+ server=createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext});
  server.listen(0,'127.0.0.1');await once(server,'listening');
  const url='http://127.0.0.1:'+server.address().port+'/experimental/onboarding/provision';
  const body={invitationId,tenantId,actorId,role:'driver',token,expectedNonce:nonce};
