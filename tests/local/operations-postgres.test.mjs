@@ -297,7 +297,8 @@ test('disposable PostgreSQL Operations certification',async t=>{
  await t.test('tracking event command enforces ten transactional checkpoints',async()=>{
   const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
   const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
-  const base={action:'tracking:record',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{eventType:'arrived',occurredAt:'2026-11-01T10:00:00.000Z',location:'Austin terminal'}};
+  const dispatched=await dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}}});
+  const base={action:'tracking:record',resourceId:shipment.id,expectedVersion:dispatched.version,idempotencyKey:randomUUID(),payload:{eventType:'arrived',occurredAt:'2026-11-01T10:00:00.000Z',location:'Austin terminal'}};
   const record=(cmd=base,extra={})=>recordAsyncTrackingEvent({store,scope:a,command:cmd,authorizeTracking:auth,...extra});
   const before=await counts();
   const first=await record();
@@ -308,7 +309,7 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.deepEqual(await record(),first); // 5
   await assert.rejects(record(base,{authorizeTracking:async()=>false}),{code:'FORBIDDEN'}); // 6
   await assert.rejects(record({...base,payload:{...base.payload,location:'Changed'}}),{code:'IDEMPOTENCY_CONFLICT'}); // 7
-  await assert.rejects(record({...base,idempotencyKey:randomUUID(),expectedVersion:shipment.version+1}),{code:'STALE'}); // 8
+  await assert.rejects(record({...base,idempotencyKey:randomUUID(),expectedVersion:dispatched.version+1}),{code:'STALE'}); // 8
   await assert.rejects(record({...base,idempotencyKey:randomUUID(),payload:{...base.payload,extra:'unexpected'}}),{code:'FIELDS'}); // 9
   await assert.rejects(recordAsyncTrackingEvent({store,scope:b,command:{...base,idempotencyKey:randomUUID()},authorizeTracking:async()=>true}),{code:'NOT_FOUND'});
   const events=await store.transaction(a,tx=>tx.list('tracking'));
