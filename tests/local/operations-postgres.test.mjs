@@ -448,6 +448,40 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await assert.rejects(view({limit:201}),{code:'INVALID_PAGE'}); // 19
   assert.deepEqual(await counts(),before); // 20
  });
+ await t.test('tracking pagination equal timestamps and cursor isolation pass twenty checks',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const dispatched=await dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}}});
+  const stamp='2026-11-01T10:00:00.000Z',events=[];
+  for(let i=0;i<7;i++)events.push(await recordAsyncTrackingEvent({store,scope:a,authorizeTracking:auth,command:{action:'tracking:record',resourceId:shipment.id,expectedVersion:dispatched.version,idempotencyKey:randomUUID(),payload:{eventType:'arrived',occurredAt:stamp,location:'Gate '+i}}}));
+  const view=(options={})=>projectAsyncShipmentTracking({store,scope:a,shipmentId:shipment.id,authorizeTracking:auth,...options});
+  const before=await counts(),all=await view({limit:20});
+  assert.equal(all.history.length,7); // 1
+  assert.equal(all.hasMore,false); // 2
+  assert.equal(all.nextCursor,null); // 3
+  assert.ok(all.history.every(e=>e.occurredAt===stamp)); // 4
+  assert.equal(new Set(all.history.map(e=>e.id)).size,7); // 5
+  assert.deepEqual(all.history.map(e=>e.id),all.history.map(e=>e.id).slice().sort()); // 6
+  const first=await view({limit:2});
+  assert.equal(first.history.length,2); // 7
+  assert.equal(first.hasMore,true); // 8
+  assert.equal(first.nextCursor.occurredAt,stamp); // 9
+  const second=await view({limit:2,before:first.nextCursor});
+  assert.equal(second.history.length,2); // 10
+  assert.equal(second.hasMore,true); // 11
+  const third=await view({limit:2,before:second.nextCursor});
+  assert.equal(third.history.length,2); // 12
+  assert.equal(third.hasMore,true); // 13
+  const fourth=await view({limit:2,before:third.nextCursor});
+  assert.equal(fourth.history.length,1); // 14
+  assert.equal(fourth.hasMore,false); // 15
+  const combined=[...first.history,...second.history,...third.history,...fourth.history].map(e=>e.id);
+  assert.equal(new Set(combined).size,7); // 16
+  assert.deepEqual(combined,all.history.map(e=>e.id).slice().reverse().reduce((groups,id,i)=>{groups[Math.floor(i/2)]??=[];groups[Math.floor(i/2)].unshift(id);return groups},[]).flat()); // 17
+  await assert.rejects(view({before:{occurredAt:'not-a-date',id:events[0].id}}),{code:'INVALID_PAGE'}); // 18
+  await assert.rejects(view({before:{occurredAt:stamp,id:'bad-id'}}),{code:'INVALID_PAGE'}); // 19
+  assert.deepEqual(await counts(),before); // 20
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
