@@ -4,7 +4,7 @@ import {createPgNonceChallenges} from '../server/operations-pg-nonce-challenges.
 const id='11111111-1111-4111-8111-111111111111';
 test('issues unpredictable nonce and stores digest only',async()=>{
  const writes=[];
- const repo=createPgNonceChallenges(async fn=>fn({query:async(_sql,args)=>{writes.push(args);return {rowCount:1}}}));
+ const repo=createPgNonceChallenges(async fn=>fn({query:async(sql,args)=>{if(sql.includes('INSERT INTO'))writes.push(args);return {rowCount:sql.includes('SELECT nonce_hash')?0:1}}}));
  const nonce=await repo.issue({invitationId:id,tenantId:id});
  assert.ok(nonce.length>=40);
  assert.equal(writes.length,1);
