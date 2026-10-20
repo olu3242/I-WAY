@@ -1,7 +1,7 @@
 // B400 experimental HTTP boundary; isolated fixture use only.
 // The server owns verifier and provisioning dependencies. No public route wiring.
 import {createServer} from 'node:http';
-export function createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext,challengeCustody}){
+export function createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext,challengeCustody,clearNonce}){
  if(typeof resolveInvitationContext!=='function')throw Error('TRUSTED_INVITATION_RESOLVER_REQUIRED');
  if(!verifiedProvisioning||typeof verifiedProvisioning.provision!=='function')
   throw Error('HTTP_PROVISIONING_CONFIGURATION_REQUIRED');
@@ -38,6 +38,10 @@ export function createIsolatedOnboardingHttpServer({verifiedProvisioning,resolve
     actorId:context.actorId,role:context.role,
     token:body.token,expectedNonce:context.expectedNonce
    });
+   // Clear raw nonce custody only after successful, committed provisioning.
+   // A cleanup failure fails closed; caller must not receive a success response.
+   if(typeof clearNonce==='function')
+    await clearNonce({invitationId:context.invitationId,tenantId:context.tenantId});
    return respond(200,{state:result.state,invitationId:result.invitationId});
   }catch{
    return respond(403,{error:'PROVISIONING_DENIED'});
