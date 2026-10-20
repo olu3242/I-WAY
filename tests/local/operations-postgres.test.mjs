@@ -783,6 +783,43 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await assert.rejects(adapter({scope:a,actor:{...principal,id:b.actorId},shipmentId:shipment.id}),{code:'UNAUTHORIZED'});
   await assert.rejects(adapter({scope:a,actor:{...principal,permissions:[]},shipmentId:shipment.id}),{code:'FORBIDDEN'});
  });
+ await t.test('R5 real session HTTP route reaches governed PostgreSQL projection end to end',async t=>{
+  const {fixture,password}=await import('../helpers/operations-fixture.mjs');
+  const {makeOperationsApp}=await import('../../server/operations-app.mjs');
+  const {createGovernedTrackingProjection}=await import('../../server/operations-tracking-adapter.mjs');
+  const local=await fixture(t);
+  const actor=local.manager,outsider=local.outsider,scope={tenantId:actor.tenantId,actorId:actor.id};
+  for(const user of [actor,outsider]){
+   await f.admin.query('INSERT INTO operations_private.tenants VALUES($1,$2,$3)',[user.tenantId,'HTTP integration tenant','America/Chicago']);
+   await f.admin.query('INSERT INTO operations_private.users VALUES($1,$2,$3,$4,$5)',[user.tenantId,user.id,user.username,JSON.stringify(user),'unusable-fixture-hash']);
+  }
+  const shipmentId=randomUUID(),loadId=randomUUID();
+  await store.transaction(scope,async tx=>{
+   await tx.insert('load',{id:loadId,reference:'HTTP governed',customer:'Fixture',status:'dispatched'});
+   await tx.insert('shipment',{id:shipmentId,loadId,status:'in_transit'});
+   await tx.insert('tracking',{shipmentId,loadId,eventType:'in_transit',occurredAt:'2026-11-01T12:00:00.000Z',location:'Governed HTTP',recordedBy:actor.id});
+  });
+  const server=makeOperationsApp({store:local.store,operations:local.ops,trackingProjection:createGovernedTrackingProjection({store})});
+  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+  t.after(()=>new Promise(resolve=>server.close(resolve)));
+  const base='http://127.0.0.1:'+server.address().port;
+  async function login(user){
+   const response=await fetch(base+'/api/ops/login',{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:JSON.stringify({username:user.username,password})});
+   assert.equal(response.status,200);return response.headers.get('set-cookie').split(';')[0];
+  }
+  const ownCookie=await login(actor),otherCookie=await login(outsider),url=base+'/api/ops/tracking/'+shipmentId;
+  const own=await fetch(url,{headers:{Cookie:ownCookie}});
+  assert.equal(own.status,200);
+  const result=await own.json();
+  assert.equal(result.shipmentId,shipmentId);
+  assert.equal(result.latestLocation,'Governed HTTP');
+  assert.equal(result.history.length,1);
+  assert.equal((await fetch(url,{headers:{Cookie:otherCookie}})).status,403);
+  assert.equal((await fetch(url)).status,401);
+  assert.equal((await fetch(url+'?limit=0',{headers:{Cookie:ownCookie}})).status,400);
+  const mismatch=Buffer.from(JSON.stringify({shipmentId:randomUUID(),occurredAt:'2026-11-01T12:00:00.000Z',id:randomUUID()})).toString('base64url');
+  assert.equal((await fetch(url+'?before='+mismatch,{headers:{Cookie:ownCookie}})).status,400);
+ });
  await t.test('tracking EXPLAIN ANALYZE and query statistics pass twenty checkpoints',async()=>{
   const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
   await store.transaction(a,async tx=>{
