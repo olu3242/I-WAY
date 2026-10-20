@@ -9,6 +9,7 @@ import {createPgProvisioner} from '../server/operations-pg-provisioning.experime
 import {createVerifiedProvisioningFlow} from '../server/operations-pg-verified-provisioning.experimental.mjs';
 import {createIsolatedOnboardingHttpServer} from '../server/operations-onboarding-http.experimental.mjs';
 import {createPgInvitationContextResolver} from '../server/operations-pg-invitation-context.experimental.mjs';
+import {createTrustedNonceResolver} from '../server/operations-pg-trusted-nonce.experimental.mjs';
 const digest=x=>createHash('sha256').update(x).digest('hex');
 const invitationId='a1010101-0101-4101-8101-010101010101';
 const tenantId='a2020202-0202-4202-8202-020202020202';
@@ -48,10 +49,16 @@ try{
   provisioner,expectedAudience:'iway-fixture',allowedIssuers:new Set([issuer]),
   verifyIdentity:createHostedOidcVerifier({issuer,audience:'iway-fixture',jwks:{keys:[jwk]},enabled:true})
  });
+ const trustedNonce=createTrustedNonceResolver({
+  readServerNonce:async({invitationId:requested,tenantId:requestedTenant})=>requested===invitationId&&requestedTenant===tenantId?nonce:null,
+  lookupChallenge:async({invitationId:requested,tenantId:requestedTenant,nonceHash})=>{
+   const r=await client.query(`SELECT nonce_hash FROM operations_onboarding.identity_nonce_challenges WHERE invitation_id=$1 AND tenant_id=$2 AND nonce_hash=$3 AND consumed_at IS NULL AND expires_at>now()`,[requested,requestedTenant,nonceHash]);
+   return r.rowCount===1?{active:true,invitationId:requested,tenantId:requestedTenant,nonceHash:r.rows[0].nonce_hash}:null;
+  }
+ });
  const resolveInvitationContext=createPgInvitationContextResolver({
   query:(sql,params)=>client.query(sql,params),
-  resolveNonce:async({invitationId:requested,tenantId:requestedTenant})=>
-   requested===invitationId&&requestedTenant===tenantId?nonce:null
+  resolveNonce:trustedNonce
  });
  server=createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext});
  server.listen(0,'127.0.0.1');await once(server,'listening');
