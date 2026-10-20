@@ -45,6 +45,9 @@ try{
  (nonce_hash,invitation_id,tenant_id,expires_at)
  VALUES($1,$2,$3,now()+interval '5 minutes')`,[digest(nonce),invitationId,tenantId]);
  const nonceRepo=createPgNonceChallenges(transaction);
+ // Duplicate issuance must fail while the original challenge is outstanding.
+ try{await nonceRepo.issue({invitationId,tenantId});throw Error('B409_DUPLICATE_NONCE_ALLOWED');}
+ catch(error){if(error.message==='B409_DUPLICATE_NONCE_ALLOWED')throw error;}
  const provisioner=createPgProvisioner(transaction,{consumeNonce:nonceRepo.consume});
  const verifiedProvisioning=createVerifiedProvisioningFlow({
   provisioner,expectedAudience:'iway-fixture',allowedIssuers:new Set([issuer]),
