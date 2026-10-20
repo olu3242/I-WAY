@@ -18,7 +18,8 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
  if(!existsSync(openssl))throw Error('LOCAL_OPENSSL_REQUIRED');
  await new Promise((ok,no)=>{const s=createServer();s.once('error',()=>no(Error('LOCAL_FIXTURE_PORT_5433_UNAVAILABLE')));s.listen(5433,'127.0.0.1',()=>s.close(ok));});
  const base=realpathSync(tmpdir()),root=mkdtempSync(join(base,'iway-pg-fixture-')),data=join(root,'data'),password=randomBytes(32).toString('hex'),restrictedPassword=randomBytes(32).toString('hex');
- let started=false,admin;const pools=[];
+ let started=false,admin;const pools=[];const poolErrors=[];let expectedRestart=false;
+ const registerPool=p=>{if(!pools.includes(p))pools.push(p);p.on('error',error=>poolErrors.push({error,expected:expectedRestart}));return p;};
  const cleanup=async()=>{
   await Promise.allSettled(pools.map(p=>p.end()));
   if(admin)await admin.end();
@@ -66,29 +67,27 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   await admin.query('GRANT SELECT,INSERT ON operations_private.commands,operations_private.audit TO iway_operations_fixture');
   await admin.query('GRANT USAGE ON ALL SEQUENCES IN SCHEMA operations_private TO iway_operations_fixture');
   const restricted={...common,user:'iway_operations_fixture',password:restrictedPassword,database:'iway_fixture'};
-  const pool=new Pool(restricted);pools.push(pool);
+  const pool=registerPool(new Pool(restricted));
   return {admin,pool,ssl,restricted,caPath:join(root,'ca.crt'),
   // Available only on a fresh, explicitly opted-in disposable cluster.
   async restartForRecoveryTest(){
    if(!started)throw Error('DISPOSABLE_CLUSTER_NOT_RUNNING');
-   // An immediate stop terminates idle node-postgres clients, which emit
-   // 'error' on their Pool. Capture only during the controlled restart.
-   const observed=[];
-   const onError=error=>observed.push(error);
-   const active=[admin,...pools].filter(Boolean);
-   for(const p of active)p.on('error',onError);
+   const startErrors=poolErrors.length;
+   expectedRestart=true;
    try{
     run(join(bin,'pg_ctl'),['-D',data,'-m','immediate','-w','stop']);started=false;
-    await new Promise(resolve=>setTimeout(resolve,250));
+    await new Promise(resolve=>setTimeout(resolve,300));
     run(join(bin,'pg_ctl'),['-D',data,'-l',join(root,'server.log'),'-w','start']);started=true;
-    await new Promise(resolve=>setTimeout(resolve,250));
-    if(observed.some(error=>!/terminat|connect|ECONNRESET|57P01/i.test(String(error?.message??error))))throw Error('UNEXPECTED_POSTGRES_POOL_ERROR_DURING_RESTART');
-    return {terminatedPoolConnections:observed.length};
+    await new Promise(resolve=>setTimeout(resolve,500));
    }finally{
-    for(const p of active)p.off('error',onError);
+    expectedRestart=false;
    }
+   const errors=poolErrors.slice(startErrors);
+   if(errors.some(({error,expected})=>!expected||!/terminat|connect|ECONNRESET|57P01/i.test(String(error?.message??error))))throw Error('UNEXPECTED_POSTGRES_POOL_ERROR_DURING_RESTART');
+   return {terminatedPoolConnections:errors.length};
   },
-  createPool(options={}){const p=new Pool({...restricted,...options});pools.push(p);return p},cleanup};
+  registerPool,
+  createPool(options={}){return registerPool(new Pool({...restricted,...options}))},cleanup};
  }catch(error){
   let diagnostic='';
   if(stage==='LOCAL_FIXTURE_INITDB'&&existsSync(join(root,'initdb.log')))diagnostic=readFileSync(join(root,'initdb.log'),'utf8').slice(-700).replaceAll(root,'[fixture]').replaceAll(password,'[redacted]');
