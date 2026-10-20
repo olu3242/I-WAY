@@ -20,6 +20,6 @@ test('fetches bounded pending jobs',async()=>{
 });
 test('marks only pending matching tenant jobs complete',async()=>{
  const jobs=createPgNonceCleanupJobs(async(q,p)=>({rowCount:q.includes("state='PENDING'")&&p[1]==='tenant'?1:0,rows:[]}));
- assert.equal(await jobs.complete({invitationId:'invite',tenantId:'tenant'}),true);
- assert.equal(await jobs.complete({invitationId:'invite',tenantId:'wrong'}),false);
+ assert.equal(await jobs.complete({invitationId:'invite',tenantId:'tenant',ownerId:'11111111-1111-4111-8111-111111111111'}),true);
+ assert.equal(await jobs.complete({invitationId:'invite',tenantId:'wrong',ownerId:'11111111-1111-4111-8111-111111111111'}),false);
 });
