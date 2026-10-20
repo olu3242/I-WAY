@@ -10,6 +10,14 @@ export function createPgNonceChallenges(transaction){
     throw Error('INVALID_NONCE_CHALLENGE');
    const nonce=randomBytes(32).toString('base64url');
    await transaction(async client=>{
+    // Serialize issuance and fail closed if an unconsumed challenge exists.
+    const invitation=await client.query(`SELECT id FROM operations_onboarding.invitations
+     WHERE id=$1 AND tenant_id=$2 AND state='VERIFIED' AND expires_at>now()
+     FOR UPDATE`,[invitationId,tenantId]);
+    if(invitation.rowCount!==1)throw Error('NONCE_INVITATION_NOT_ELIGIBLE');
+    const pending=await client.query(`SELECT nonce_hash FROM operations_onboarding.identity_nonce_challenges
+     WHERE invitation_id=$1 AND consumed_at IS NULL LIMIT 1`,[invitationId]);
+    if(pending.rowCount!==0)throw Error('NONCE_ALREADY_PENDING');
     await client.query(`INSERT INTO operations_onboarding.identity_nonce_challenges
      (nonce_hash,invitation_id,tenant_id,expires_at)
      VALUES($1,$2,$3,now()+($4::integer * interval '1 second'))`,
