@@ -60,6 +60,8 @@ jobs:
         run: |
           npm ci --ignore-scripts
           node scripts/test-b401-http-postgres-provisioning.mjs
+      - name: Run B417 durable cleanup job repository tests
+        run: node --test tests/operations-pg-nonce-cleanup-jobs-experimental.test.mjs
       - name: Run B416 PostgreSQL activation lookup tests
         run: node --test tests/operations-pg-activation-lookup-experimental.test.mjs
       - name: Run B415 post-commit nonce cleanup reconciliation tests
