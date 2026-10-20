@@ -716,6 +716,11 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.deepEqual(await counts(),before);
   const sorted=samples.map(x=>x.elapsedMs).sort((x,y)=>x-y),pct=p=>sorted[Math.ceil(p*sorted.length)-1];
   const evidence={schemaVersion:1,environment:'disposable-postgresql-domain',scope:'tracking-projection-no-http',requests:samples.length,concurrency:[1,4,8,16],p50Ms:pct(.5),p95Ms:pct(.95),p99Ms:pct(.99),runs:checks,productionSloCertified:false};
+  if(process.env.IWAY_R5_PG_LOAD_REPORT){
+   const target=process.env.IWAY_R5_PG_LOAD_REPORT;
+   mkdirSync(dirname(target),{recursive:true});
+   writeFileSync(target,JSON.stringify(evidence,null,2)+'\n');
+  }
   console.log('R5_POSTGRES_TRACKING_LOAD '+JSON.stringify(evidence));
  });
  await t.test('tracking EXPLAIN ANALYZE and query statistics pass twenty checkpoints',async()=>{

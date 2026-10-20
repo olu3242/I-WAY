@@ -46,7 +46,18 @@ jobs:
           IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
           IWAY_LOCAL_OPENSSL: /usr/bin/openssl
           IWAY_TRACKING_BASELINE_REPORT: artifacts/tracking-baseline.json
+          IWAY_R5_PG_LOAD_REPORT: artifacts/r5-postgres-tracking-load.json
         run: node scripts/certify-postgres.mjs local --operations-isolated
+      - name: Validate PostgreSQL tracking projection load evidence
+        run: node scripts/validate-r5-postgres-load.mjs artifacts/r5-postgres-tracking-load.json
+      - name: Upload PostgreSQL tracking projection load evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r5-postgres-tracking-load
+          path: artifacts/r5-postgres-tracking-load.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Repeat independent disposable PostgreSQL benchmarks
         env:
           IWAY_OPERATIONS_LOCAL_OPT_IN: '1'
