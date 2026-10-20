@@ -57,7 +57,9 @@ jobs:
       - name: Run B394 trusted identity boundary tests
         run: node --test tests/operations-pg-identity-boundary-experimental.test.mjs
       - name: Run B401 isolated HTTP to PostgreSQL integration
-        run: node scripts/test-b401-http-postgres-provisioning.mjs
+        run: |
+          npm ci --ignore-scripts
+          node scripts/test-b401-http-postgres-provisioning.mjs
       - name: Run B400 isolated HTTP onboarding boundary tests
         run: node --test tests/operations-onboarding-http-experimental.test.mjs
       - name: Run B399 real JavaScript PostgreSQL provisioning integration
