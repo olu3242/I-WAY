@@ -2,7 +2,7 @@ import {randomUUID} from 'node:crypto';
 // B419 experimental bounded cleanup worker. Invoke from a trusted isolated runner.
 // Durable job state is authoritative; this does not schedule or deploy a worker.
 export function createNonceCleanupWorker({jobs,reconciler,logger=()=>{}}){
- if(!jobs||typeof jobs.claim!=='function'||typeof jobs.complete!=='function'||typeof jobs.ownsLease!=='function'
+ if(!jobs||typeof jobs.claim!=='function'||typeof jobs.complete!=='function'||typeof jobs.ownsLease!=='function'||typeof jobs.renewLease!=='function'
   ||!reconciler||typeof reconciler.reconcile!=='function'||typeof logger!=='function')
   throw Error('NONCE_WORKER_CONFIGURATION_REQUIRED');
  return Object.freeze({
@@ -13,6 +13,7 @@ export function createNonceCleanupWorker({jobs,reconciler,logger=()=>{}}){
    for(const scope of batch){
     try{
      if(!await jobs.ownsLease({...scope,ownerId})){skipped++;continue;}
+     if(!await jobs.renewLease({...scope,ownerId})){skipped++;continue;}
      const result=await reconciler.reconcile(scope);
      if(!result.reconciled){skipped++;continue;}
      if(await jobs.complete({...scope,ownerId}))completed++;
