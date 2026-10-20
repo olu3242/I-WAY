@@ -27,7 +27,18 @@ try{
  if(count.rows[0].n!==1)throw Error('B410_DUPLICATE_ACTIVE_NONCES');
  const invalidTenant=await Promise.allSettled([createPgNonceChallenges(transaction(clients[1])).issue({invitationId,tenantId:randomUUID()})]);
  if(invalidTenant[0].status!=='rejected')throw Error('B410_CROSS_TENANT_NONCE_ALLOWED');
- console.log('PASS: B410 two-session nonce race yields one winner, one rejection, one active challenge');
+ // Simulate expiration, then verify the next issuance retires the old row.
+ await clients[0].query(`UPDATE operations_onboarding.identity_nonce_challenges
+  SET expires_at=now()-interval '1 second' WHERE invitation_id=$1`,[invitationId]);
+ const replacement=await createPgNonceChallenges(transaction(clients[1])).issue({invitationId,tenantId});
+ if(!replacement||replacement===fulfilled[0].value)throw Error('B411_NONCE_REISSUANCE_INVALID');
+ const active=await clients[0].query(`SELECT count(*)::int AS n FROM operations_onboarding.identity_nonce_challenges
+  WHERE invitation_id=$1 AND consumed_at IS NULL AND expires_at>now()`,[invitationId]);
+ if(active.rows[0].n!==1)throw Error('B411_REPLACEMENT_ACTIVE_NONCE_COUNT');
+ const retired=await clients[0].query(`SELECT count(*)::int AS n FROM operations_onboarding.identity_nonce_challenges
+  WHERE invitation_id=$1 AND consumed_at IS NOT NULL`,[invitationId]);
+ if(retired.rows[0].n!==1)throw Error('B411_EXPIRED_NONCE_NOT_RETIRED');
+ console.log('PASS: B410/B411 concurrent issuance, expired retirement and safe reissuance');
 }finally{
  for(const client of clients)await client.end();
 }
