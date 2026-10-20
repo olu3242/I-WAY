@@ -694,6 +694,30 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.deepEqual(await fetch({limit:10,before:{occurredAt:p3.at(-1).occurredAt,id:p3.at(-1).id}}),[]); // 19
   assert.deepEqual(await counts(),before); // 20
  });
+ await t.test('R5 concurrent PostgreSQL tracking projection produces twenty integrity checkpoints',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  await store.transaction(a,async tx=>{
+   for(let i=0;i<96;i++)await tx.insert('tracking',{shipmentId:shipment.id,loadId:created.id,eventType:'in_transit',occurredAt:new Date(Date.UTC(2026,10,1,10,0,i)).toISOString(),location:'Concurrent '+i,recordedBy:a.actorId});
+  });
+  const authorizeTracking=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const read=()=>projectAsyncShipmentTracking({store,scope:a,shipmentId:shipment.id,authorizeTracking,limit:20});
+  const before=await counts(),samples=[],checks=[];
+  for(const concurrency of [1,4,8,16]){
+   const started=performance.now();
+   const results=await Promise.all(Array.from({length:concurrency},async()=>{const at=performance.now();const result=await read();samples.push({concurrency,elapsedMs:performance.now()-at});return result}));
+   const elapsedMs=performance.now()-started;
+   checks.push({concurrency,requests:results.length,elapsedMs,requestsPerSecond:results.length*1000/elapsedMs});
+   assert.equal(results.length,concurrency); // 1,6,11,16
+   assert.ok(results.every(x=>x.history.length===20)); // 2,7,12,17
+   assert.ok(results.every(x=>x.history.at(-1).location==='Concurrent 95')); // 3,8,13,18
+   assert.ok(results.every(x=>x.hasMore===true)); // 4,9,14,19
+   assert.ok(elapsedMs>0); // 5,10,15,20
+  }
+  assert.deepEqual(await counts(),before);
+  const sorted=samples.map(x=>x.elapsedMs).sort((x,y)=>x-y),pct=p=>sorted[Math.ceil(p*sorted.length)-1];
+  const evidence={schemaVersion:1,environment:'disposable-postgresql-domain',scope:'tracking-projection-no-http',requests:samples.length,concurrency:[1,4,8,16],p50Ms:pct(.5),p95Ms:pct(.95),p99Ms:pct(.99),runs:checks,productionSloCertified:false};
+  console.log('R5_POSTGRES_TRACKING_LOAD '+JSON.stringify(evidence));
+ });
  await t.test('tracking EXPLAIN ANALYZE and query statistics pass twenty checkpoints',async()=>{
   const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
   await store.transaction(a,async tx=>{
