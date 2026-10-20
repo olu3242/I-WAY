@@ -482,6 +482,43 @@ test('disposable PostgreSQL Operations certification',async t=>{
   await assert.rejects(view({before:{occurredAt:stamp,id:'bad-id'}}),{code:'INVALID_PAGE'}); // 19
   assert.deepEqual(await counts(),before); // 20
  });
+ await t.test('tracking history isolates shipments and paginates twenty larger-history checkpoints',async()=>{
+  const firstLoad=await create(command()),secondLoad=await create(command());
+  const shipments=await store.transaction(a,tx=>tx.list('shipment'));
+  const first=shipments.find(x=>x.loadId===firstLoad.id),second=shipments.find(x=>x.loadId===secondLoad.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const dispatch=shipment=>dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}}});
+  const [d1,d2]=await Promise.all([dispatch(first),dispatch(second)]);
+  const record=(shipment,version,minute)=>recordAsyncTrackingEvent({store,scope:a,authorizeTracking:auth,command:{action:'tracking:record',resourceId:shipment.id,expectedVersion:version,idempotencyKey:randomUUID(),payload:{eventType:'in_transit',occurredAt:new Date(Date.UTC(2026,10,1,10,minute)).toISOString(),location:'Checkpoint '+minute}}});
+  for(let i=0;i<12;i++)await record(first,d1.version,i);
+  for(let i=0;i<4;i++)await record(second,d2.version,i);
+  const page=(shipmentId,options={})=>projectAsyncShipmentTracking({store,scope:a,shipmentId,authorizeTracking:auth,...options});
+  const before=await counts(),aAll=await page(first.id,{limit:20}),bAll=await page(second.id,{limit:20});
+  assert.equal(aAll.history.length,12); // 1
+  assert.equal(bAll.history.length,4); // 2
+  assert.ok(aAll.history.every(x=>x.shipmentId===first.id)); // 3
+  assert.ok(bAll.history.every(x=>x.shipmentId===second.id)); // 4
+  assert.equal(aAll.latestLocation,'Checkpoint 11'); // 5
+  assert.equal(bAll.latestLocation,'Checkpoint 3'); // 6
+  assert.equal(aAll.hasMore,false); // 7
+  assert.equal(bAll.hasMore,false); // 8
+  const a1=await page(first.id,{limit:5});
+  assert.equal(a1.history.length,5); // 9
+  assert.equal(a1.hasMore,true); // 10
+  const a2=await page(first.id,{limit:5,before:a1.nextCursor});
+  assert.equal(a2.history.length,5); // 11
+  assert.equal(a2.hasMore,true); // 12
+  const a3=await page(first.id,{limit:5,before:a2.nextCursor});
+  assert.equal(a3.history.length,2); // 13
+  assert.equal(a3.hasMore,false); // 14
+  assert.equal(a3.nextCursor,null); // 15
+  const combined=[...a1.history,...a2.history,...a3.history].map(x=>x.id);
+  assert.equal(new Set(combined).size,12); // 16
+  assert.deepEqual(combined,aAll.history.map(x=>x.id).reverse().reduce((pages,id,i)=>{pages[Math.floor(i/5)]??=[];pages[Math.floor(i/5)].unshift(id);return pages},[]).flat()); // 17
+  assert.equal((await page(second.id,{limit:2})).history.length,2); // 18
+  assert.deepEqual(await store.transaction(b,tx=>tx.trackingHistory(first.id)),[]); // 19
+  assert.deepEqual(await counts(),before); // 20
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);
