@@ -17,6 +17,8 @@ jobs:
           node-version: '24.16.0'
           cache: npm
       - run: npm ci --ignore-scripts
+      - name: Verify twenty tracking baseline policy cases
+        run: node --test tests/local/tracking-baseline-policy.test.mjs
       - name: Install disposable PostgreSQL prerequisites
         run: |
           sudo apt-get update
