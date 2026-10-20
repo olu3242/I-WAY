@@ -3,19 +3,12 @@ import {readFile} from 'node:fs/promises';
 import {join,normalize,extname} from 'node:path';
 import {registerLead} from './lead-store.mjs';
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.json':'application/json; charset=utf-8'};
-<<<<<<< HEAD
 export function makeApp({root='site/public',dbPath='data/early-access.json',register=lead=>registerLead(dbPath,lead),sopHandler=null}={}){
-=======
-export function makeApp({root='site/public',dbPath='data/early-access.json',register=lead=>registerLead(dbPath,lead)}={}){
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  const rate=new Map();
  return createServer(async(req,res)=>{
   const respond=(status,obj)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(obj))};
   let url;try{url=new URL(req.url,'http://localhost')}catch{return respond(400,{error:'Bad URL'})}
-<<<<<<< HEAD
   if(url.pathname.startsWith('/api/v1/support/')){if(!sopHandler)return respond(503,{error:'support_unavailable'});return sopHandler(req,res,url)}
-=======
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
   if(url.pathname==='/api/health')return respond(200,{status:'ok'});
   if(url.pathname==='/api/early-access'){
    if(req.method!=='POST')return respond(405,{error:'Method not allowed'});
@@ -32,6 +25,6 @@ export function makeApp({root='site/public',dbPath='data/early-access.json',regi
   let path;try{path=decodeURIComponent(url.pathname)}catch{return respond(400,{error:'Bad URL'})}
   if(path.includes('..')||path.includes('\\')||path.startsWith('/.'))return respond(404,{error:'Not found'});
   const rel=path==='/'?'index.html':path.slice(1);const safe=normalize(rel);if(safe.startsWith('..'))return respond(404,{error:'Not found'});
-  try{const bytes=await readFile(join(root,safe));res.writeHead(200,{'Content-Type':types[extname(safe)]??'application/octet-stream','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; base-uri 'self'; form-action 'self'"});res.end(req.method==='HEAD'?undefined:bytes)}catch{return respond(404,{error:'Not found'})}
+  try{const bytes=await readFile(join(root,safe));res.writeHead(200,{'Content-Type':types[extname(safe)]??'application/octet-stream','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; base-uri 'self'; form-action 'self'"});res.end(req.method==='HEAD'?undefined:bytes)}catch{return respond(404,{error:'Not found'})}
  });
 }

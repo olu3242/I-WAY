@@ -4,8 +4,11 @@ import {OpsError,fields,text,requireValue} from '../domain/operations-errors.mjs
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const hour=3600000,defaultIdle=30*60000;
 const verifiers=new WeakSet(),proofs=new WeakSet(),trustedSessions=new WeakSet();
+const sessionTokens=new WeakMap();
 const atomic=(store,fn)=>store.db.isTransaction?fn():store.transaction(fn);
-function trustedSession(value){Object.freeze(value);trustedSessions.add(value);return value;}
+function trustedSession(value,token){Object.freeze(value.actor.permissions);Object.freeze(value.actor);Object.freeze(value);trustedSessions.add(value);sessionTokens.set(value,token);return value;}
+export function isTrustedIdentitySession(store,auth,now=Date.now()){return trustedSessions.has(auth)&&!!readSession(store,sessionTokens.get(auth),now);}
+export function verifyIdentityProof(verifier,token,now=Date.now()){requireValue(verifiers.has(verifier),'IDENTITY_CONFIG','A configured identity verifier is required.',503);return verifier.verify(token,now); }
 export const identitySQL=`
  CREATE TABLE IF NOT EXISTS session_security(
  token TEXT PRIMARY KEY REFERENCES sessions(token) ON DELETE CASCADE,
@@ -43,6 +46,7 @@ export function issueSession(store,actor,{now=Date.now(),idleTimeoutMs=defaultId
   const binding=store.db.prepare('SELECT user_id,tenant_id,active FROM identity_bindings WHERE issuer=? AND subject_hash=?').get(proof.issuer,hash(proof.subject));
   requireValue(binding?.active===1&&binding.user_id===actor.id&&binding.tenant_id===actor.tenantId&&proof.expiresAt>now,'IDENTITY','Identity verification failed.',401);
  }
+ requireValue(actor.role!=='platform'||proof?.assurance==='aal2','MFA_REQUIRED','Platform sessions require verified MFA.',403);
  const token=randomBytes(32).toString('base64url'),csrf=randomBytes(32).toString('base64url'),tokenHash=hash(token);
  const source=proof?'federated':'local-password',assurance=proof?.assurance??'aal1',expiresAt=Math.min(now+8*hour,proof?.expiresAt??Infinity);
  const create=()=>{
@@ -51,7 +55,7 @@ export function issueSession(store,actor,{now=Date.now(),idleTimeoutMs=defaultId
   store.audit(actor,'session:create',actor.id,'success',{source,assurance,verifiedMfa:!!proof&&assurance==='aal2',expiresAt},new Date(now).toISOString());
  };
  atomic(store,create);
- return trustedSession({token,csrf,actor,source,assurance,verifiedMfa:!!proof&&assurance==='aal2',expiresAt});
+ return trustedSession({token,csrf,actor,source,assurance,verifiedMfa:!!proof&&assurance==='aal2',expiresAt},token);
 }
 export function readSession(store,token,now=Date.now()){
  if(typeof token!=='string'||token.length>128||!Number.isSafeInteger(now)||now<0||now>8640000000000000)return null;
@@ -72,7 +76,7 @@ export function readSession(store,token,now=Date.now()){
   return null;
  }
  store.db.prepare('UPDATE session_security SET last_seen_at=? WHERE token=? AND last_seen_at<=?').run(now,tokenHash,now);
- return trustedSession({actor,csrf:row.csrf,source:row.source,assurance:row.assurance,verifiedMfa:row.source==='federated'&&row.assurance==='aal2',expiresAt:row.expires_at});
+ return trustedSession({actor,csrf:row.csrf,source:row.source,assurance:row.assurance,verifiedMfa:row.source==='federated'&&row.assurance==='aal2',expiresAt:row.expires_at},token);
 }
 export function revokeSessions(store,actor,targetId=actor.id,reason='Account session revocation'){
  actor=current(store,actor);text(reason,300);const target=store.principal(targetId);

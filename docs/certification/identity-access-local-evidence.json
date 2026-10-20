@@ -1,0 +1,35 @@
+{
+  "baseline": "4f5a3a6bd82aa3d220ded562fd3f777ddb738b51",
+  "scope": "isolated local fixtures only",
+  "checks": [
+    {
+      "command": "npm run verify",
+      "status": "PASS",
+      "tests": 545,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "IWAY_OPERATIONS_LOCAL_OPT_IN=1 npm run test:pg:operations:local",
+      "status": "PASS",
+      "tests": 16,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npx playwright test tests/browser/early-access.spec.mjs tests/browser/operations.spec.mjs",
+      "status": "PASS",
+      "tests": 11,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "hosted": {
+    "status": "BLOCKED",
+    "executed": false,
+    "reason": "No authorized non-production IdP/provisioning configuration; PostgreSQL invitation/account integration is absent."
+  },
+  "productionWrites": false,
+  "liveEmails": false,
+  "realAccountsCreated": false
+}

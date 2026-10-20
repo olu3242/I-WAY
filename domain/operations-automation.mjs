@@ -1,15 +1,9 @@
 import {authorize} from './authorization.mjs';
-<<<<<<< HEAD
 import {fields,text,requireValue,integer,OpsError,utc} from './operations-errors.mjs';
 
 const activeStatuses=['accepted','picked_up','in_transit'];
 const reviewStatuses=['validated','assigned',...activeStatuses,'delivered'];
 const recoveryEligibility=(ops,actor,load)=>load.driverId&&load.vehicleId?ops.eligibility(actor,load.driverId,load.vehicleId,load,load.id):{eligible:load.status==='validated',driver:null,vehicle:null,reasons:['Unassigned shipment requires human review before assignment.']};
-=======
-import {fields,text,requireValue,integer,OpsError} from './operations-errors.mjs';
-
-const activeStatuses=['accepted','picked_up','in_transit'];
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
 function workflowLoad(ops,actor,workflow){return ops.read('load',workflow.loadId,actor,'workflow:run');}
 function failReview(ops,actor,w,code){
  for(const a of ops.store.list('approval',actor.tenantId).filter(a=>a.workflowId===w.id&&['pending','approved'].includes(a.status)))ops.change(actor,a,{status:code==='EXPIRED'?'expired':'stale'},'approval:invalidate',code);
@@ -40,22 +34,14 @@ export function createAutomation({step=()=>{}}={}){
    const recommendation=ops.read('recommendation',a.recommendationId,actor);
    const exception=ops.read('exception',w.exceptionId,actor);
    if(recommendation.action==='resume_after_review'){
-<<<<<<< HEAD
     const eligibility=recoveryEligibility(ops,actor,load);
-=======
-    const eligibility=ops.eligibility(actor,load.driverId,load.vehicleId,load,load.id);
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
     if(!eligibility.eligible)return failReview(ops,actor,w,'INELIGIBLE');
     ops.change(actor,exception,{status:'resolved',resolvedAt:now,approvalId:a.id},'exception:resolve','Human-reviewed resolution');
    }
    ops.change(actor,a,{status:'applied',appliedAt:now},'approval:apply');
    return ops.change(actor,w,{status:'completed',checkpoint:'complete',completedAt:now,lastError:null},'workflow:complete');
   }
-<<<<<<< HEAD
   requireValue(reviewStatuses.includes(load.status),'TRANSITION','Only validated or active shipments can be reviewed.',409);
-=======
-  requireValue(activeStatuses.includes(load.status),'TRANSITION','Only active shipments can be reviewed.',409);
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
   // The injectable step is an internal test seam. Request payloads cannot select code or providers.
   try{step({workflow:w,load});}catch(error){
    const attempts=w.attempts+1,retry=error?.transient===true&&attempts<3;
@@ -63,25 +49,16 @@ export function createAutomation({step=()=>{}}={}){
   }
   const exception=ops.read('exception',w.exceptionId,actor);
   requireValue(exception.status==='open','EXCEPTION_STATE','Exception is already resolved.',409);
-<<<<<<< HEAD
   const eligibility=recoveryEligibility(ops,actor,load);
   const canResume=eligibility.eligible;
   const recommendation=ops.create(actor,'recommendation',{loadId:load.id,workflowId:w.id,source:'rules',model:null,action:canResume?'resume_after_review':'hold_for_repair',
    explanation:canResume?'Current assignment eligibility has been reviewed. A manager must confirm the reported '+exception.type+' is resolved before resuming.':'Continue holding the shipment: '+eligibility.reasons.join(' '),
    evidence:{exceptionId:exception.id,exceptionVersion:exception.version,loadVersion:load.version,driverVersion:eligibility.driver?.version??null,vehicleVersion:eligibility.vehicle?.version??null,reasons:eligibility.reasons},createdAt:now},'recommendation:create');
-=======
-  const eligibility=ops.eligibility(actor,load.driverId,load.vehicleId,load,load.id);
-  const canResume=eligibility.eligible;
-  const recommendation=ops.create(actor,'recommendation',{loadId:load.id,workflowId:w.id,source:'rules',model:null,action:canResume?'resume_after_review':'hold_for_repair',
-   explanation:canResume?'Carrier-approved driver and vehicle remain eligible. A manager must confirm the reported '+exception.type+' is resolved before resuming.':'Continue holding the shipment: '+eligibility.reasons.join(' '),
-   evidence:{exceptionId:exception.id,exceptionVersion:exception.version,loadVersion:load.version,driverVersion:eligibility.driver.version,vehicleVersion:eligibility.vehicle.version,reasons:eligibility.reasons},createdAt:now},'recommendation:create');
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
   const approval=ops.create(actor,'approval',{loadId:load.id,workflowId:w.id,recommendationId:recommendation.id,loadVersion:load.version,status:'pending',requestedBy:w.requestedBy,createdAt:now,expiresAt:new Date(ops.now().getTime()+30*60000).toISOString()},'approval:request');
   return ops.change(actor,w,{approvalId:approval.id,status:'waiting_approval',checkpoint:'human_review',attempts:w.attempts+1,lastError:null,nextAttemptAt:null},'workflow:checkpoint');
  }
  return {
   'tracking:record':(ops,actor,c)=>{
-<<<<<<< HEAD
    const p=c.payload??{};fields(p,['location','note','occurredAt','externalId']);const load=ops.read('load',c.resourceId,actor,'tracking:create');ops.version(load,c.expectedVersion);
    requireValue(activeStatuses.includes(load.status),'TRANSITION','Tracking requires an active shipment.',409);
    const recordedAt=ops.now().toISOString(),at=p.occurredAt===undefined?recordedAt:utc(p.occurredAt),location=text(p.location),note=text(p.note,500);
@@ -95,16 +72,6 @@ export function createAutomation({step=()=>{}}={}){
    const p=c.payload??{};fields(p,['type','reason']);const load=ops.read('load',c.resourceId,actor,'exception:create');ops.version(load,c.expectedVersion);
    requireValue(reviewStatuses.includes(load.status)&&!load.closedAt,'TRANSITION','Exceptions require a validated or active shipment.',409);
    requireValue(['delay','breakdown','cargo','weather','delayed_pickup','delayed_delivery','carrier_cancellation','tracking_interruption','missing_documentation','failed_dispatch','delivery_discrepancy','integration_outage'].includes(p.type),'EXCEPTION_TYPE','Select a supported exception.');
-=======
-   const p=c.payload??{};fields(p,['location','note']);const load=ops.read('load',c.resourceId,actor,'tracking:create');ops.version(load,c.expectedVersion);
-   requireValue(activeStatuses.includes(load.status),'TRANSITION','Tracking requires an active shipment.',409);
-   return ops.create(actor,'tracking',{loadId:load.id,location:text(p.location),note:text(p.note,500),at:ops.now().toISOString(),recordedBy:actor.id},c.action);
-  },
-  'exception:report':(ops,actor,c)=>{
-   const p=c.payload??{};fields(p,['type','reason']);const load=ops.read('load',c.resourceId,actor,'exception:create');ops.version(load,c.expectedVersion);
-   requireValue(activeStatuses.includes(load.status),'TRANSITION','Exceptions require an active shipment.',409);
-   requireValue(['delay','breakdown','cargo','weather'].includes(p.type),'EXCEPTION_TYPE','Select a supported exception.');
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
    const exception=ops.create(actor,'exception',{loadId:load.id,type:p.type,reason:text(p.reason,500),status:'open',reportedBy:actor.id,at:ops.now().toISOString()},c.action);
    ops.create(actor,'workflow',{loadId:load.id,exceptionId:exception.id,status:'pending',checkpoint:'recommend',attempts:0,requestedBy:actor.id,nextAttemptAt:null,createdAt:ops.now().toISOString()},'workflow:start');
    return exception;

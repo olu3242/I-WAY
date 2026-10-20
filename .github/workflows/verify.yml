@@ -9,11 +9,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-<<<<<<< HEAD
           node-version: '24.16.0'
+          cache: npm
       - run: npm ci --ignore-scripts
-=======
-          node-version: '22'
-      - run: npm install --no-package-lock --ignore-scripts
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
+      - run: node scripts/check-merge-conflicts.mjs
       - run: npm run verify
+      - run: node --test tests/r2-app-support-integration.test.mjs
