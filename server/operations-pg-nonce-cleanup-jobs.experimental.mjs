@@ -29,10 +29,11 @@ export function createPgNonceCleanupJobs(query){
     ORDER BY created_at,invitation_id FOR UPDATE SKIP LOCKED LIMIT $1
    )
    UPDATE operations_onboarding.nonce_cleanup_jobs j
-    SET lease_owner=$2::uuid,lease_until=now()+($3::int * interval '1 second')
+    SET lease_owner=$2::uuid,lease_until=now()+($3::int * interval '1 second'),
+    fence_token=j.fence_token+1
    FROM eligible WHERE j.invitation_id=eligible.invitation_id
-   RETURNING j.invitation_id,j.tenant_id`,[limit,ownerId,leaseSeconds]);
-   return result.rows.map(row=>({invitationId:row.invitation_id,tenantId:row.tenant_id}));
+   RETURNING j.invitation_id,j.tenant_id,j.fence_token`,[limit,ownerId,leaseSeconds]);
+   return result.rows.map(row=>({invitationId:row.invitation_id,tenantId:row.tenant_id,fenceToken:Number(row.fence_token)}));
   },
   async ownsLease({invitationId,tenantId,ownerId}){
    if(!invitationId||!tenantId||typeof ownerId!=='string'||!/^[0-9a-f-]{36}$/i.test(ownerId))
