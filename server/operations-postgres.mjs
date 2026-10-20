@@ -80,6 +80,11 @@ function scopedMethods(query,scope){
    ensure(kind(kindValue)&&Number.isInteger(limit)&&limit>=1&&limit<=500&&(afterId===null||uuid(afterId)),'INPUT');
    const r=await query('SELECT data FROM operations_private.resources WHERE tenant_id=$1 AND kind=$2 AND ($3::uuid IS NULL OR id>$3) ORDER BY id LIMIT $4',[tenant,kindValue,afterId,limit]);return r.rows.map(x=>x.data);
   },
+  async trackingDuplicate(shipmentId,{eventType,occurredAt,location}={}){
+   ensure(uuid(shipmentId)&&typeof eventType==='string'&&typeof occurredAt==='string'&&typeof location==='string','INPUT');
+   const r=await query("SELECT 1 FROM operations_private.resources WHERE tenant_id=$1 AND kind='tracking' AND data->>'shipmentId'=$2 AND data->>'eventType'=$3 AND data->>'occurredAt'=$4 AND data->>'location'=$5 LIMIT 1",[tenant,shipmentId,eventType,occurredAt,location]);
+   return r.rowCount>0;
+  },
   async trackingHistory(shipmentId,{limit=100,before=null}={}){
    ensure(uuid(shipmentId)&&Number.isInteger(limit)&&limit>=1&&limit<=500&&(before===null||(typeof before==='object'&&typeof before.occurredAt==='string'&&Number.isFinite(Date.parse(before.occurredAt))&&uuid(before.id))),'INPUT');
    const r=await query("SELECT data FROM operations_private.resources WHERE tenant_id=$1 AND kind='tracking' AND data->>'shipmentId'=$2 AND ($3::text IS NULL OR (data->>'occurredAt',id::text)<($3::text,$4::text)) ORDER BY data->>'occurredAt' DESC,id DESC LIMIT $5",[tenant,shipmentId,before?.occurredAt??null,before?.id??null,limit]);

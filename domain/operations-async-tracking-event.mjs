@@ -19,7 +19,7 @@ export async function recordAsyncTrackingEvent({store,scope,command,authorizeTra
    if(shipment.version!==command.expectedVersion)throw new AsyncCommandError('STALE');
    if(shipment.status!=='dispatched'||load.status!=='dispatched')throw new AsyncCommandError('INVALID_TRANSITION');
    const history=await tx.trackingHistory(shipment.id,{limit:1});
-   if(history.some(event=>event.eventType===eventType&&event.occurredAt===occurredAt&&event.location===location))throw new AsyncCommandError('DUPLICATE_EVENT');
+   if(await tx.trackingDuplicate(shipment.id,{eventType,occurredAt,location}))throw new AsyncCommandError('DUPLICATE_EVENT');
    if(history.some(event=>event.occurredAt>occurredAt))throw new AsyncCommandError('OUT_OF_ORDER_EVENT');
    return tx.insert('tracking',{shipmentId:shipment.id,loadId:load.id,eventType,occurredAt,location,recordedBy:scope.actorId});
   }
