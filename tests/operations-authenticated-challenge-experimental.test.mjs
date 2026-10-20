@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createAuthenticatedChallengeCustody} from '../server/operations-authenticated-challenge.experimental.mjs';
 const id='invite',tenant='tenant';
 const principal={verified:true,issuer:'https://issuer.test',subject:'sub',subjectHash:'a'.repeat(64)};
-const invitation={id,tenantId:tenant,issuer:principal.issuer,subjectHash:principal.subjectHash,state:'VERIFIED'};
+const invitation={id,tenantId:tenant,issuer:principal.issuer,subjectHash:principal.subjectHash,state:'VERIFIED',expiresAt:new Date(Date.now()+300000).toISOString()};
 function fixture(overrides={}){
  let issued=0,stored;
  const custody=createAuthenticatedChallengeCustody({
@@ -38,5 +38,14 @@ test('identity mismatch cannot issue challenge',async()=>{
 });
 test('revoked invitation cannot issue challenge',async()=>{
  const {custody}=fixture({resolveInvitation:async()=>({...invitation,state:'REVOKED'})});
+ await assert.rejects(custody.issue({sessionToken:'valid',invitationId:id}),/DENIED/);
+});
+
+test('expired invitation cannot issue challenge',async()=>{
+ const {custody}=fixture({resolveInvitation:async()=>({...invitation,expiresAt:new Date(Date.now()-1000).toISOString()})});
+ await assert.rejects(custody.issue({sessionToken:'valid',invitationId:id}),/DENIED/);
+});
+test('missing expiry fails closed',async()=>{
+ const {custody}=fixture({resolveInvitation:async()=>({...invitation,expiresAt:null})});
  await assert.rejects(custody.issue({sessionToken:'valid',invitationId:id}),/DENIED/);
 });
