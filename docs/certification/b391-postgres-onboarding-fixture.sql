@@ -58,6 +58,8 @@ CREATE TABLE operations_onboarding.nonce_cleanup_jobs (
  tenant_id uuid NOT NULL,
  state text NOT NULL DEFAULT 'PENDING' CHECK(state IN ('PENDING','COMPLETE')),
  attempts integer NOT NULL DEFAULT 0 CHECK(attempts>=0),
+ lease_owner uuid,
+ lease_until timestamptz,
  last_attempt_at timestamptz,
  completed_at timestamptz,
  created_at timestamptz NOT NULL DEFAULT now()
