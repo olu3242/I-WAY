@@ -38,3 +38,11 @@ test('binding failure propagates for transaction rollback',async()=>{
  }}));
  await assert.rejects(repo.provision(request),/BINDING_FAILED/);
 });
+
+test('activation update with zero affected rows fails closed',async()=>{
+ const repo=createPgProvisioner(async fn=>fn({query:async sql=>{
+  if(sql.includes("SET user_id=$2,state='ACTIVE'"))return {rowCount:0,rows:[]};
+  return {rowCount:1,rows:[{id}]};
+ }}));
+ await assert.rejects(repo.provision(request),/ACTIVATION_REJECTED/);
+});
