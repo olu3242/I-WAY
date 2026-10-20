@@ -30,8 +30,10 @@ export function createPgProvisioner(transaction){
     await client.query(`INSERT INTO operations_onboarding.tenant_role_bindings
       (tenant_id,account_id,role,invitation_id) VALUES($1,$2,$3,$4)`,
       [tenantId,userId,role,invitationId]);
-    await client.query(`UPDATE operations_onboarding.invitations SET user_id=$2,state='ACTIVE'
-      WHERE id=$1 AND state='ACCEPTED'`,[invitationId,userId]);
+    const activated=await client.query(`UPDATE operations_onboarding.invitations SET user_id=$2,state='ACTIVE'
+      WHERE id=$1 AND tenant_id=$3 AND state='ACCEPTED'
+      RETURNING id`,[invitationId,userId,tenantId]);
+    if(activated.rowCount!==1)throw Error('ACTIVATION_REJECTED');
     await client.query('INSERT INTO operations_onboarding.invitation_events(invitation_id,actor_id,event_type) VALUES($1,$2,$3)',
       [invitationId,actorId,'ACTIVE']);
     return {invitationId,accountId:userId,tenantId,role,state:'ACTIVE'};
