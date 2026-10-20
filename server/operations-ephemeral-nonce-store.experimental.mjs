@@ -25,6 +25,8 @@ export function createEphemeralNonceStore({clock=()=>Date.now(),ttlMs=300000,aut
   async clearNonceFenced({invitationId,tenantId,ownerId,fenceToken}){
    const k=key({invitationId,tenantId});
    const current=fenceVersions.get(k);
+   if(typeof authorizeFence==='function'&&!await authorizeFence({invitationId,tenantId,ownerId,fenceToken}))
+    throw Error('NONCE_FENCE_NOT_AUTHORIZED');
    if(!current||current.ownerId!==ownerId||current.fenceToken!==fenceToken)
     throw Error('NONCE_FENCE_REJECTED');
    entries.delete(k);
