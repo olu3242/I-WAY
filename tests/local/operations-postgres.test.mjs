@@ -337,6 +337,29 @@ test('disposable PostgreSQL Operations certification',async t=>{
   assert.equal((await store.transaction(a,tx=>tx.get('shipment',shipment.id))).version,dispatched.version);
   assert.deepEqual(await counts(),{resources:before.resources+2,commands:before.commands+2,audit:before.audit+2});
  });
+ await t.test('tracking event ordering and semantic deduplication enforce ten invariants',async()=>{
+  const created=await create(command()),shipment=(await store.transaction(a,tx=>tx.list('shipment'))).find(x=>x.loadId===created.id);
+  const auth=async({principal})=>principal.active&&principal.permissions.includes('load:create');
+  const dispatched=await dispatchAsyncShipment({store,scope:a,authorizeDispatch:auth,command:{action:'shipment:dispatch',resourceId:shipment.id,expectedVersion:shipment.version,idempotencyKey:randomUUID(),payload:{}}});
+  const cmd=(eventType,occurredAt,location='Austin')=>({action:'tracking:record',resourceId:shipment.id,expectedVersion:dispatched.version,idempotencyKey:randomUUID(),payload:{eventType,occurredAt,location}});
+  const record=command=>recordAsyncTrackingEvent({store,scope:a,command,authorizeTracking:auth});
+  const first=cmd('arrived','2026-11-01T10:00:00.000Z');
+  const saved=await record(first);
+  assert.equal(saved.eventType,'arrived'); // 1
+  const before=await counts();
+  await assert.rejects(record({...first,idempotencyKey:randomUUID()}),{code:'DUPLICATE_EVENT'}); // 2
+  await assert.rejects(record(cmd('departed','2026-11-01T09:59:59.000Z')),{code:'OUT_OF_ORDER_EVENT'}); // 3
+  assert.deepEqual(await record(first),saved); // 4
+  const second=await record(cmd('departed','2026-11-01T11:00:00.000Z'));
+  assert.equal(second.eventType,'departed'); // 5
+  const sameTime=await record(cmd('in_transit','2026-11-01T11:00:00.000Z'));
+  assert.equal(sameTime.occurredAt,second.occurredAt); // 6
+  await assert.rejects(record(cmd('in_transit','2026-11-01T11:00:00.000Z')),{code:'DUPLICATE_EVENT'}); // 7
+  const history=(await store.transaction(a,tx=>tx.list('tracking'))).filter(x=>x.shipmentId===shipment.id);
+  assert.equal(history.length,3); // 8
+  assert.equal((await store.transaction(a,tx=>tx.get('shipment',shipment.id))).version,dispatched.version); // 9
+  assert.deepEqual(await counts(),{resources:before.resources+2,commands:before.commands+2,audit:before.audit+2}); // 10
+ });
  await t.test('optimistic concurrency permits one update and rejects stale version',async()=>{
   const version=(await store.transaction(a,tx=>tx.get('load',load.id))).version;
   const r=await Promise.allSettled([store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'})),store.transaction(a,tx=>tx.update('load',load.id,version,{status:'validated'}))]);

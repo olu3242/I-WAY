@@ -18,6 +18,9 @@ export async function recordAsyncTrackingEvent({store,scope,command,authorizeTra
    if(shipment.tenantId!==scope.tenantId||load.tenantId!==scope.tenantId)throw new AsyncCommandError('RESULT_TENANT_MISMATCH');
    if(shipment.version!==command.expectedVersion)throw new AsyncCommandError('STALE');
    if(shipment.status!=='dispatched'||load.status!=='dispatched')throw new AsyncCommandError('INVALID_TRANSITION');
+   const history=(await tx.list('tracking',{limit:500})).filter(event=>event.shipmentId===shipment.id);
+   if(history.some(event=>event.eventType===eventType&&event.occurredAt===occurredAt&&event.location===location))throw new AsyncCommandError('DUPLICATE_EVENT');
+   if(history.some(event=>event.occurredAt>occurredAt))throw new AsyncCommandError('OUT_OF_ORDER_EVENT');
    return tx.insert('tracking',{shipmentId:shipment.id,loadId:load.id,eventType,occurredAt,location,recordedBy:scope.actorId});
   }
  });
