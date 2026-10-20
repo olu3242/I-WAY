@@ -60,6 +60,8 @@ jobs:
         run: |
           npm ci --ignore-scripts
           node scripts/test-b401-http-postgres-provisioning.mjs
+      - name: Run B412 ephemeral nonce custody lifecycle tests
+        run: node --test tests/operations-ephemeral-nonce-store-experimental.test.mjs
       - name: Run B410 two-session PostgreSQL nonce issuance race
         run: node scripts/test-b410-pg-concurrent-nonce.mjs
       - name: Run B406 authenticated challenge custody tests
