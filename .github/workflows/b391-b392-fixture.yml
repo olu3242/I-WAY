@@ -40,6 +40,14 @@ jobs:
           psql -v ON_ERROR_STOP=1 -c "GRANT USAGE ON SCHEMA operations_onboarding TO iway_fixture_reader;"
           PGPASSWORD=reader_fixture_only PGUSER=iway_fixture_reader psql -v ON_ERROR_STOP=1 -c "SELECT count(*) FROM operations_onboarding.invitations;" > /tmp/reader.out 2>&1 && { echo "FAIL: unexpected read"; exit 1; } || grep -q 'permission denied' /tmp/reader.out
           psql -v ON_ERROR_STOP=1 -Atc "SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_onboarding' AND c.relkind='r' AND c.relrowsecurity AND c.relforcerowsecurity" | grep -qx 3
+      - name: Verify audit immutability as fixture owner
+        run: |
+          set -eu
+          psql -v ON_ERROR_STOP=1 -c "INSERT INTO operations_onboarding.invitation_events(invitation_id,event_type) VALUES ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','fixture')" > /tmp/audit-insert.out 2>&1 && { echo "FAIL: missing foreign key unexpectedly allowed"; exit 1; } || grep -q 'foreign key' /tmp/audit-insert.out
+          psql -v ON_ERROR_STOP=1 -c "INSERT INTO operations_onboarding.invitations(id,tenant_id,creator_id,recipient,assignment,issuer,subject_hash,state,expires_at) VALUES ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222','audit@example.invalid','{}','fixture',repeat('a',64),'CREATED',now()+interval '1 hour')"
+          psql -v ON_ERROR_STOP=1 -c "INSERT INTO operations_onboarding.invitation_events(invitation_id,event_type) VALUES ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','CREATED')"
+          psql -v ON_ERROR_STOP=1 -c "UPDATE operations_onboarding.invitation_events SET event_type='TAMPERED'" > /tmp/audit-update.out 2>&1 && { echo "FAIL: audit update allowed"; exit 1; } || grep -q 'INVITATION_AUDIT_IMMUTABLE' /tmp/audit-update.out
+          psql -v ON_ERROR_STOP=1 -c "DELETE FROM operations_onboarding.invitation_events" > /tmp/audit-delete.out 2>&1 && { echo "FAIL: audit delete allowed"; exit 1; } || grep -q 'INVITATION_AUDIT_IMMUTABLE' /tmp/audit-delete.out
       - name: Validate disposable tenant RLS regression
         run: psql -v ON_ERROR_STOP=1 -f docs/certification/b391-tenant-rls-regression.sql
       - name: Run experimental repository tests
