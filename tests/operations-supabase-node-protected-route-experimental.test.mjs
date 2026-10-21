@@ -27,3 +27,14 @@ test('B471 rejects ambiguous and malformed paths without calling authorization',
  }
  assert.equal(called,0);
 });
+
+test('B473 root-prefixed normal route reaches pipeline while interior empty segment is rejected',async()=>{
+ let count=0;
+ const handler=createNodeProtectedRouteHandler({pipeline:async()=>{count++;return {status:200,body:'{"ok":true}'};}});
+ for(const [url,status] of [['/api/fleet/tracking',200],['/api//tracking',404]]){
+  const res={setHeader:()=>{},end:()=>{}};
+  await handler({method:'GET',url,headers:{}},res);
+  assert.equal(res.statusCode,status);
+ }
+ assert.equal(count,1);
+});
