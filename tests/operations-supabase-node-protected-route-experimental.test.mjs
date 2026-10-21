@@ -75,3 +75,24 @@ test('B477 cookie-authenticated mutations require exact trusted Origin',async()=
  assert.equal(allowed.statusCode,200);
  assert.equal(calls,1);
 });
+
+test('B479 cross-site Fetch Metadata blocks mutations despite matching Origin',async()=>{
+ let calls=0;
+ const handler=createNodeProtectedRouteHandler({
+  expectedOrigin:'https://staging.iway.example',
+  pipeline:async()=>{calls++;return {status:200,body:'{"ok":true}'};}
+ });
+ for(const fetchSite of ['cross-site','same-site','none']){
+  const response={setHeader:()=>{},end:body=>response.body=body};
+  await handler({method:'POST',url:'/api/fleet/tracking',headers:{
+   origin:'https://staging.iway.example','sec-fetch-site':fetchSite
+  }},response);
+  assert.equal(response.statusCode,404);
+ }
+ const allowed={setHeader:()=>{},end:body=>allowed.body=body};
+ await handler({method:'POST',url:'/api/fleet/tracking',headers:{
+  origin:'https://staging.iway.example','sec-fetch-site':'same-origin'
+ }},allowed);
+ assert.equal(allowed.statusCode,200);
+ assert.equal(calls,1);
+});
