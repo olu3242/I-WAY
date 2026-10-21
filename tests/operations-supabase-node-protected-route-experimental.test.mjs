@@ -16,3 +16,14 @@ test('B470 Node adapter returns generic 503 when pipeline throws',async()=>{
  await handler({method:'GET',url:'/api/fleet/tracking',headers:{}},response);
  assert.equal(response.statusCode,503);assert.ok(!response.body.includes('SECRET_DATABASE_ERROR'));
 });
+
+test('B471 rejects ambiguous and malformed paths without calling authorization',async()=>{
+ let called=0;
+ const handler=createNodeProtectedRouteHandler({pipeline:async()=>{called++;return {status:200,body:'{"ok":true}'};}});
+ for(const url of ['https://evil.example/api/fleet/tracking','/api/%2fadmin','/api/%2e%2e/admin','/api/\\\\admin','/api/fleet/tracking#fragment']){
+  const response={setHeader:()=>{},end:body=>response.body=body};
+  await handler({method:'GET',url,headers:{}},response);
+  assert.equal(response.statusCode,404);
+ }
+ assert.equal(called,0);
+});
