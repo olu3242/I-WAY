@@ -6,14 +6,15 @@ import {join,resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {resolveAuthRuntimeConfig,createAuthRuntime} from '../server/operations-auth-runtime.mjs';
 import {packageAuthStaging} from '../scripts/package-auth-staging.mjs';
-const valid={VERCEL_ENV:'preview',IWAY_AUTH_ENABLED:'true',IWAY_AUTH_SCHEMA_APPROVED:'b498-v3',
- VERCEL_PROJECT_ID:'prj_synthetic_isolated',IWAY_STAGING_VERCEL_PROJECT_ID:'prj_synthetic_isolated',
+const valid={VERCEL_ENV:'preview',IWAY_AUTH_ENABLED:'true',IWAY_AUTH_SCHEMA_APPROVED:'b512-v4',
+ VERCEL_PROJECT_ID:'prj_7uof3CdmN1QvzKxETkXvHjlrLjVm',IWAY_STAGING_VERCEL_PROJECT_ID:'prj_7uof3CdmN1QvzKxETkXvHjlrLjVm',
  IWAY_AUTH_ORIGIN:'https://synthetic.example.org',IWAY_AUTH_APPROVED_ORIGIN:'https://synthetic.example.org',
  IWAY_AUTH_DATABASE_URL:'postgresql://iway_auth_runtime:synthetic@db.vnoxdinldneeczxibicp.supabase.co:5432/postgres',
  IWAY_SESSION_ENCRYPTION_KEY:Buffer.alloc(32,7).toString('base64url')};
 test('runtime requires isolated preview, approved origin, pinned database and TLS',()=>{
  const result=resolveAuthRuntimeConfig(valid);assert.equal(result.db.ssl.rejectUnauthorized,true);assert.ok(result.db.ssl.ca);
- for(const patch of [{VERCEL_ENV:'production'},{IWAY_AUTH_ENABLED:'false'},{IWAY_AUTH_SCHEMA_APPROVED:''},{IWAY_AUTH_SCHEMA_APPROVED:'b490-v2'},
+ for(const patch of [{VERCEL_ENV:'production'},{IWAY_AUTH_ENABLED:'false'},{IWAY_AUTH_SCHEMA_APPROVED:''},{IWAY_AUTH_SCHEMA_APPROVED:'b490-v2'},{IWAY_AUTH_SCHEMA_APPROVED:'b498-v3'},
+  {VERCEL_PROJECT_ID:'prj_other',IWAY_STAGING_VERCEL_PROJECT_ID:'prj_other'},
   {VERCEL_PROJECT_ID:'prj_0vutnbiNCYaxhdrbLfktrsHAvxty',IWAY_STAGING_VERCEL_PROJECT_ID:'prj_0vutnbiNCYaxhdrbLfktrsHAvxty'},
   {IWAY_AUTH_ORIGIN:'https://other.example.org'},{IWAY_AUTH_DATABASE_URL:valid.IWAY_AUTH_DATABASE_URL+'?sslmode=disable'},
   {IWAY_AUTH_DATABASE_URL:valid.IWAY_AUTH_DATABASE_URL.replace('iway_auth_runtime','postgres')},
@@ -31,6 +32,7 @@ test('deploy package includes runtime dependencies and excludes private docs, re
  const parent=await mkdtemp(join(tmpdir(),'iway-auth-package-'));const output=join(parent,'artifact');
  try{
   const files=await packageAuthStaging({output});assert.ok(files.includes('domain/authorization.mjs'));
+  const receipt=JSON.parse(await readFile(output+'.manifest.json','utf8'));assert.match(receipt.commit,/^[0-9a-f]{40}$/);assert.equal(receipt.projectId,'prj_7uof3CdmN1QvzKxETkXvHjlrLjVm');assert.match(receipt.files['api/index.mjs'],/^[0-9a-f]{64}$/);
   const names=await readdir(output);assert.deepEqual(names.sort(),['api','domain','package-lock.json','package.json','public','server','vercel.json']);
   const pkg=JSON.parse(await readFile(join(output,'package.json'),'utf8'));assert.deepEqual(Object.keys(pkg.dependencies),['pg']);
   const routes=JSON.parse(await readFile(join(output,'vercel.json'),'utf8'));assert.ok(routes.functions['api/index.mjs']);assert.equal(routes.outputDirectory,'public');assert.equal(routes.rewrites,undefined);

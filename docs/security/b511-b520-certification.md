@@ -101,3 +101,85 @@ B460 remains historical/review-only; B512 is the new candidate, not a claim of l
 Legacy sessions without verified provider expiry are explicitly revoked and encrypted token fields erased; this is irreversible secret erasure, already present in B490, and requires reauthentication. Do not restore erased tokens. After a committed staging change, disable authentication and restore only a proven schema-compatible application candidate; retain new tables and audit metadata. No destructive down migration, role deletion, or policy replacement is provided. Forward repair requires new reviewed SQL and a fresh restricted-role readiness check. Hosted rollback is NOT RUN because there is no deployment candidate.
 
 PostgreSQL 18 exposes NOT NULL constraints in pg_constraint and can report restrict_violation (23001) rather than foreign_key_violation (23503). Fixture assertions now compare original PK/FK/CHECK OIDs and accept either specific integrity violation for the denied user deletion. No authorization expectation was relaxed.
+
+## B516
+Objective: Hosted configuration readiness.
+Implementation completed: Read-only Vercel metadata reconfirmed exact project/team, Node24, all-deployment protection, verified domain, zero deployments and three preview variable names. Added metadata-only readiness assessor with negative tests. Pinned runtime to exact project and new b512-v4 schema marker; no hosted flags or secret values changed.
+Files changed: scripts/auth-staging-readiness.mjs; server/operations-auth-runtime.mjs; tests/operations-auth-readiness.test.mjs; docs/security/b516-staging-metadata.json; docs/security/b516-readiness.json.
+Tests passed / failed / skipped: focused authentication 86 / 0 / 0; repository 765 / 0 / 0 before final receipt; package build PASS.
+PostgreSQL verification: 16 / 0 / 0 including real restricted-role HTTP, encryption, RLS, rotation and recovery checks.
+GitHub CI: foundation eda3917670ad72c7164fc3133dd796d355982467 passed Verify39683556764, Auth lifecycle39683556603, B39139683556668, Identity39683556686; final changes pending.
+Commit SHA: final receipt / Git history.
+Hosted verification: BLOCKED: six missing variable names, secret provisioning, catalog/schema/runtime verification and provider callback approval.
+Security findings: neither metadata nor a local build proves a serving callback or successful provider authentication. Readiness outputs contain no secret values.
+Outstanding blockers: see issue register and explicit authorization steps below.
+Next execution: final regressions, exact-commit CI and certification report.
+Release decision: NO-GO.
+
+## B517
+Objective: Isolated application package and build.
+Implementation completed: Extended existing packager with adjacent non-served source manifest containing commit, dirty-source marker, exact packaged-file hashes and staging project. Actual standalone Vercel CLI54.2.0 build passed; emitted function/runtime/routes/static boundary/certificate verified. No deployment.
+Files changed: scripts/package-auth-staging.mjs; tests/operations-auth-runtime.test.mjs.
+Tests passed / failed / skipped: focused authentication 86 / 0 / 0; repository 765 / 0 / 0 before final receipt; package build PASS.
+PostgreSQL verification: 16 / 0 / 0 including real restricted-role HTTP, encryption, RLS, rotation and recovery checks.
+GitHub CI: foundation eda3917670ad72c7164fc3133dd796d355982467 passed Verify39683556764, Auth lifecycle39683556603, B39139683556668, Identity39683556686; final changes pending.
+Commit SHA: final receipt / Git history.
+Hosted verification: BLOCKED: readiness and explicit preview deployment authorization absent; no hosted endpoint/callback claim.
+Security findings: neither metadata nor a local build proves a serving callback or successful provider authentication. Readiness outputs contain no secret values.
+Outstanding blockers: see issue register and explicit authorization steps below.
+Next execution: final regressions, exact-commit CI and certification report.
+Release decision: NO-GO.
+
+## B518
+Objective: Hosted lifecycle gates.
+Implementation completed: Extended existing hosted verifier to require a deployment ID, current schema approval and provider approval before browser launch; records deployment ID in sanitized evidence. Positive/negative gate tests passed; real Supabase login was not run.
+Files changed: scripts/verify-hosted-auth.mjs; tests/operations-auth-hosted-gates.test.mjs.
+Tests passed / failed / skipped: focused authentication 86 / 0 / 0; repository 765 / 0 / 0 before final receipt; package build PASS.
+PostgreSQL verification: 16 / 0 / 0 including real restricted-role HTTP, encryption, RLS, rotation and recovery checks.
+GitHub CI: foundation eda3917670ad72c7164fc3133dd796d355982467 passed Verify39683556764, Auth lifecycle39683556603, B39139683556668, Identity39683556686; final changes pending.
+Commit SHA: final receipt / Git history.
+Hosted verification: BLOCKED: no deployment, approved synthetic provider identities or provider callback configuration.
+Security findings: neither metadata nor a local build proves a serving callback or successful provider authentication. Readiness outputs contain no secret values.
+Outstanding blockers: see issue register and explicit authorization steps below.
+Next execution: final regressions, exact-commit CI and certification report.
+Release decision: NO-GO.
+
+## B519
+Objective: Recovery, workload and rollback evidence.
+Implementation completed: Extended restricted PostgreSQL suite with a real blocking table lock: statement timeout denies authorization, release restores access. Measured 20 local authorization reads at concurrency4 with zero errors. Reused existing provider/storage/refresh/restart/expiry/revocation failure tests. No deployed fault injection or rollback attempted.
+Files changed: tests/local/operations-auth-postgres.test.mjs.
+Tests passed / failed / skipped: focused authentication 86 / 0 / 0; repository 765 / 0 / 0 before final receipt; package build PASS.
+PostgreSQL verification: 16 / 0 / 0 including real restricted-role HTTP, encryption, RLS, rotation and recovery checks.
+GitHub CI: foundation eda3917670ad72c7164fc3133dd796d355982467 passed Verify39683556764, Auth lifecycle39683556603, B39139683556668, Identity39683556686; final changes pending.
+Commit SHA: final receipt / Git history.
+Hosted verification: BLOCKED: no protected staging deployment and no known-good rollback candidate.
+Security findings: neither metadata nor a local build proves a serving callback or successful provider authentication. Readiness outputs contain no secret values.
+Outstanding blockers: see issue register and explicit authorization steps below.
+Next execution: final regressions, exact-commit CI and certification report.
+Release decision: NO-GO.
+
+### B519 measured local workload (not a staging baseline or capacity claim)
+PostgreSQL18/TLS on this workstation, 20 read authorizations, concurrency4: 13.429ms aggregate; p50 1.452ms, p95 6.028ms, 0 errors, observed 1489.31 requests/s over this tiny run. This workload is too small for sizing/SLA conclusions. Controlled authorization timeout took about two seconds and then recovered. Exact output retained in local dist/b511-evidence/auth-pg-final.log. CI repeats correctness, not a numeric threshold. Hosted database connection loss/restoration, provider fault injection, application restart, load, and rollback remain NOT RUN.
+
+## Issue register
+| ID | Severity | Root cause | Remediation / evidence | Status |
+| --- | --- | --- | --- | --- |
+| B511-01 | Critical | Catalog endpoint returns403 | Restore authorized project read access; no catalog rows obtained | BLOCKED |
+| B512-01 | High | B460 replaced FK/policies by name | New migration preserves equivalent OIDs and known B446 data; local PG18 and CI PG16 pass | Repository fixed; hosted unverified |
+| B513-01 | High | Effective roles/other schemas could escape narrow privilege inventory | Bidirectional membership and all non-system schema checks plus negative tests | PostgreSQL-tested |
+| B515-01 | Critical | Unknown live tenant/principal/fleet mapping | Explicit approved mapping required; new columns remain deny-default | BLOCKED |
+| B516-01 | Critical | Missing restricted DB/key/provider/approval configuration | Names-only inspection; secret-manager administrative workflow required | BLOCKED |
+| B516-02 | High | Runtime accepted arbitrary matching Vercel project IDs | Pinned exact isolated project; negative test | Unit-tested |
+| B517-01 | High | Package lacked exact source manifest | Non-served manifest with dirty marker and per-file hashes | Build-tested |
+| B518-01 | Critical | No real provider/deployment evidence | Hardened runner gates; do not substitute local signed identities | BLOCKED |
+| B519-01 | Critical | No rollback candidate or deployed recovery measurements | Local timeout/storage recovery executed; staging candidate needed | BLOCKED |
+
+## Administrative sequence required to unblock hosted work
+1. Restore authorized read-only catalog access for vnoxdinldneeczxibicp. Execute B511 catalog inventory and review live differences against every DDL matrix row, including early_access_leads isolation. Do not infer live state from fixtures.
+2. Approve exact B513 role script and B512 migration checksums against that catalog; establish restricted SCRAM credentials through the secret manager and validate effective rights independently. No credentials in chat or repository.
+3. Approve explicit tenant/principal/fleet/driver mapping and synthetic identities only. Existing B446 membership rows do not automatically become active runtime grants.
+4. Approve supported Supabase OAuth provider and exact HTTPS callback allowlist, and configure missing preview-only secret/nonsecret values. Set b512-v4 schema approval and auth-enabled only after corresponding checks pass.
+5. Authorize the protected preview from the exact clean CI-passing commit. Verify project ID, SSO enforcement, assigned hostname and real HTTPS route behavior before invoking the hosted verifier.
+6. Approve bounded staging-only fault injection and workload, identify and test a known-good rollback candidate, then independently evaluate B520. Production and real tester onboarding remain unauthorized.
+
+References consulted: PostgreSQL ALTER TABLE https://www.postgresql.org/docs/current/sql-altertable.html and Supabase RLS https://supabase.com/docs/guides/database/postgres/row-level-security . Grants, RLS and server resource policy remain separate requirements.

@@ -1,3 +1,5 @@
+import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
 // Explicit, allowlisted deploy artifact. Never copies docs, prototype, .env or marketing assets.
 import {mkdir,readdir,readFile,writeFile,copyFile} from 'node:fs/promises';
 import {resolve,dirname} from 'node:path';
@@ -29,6 +31,19 @@ export async function packageAuthStaging({source=resolve(dirname(fileURLToPath(i
  // Preserve exact transitive dependency integrity; omit development packages from installation.
  const subset={...lock,name:'iway-auth-staging',packages:{...lock.packages,'':{name:'iway-auth-staging',dependencies:{pg:pgVersion},engines:{node:'24.x'}}}};
  await writeFile(resolve(output,'package-lock.json'),JSON.stringify(subset,null,2)+'\n');
+ // Receipt is outside deploy output, never served. Dirty source is labeled, not certified.
+ const commit=execFileSync('git',['rev-parse','HEAD'],{cwd:source,encoding:'utf8'}).trim();
+ const clean=execFileSync('git',['status','--porcelain','--untracked-files=normal'],{cwd:source,encoding:'utf8'}).trim()==='';
+ const hashes={};
+ async function inventory(directory,prefix=''){
+  for(const entry of await readdir(directory,{withFileTypes:true})){
+   const name=prefix+entry.name;
+   if(entry.isDirectory())await inventory(resolve(directory,entry.name),name+'/');
+   else hashes[name]=createHash('sha256').update(await readFile(resolve(directory,entry.name))).digest('hex');
+  }
+ }
+ await inventory(output);
+ await writeFile(output+'.manifest.json',JSON.stringify({version:1,commit,clean,projectId:'prj_7uof3CdmN1QvzKxETkXvHjlrLjVm',files:hashes},null,2)+'\n');
  return [...files].sort();
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
