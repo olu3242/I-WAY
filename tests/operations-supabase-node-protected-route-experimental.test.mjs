@@ -96,3 +96,18 @@ test('B479 cross-site Fetch Metadata blocks mutations despite matching Origin',a
  assert.equal(allowed.statusCode,200);
  assert.equal(calls,1);
 });
+
+test('B481 pre-aborted requests never invoke protected pipeline',async()=>{
+ let calls=0;
+ const handler=createNodeProtectedRouteHandler({
+  pipeline:async()=>{calls++;return {status:200,body:'{"ok":true}'};}
+ });
+ const aborted={setHeader:()=>{},end:body=>aborted.body=body};
+ await handler({method:'GET',url:'/api/fleet/tracking',aborted:true,headers:{}},aborted);
+ assert.equal(aborted.statusCode,404);
+ assert.equal(calls,0);
+ const active={setHeader:()=>{},end:body=>active.body=body};
+ await handler({method:'GET',url:'/api/fleet/tracking',aborted:false,headers:{}},active);
+ assert.equal(active.statusCode,200);
+ assert.equal(calls,1);
+});
