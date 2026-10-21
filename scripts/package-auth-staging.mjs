@@ -18,6 +18,8 @@ export async function packageAuthStaging({source=resolve(dirname(fileURLToPath(i
  await collect('server/operations-auth-runtime.mjs');
  files.add('server/certs/supabase-prod-ca-2021.crt');
  for(const path of files){await mkdir(dirname(resolve(output,path)),{recursive:true});await copyFile(resolve(source,path),resolve(output,path));}
+ await mkdir(resolve(output,'public'),{recursive:true});
+ await writeFile(resolve(output,'public/404.html'),'<!doctype html><html lang="en"><meta charset="utf-8"><title>Not found</title><h1>Not found</h1></html>');
  await mkdir(resolve(output,'api'),{recursive:true});
  await copyFile(resolve(source,'deploy/auth-staging/api/index.mjs'),resolve(output,'api/index.mjs'));
  await copyFile(resolve(source,'deploy/auth-staging/vercel.json'),resolve(output,'vercel.json'));

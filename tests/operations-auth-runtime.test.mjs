@@ -31,9 +31,11 @@ test('deploy package includes runtime dependencies and excludes private docs, re
  const parent=await mkdtemp(join(tmpdir(),'iway-auth-package-'));const output=join(parent,'artifact');
  try{
   const files=await packageAuthStaging({output});assert.ok(files.includes('domain/authorization.mjs'));
-  const names=await readdir(output);assert.deepEqual(names.sort(),['api','domain','package-lock.json','package.json','server','vercel.json']);
+  const names=await readdir(output);assert.deepEqual(names.sort(),['api','domain','package-lock.json','package.json','public','server','vercel.json']);
   const pkg=JSON.parse(await readFile(join(output,'package.json'),'utf8'));assert.deepEqual(Object.keys(pkg.dependencies),['pg']);
-  const routes=JSON.parse(await readFile(join(output,'vercel.json'),'utf8'));assert.ok(routes.functions['api/index.mjs']);
+  const routes=JSON.parse(await readFile(join(output,'vercel.json'),'utf8'));assert.ok(routes.functions['api/index.mjs']);assert.equal(routes.outputDirectory,'public');assert.equal(routes.rewrites,undefined);
+  for(const path of ['/auth/login','/auth/callback','/auth/session','/auth/refresh','/auth/logout','/api/health','/api/resources/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/verify'])assert.equal(routes.routes.find(r=>new RegExp(r.src).test(path))?.dest,'/api/index');
+  for(const path of ['/server/operations-auth-runtime.mjs','/domain/authorization.mjs','/api/index','/auth/debug'])assert.equal(routes.routes.find(r=>new RegExp(r.src).test(path))?.status,404);
   await writeFile(join(output,'unexpected.txt'),'synthetic');await assert.rejects(packageAuthStaging({output}),/PACKAGE_OUTPUT_MUST_BE_EMPTY/);
   const handler=(await import(pathToFileURL(join(output,'api/index.mjs')))).default;
   let body;const response={setHeader(){},end(s){body=s;}};await handler({},response);assert.equal(response.statusCode,503);assert.equal(body.includes('synthetic'),false);

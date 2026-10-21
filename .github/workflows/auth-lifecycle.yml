@@ -39,3 +39,8 @@ jobs:
       - run: node scripts/package-auth-staging.mjs
       - run: npm ci --ignore-scripts --omit=dev
         working-directory: dist/auth-staging
+
+      - run: node scripts/check-auth-vercel-build.mjs prepare dist/auth-staging
+      - run: npm exec --yes --package=vercel@54.2.0 -- vercel build --target preview --standalone --non-interactive
+        working-directory: dist/auth-staging
+      - run: node scripts/check-auth-vercel-build.mjs verify dist/auth-staging

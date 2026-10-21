@@ -31,3 +31,11 @@ Provisioned preview-only nonsecret configuration: IWAY_STAGING_VERCEL_PROJECT_ID
 | V3-05 | Critical | Hosted routes/login/isolation/recovery/rollback absent | No deployment or hosted execution | BLOCKED |
 
 Next: validate real PostgreSQL CI, validate a Vercel local function build without credentials/deployment, add independently testable observability/recovery/fixture improvements, and record all blocked hosted gates explicitly.
+
+## B501: actual deployment-build remediation
+
+The first real Vercel CLI 54.2.0 local build exposed two defects not detected by the earlier package test: named wildcard rewrites injected `path` query parameters, and default static output included server/domain source. Corrected the function config to explicit regex routes with no query injection and outputDirectory=public; only a generic 404 page is static. Actual standalone output now verifies Node24, seven routes, safe unknown-route denial, no static backend source, and pinned CA inclusion via Vercel filePathMap/shared assets. No deployment was performed. CI now performs this build and checks emitted output.
+
+B498–B499 commit `730675a3a15940f9f1e587bcfb6de8b00664752b`: all four workflows passed: Verify 39584670779, Identity 39584670796, existing PostgreSQL 39584670843, auth lifecycle PostgreSQL 39584670790. Live schema compatibility remains blocked.
+
+B501 files: deploy/auth-staging/vercel.json; scripts/package-auth-staging.mjs; scripts/check-auth-vercel-build.mjs; tests/operations-auth-runtime.test.mjs; .github/workflows/auth-lifecycle.yml. New issue V3-06 (High): source exposure and callback rewrite defect repaired in repository and verified in actual local build; hosted evidence pending.
