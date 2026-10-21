@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "framework": null,
+  "functions": {
+    "api/index.mjs": {
+      "maxDuration": 30,
+      "includeFiles": "server/certs/**"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/auth/:path*",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/api/resources/:path*",
+      "destination": "/api/index"
+    }
+  ]
+}
