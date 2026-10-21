@@ -112,6 +112,8 @@ jobs:
           B442_FIXTURE_SCOPE="$scope" node scripts/test-b442-postgres-restart.mjs recover
       - name: Run B441 real PostgreSQL backend interruption and recovery
         run: node scripts/test-b441-postgres-backend-interruption.mjs
+      - name: Run B483 bounded HTTP body stream tests
+        run: node --test tests/operations-supabase-bounded-body-experimental.test.mjs
       - name: Run B480 real HTTP Fetch Metadata tests
         run: node --test tests/operations-supabase-real-http-fetch-metadata-experimental.test.mjs
       - name: Run B478 real HTTP origin isolation tests
