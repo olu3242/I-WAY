@@ -14,6 +14,11 @@ export function createNodeProtectedRouteHandler({pipeline,expectedOrigin}={}){
   const validFetchSite=!mutating||fetchSite===undefined||fetchSite==='same-origin';
   const validOrigin=!mutating||(typeof expectedOrigin==='string'&&/^https:\/\/[^/?#]+$/.test(expectedOrigin)&&origin===expectedOrigin);
   const contentLength=req?.headers?.['content-length'];
+  const transferEncoding=req?.headers?.['transfer-encoding'];
+  const validFraming=!mutating||(
+   !(contentLength!==undefined&&transferEncoding!==undefined)&&
+   (transferEncoding===undefined||transferEncoding==='chunked')
+  );
   const validLength=!mutating||(
    contentLength===undefined||(
     typeof contentLength==='string'&&/^(0|[1-9][0-9]*)$/.test(contentLength)&&
@@ -26,7 +31,7 @@ export function createNodeProtectedRouteHandler({pipeline,expectedOrigin}={}){
   const path=validUrl?rawUrl.split('?')[0]:undefined;
   let result;
   try{
-   if(requestActive&&validUrl&&validMethod&&validOrigin&&validFetchSite&&validLength){
+   if(requestActive&&validUrl&&validMethod&&validOrigin&&validFetchSite&&validLength&&validFraming){
     if(mutating&&typeof req?.[Symbol.asyncIterator]==='function')await readBoundedRequestBody(req);
     result=await pipeline({method,path,headers:req?.headers});
    }else result={status:404,body:'{"error":"NOT_FOUND"}'};
