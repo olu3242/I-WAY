@@ -6,7 +6,7 @@ export function createNodeProtectedRouteHandler({pipeline}={}){
   const method=req?.method;
   const rawUrl=req?.url;
   const pathPart=typeof rawUrl==='string'?rawUrl.split('?')[0]:'';
-  const validUrl=typeof rawUrl==='string'&&rawUrl.length<=4096&&/^\/[a-zA-Z0-9/_?=&.%-]*$/.test(rawUrl)&&!rawUrl.includes('\\\\')&&!rawUrl.includes('%')&&!pathPart.split('/').some(segment=>segment==='.'||segment==='..'||segment==='');
+  const validUrl=typeof rawUrl==='string'&&rawUrl.length<=4096&&/^\/[a-zA-Z0-9/_?=&.%-]*$/.test(rawUrl)&&!rawUrl.includes('\\\\')&&!rawUrl.includes('%')&&!pathPart.slice(1).split('/').some(segment=>segment==='.'||segment==='..'||segment==='');
   const path=validUrl?rawUrl.split('?')[0]:undefined;
   let result;
   try{result=validUrl?await pipeline({method,path,headers:req?.headers}):{status:404,body:'{"error":"NOT_FOUND"}'};}
