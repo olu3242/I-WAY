@@ -6,20 +6,20 @@ const origin='https://iway-auth-staging.vercel.app';
 const project='prj_7uof3CdmN1QvzKxETkXvHjlrLjVm';
 const uuid=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(x);
 export function hostedAuthConfig(env){
- if(env.IWAY_HOSTED_AUTH_APPROVED!=='true'||env.IWAY_HOSTED_SYNTHETIC_ONLY!=='true'||
+ if(!/^dpl_[A-Za-z0-9]+$/.test(env.IWAY_HOSTED_DEPLOYMENT_ID??'')||env.IWAY_AUTH_SCHEMA_APPROVED!=='b512-v4'||env.IWAY_HOSTED_PROVIDER_APPROVED!=='true'||env.IWAY_HOSTED_AUTH_APPROVED!=='true'||env.IWAY_HOSTED_SYNTHETIC_ONLY!=='true'||
   env.IWAY_AUTH_ORIGIN!==origin||env.IWAY_STAGING_VERCEL_PROJECT_ID!==project||
   !/^[0-9a-f]{40}$/.test(env.IWAY_HOSTED_COMMIT??'')||
   !uuid(env.IWAY_SYNTHETIC_OWN_RESOURCE)||!uuid(env.IWAY_SYNTHETIC_OTHER_RESOURCE)||
   env.IWAY_SYNTHETIC_OWN_RESOURCE===env.IWAY_SYNTHETIC_OTHER_RESOURCE)
   throw Error('HOSTED_AUTH_PREREQUISITES_MISSING');
- return {origin,project,commit:env.IWAY_HOSTED_COMMIT,own:env.IWAY_SYNTHETIC_OWN_RESOURCE,
+ return {origin,project,deploymentId:env.IWAY_HOSTED_DEPLOYMENT_ID,commit:env.IWAY_HOSTED_COMMIT,own:env.IWAY_SYNTHETIC_OWN_RESOURCE,
   other:env.IWAY_SYNTHETIC_OTHER_RESOURCE,bypass:env.VERCEL_AUTOMATION_BYPASS_SECRET};
 }
 export async function runHostedAuth({env=process.env,chromium}={}){
  const config=hostedAuthConfig(env);
  const engine=chromium??(await import('@playwright/test')).chromium;
  const evidence={schema:'iway-hosted-auth-v1',project,origin,commit:config.commit,syntheticOnly:true,
-  providerInteraction:'operator signs in with approved synthetic account',checks:[],requests:[],passed:false,
+  deploymentId:config.deploymentId,providerInteraction:'operator signs in with approved synthetic account',checks:[],requests:[],passed:false,
   databasePrivilegeCertification:false,rollbackCertification:false};
  const browser=await engine.launch({headless:false});
  const context=await browser.newContext(); // Never persist storageState, traces, video or screenshots.

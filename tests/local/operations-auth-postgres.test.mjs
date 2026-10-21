@@ -207,6 +207,23 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
     assert.deepEqual(retained.rows[0],{n:4,inactive:true});
    }finally{await deactivateAuthFixture(client);client.release();}
   });
+  await t.test('B519 local authorization timeout fails closed, restoration recovers, bounded workload is measured',async()=>{
+   const authorize=createPrivateResourceAuthorizer({pool:runtime});
+   const blocker=await admin.connect();
+   try{
+    await blocker.query('BEGIN');await blocker.query('LOCK TABLE iway_private.auth_resources IN ACCESS EXCLUSIVE MODE');
+    assert.equal(await authorize({userId:user,resourceId:resource}),false);
+   }finally{await blocker.query('ROLLBACK');blocker.release();}
+   assert.equal(await authorize({userId:user,resourceId:resource}),true);
+   const timings=[],count=20,started=performance.now();let errors=0;
+   for(let offset=0;offset<count;offset+=4)await Promise.all(Array.from({length:4},async()=>{
+    const at=performance.now();const allowed=await authorize({userId:user,resourceId:resource});
+    timings.push(performance.now()-at);if(!allowed)errors++;
+   }));
+   const elapsed=performance.now()-started;timings.sort((a,b)=>a-b);assert.equal(errors,0);
+   t.diagnostic(JSON.stringify({scope:'local restricted PostgreSQL authorization only',requests:count,concurrency:4,
+    elapsedMs:elapsed,p50Ms:timings[9],p95Ms:timings[18],errors,requestsPerSecond:count/(elapsed/1000),hosted:false}));
+  });
   await t.test('real HTTP to restricted PostgreSQL login-to-logout and replay',async()=>{
    const origin='https://staging.example.org';
    const provider={authorizationUrl:({challenge})=>'https://provider.example/authorize?code_challenge='+challenge,
