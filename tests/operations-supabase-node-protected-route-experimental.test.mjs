@@ -132,3 +132,28 @@ test('B482 rejects invalid or oversized declared mutation bodies before pipeline
  assert.equal(allowed.statusCode,200);
  assert.equal(calls,1);
 });
+
+test('B485 rejects ambiguous mutation request framing before authorization',async()=>{
+ let calls=0;
+ const handler=createNodeProtectedRouteHandler({
+  expectedOrigin:'https://staging.iway.example',
+  pipeline:async()=>{calls++;return {status:200};}
+ });
+ for(const framing of [
+  {'content-length':'4','transfer-encoding':'chunked'},
+  {'transfer-encoding':'gzip'},
+  {'transfer-encoding':'Chunked, gzip'}
+ ]){
+  const response={setHeader:()=>{},end:body=>response.body=body};
+  await handler({method:'POST',url:'/api/fleet/tracking',headers:{
+   origin:'https://staging.iway.example',...framing
+  }},response);
+  assert.equal(response.statusCode,404);
+ }
+ const allowed={setHeader:()=>{},end:body=>allowed.body=body};
+ await handler({method:'POST',url:'/api/fleet/tracking',headers:{
+  origin:'https://staging.iway.example','transfer-encoding':'chunked'
+ }},allowed);
+ assert.equal(allowed.statusCode,200);
+ assert.equal(calls,1);
+});
