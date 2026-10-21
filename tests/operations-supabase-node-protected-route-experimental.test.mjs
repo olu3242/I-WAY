@@ -38,3 +38,12 @@ test('B473 root-prefixed normal route reaches pipeline while interior empty segm
  }
  assert.equal(count,1);
 });
+
+test('B474 adapter cannot reflect downstream response bodies',async()=>{
+ const handler=createNodeProtectedRouteHandler({pipeline:async()=>({status:200,body:'{"access_token":"LEAK"}'})});
+ const res={setHeader:()=>{},end:body=>res.body=body};
+ await handler({method:'GET',url:'/api/fleet/tracking',headers:{}},res);
+ assert.equal(res.statusCode,200);
+ assert.deepEqual(JSON.parse(res.body),{ok:true});
+ assert.ok(!res.body.includes('LEAK'));
+});
