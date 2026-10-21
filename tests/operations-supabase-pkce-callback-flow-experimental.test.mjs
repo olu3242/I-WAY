@@ -16,3 +16,19 @@ test('B454 denies absent transaction and callback origin mismatch',async()=>{
  assert.equal((await callback({url:origin+'/auth/callback?code=valid&state='+state})).ok,false);
  assert.equal((await callback({url:'https://evil.example/auth/callback?code=valid&state='+state})).ok,false);
 });
+
+test('B461 invalid origin or code does not consume a legitimate PKCE transaction',async()=>{
+ const transactions=new Map([[state,{state,verifier:'v'.repeat(43)}]]);
+ let consumed=0;
+ const callback=createSupabasePkceCallback({
+  expectedOrigin:origin,
+  consumeTransaction:async key=>{consumed++;const item=transactions.get(key);transactions.delete(key);return item;},
+  exchangeCode:async()=>({user:{id:'user'},accessToken:'access',refreshToken:'refresh'}),
+  createSession:async()=>({id:'opaque'})
+ });
+ assert.equal((await callback({url:'https://evil.example/auth/callback?code=valid&state='+state})).ok,false);
+ assert.equal((await callback({url:origin+'/auth/callback?state='+state})).ok,false);
+ assert.equal(consumed,0);
+ assert.equal((await callback({url:origin+'/auth/callback?code=valid&state='+state})).ok,true);
+ assert.equal(consumed,1);
+});
