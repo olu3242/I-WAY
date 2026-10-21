@@ -11,7 +11,7 @@ const policies={
 export async function assertAuthDatabaseReady({query}){
  const fail=()=>{throw Error('AUTH_DATABASE_PRIVILEGES_INVALID');};
  const identity=await query(`SELECT current_user AS name,rolsuper,rolbypassrls,rolcreaterole,rolcreatedb,rolinherit,rolreplication,rolcanlogin,
-  EXISTS(SELECT 1 FROM pg_auth_members WHERE member=pg_roles.oid) AS member_of_role,
+  EXISTS(SELECT 1 FROM pg_auth_members WHERE member=pg_roles.oid OR roleid=pg_roles.oid) AS member_of_role,
   has_schema_privilege(current_user,'iway_private','CREATE') OR has_schema_privilege(current_user,'public','CREATE') AS can_create,
   has_schema_privilege('anon','iway_private','USAGE') OR has_schema_privilege('authenticated','iway_private','USAGE') AS client_schema
   FROM pg_roles WHERE rolname=current_user`);
@@ -50,7 +50,7 @@ export async function assertAuthDatabaseReady({query}){
   if(!expected||row.relname!==expected.table||row.polcmd!==expected.command||!row.polpermissive||!row.runtime_only||
    normalize(row.using_expression)!==normalize(expected.using)||normalize(row.check_expression)!==normalize(expected.check))fail();
  }
- const constraints=await query(`SELECT c.relname,k.contype,k.confdeltype,k.convalidated,
+ const constraints=await query(`SELECT c.relname,k.contype,k.confdeltype,k.confupdtype,k.confmatchtype,k.condeferrable,k.convalidated,
   refn.nspname AS reference_schema,ref.relname AS reference_table,
   ARRAY(SELECT a.attname::text FROM unnest(k.conkey) WITH ORDINALITY cols(num,position)
     JOIN pg_attribute a ON a.attrelid=k.conrelid AND a.attnum=cols.num ORDER BY cols.position) AS columns,
@@ -64,14 +64,14 @@ export async function assertAuthDatabaseReady({query}){
  for(const [table,columns] of Object.entries(keys))if(!constraints.rows.some(r=>r.relname===table&&r.contype==='p'&&r.convalidated&&JSON.stringify(r.columns)===JSON.stringify(columns)))fail();
  for(const row of constraints.rows.filter(r=>r.contype==='f')){
   const resource=row.relname==='auth_resources';
-  if(!['auth_server_sessions','auth_tenant_roles','auth_resources'].includes(row.relname)||!row.convalidated||row.confdeltype!=='r'||
+  if(!['auth_server_sessions','auth_tenant_roles','auth_resources'].includes(row.relname)||!row.convalidated||row.condeferrable||row.confupdtype!=='a'||row.confmatchtype!=='s'||!(row.confdeltype==='r'||row.relname==='auth_tenant_roles'&&row.confdeltype==='c')||
    row.reference_schema!==(resource?'iway_private':'auth')||row.reference_table!==(resource?'auth_tenants':'users')||
    JSON.stringify(row.columns)!==JSON.stringify([resource?'tenant_id':'user_id'])||JSON.stringify(row.reference_columns)!==JSON.stringify([resource?'tenant_id':'id']))fail();
  }
  const extra=await query(`SELECT EXISTS(SELECT 1 FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace
    WHERE n.nspname='iway_private' AND c.relname=ANY($1::text[]) AND NOT t.tgisinternal) AS triggers,
   EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
-   WHERE n.nspname IN ('public','auth','iway_private') AND c.relkind IN ('r','p','v','m')
+   WHERE n.nspname NOT IN ('pg_catalog','information_schema') AND n.nspname NOT LIKE 'pg_toast%' AND c.relkind IN ('r','p','v','m')
     AND NOT(n.nspname='iway_private' AND c.relname=ANY($1::text[]))
     AND (has_table_privilege(current_user,c.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') OR
      has_any_column_privilege(current_user,c.oid,'SELECT,INSERT,UPDATE,REFERENCES'))) AS unrelated_access`,[tables]);

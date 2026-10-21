@@ -24,9 +24,31 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
  const tokenPair=()=>({user:{id:user},accessToken:'synthetic-next-access',refreshToken:'synthetic-next-refresh',accessExpiresAt:new Date(Date.now()+300000)});
  const makeSession=()=>sessions.create({userId:user,accessToken:'synthetic-access',refreshToken:'synthetic-refresh',accessExpiresAt:new Date(Date.now()+300000)});
  try{
-  await admin.query("CREATE ROLE anon NOLOGIN; CREATE ROLE authenticated NOLOGIN; CREATE ROLE iway_auth_runtime LOGIN PASSWORD 'runtime_fixture_only' NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE NOINHERIT; CREATE SCHEMA auth; CREATE TABLE auth.users(id uuid PRIMARY KEY);");
+  await admin.query("CREATE ROLE anon NOLOGIN; CREATE ROLE authenticated NOLOGIN; CREATE SCHEMA auth; CREATE TABLE auth.users(id uuid PRIMARY KEY);");
+  await admin.query(await readFile(new URL('../../db/review-only/iway_auth_role_b513.sql',import.meta.url),'utf8'));
+  await admin.query("ALTER ROLE iway_auth_runtime PASSWORD 'runtime_fixture_only'"); // Synthetic disposable credential only.
   await admin.query('INSERT INTO auth.users VALUES($1),($2)',[user,otherUser]);
-  await admin.query(await readFile(new URL('../../db/review-only/iway_private_auth_sessions_b460.sql',import.meta.url),'utf8'));
+  // Recreate the historical B446 contract, not an asserted live schema snapshot.
+  await admin.query(await readFile(new URL('../../docs/certification/b446-supabase-auth-tenant-roles-staging.sql',import.meta.url),'utf8'));
+  await admin.query("ALTER TABLE iway_private.auth_tenant_roles RENAME CONSTRAINT auth_tenant_roles_user_id_fkey TO existing_identity_reference");
+  await admin.query("INSERT INTO iway_private.auth_tenant_roles(user_id,tenant_id,role) VALUES($1,$2,'driver')",[otherUser,tenant]);
+  const legacyRole=(await admin.query('SELECT user_id,tenant_id,role,granted_at,revoked_at FROM iway_private.auth_tenant_roles')).rows;
+  const legacyKeys=(await admin.query("SELECT oid,conname,pg_get_constraintdef(oid) AS definition FROM pg_constraint WHERE conrelid='iway_private.auth_tenant_roles'::regclass AND contype IN ('p','f','c') ORDER BY oid")).rows;
+  await admin.query(await readFile(new URL('../../db/review-only/iway_private_auth_sessions_b512.sql',import.meta.url),'utf8'));
+  await t.test('B512 preserves populated B446 records, key OIDs, existing CASCADE semantics and deny-default grants',async()=>{
+   assert.deepEqual((await admin.query('SELECT user_id,tenant_id,role,granted_at,revoked_at FROM iway_private.auth_tenant_roles')).rows,legacyRole);
+   assert.deepEqual((await admin.query("SELECT oid,conname,pg_get_constraintdef(oid) AS definition FROM pg_constraint WHERE conrelid='iway_private.auth_tenant_roles'::regclass AND conname IN ('auth_tenant_roles_pkey','auth_tenant_roles_role_check','existing_identity_reference') ORDER BY oid")).rows,legacyKeys);
+   const row=(await admin.query('SELECT active,permissions,principal_id,fleet_id FROM iway_private.auth_tenant_roles')).rows[0];
+   assert.deepEqual(row,{active:false,permissions:[],principal_id:null,fleet_id:null});
+   const policies=(await admin.query('SELECT oid,polname FROM pg_policy ORDER BY oid')).rows;
+   await admin.query(await readFile(new URL('../../db/review-only/iway_private_auth_sessions_b512.sql',import.meta.url),'utf8'));
+   assert.deepEqual((await admin.query('SELECT oid,polname FROM pg_policy ORDER BY oid')).rows,policies);
+   await admin.query(await readFile(new URL('../../db/review-only/iway_auth_preflight_b512.sql',import.meta.url),'utf8'));
+   await runtime.query(await readFile(new URL('../../db/review-only/iway_auth_postflight_b512.sql',import.meta.url),'utf8'));
+   await admin.query(await readFile(new URL('../../db/review-only/iway_auth_catalog_b498.sql',import.meta.url),'utf8'));
+   assert.equal(await assertAuthDatabaseReady({query}),true);
+  });
+
   await admin.query('INSERT INTO iway_private.auth_tenants VALUES($1,true),($2,true)',[tenant,otherTenant]);
   await admin.query("INSERT INTO iway_private.auth_tenant_roles(user_id,tenant_id,role,active,permissions,principal_id,fleet_id) VALUES($1,$2,'carrier',true,ARRAY['load:view'],$1,$2),($3,$4,'carrier',true,ARRAY['load:view'],$3,$4)",[user,tenant,otherUser,otherTenant]);
   await admin.query("INSERT INTO iway_private.auth_resources(resource_id,tenant_id,kind,fleet_id,driver_id,active) VALUES($1,$2,'load',$2,$3,true),($4,$5,'load',$5,$6,true)",[resource,tenant,user,otherResource,otherTenant,otherUser]);
@@ -34,20 +56,25 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
    const legacy='0'.repeat(64);
    await admin.query("INSERT INTO iway_private.auth_server_sessions(session_hash,user_id,access_token,refresh_token,expires_at) VALUES($1,$2,$3,$4,now()+interval '1 hour')",[legacy,user,cipher.encrypt('synthetic-legacy-access'),cipher.encrypt('synthetic-legacy-refresh')]);
    await admin.query('ALTER TABLE iway_private.auth_pkce_transactions ALTER COLUMN verifier SET NOT NULL');
-   await admin.query(await readFile(new URL('../../db/review-only/iway_private_auth_sessions_b460.sql',import.meta.url),'utf8'));
+   await admin.query(await readFile(new URL('../../db/review-only/iway_private_auth_sessions_b512.sql',import.meta.url),'utf8'));
    const row=(await admin.query('SELECT revoked_at,access_token,refresh_token FROM iway_private.auth_server_sessions WHERE session_hash=$1',[legacy])).rows[0];
    assert.ok(row.revoked_at);assert.equal(row.access_token,null);assert.equal(row.refresh_token,null);
    const column=(await admin.query("SELECT attnotnull FROM pg_attribute WHERE attrelid='iway_private.auth_pkce_transactions'::regclass AND attname='verifier'")).rows[0];assert.equal(column.attnotnull,false);
-   await assert.rejects(admin.query('DELETE FROM auth.users WHERE id=$1',[user]),error=>error.code==='23503');
+   await assert.rejects(admin.query('DELETE FROM auth.users WHERE id=$1',[user]),error=>['23503','23001'].includes(error.code));
   });
   await t.test('migration rejects incompatible columns and unreviewed policies without partial changes',async()=>{
-   const migration=(await readFile(new URL('../../db/review-only/iway_private_auth_sessions_b460.sql',import.meta.url),'utf8')).replace('BEGIN;','').replace(/COMMIT;\s*$/,'');
+   const migration=(await readFile(new URL('../../db/review-only/iway_private_auth_sessions_b512.sql',import.meta.url),'utf8')).replace('BEGIN;','').replace(/COMMIT;\s*$/,'');
    for(const mutation of [
     "ALTER TABLE iway_private.auth_server_sessions RENAME COLUMN expires_at TO incorrect_expiry",
     "ALTER TABLE iway_private.auth_server_sessions ALTER COLUMN access_expires_at TYPE text USING access_expires_at::text",
     "CREATE POLICY unexpected_allow ON iway_private.auth_resources USING(true)",
     "ALTER TABLE iway_private.auth_resources DROP CONSTRAINT auth_resources_pkey",
-    "ALTER TABLE iway_private.auth_resources DROP CONSTRAINT auth_resources_tenant_id_fkey"
+    "ALTER TABLE iway_private.auth_resources DROP CONSTRAINT auth_resources_tenant_id_fkey",
+    "DROP INDEX iway_private.iway_pkce_expiry_idx; CREATE INDEX iway_pkce_expiry_idx ON iway_private.auth_pkce_transactions(created_at)",
+    "ALTER TABLE iway_private.auth_pkce_transactions ADD COLUMN unexpected text NOT NULL",
+    "ALTER POLICY auth_runtime_roles ON iway_private.auth_tenant_roles USING(true)",
+    "ALTER TABLE iway_private.auth_tenant_roles DROP CONSTRAINT existing_identity_reference",
+    "ALTER TABLE iway_private.auth_tenant_roles DROP CONSTRAINT existing_identity_reference; ALTER TABLE iway_private.auth_tenant_roles ADD FOREIGN KEY(user_id) REFERENCES auth.users(id) ON DELETE SET NULL"
    ]){
     const client=await admin.connect();try{await client.query('BEGIN');await client.query(mutation);
      await assert.rejects(client.query(migration),/AUTH_SCHEMA_/);
@@ -65,6 +92,10 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
    try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query("ALTER POLICY auth_runtime_resources ON iway_private.auth_resources USING(active AND EXISTS(SELECT 1 FROM iway_private.auth_tenants t WHERE t.tenant_id=auth_resources.tenant_id))");}
    await admin.query('CREATE ROLE fixture_untrusted NOLOGIN; GRANT fixture_untrusted TO iway_auth_runtime');
    try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE fixture_untrusted FROM iway_auth_runtime');}
+   await admin.query('CREATE ROLE fixture_member NOLOGIN; GRANT iway_auth_runtime TO fixture_member');
+   try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE iway_auth_runtime FROM fixture_member');}
+   await admin.query('CREATE SCHEMA unrelated_business; CREATE TABLE unrelated_business.records(id int); GRANT SELECT ON unrelated_business.records TO iway_auth_runtime');
+   try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE SELECT ON unrelated_business.records FROM iway_auth_runtime');}
    assert.equal(await assertAuthDatabaseReady({query}),true);
   });
   await t.test('runtime privilege and RLS boundaries are real',async()=>{

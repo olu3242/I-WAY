@@ -34,16 +34,17 @@ SELECT c.relname,a.attname,a.attnotnull,a.attidentity,a.attgenerated,
 SELECT pg_describe_object(d.classid,d.objid,d.objsubid) AS dependent,d.deptype
  FROM pg_depend d WHERE d.refobjid=to_regclass('iway_private.auth_tenant_roles');
 SELECT n.nspname,c.relname,
- has_table_privilege('iway_auth_runtime',c.oid,'SELECT') AS can_select,
- has_table_privilege('iway_auth_runtime',c.oid,'INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') AS can_mutate
+ has_table_privilege((SELECT oid FROM pg_roles WHERE rolname='iway_auth_runtime'),c.oid,'SELECT') AS can_select,
+ has_table_privilege((SELECT oid FROM pg_roles WHERE rolname='iway_auth_runtime'),c.oid,'INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') AS can_mutate
  FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
  WHERE EXISTS(SELECT 1 FROM pg_roles WHERE rolname='iway_auth_runtime') AND n.nspname IN ('public','auth','iway_private')
  AND c.relkind IN ('r','p','v','m');
 -- History values: only version identifiers, never migration statements or row data.
-DO $history$ BEGIN
+DO $history$ DECLARE entry record; BEGIN
  IF to_regclass('supabase_migrations.schema_migrations') IS NOT NULL THEN
-  EXECUTE 'CREATE TEMP TABLE b511_versions ON COMMIT DROP AS SELECT version FROM supabase_migrations.schema_migrations';
- ELSE CREATE TEMP TABLE b511_versions(version text) ON COMMIT DROP; END IF;
+  FOR entry IN EXECUTE 'SELECT version FROM supabase_migrations.schema_migrations ORDER BY version' LOOP
+   RAISE NOTICE 'migration_version: %',entry.version;
+  END LOOP;
+ ELSE RAISE NOTICE 'migration_history_absent'; END IF;
 END $history$;
-SELECT version FROM b511_versions ORDER BY version;
 COMMIT;
