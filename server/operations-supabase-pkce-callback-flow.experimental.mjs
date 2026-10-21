@@ -13,12 +13,14 @@ export function createSupabasePkceCallback({consumeTransaction,exchangeCode,crea
    const input=new URL(url);
    const state=input.searchParams.get('state');
    if(!state||input.searchParams.getAll('state').length!==1)throw Error('PKCE_STATE_MISSING');
+   // Validate callback origin, path, state shape and code BEFORE consuming shared state.
+   // An attacker-controlled callback must not burn a legitimate login transaction.
+   parsed=parseSupabaseAuthCallback(url,{expectedOrigin,expectedState:state});
    // Consume before exchanging: failed exchange cannot be replayed.
    const transaction=await consumeTransaction(state);
    if(!transaction||typeof transaction.verifier!=='string'||typeof transaction.state!=='string')
     throw Error('PKCE_TRANSACTION_EXPIRED_OR_REPLAYED');
    assertPkceState(state,transaction.state);
-   parsed=parseSupabaseAuthCallback(url,{expectedOrigin,expectedState:transaction.state});
    const response=await exchangeCode({code:parsed.code,verifier:transaction.verifier});
    if(!response?.user?.id||!response?.accessToken||!response?.refreshToken)
     throw Error('PKCE_EXCHANGE_FAILED');
