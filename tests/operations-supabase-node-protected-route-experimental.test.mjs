@@ -111,3 +111,24 @@ test('B481 pre-aborted requests never invoke protected pipeline',async()=>{
  assert.equal(active.statusCode,200);
  assert.equal(calls,1);
 });
+
+test('B482 rejects invalid or oversized declared mutation bodies before pipeline',async()=>{
+ let calls=0;
+ const handler=createNodeProtectedRouteHandler({
+  expectedOrigin:'https://staging.iway.example',
+  pipeline:async()=>{calls++;return {status:200,body:'{"ok":true}'};}
+ });
+ for(const length of ['65537','-1','1.5','1e4','999999999999999999999999']){
+  const response={setHeader:()=>{},end:body=>response.body=body};
+  await handler({method:'POST',url:'/api/fleet/tracking',headers:{
+   origin:'https://staging.iway.example','content-length':length
+  }},response);
+  assert.equal(response.statusCode,404);
+ }
+ const allowed={setHeader:()=>{},end:body=>allowed.body=body};
+ await handler({method:'POST',url:'/api/fleet/tracking',headers:{
+  origin:'https://staging.iway.example','content-length':'65536'
+ }},allowed);
+ assert.equal(allowed.statusCode,200);
+ assert.equal(calls,1);
+});
