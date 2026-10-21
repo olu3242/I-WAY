@@ -10,13 +10,21 @@ const policies={
 };
 export async function assertAuthDatabaseReady({query}){
  const fail=()=>{throw Error('AUTH_DATABASE_PRIVILEGES_INVALID');};
- const identity=await query(`SELECT current_user AS name,rolsuper,rolbypassrls,rolcreaterole,rolcreatedb,rolinherit,rolreplication,rolcanlogin,
-  EXISTS(SELECT 1 FROM pg_auth_members WHERE member=pg_roles.oid OR roleid=pg_roles.oid) AS member_of_role,
-  has_schema_privilege(current_user,'iway_private','CREATE') OR has_schema_privilege(current_user,'public','CREATE') AS can_create,
+ const identity=await query(`SELECT current_user AS name,session_user AS login,rolsuper,rolbypassrls,rolcreaterole,rolcreatedb,rolinherit,rolreplication,rolcanlogin,
+  EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles administrator ON administrator.oid=m.member
+   JOIN pg_roles grantor ON grantor.oid=m.grantor
+   WHERE m.member=pg_roles.oid OR (m.roleid=pg_roles.oid AND NOT (
+    administrator.rolname='postgres' AND administrator.rolcreaterole
+    AND grantor.oid=10 AND grantor.rolsuper
+    AND m.admin_option AND NOT m.inherit_option AND NOT m.set_option))) AS member_of_role,
+  EXISTS(SELECT 1 FROM pg_namespace n WHERE n.nspname NOT LIKE 'pg_temp_%' AND n.nspname NOT LIKE 'pg_toast_temp_%'
+   AND (n.nspowner=pg_roles.oid OR has_schema_privilege(current_user,n.oid,'CREATE'))) AS can_create,
   has_schema_privilege('anon','iway_private','USAGE') OR has_schema_privilege('authenticated','iway_private','USAGE') AS client_schema
   FROM pg_roles WHERE rolname=current_user`);
  const role=identity.rows[0];
- if(role?.name!=='iway_auth_runtime'||role.rolsuper||role.rolbypassrls||role.rolcreaterole||role.rolcreatedb||
+ // PostgreSQL's bootstrap-granted creator ADMIN edge points *into* the runtime role.
+ // It confers no runtime inheritance; every outbound or other inbound edge still fails.
+ if(role?.name!=='iway_auth_runtime'||role.login!=='iway_auth_runtime'||role.rolsuper||role.rolbypassrls||role.rolcreaterole||role.rolcreatedb||
   role.rolinherit||role.rolreplication||!role.rolcanlogin||role.member_of_role||role.can_create||role.client_schema)fail();
  const relations=await query(`SELECT c.relname,c.relrowsecurity,c.relforcerowsecurity,
   pg_get_userbyid(c.relowner)=current_user AS owns,
@@ -73,6 +81,7 @@ export async function assertAuthDatabaseReady({query}){
   EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
    WHERE n.nspname NOT IN ('pg_catalog','information_schema') AND n.nspname NOT LIKE 'pg_toast%' AND c.relkind IN ('r','p','v','m')
     AND NOT(n.nspname='iway_private' AND c.relname=ANY($1::text[]))
+    AND has_schema_privilege(current_user,n.oid,'USAGE')
     AND (has_table_privilege(current_user,c.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') OR
      has_any_column_privilege(current_user,c.oid,'SELECT,INSERT,UPDATE,REFERENCES'))) AS unrelated_access`,[tables]);
  if(extra.rows[0]?.triggers||extra.rows[0]?.unrelated_access)fail();

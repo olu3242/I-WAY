@@ -94,12 +94,44 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
    try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE fixture_untrusted FROM iway_auth_runtime');}
    await admin.query('CREATE ROLE fixture_member NOLOGIN; GRANT iway_auth_runtime TO fixture_member');
    try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE iway_auth_runtime FROM fixture_member');}
-   await admin.query('CREATE SCHEMA unrelated_business; CREATE TABLE unrelated_business.records(id int); GRANT SELECT ON unrelated_business.records TO iway_auth_runtime');
+   await admin.query('CREATE SCHEMA unrelated_business; CREATE TABLE unrelated_business.records(id int); GRANT USAGE ON SCHEMA unrelated_business TO iway_auth_runtime; GRANT SELECT ON unrelated_business.records TO iway_auth_runtime');
    try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE SELECT ON unrelated_business.records FROM iway_auth_runtime');}
    assert.equal(await assertAuthDatabaseReady({query}),true);
   });
+  await t.test('B531 creator admin direction is accepted only with bootstrap grantor and no SET or INHERIT',async()=>{
+   await admin.query("DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='postgres') THEN CREATE ROLE postgres CREATEROLE; END IF; END $$");
+   await admin.query('GRANT iway_auth_runtime TO postgres WITH ADMIN TRUE, INHERIT FALSE, SET FALSE');
+   try{
+    assert.equal(await assertAuthDatabaseReady({query}),true);
+    await admin.query(await readFile(new URL('../../db/review-only/iway_auth_runtime_review_b533.sql',import.meta.url),'utf8'));
+    for(const option of ['SET','INHERIT']){
+     await admin.query(`GRANT iway_auth_runtime TO postgres WITH ${option} TRUE`);
+     await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);
+     await admin.query(`GRANT iway_auth_runtime TO postgres WITH ${option} FALSE`);
+    }
+    await admin.query('REVOKE iway_auth_runtime FROM postgres');
+    await admin.query('GRANT postgres TO iway_auth_runtime WITH INHERIT FALSE, SET FALSE');
+    try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}
+    finally{await admin.query('REVOKE postgres FROM iway_auth_runtime');}
+   }finally{await admin.query('REVOKE iway_auth_runtime FROM postgres');}
+   assert.equal(await assertAuthDatabaseReady({query}),true);
+  });
+  await t.test('B532 table ACL without schema USAGE is denied; granting USAGE or a public wrapper fails readiness',async()=>{
+   await admin.query('CREATE SCHEMA fixture_stats; CREATE VIEW fixture_stats.telemetry AS SELECT 1 AS counter; GRANT SELECT ON fixture_stats.telemetry TO PUBLIC');
+   assert.equal(await assertAuthDatabaseReady({query}),true);
+   await assert.rejects(runtime.query('SELECT * FROM fixture_stats.telemetry'),error=>error.code==='42501');
+   await admin.query('GRANT USAGE ON SCHEMA fixture_stats TO iway_auth_runtime');
+   try{
+    assert.equal((await runtime.query('SELECT * FROM fixture_stats.telemetry')).rows[0].counter,1);
+    await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);
+   }finally{await admin.query('REVOKE USAGE ON SCHEMA fixture_stats FROM iway_auth_runtime');}
+   await admin.query('CREATE VIEW public.fixture_stats_wrapper AS SELECT * FROM fixture_stats.telemetry; GRANT SELECT ON public.fixture_stats_wrapper TO PUBLIC');
+   try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}
+   finally{await admin.query('REVOKE SELECT ON public.fixture_stats_wrapper FROM PUBLIC');}
+   assert.equal(await assertAuthDatabaseReady({query}),true);
+  });
   await t.test('runtime privilege and RLS boundaries are real',async()=>{
-   assert.equal((await runtime.query('SELECT current_user')).rows[0].current_user,'iway_auth_runtime');
+   assert.deepEqual((await runtime.query('SELECT current_user,session_user')).rows[0],{current_user:'iway_auth_runtime',session_user:'iway_auth_runtime'});
    assert.equal((await runtime.query('SELECT * FROM iway_private.auth_tenant_roles')).rowCount,0);
    assert.equal((await runtime.query('SELECT * FROM iway_private.auth_resources')).rowCount,0);
    for(const sql of ["DELETE FROM iway_private.auth_server_sessions","UPDATE iway_private.auth_tenant_roles SET active=true","SELECT * FROM auth.users","CREATE TABLE iway_private.forbidden(id int)"]){

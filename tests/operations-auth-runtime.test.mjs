@@ -23,10 +23,16 @@ test('runtime requires isolated preview, approved origin, pinned database and TL
 test('runtime denies elevated roles and excessive table rights before accepting requests',async()=>{
  for(const elevated of [true,false]){
   let closed=false,calls=0;
-  class Pool {on(){} async end(){closed=true;} async query(){calls++;return calls===1?{rows:[{name:'iway_auth_runtime',rolsuper:elevated,rolcanlogin:true}]}:
+  class Pool {on(){} async end(){closed=true;} async query(){calls++;return calls===1?{rows:[{name:'iway_auth_runtime',login:'iway_auth_runtime',rolsuper:elevated,rolcanlogin:true}]}:
    {rowCount:5,rows:[{relrowsecurity:true,relforcerowsecurity:true,owns:false,excessive:true}]};}}
   await assert.rejects(createAuthRuntime({env:valid,PoolClass:Pool}),/AUTH_RUNTIME_UNAVAILABLE/);assert.equal(closed,true);assert.equal(calls,elevated?1:2);
  }
+});
+test('runtime rejects an administrative login switched to the runtime role',async()=>{
+ let closed=false;
+ class Pool {on(){} async end(){closed=true;} async query(){return {rows:[{name:'iway_auth_runtime',login:'postgres',rolcanlogin:true}]};}}
+ await assert.rejects(createAuthRuntime({env:valid,PoolClass:Pool}),/AUTH_RUNTIME_UNAVAILABLE/);
+ assert.equal(closed,true);
 });
 test('deploy package includes runtime dependencies and excludes private docs, requires empty output',async()=>{
  const parent=await mkdtemp(join(tmpdir(),'iway-auth-package-'));const output=join(parent,'artifact');
