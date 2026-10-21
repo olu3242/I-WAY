@@ -47,3 +47,14 @@ test('B474 adapter cannot reflect downstream response bodies',async()=>{
  assert.deepEqual(JSON.parse(res.body),{ok:true});
  assert.ok(!res.body.includes('LEAK'));
 });
+
+test('B475 rejects unsupported HTTP methods without calling protected pipeline',async()=>{
+ let calls=0;
+ const handler=createNodeProtectedRouteHandler({pipeline:async()=>{calls++;return {status:200,body:'{"ok":true}'};}});
+ for(const method of ['HEAD','OPTIONS','TRACE','CONNECT','get','']){
+  const response={setHeader:()=>{},end:body=>response.body=body};
+  await handler({method,url:'/api/fleet/tracking',headers:{}},response);
+  assert.equal(response.statusCode,404);
+ }
+ assert.equal(calls,0);
+});
