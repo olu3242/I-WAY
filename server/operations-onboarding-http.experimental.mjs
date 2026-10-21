@@ -1,0 +1,50 @@
+// B400 experimental HTTP boundary; isolated fixture use only.
+// The server owns verifier and provisioning dependencies. No public route wiring.
+import {createServer} from 'node:http';
+export function createIsolatedOnboardingHttpServer({verifiedProvisioning,resolveInvitationContext,challengeCustody,clearNonce}){
+ if(typeof resolveInvitationContext!=='function')throw Error('TRUSTED_INVITATION_RESOLVER_REQUIRED');
+ if(!verifiedProvisioning||typeof verifiedProvisioning.provision!=='function')
+  throw Error('HTTP_PROVISIONING_CONFIGURATION_REQUIRED');
+ return createServer(async(req,res)=>{
+  const respond=(status,body)=>{res.writeHead(status,{'content-type':'application/json','cache-control':'no-store'});res.end(JSON.stringify(body));};
+  const challengeRequest=req.method==='POST'&&req.url==='/experimental/onboarding/challenge';
+  if(!challengeRequest&&(req.method!=='POST'||req.url!=='/experimental/onboarding/provision'))
+   return respond(404,{error:'NOT_FOUND'});
+  let raw='';
+  try{
+   for await(const chunk of req){
+    raw+=chunk.toString('utf8');
+    if(raw.length>16384)throw Error('REQUEST_TOO_LARGE');
+   }
+   const body=JSON.parse(raw);
+   if(!body||typeof body!=='object'||Array.isArray(body))throw Error('INVALID_REQUEST');
+   if(challengeRequest){
+    if(!challengeCustody||typeof challengeCustody.issue!=='function')throw Error('CHALLENGE_ROUTE_DISABLED');
+    const authorization=req.headers.authorization;
+    if(typeof authorization!=='string'||!authorization.startsWith('Bearer '))throw Error('AUTHENTICATION_REQUIRED');
+    const issued=await challengeCustody.issue({sessionToken:authorization.slice(7),invitationId:body.invitationId});
+    return respond(200,{nonce:issued.nonce});
+   }
+   if(typeof body.invitationId!=='string'||!body.invitationId||typeof body.token!=='string'||!body.token)
+    throw Error('INVALID_REQUEST');
+   // Resolve tenant, role, actor and challenge on the trusted server side.
+   // Never forward authority supplied in the HTTP request body.
+   const context=await resolveInvitationContext({invitationId:body.invitationId});
+   if(!context||context.invitationId!==body.invitationId||!context.tenantId
+    ||!context.actorId||!context.role||!context.expectedNonce)
+    throw Error('INVITATION_CONTEXT_REJECTED');
+   const result=await verifiedProvisioning.provision({
+    invitationId:context.invitationId,tenantId:context.tenantId,
+    actorId:context.actorId,role:context.role,
+    token:body.token,expectedNonce:context.expectedNonce
+   });
+   // Clear raw nonce custody only after successful, committed provisioning.
+   // A cleanup failure fails closed; caller must not receive a success response.
+   if(typeof clearNonce==='function')
+    await clearNonce({invitationId:context.invitationId,tenantId:context.tenantId});
+   return respond(200,{state:result.state,invitationId:result.invitationId});
+  }catch{
+   return respond(403,{error:'PROVISIONING_DENIED'});
+  }
+ });
+}

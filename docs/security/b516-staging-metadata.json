@@ -1,0 +1,42 @@
+{
+  "source": "read-only Vercel CLI inspection 2026-10-21",
+  "project": {
+    "id": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+    "accountId": "team_zNHlJbJHa4YZFwN4p9lcHzEH",
+    "nodeVersion": "24.x",
+    "ssoProtection": {
+      "deploymentType": "all"
+    }
+  },
+  "envs": [
+    {
+      "key": "IWAY_AUTH_ENABLED",
+      "type": "plain",
+      "target": [
+        "preview"
+      ]
+    },
+    {
+      "key": "IWAY_STAGING_VERCEL_PROJECT_ID",
+      "type": "plain",
+      "target": [
+        "preview"
+      ]
+    },
+    {
+      "key": "IWAY_AUTH_ORIGIN",
+      "type": "plain",
+      "target": [
+        "preview"
+      ]
+    }
+  ],
+  "domains": [
+    {
+      "name": "iway-auth-staging.vercel.app",
+      "projectId": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "verified": true
+    }
+  ],
+  "deployments": []
+}

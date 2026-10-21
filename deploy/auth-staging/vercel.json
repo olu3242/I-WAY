@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "framework": null,
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.mjs": {
+      "maxDuration": 30,
+      "includeFiles": "server/certs/**"
+    }
+  },
+  "routes": [
+    {
+      "src": "^/api/health$",
+      "dest": "/api/index"
+    },
+    {
+      "src": "^/auth/(?:login|callback|session|refresh|logout)$",
+      "dest": "/api/index"
+    },
+    {
+      "src": "^/api/resources/[0-9a-fA-F-]{36}/verify$",
+      "dest": "/api/index"
+    },
+    {
+      "src": "^/.*$",
+      "status": 404
+    }
+  ]
+}

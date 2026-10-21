@@ -1,0 +1,208 @@
+name: B391 B392 isolated PostgreSQL verification
+on:
+  pull_request:
+    branches: [fix/iway-e2e-identity-access-remediation]
+  push:
+    branches: [work/b391-b398-hosted-identity-certification]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: fixture_only_password
+          POSTGRES_DB: iway_fixture
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d iway_fixture"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGPASSWORD: fixture_only_password
+      PGHOST: 127.0.0.1
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGDATABASE: iway_fixture
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify SQL fixture applies and denies unprivileged access
+        run: |
+          set -eu
+          psql -v ON_ERROR_STOP=1 -f docs/certification/b391-postgres-onboarding-fixture.sql
+          psql -v ON_ERROR_STOP=1 -c "CREATE ROLE iway_fixture_reader LOGIN PASSWORD 'reader_fixture_only';"
+          psql -v ON_ERROR_STOP=1 -c "GRANT USAGE ON SCHEMA operations_onboarding TO iway_fixture_reader;"
+          PGPASSWORD=reader_fixture_only PGUSER=iway_fixture_reader psql -v ON_ERROR_STOP=1 -c "SELECT count(*) FROM operations_onboarding.invitations;" > /tmp/reader.out 2>&1 && { echo "FAIL: unexpected read"; exit 1; } || grep -q 'permission denied' /tmp/reader.out
+          psql -v ON_ERROR_STOP=1 -Atc "SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_onboarding' AND c.relkind='r' AND c.relrowsecurity AND c.relforcerowsecurity" | grep -qx 8
+      - name: Verify audit immutability as fixture owner
+        run: |
+          set -eu
+          psql -v ON_ERROR_STOP=1 -c "INSERT INTO operations_onboarding.invitation_events(invitation_id,event_type) VALUES ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','fixture')" > /tmp/audit-insert.out 2>&1 && { echo "FAIL: missing foreign key unexpectedly allowed"; exit 1; } || grep -q 'foreign key' /tmp/audit-insert.out
+          psql -v ON_ERROR_STOP=1 -c "INSERT INTO operations_onboarding.invitations(id,tenant_id,creator_id,recipient,assignment,issuer,subject_hash,state,expires_at) VALUES ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','44444444-4444-4444-8444-444444444444','22222222-2222-4222-8222-222222222222','audit@example.invalid','{}','fixture',repeat('a',64),'CREATED',now()+interval '1 hour')"
+          psql -v ON_ERROR_STOP=1 -c "INSERT INTO operations_onboarding.invitation_events(invitation_id,event_type) VALUES ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','CREATED')"
+          psql -v ON_ERROR_STOP=1 -c "UPDATE operations_onboarding.invitation_events SET event_type='TAMPERED'" > /tmp/audit-update.out 2>&1 && { echo "FAIL: audit update allowed"; exit 1; } || grep -q 'INVITATION_AUDIT_IMMUTABLE' /tmp/audit-update.out
+          psql -v ON_ERROR_STOP=1 -c "DELETE FROM operations_onboarding.invitation_events" > /tmp/audit-delete.out 2>&1 && { echo "FAIL: audit delete allowed"; exit 1; } || grep -q 'INVITATION_AUDIT_IMMUTABLE' /tmp/audit-delete.out
+      - name: Validate disposable tenant RLS regression
+        run: psql -v ON_ERROR_STOP=1 -f docs/certification/b391-tenant-rls-regression.sql
+      - name: Run eight-session PostgreSQL transition race
+        run: bash scripts/test-b392-postgres-concurrency.sh
+      - name: Run B393 concurrent acceptance and rollback regression
+        run: bash scripts/test-b393-postgres-acceptance.sh
+      - name: Run B394 trusted identity boundary tests
+        run: node --test tests/operations-pg-identity-boundary-experimental.test.mjs
+      - name: Run B401 isolated HTTP to PostgreSQL integration
+        run: |
+          npm ci --ignore-scripts
+          node scripts/test-b401-http-postgres-provisioning.mjs
+      - name: Run B436 PostgreSQL durable nonce custody tests
+        run: node --test tests/operations-pg-nonce-custody-experimental.test.mjs
+      - name: Run B435 PostgreSQL-only recovery reconciler tests
+        run: node --test tests/operations-pg-only-nonce-reconciler-experimental.test.mjs
+      - name: Run B434 hosted release evidence gate tests
+        run: node --test tests/operations-identity-release-gates-experimental.test.mjs
+      - name: Run B433 strict fenced cleanup worker tests
+        run: node --test tests/operations-certified-nonce-cleanup-worker-experimental.test.mjs
+      - name: Run B419 bounded cleanup worker tests
+        run: node --test tests/operations-nonce-cleanup-worker-experimental.test.mjs
+      - name: Run B417 durable cleanup job repository tests
+        run: node --test tests/operations-pg-nonce-cleanup-jobs-experimental.test.mjs
+      - name: Run B416 PostgreSQL activation lookup tests
+        run: node --test tests/operations-pg-activation-lookup-experimental.test.mjs
+      - name: Run B415 post-commit nonce cleanup reconciliation tests
+        run: node --test tests/operations-nonce-cleanup-reconciler-experimental.test.mjs
+      - name: Run B412 ephemeral nonce custody lifecycle tests
+        run: node --test tests/operations-ephemeral-nonce-store-experimental.test.mjs
+      - name: Run B443 PostgreSQL restart and expired lease takeover
+        run: |
+          set -eu
+          scope=$(node scripts/test-b443-postgres-restart-takeover.mjs seed)
+          container="${{ job.services.postgres.id }}"
+          docker restart "$container"
+          ready=0
+          for attempt in $(seq 1 40); do
+            if pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          test "$ready" -eq 1
+          B443_FIXTURE_SCOPE="$scope" node scripts/test-b443-postgres-restart-takeover.mjs recover
+      - name: Run B442 real disposable PostgreSQL service restart
+        run: |
+          set -eu
+          scope=$(node scripts/test-b442-postgres-restart.mjs seed)
+          container="${{ job.services.postgres.id }}"
+          docker restart "$container"
+          ready=0
+          for attempt in $(seq 1 40); do
+            if pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          test "$ready" -eq 1
+          B442_FIXTURE_SCOPE="$scope" node scripts/test-b442-postgres-restart.mjs recover
+      - name: Run B441 real PostgreSQL backend interruption and recovery
+        run: node scripts/test-b441-postgres-backend-interruption.mjs
+      - name: Run B484 real HTTP chunked body limit tests
+        run: node --test tests/operations-supabase-real-http-body-limit-experimental.test.mjs
+      - name: Run B483 bounded HTTP body stream tests
+        run: node --test tests/operations-supabase-bounded-body-experimental.test.mjs
+      - name: Run B480 real HTTP Fetch Metadata tests
+        run: node --test tests/operations-supabase-real-http-fetch-metadata-experimental.test.mjs
+      - name: Run B478 real HTTP origin isolation tests
+        run: node --test tests/operations-supabase-real-http-origin-integration-experimental.test.mjs
+      - name: Run B476 real HTTP protected route integration tests
+        run: node --test tests/operations-supabase-real-http-integration-experimental.test.mjs
+      - name: Run B470 Node HTTP route adapter tests
+        run: node --test tests/operations-supabase-node-protected-route-experimental.test.mjs
+      - name: Run B469 composed route pipeline tests
+        run: node --test tests/operations-supabase-protected-route-pipeline-experimental.test.mjs
+      - name: Run B468 protected HTTP response tests
+        run: node --test tests/operations-supabase-protected-http-response-experimental.test.mjs
+      - name: Run B467 trusted route authorization tests
+        run: node --test tests/operations-supabase-trusted-route-guard-experimental.test.mjs
+      - name: Run B466 session HTTP guard tests
+        run: node --test tests/operations-supabase-session-http-guard-experimental.test.mjs
+      - name: Run B465 session tenant authorization tests
+        run: node --test tests/operations-supabase-session-tenant-auth-experimental.test.mjs
+      - name: Run B464 local-first logout tests
+        run: node --test tests/operations-supabase-logout-flow-experimental.test.mjs
+      - name: Run B463 secure session configuration tests
+        run: node --test tests/operations-supabase-session-config-experimental.test.mjs
+      - name: Run B457 encrypted token storage tests
+        run: node --test tests/operations-supabase-token-cipher-experimental.test.mjs
+      - name: Run B456 opaque session store tests
+        run: node --test tests/operations-supabase-opaque-session-store-experimental.test.mjs
+      - name: Run B455 PostgreSQL PKCE transaction store tests
+        run: node --test tests/operations-supabase-pkce-postgres-store-experimental.test.mjs
+      - name: Run B454 one-time PKCE callback tests
+        run: node --test tests/operations-supabase-pkce-callback-flow-experimental.test.mjs
+      - name: Run B453 PKCE and session security tests
+        run: node --test tests/operations-supabase-pkce-session-experimental.test.mjs
+      - name: Run B452-B459 protected HTTP authorization tests
+        run: node --test tests/operations-supabase-protected-http-experimental.test.mjs
+      - name: Run B451 Supabase callback validation tests
+        run: node --test tests/operations-supabase-auth-callback-experimental.test.mjs
+      - name: Run B450 Supabase staging configuration tests
+        run: node --test tests/operations-supabase-staging-config-experimental.test.mjs
+      - name: Run B448 Supabase tenant authorization tests
+        run: node --test tests/operations-supabase-tenant-authorization-experimental.test.mjs
+      - name: Run B447 Supabase tenant-role persistence tests
+        run: node --test tests/operations-supabase-tenant-role-store-experimental.test.mjs
+      - name: Run B446 Supabase Auth test invitation tests
+        run: node --test tests/operations-supabase-test-invitations-experimental.test.mjs
+      - name: Run B445 recovery readiness certification tests
+        run: node --test tests/operations-recovery-readiness-experimental.test.mjs
+      - name: Run B444 secret-free recovery telemetry tests
+        run: node --test tests/operations-nonce-cleanup-telemetry-experimental.test.mjs
+      - name: Run B440 PostgreSQL outage and recovery regressions
+        run: node --test tests/operations-pg-outage-recovery-experimental.test.mjs
+      - name: Run B439 real worker process interruption and lease recovery
+        run: node scripts/test-b439-process-restart.mjs
+      - name: Run B422 two-session PostgreSQL cleanup job lease race
+        run: node scripts/test-b422-pg-job-leases.mjs
+      - name: Run B410 two-session PostgreSQL nonce issuance race
+        run: node scripts/test-b410-pg-concurrent-nonce.mjs
+      - name: Run B406 authenticated challenge custody tests
+        run: node --test tests/operations-authenticated-challenge-experimental.test.mjs
+      - name: Run B405 server-owned nonce binding tests
+        run: node --test tests/operations-pg-trusted-nonce-experimental.test.mjs
+      - name: Run B404 trusted PostgreSQL invitation context tests
+        run: node --test tests/operations-pg-invitation-context-experimental.test.mjs
+      - name: Run B400 isolated HTTP onboarding boundary tests
+        run: node --test tests/operations-onboarding-http-experimental.test.mjs
+      - name: Run B399 real JavaScript PostgreSQL provisioning integration
+        run: |
+          npm ci --ignore-scripts
+          node scripts/test-b399-pg-js-provisioning.mjs
+      - name: Run OIDC full PostgreSQL provisioning rollback regression
+        run: bash scripts/test-oidc-postgres-full-rollback.sh
+      - name: Run OIDC full PostgreSQL provisioning transaction regression
+        run: bash scripts/test-oidc-postgres-full-provisioning.sh
+      - name: Run OIDC nonce atomicity PostgreSQL regression
+        run: bash scripts/test-oidc-postgres-nonce-atomicity.sh
+      - name: Run B397 concurrent PostgreSQL proof replay regression
+        run: bash scripts/test-b397-postgres-proof-replay.sh
+      - name: Run B395 PostgreSQL provisioning rollback and tenant regression
+        run: bash scripts/test-b395-postgres-provisioning.sh
+      - name: Run isolated OIDC nonce challenge tests
+        run: node --test tests/operations-pg-nonce-challenges-experimental.test.mjs
+      - name: Run isolated hosted OIDC cryptographic verification tests
+        run: node --test tests/operations-hosted-oidc-experimental.test.mjs
+      - name: Run B398 tenant session authorization tests
+        run: node --test tests/operations-pg-session-authorization-experimental.test.mjs
+      - name: Run B396 verified provisioning boundary tests
+        run: node --test tests/operations-pg-verified-provisioning-experimental.test.mjs
+      - name: Run B395 provisioning contract tests
+        run: node --test tests/operations-pg-provisioning-experimental.test.mjs
+      - name: Run experimental repository tests
+        run: node --test tests/operations-pg-invitations-experimental.test.mjs

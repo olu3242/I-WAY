@@ -1,0 +1,59 @@
+# B498–B510 certification register
+
+Production: **NO-GO**. Baseline afec06565a18ca281ffa4c60730002440229c763. No production release, hosted migration, tester invitation or application deployment is authorized by a passing fixture.
+
+## B498–B499: schema compatibility and effective privileges
+
+Authorized read-only catalog query on vnoxdinldneeczxibicp was denied by Supabase MCP (-32600). Project metadata lookup was also denied. No alternate privileged connection was attempted. The prompt's reported missing tables and region cannot be independently reconfirmed. Live schema compatibility remains blocked.
+
+Repository correction: review SQL now validates existing column types and required fields, primary keys, resource foreign key, unexpected foreign keys, triggers and policies before mutation; rejects inherited runtime role memberships; uses bounded DDL/lock deadlines. Runtime startup checks effective column/table grants, client schema access, role attributes/memberships, actual columns, policy expressions, PK/FK retention contracts and unrelated table access. Unknown structures fail closed for administrative review. This draft is not an approved migration.
+
+Files: db/review-only/iway_private_auth_sessions_b460.sql; db/review-only/iway_auth_catalog_b498.sql; server/operations-auth-schema-contract.mjs; server/operations-auth-database-check.mjs; server/operations-auth-runtime.mjs; tests/operations-auth-runtime.test.mjs; tests/local/operations-auth-postgres.test.mjs.
+
+Tests: focused 82 passed / 0 failed / 0 skipped; full 761 / 0 / 0 before remote CI. Expanded real PostgreSQL compatibility/privilege drift cases await CI. Commit and CI receipts will be recorded after execution.
+
+Administrative workflow required: authorize read-only catalog inventory, review its metadata and migration history, provision the restricted role separately, review the exact SQL checksum against current catalog, approve staging migration, then validate with the restricted identity. No owner-role shortcut. Rollback before COMMIT is transactional; after commit disable auth and roll back application only to a schema-compatible preview. Retain metadata and restrictive FKs; erased tokens cannot be restored and require reauthentication. No destructive down migration.
+
+## B500: current staging inventory
+
+Vercel team team_zNHlJbJHa4YZFwN4p9lcHzEH; project prj_7uof3CdmN1QvzKxETkXvHjlrLjVm / iway-auth-staging. Node 24.x, framework Other, root ., no Git deployment connection, no deployments, protection enabled for all deployments. The project-domains API confirms iway-auth-staging.vercel.app verified=true; the project summary's empty domains array is not the domain inventory. HTTPS application serving/callback routing remain unverified.
+
+Provisioned preview-only nonsecret configuration: IWAY_STAGING_VERCEL_PROJECT_ID, IWAY_AUTH_ORIGIN, IWAY_AUTH_ENABLED=false. No credentials, approved-origin flag or schema-approval flag were set. Required secrets must be entered directly in Vercel's secret manager by an authorized administrator; never in chat. No production variables changed.
+
+## Open issue register
+
+| ID | Severity | Root cause / remediation | Tests / hosted evidence | Status |
+| --- | --- | --- | --- | --- |
+| V3-01 | Critical | Private catalog access denied; restore authorized read-only access and review actual state | MCP denial; no live catalog evidence | BLOCKED |
+| V3-02 | High | IF NOT EXISTS did not prove compatibility; add preflight and negative migration cases | Local suite pass; real PG CI pending | Repository implementation |
+| V3-03 | High | Runtime previously omitted effective column grants/memberships/policy definitions | Real PG privilege drift cases added | Repository implementation |
+| V3-04 | Critical | No restricted credentials/provider configuration | Preview metadata configured; auth disabled | BLOCKED |
+| V3-05 | Critical | Hosted routes/login/isolation/recovery/rollback absent | No deployment or hosted execution | BLOCKED |
+
+Next: validate real PostgreSQL CI, validate a Vercel local function build without credentials/deployment, add independently testable observability/recovery/fixture improvements, and record all blocked hosted gates explicitly.
+
+## B501: actual deployment-build remediation
+
+The first real Vercel CLI 54.2.0 local build exposed two defects not detected by the earlier package test: named wildcard rewrites injected `path` query parameters, and default static output included server/domain source. Corrected the function config to explicit regex routes with no query injection and outputDirectory=public; only a generic 404 page is static. Actual standalone output now verifies Node24, seven routes, safe unknown-route denial, no static backend source, and pinned CA inclusion via Vercel filePathMap/shared assets. No deployment was performed. CI now performs this build and checks emitted output.
+
+B498–B499 commit `730675a3a15940f9f1e587bcfb6de8b00664752b`: all four workflows passed: Verify 39584670779, Identity 39584670796, existing PostgreSQL 39584670843, auth lifecycle PostgreSQL 39584670790. Live schema compatibility remains blocked.
+
+B501 files: deploy/auth-staging/vercel.json; scripts/package-auth-staging.mjs; scripts/check-auth-vercel-build.mjs; tests/operations-auth-runtime.test.mjs; .github/workflows/auth-lifecycle.yml. New issue V3-06 (High): source exposure and callback rewrite defect repaired in repository and verified in actual local build; hosted evidence pending.
+
+## B502/B505/B507/B508 independent implementation
+
+Added four distinct deterministic platform/carrier/fleet/driver identities in the isolated PostgreSQL fixture only, cross-tenant/fleet/driver/admin-scope matrix, idempotent seed and deactivation cleanup preserving all membership evidence. The fixture refuses non-loopback/non-fixture configuration and verifies the connected database name. These are not Supabase provider accounts.
+
+Added a real PostgreSQL refresh-persistence failure case: revoke UPDATE after provider rotation, deny session use while claim remains uncertain, restore restricted privileges, recover by revocation, and verify a separate healthy session. Runtime now coalesces awaited expiry/stale-claim cleanup every 30 seconds when requests arrive; idle deployments still require an approved scheduled retention workflow.
+
+Actual Node ingress tests cover duplicate cookies/origins, malformed/duplicate Content-Length, Content-Length plus Transfer-Encoding, body rejection without draining, method/CSRF denial and connection close; no provider or protected handler executes. Node parser-owned failures are counted separately from application handler invocations. Vercel-managed ingress remains untested.
+
+Runtime observations contain only event category, server-generated request ID, allowlisted route category, status and duration. No raw path/query, headers, IDs, cookies, tokens, provider errors or user input are emitted. Sink failures cannot change authorization. Startup/maintenance failures return a generic 503 with correlation ID. Required schema approval marker is now b498-v3, rejecting stale b490-v2 approval.
+
+The gated hosted runner now records sanitized request correlation IDs and a five-serial-read latency smoke baseline (count, duration, p50/p95, errors and observed throughput); it has not run against hosted staging and makes no capacity/SLA claim.
+
+Focused suite: 85/0/0. One full-suite run recorded 763 pass / 1 fail / 0 skip: pre-existing tests/operations-http.test.mjs HTTP journey reset (ECONNRESET). No assertion was changed or test skipped; focused reproduction with changed auth modules passed 17/0/0. Full rerun and CI pending.
+
+B501 commit 1911bb8247ba8e9af517afeac512931adf5a8a0d: Verify 39585355042, Identity 39585355116, existing PostgreSQL 39585355058, auth lifecycle + actual Vercel build 39585355159 all succeeded.
+
+Full rerun: **764 passed / 0 failed / 0 skipped**, source syntax, build, IP scan and site contract all passed. The prior connection-reset failure remains recorded above; no assertion was weakened.
