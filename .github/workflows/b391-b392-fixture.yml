@@ -112,6 +112,8 @@ jobs:
           B442_FIXTURE_SCOPE="$scope" node scripts/test-b442-postgres-restart.mjs recover
       - name: Run B441 real PostgreSQL backend interruption and recovery
         run: node scripts/test-b441-postgres-backend-interruption.mjs
+      - name: Run B465 session tenant authorization tests
+        run: node --test tests/operations-supabase-session-tenant-auth-experimental.test.mjs
       - name: Run B464 local-first logout tests
         run: node --test tests/operations-supabase-logout-flow-experimental.test.mjs
       - name: Run B463 secure session configuration tests
