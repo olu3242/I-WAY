@@ -19,7 +19,7 @@ export async function runHostedAuth({env=process.env,chromium}={}){
  const config=hostedAuthConfig(env);
  const engine=chromium??(await import('@playwright/test')).chromium;
  const evidence={schema:'iway-hosted-auth-v1',project,origin,commit:config.commit,syntheticOnly:true,
-  providerInteraction:'operator signs in with approved synthetic account',checks:[],passed:false,
+  providerInteraction:'operator signs in with approved synthetic account',checks:[],requests:[],passed:false,
   databasePrivilegeCertification:false,rollbackCertification:false};
  const browser=await engine.launch({headless:false});
  const context=await browser.newContext(); // Never persist storageState, traces, video or screenshots.
@@ -39,7 +39,10 @@ export async function runHostedAuth({env=process.env,chromium}={}){
   const start=performance.now();
   const response=await context.request.fetch(origin+path,{method,maxRedirects:0,timeout:15000,
    headers:{...safeHeaders,origin:requestOrigin,...(cookie?{cookie}:{})}});
-  return {response,elapsed:Math.round(performance.now()-start)};
+  const elapsed=Math.round(performance.now()-start),requestId=response.headers()['x-request-id'];
+  evidence.requests.push({sequence:evidence.requests.length+1,status:response.status(),elapsedMs:elapsed,
+   ...(/^[0-9a-f-]{36}$/.test(requestId??'')?{requestId}:{})});
+  return {response,elapsed};
  };
  try{
   let result=await request('/api/health');check('health',result.response.status(),200,result.elapsed);
@@ -61,7 +64,16 @@ export async function runHostedAuth({env=process.env,chromium}={}){
   check('session-cookie-protections',Boolean(session?.secure&&session?.httpOnly&&session?.sameSite==='Lax'&&session?.path==='/'),true);
   const cookie=session.name+'='+session.value;
   result=await request('/auth/session');check('session',result.response.status(),200,result.elapsed);
+  result=await request('/auth/session',{cookie:cookie+'; '+cookie});check('duplicate-session-cookie',result.response.status(),401);
+  result=await request('/auth/callback?code=synthetic-invalid',{cookie:'__Host-iway-pkce='+'A'.repeat(43)});check('mismatched-transaction',result.response.status(),401);
   result=await request('/api/resources/'+config.own+'/verify');check('own-resource-handler',result.response.status(),200,result.elapsed);
+  // Five serial synthetic reads: latency smoke baseline, never a load/capacity claim.
+  const samples=[],started=performance.now();let errors=0;
+  for(let i=0;i<5;i++){const sample=await request('/api/resources/'+config.own+'/verify');samples.push(sample.elapsed);if(sample.response.status()!==200)errors++;}
+  const durationMs=Math.max(1,Math.round(performance.now()-started));samples.sort((a,b)=>a-b);
+  evidence.performance={scenario:'five-serial-synthetic-resource-reads',samples:5,durationMs,
+   p50Ms:samples[2],p95Ms:samples[4],requestsPerSecond:5000/durationMs,errorCount:errors,errorRate:errors/5};
+  check('bounded-performance-smoke',errors,0);
   result=await request('/api/resources/'+config.other+'/verify');check('cross-tenant-denied',result.response.status(),403,result.elapsed);
   result=await request(new URL(callbackUrl).pathname+new URL(callbackUrl).search,{cookie:binding});check('callback-replay',result.response.status(),401);
   result=await request('/auth/refresh',{method:'POST',requestOrigin:'https://invalid.example'});check('csrf-refresh',result.response.status(),403);

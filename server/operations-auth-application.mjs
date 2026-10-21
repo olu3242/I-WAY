@@ -1,18 +1,21 @@
+import {observeAuthRequest} from './operations-auth-observability.mjs';
 // One actual request lifecycle: provider, shared transactions, sessions and private authorization.
 import {createSupabaseLogin,createSupabasePkceCallback} from './operations-supabase-pkce-callback-flow.experimental.mjs';
 import {readAuthCookie,SESSION_COOKIE,sessionCookie,clearSessionCookie,clearPkceCookie} from './operations-supabase-pkce-session.experimental.mjs';
-export function createAuthApplication({origin,provider,transactions,sessions,authorizeResource}={}){
+export function createAuthApplication({origin,provider,transactions,sessions,authorizeResource,observe=()=>{}}={}){
  const parsed=new URL(origin);
  if(parsed.protocol!=='https:'||parsed.origin!==origin||![provider?.authorizationUrl,provider?.exchangeCode,provider?.getUser,provider?.refresh,provider?.logout,transactions?.save,transactions?.consume,sessions?.create,sessions?.get,sessions?.revoke,sessions?.refresh,authorizeResource].every(fn=>typeof fn==='function'))
   throw Error('AUTH_APPLICATION_CONFIGURATION_INVALID');
  const login=createSupabaseLogin({saveTransaction:transactions.save,consumeTransaction:transactions.consume,authorizationUrl:provider.authorizationUrl});
  const callback=createSupabasePkceCallback({expectedOrigin:origin,consumeTransaction:transactions.consume,exchangeCode:provider.exchangeCode,createSession:sessions.create});
  return async function handle(req,res){
+  const observation=observeAuthRequest(req,res,observe);
   const respond=(status,body,headers={})=>{
    res.statusCode=status;
-   for(const [key,value] of Object.entries({'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'",...headers}))res.setHeader(key,value);
+   for(const [key,value] of Object.entries({'x-request-id':observation.requestId,'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'",...headers}))res.setHeader(key,value);
    if(status>=400){res.shouldKeepAlive=false;res.setHeader('connection','close');}
    res.end(JSON.stringify(body));
+   if(!res.once)observation.record(status);
   };
   try{
    const raw=req.url;

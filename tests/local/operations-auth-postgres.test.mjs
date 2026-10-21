@@ -1,3 +1,4 @@
+import {authFixture,seedAuthFixture,deactivateAuthFixture} from '../fixtures/auth-identities.mjs';
 import {assertAuthDatabaseReady} from '../../server/operations-auth-database-check.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -56,6 +57,8 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
   });
   await t.test('runtime detects column grants, changed policies and role membership',async()=>{
    assert.equal(await assertAuthDatabaseReady({query}),true);
+   await admin.query('GRANT CREATE ON SCHEMA public TO iway_auth_runtime');
+   try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE CREATE ON SCHEMA public FROM iway_auth_runtime');}
    await admin.query('GRANT UPDATE(active) ON iway_private.auth_tenants TO iway_auth_runtime');
    try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE UPDATE(active) ON iway_private.auth_tenants FROM iway_auth_runtime');}
    await admin.query('ALTER POLICY auth_runtime_resources ON iway_private.auth_resources USING(true)');
@@ -115,6 +118,17 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
    await admin.query('SELECT pg_terminate_backend($1)',[pid]);await assert.rejects(client.query('SELECT 1'));client.release(true);
    assert.ok(await restarted.get(active.id));
   });
+  await t.test('refresh persistence failure preserves denial until restricted storage recovers',async()=>{
+   const {id}=await makeSession();let exchanges=0;
+   try{
+    await assert.rejects(sessions.refresh(id,async()=>{exchanges++;await admin.query('REVOKE UPDATE ON iway_private.auth_server_sessions FROM iway_auth_runtime');return tokenPair();}),/SESSION_REFRESH_FAILED/);
+    assert.equal(await sessions.get(id),null);assert.equal(exchanges,1);
+   }finally{await admin.query('GRANT UPDATE ON iway_private.auth_server_sessions TO iway_auth_runtime');}
+   assert.equal(await sessions.refresh(id,async()=>{exchanges++;return tokenPair();}),null);assert.equal(exchanges,1);
+   await admin.query("UPDATE iway_private.auth_server_sessions SET refresh_started_at=now()-interval '1 minute' WHERE session_hash=encode(sha256($1::bytea),'hex')",[Buffer.from(id)]);
+   await sessions.recoverStale();assert.equal(await sessions.get(id),null);
+   const healthy=await makeSession();assert.ok(await sessions.get(healthy.id));
+  });
   await t.test('absolute expiry denies lookup and refresh and erases tokens during recovery',async()=>{
    const item=await makeSession();
    await admin.query("UPDATE iway_private.auth_server_sessions SET expires_at=now()-interval '1 second' WHERE session_hash=encode(sha256($1::bytea),'hex')",[Buffer.from(item.id)]);
@@ -143,6 +157,24 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
    await admin.query("UPDATE iway_private.auth_tenants SET active=true WHERE tenant_id=$1",[tenant]);
    await admin.query("UPDATE iway_private.auth_tenant_roles SET revoked_at=now() WHERE user_id=$1",[user]);assert.equal(await authorize({userId:user,resourceId:resource}),false);
    await admin.query("UPDATE iway_private.auth_tenant_roles SET revoked_at=NULL WHERE user_id=$1",[user]);
+  });
+  await t.test('four distinct deterministic fixture identities enforce scope and retain deactivated evidence',async()=>{
+   const client=await admin.connect();const f=authFixture;
+   const authorize=createPrivateResourceAuthorizer({pool:runtime});
+   try{
+    await assert.rejects(seedAuthFixture(client,{...process.env,IWAY_AUTH_FIXTURE:'false'}),/ISOLATED_AUTH_FIXTURE_REQUIRED/);
+    await seedAuthFixture(client);await seedAuthFixture(client);
+    for(const [role,userId] of Object.entries(f.users)){
+     assert.equal(await authorize({userId,resourceId:f.resources.own}),role!=='platform');
+     assert.equal(await authorize({userId,resourceId:f.resources.crossTenant}),false);
+     assert.equal(await authorize({userId,resourceId:f.resources.crossFleet}),role==='carrier');
+     assert.equal(await authorize({userId,resourceId:f.resources.audit}),role==='platform');
+    }
+    await deactivateAuthFixture(client);await deactivateAuthFixture(client);
+    for(const userId of Object.values(f.users))assert.equal(await authorize({userId,resourceId:f.resources.own}),false);
+    const retained=await client.query('SELECT count(*)::int AS n,bool_and(NOT active AND revoked_at IS NOT NULL) AS inactive FROM iway_private.auth_tenant_roles WHERE user_id=ANY($1::uuid[])',[Object.values(f.users)]);
+    assert.deepEqual(retained.rows[0],{n:4,inactive:true});
+   }finally{await deactivateAuthFixture(client);client.release();}
   });
   await t.test('real HTTP to restricted PostgreSQL login-to-logout and replay',async()=>{
    const origin='https://staging.example.org';

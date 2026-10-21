@@ -1,3 +1,4 @@
+import {createAuthMaintenance} from './operations-auth-maintenance.mjs';
 import {assertAuthDatabaseReady} from './operations-auth-database-check.mjs';
 import {createConfiguredSessionCipher} from './operations-supabase-session-config.experimental.mjs';
 import {createPostgresPkceTransactionStore} from './operations-supabase-pkce-postgres-store.experimental.mjs';
@@ -8,7 +9,7 @@ import {createAuthApplication} from './operations-auth-application.mjs';
 import {postgresTlsOptions} from './postgres-tls.mjs';
 const project='vnoxdinldneeczxibicp';
 export function resolveAuthRuntimeConfig(env){
- if(env.VERCEL_ENV!=='preview'||env.IWAY_AUTH_ENABLED!=='true'||env.IWAY_AUTH_SCHEMA_APPROVED!=='b490-v2'||
+ if(env.VERCEL_ENV!=='preview'||env.IWAY_AUTH_ENABLED!=='true'||env.IWAY_AUTH_SCHEMA_APPROVED!=='b498-v3'||
     !env.VERCEL_PROJECT_ID||env.VERCEL_PROJECT_ID!==env.IWAY_STAGING_VERCEL_PROJECT_ID||
     env.VERCEL_PROJECT_ID==='prj_0vutnbiNCYaxhdrbLfktrsHAvxty')throw Error('AUTH_STAGING_NOT_APPROVED');
  const origin=new URL(env.IWAY_AUTH_ORIGIN);
@@ -34,9 +35,9 @@ export async function createAuthRuntime({env=process.env,PoolClass,fetchImpl=fet
   await assertAuthDatabaseReady({query:(sql,args)=>pool.query(sql,args)});
   const query=(text,values)=>pool.query(text,values);
   const transactions=createPostgresPkceTransactionStore({query,cipher}),sessions=createPostgresOpaqueSessionStore({query,cipher});
-  await transactions.expire();await sessions.recoverStale();
+  const maintain=createAuthMaintenance({transactions,sessions});await maintain();
   const provider=createSupabaseProvider({url:'https://'+project+'.supabase.co',apiKey:config.apiKey,provider:config.provider,redirectTo:config.origin+'/auth/callback',fetchImpl});
-  const handler=createAuthApplication({origin:config.origin,provider,transactions,sessions,authorizeResource:createPrivateResourceAuthorizer({pool})});
-  return {handler,close:()=>pool.end()};
+  const handler=createAuthApplication({origin:config.origin,provider,transactions,sessions,authorizeResource:createPrivateResourceAuthorizer({pool}),observe:event=>console.info(JSON.stringify(event))});
+  return {handler:async(req,res)=>{await maintain();return handler(req,res);},close:()=>pool.end()};
  }catch{await pool.end().catch(()=>{});throw Error('AUTH_RUNTIME_UNAVAILABLE');}
 }

@@ -39,3 +39,21 @@ The first real Vercel CLI 54.2.0 local build exposed two defects not detected by
 B498–B499 commit `730675a3a15940f9f1e587bcfb6de8b00664752b`: all four workflows passed: Verify 39584670779, Identity 39584670796, existing PostgreSQL 39584670843, auth lifecycle PostgreSQL 39584670790. Live schema compatibility remains blocked.
 
 B501 files: deploy/auth-staging/vercel.json; scripts/package-auth-staging.mjs; scripts/check-auth-vercel-build.mjs; tests/operations-auth-runtime.test.mjs; .github/workflows/auth-lifecycle.yml. New issue V3-06 (High): source exposure and callback rewrite defect repaired in repository and verified in actual local build; hosted evidence pending.
+
+## B502/B505/B507/B508 independent implementation
+
+Added four distinct deterministic platform/carrier/fleet/driver identities in the isolated PostgreSQL fixture only, cross-tenant/fleet/driver/admin-scope matrix, idempotent seed and deactivation cleanup preserving all membership evidence. The fixture refuses non-loopback/non-fixture configuration and verifies the connected database name. These are not Supabase provider accounts.
+
+Added a real PostgreSQL refresh-persistence failure case: revoke UPDATE after provider rotation, deny session use while claim remains uncertain, restore restricted privileges, recover by revocation, and verify a separate healthy session. Runtime now coalesces awaited expiry/stale-claim cleanup every 30 seconds when requests arrive; idle deployments still require an approved scheduled retention workflow.
+
+Actual Node ingress tests cover duplicate cookies/origins, malformed/duplicate Content-Length, Content-Length plus Transfer-Encoding, body rejection without draining, method/CSRF denial and connection close; no provider or protected handler executes. Node parser-owned failures are counted separately from application handler invocations. Vercel-managed ingress remains untested.
+
+Runtime observations contain only event category, server-generated request ID, allowlisted route category, status and duration. No raw path/query, headers, IDs, cookies, tokens, provider errors or user input are emitted. Sink failures cannot change authorization. Startup/maintenance failures return a generic 503 with correlation ID. Required schema approval marker is now b498-v3, rejecting stale b490-v2 approval.
+
+The gated hosted runner now records sanitized request correlation IDs and a five-serial-read latency smoke baseline (count, duration, p50/p95, errors and observed throughput); it has not run against hosted staging and makes no capacity/SLA claim.
+
+Focused suite: 85/0/0. One full-suite run recorded 763 pass / 1 fail / 0 skip: pre-existing tests/operations-http.test.mjs HTTP journey reset (ECONNRESET). No assertion was changed or test skipped; focused reproduction with changed auth modules passed 17/0/0. Full rerun and CI pending.
+
+B501 commit 1911bb8247ba8e9af517afeac512931adf5a8a0d: Verify 39585355042, Identity 39585355116, existing PostgreSQL 39585355058, auth lifecycle + actual Vercel build 39585355159 all succeeded.
+
+Full rerun: **764 passed / 0 failed / 0 skipped**, source syntax, build, IP scan and site contract all passed. The prior connection-reset failure remains recorded above; no assertion was weakened.

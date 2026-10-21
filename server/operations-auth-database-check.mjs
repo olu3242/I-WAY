@@ -12,7 +12,7 @@ export async function assertAuthDatabaseReady({query}){
  const fail=()=>{throw Error('AUTH_DATABASE_PRIVILEGES_INVALID');};
  const identity=await query(`SELECT current_user AS name,rolsuper,rolbypassrls,rolcreaterole,rolcreatedb,rolinherit,rolreplication,rolcanlogin,
   EXISTS(SELECT 1 FROM pg_auth_members WHERE member=pg_roles.oid) AS member_of_role,
-  has_schema_privilege(current_user,'iway_private','CREATE') AS can_create,
+  has_schema_privilege(current_user,'iway_private','CREATE') OR has_schema_privilege(current_user,'public','CREATE') AS can_create,
   has_schema_privilege('anon','iway_private','USAGE') OR has_schema_privilege('authenticated','iway_private','USAGE') AS client_schema
   FROM pg_roles WHERE rolname=current_user`);
  const role=identity.rows[0];

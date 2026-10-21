@@ -6,7 +6,7 @@ import {createAuthApplication} from '../server/operations-auth-application.mjs';
 import {createSupabaseLogin,createSupabasePkceCallback} from '../server/operations-supabase-pkce-callback-flow.experimental.mjs';
 const origin='https://staging.example.org',user='11111111-1111-4111-8111-111111111111';
 test('real HTTP login, code callback, protected access, refresh, logout and replay',async()=>{
- const tx=new Map(),rows=new Map();let exchanges=0,operations=0;
+ const tx=new Map(),rows=new Map(),events=[];let exchanges=0,operations=0;
  const transactions={save:async t=>tx.set(t.state,t),consume:async key=>{const t=tx.get(key);tx.delete(key);return t;}};
  const sessions={create:async data=>{const id=randomBytes(32).toString('base64url');rows.set(id,data);return {id};},
  get:async id=>{const row=rows.get(id);return row?{user_id:row.userId,access_token:row.accessToken}:null;},
@@ -14,14 +14,14 @@ test('real HTTP login, code callback, protected access, refresh, logout and repl
  const provider={authorizationUrl:({challenge})=>'https://provider.example/authorize?code_challenge='+challenge,
  exchangeCode:async()=>{exchanges++;return {user:{id:user},accessToken:'secret-access',refreshToken:'secret-refresh'};},
  getUser:async()=>({id:user}),refresh:async()=>({user:{id:user},accessToken:'next-secret',refreshToken:'next-refresh'}),logout:async()=>{throw Error('provider outage');}};
- const app=createAuthApplication({origin,provider,transactions,sessions,authorizeResource:async({resourceId})=>{if(resourceId==='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'){operations++;return true;}return false;}});
+ const app=createAuthApplication({origin,provider,transactions,sessions,observe:event=>events.push(event),authorizeResource:async({resourceId})=>{if(resourceId==='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'){operations++;return true;}return false;}});
  const server=createServer(app);await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const base='http://127.0.0.1:'+server.address().port;
  const send=(path,method='GET',cookie)=>fetch(base+path,{method,redirect:'manual',headers:{origin,...(cookie?{cookie}:{})}});
  try{
   assert.equal((await send('/auth/login','GET')).status,401);
   assert.equal((await fetch(base+'/auth/login',{method:'POST',headers:{origin:'https://evil.example'}})).status,403);
-  let r=await send('/auth/login','POST');assert.equal(r.status,303);
+  let r=await send('/auth/login','POST');assert.equal(r.status,303);assert.match(r.headers.get('x-request-id'),/^[0-9a-f-]{36}$/);
   const binding=r.headers.getSetCookie()[0].split(';')[0];
   r=await send('/auth/callback?code=valid');assert.equal(r.status,401);assert.equal(exchanges,0);
   r=await send('/auth/callback?code=valid','GET',binding);assert.equal(r.status,303);
@@ -51,5 +51,6 @@ test('real HTTP login, code callback, protected access, refresh, logout and repl
   assert.equal((await send('/auth/logout','POST',replacementCookie)).status,200);
   assert.equal((await send('/auth/session','GET',cookie)).status,401);
   r=await fetch(base+'/auth/login',{method:'POST',headers:{origin},body:'unexpected'});assert.equal(r.status,413);
+  assert.ok(events.length>10);assert.equal(JSON.stringify(events).includes('secret'),false);assert.equal(events.some(e=>e.route==='resource.verify'&&e.status===403),true);
  }finally{server.closeAllConnections();await new Promise(r=>server.close(r));}
 });

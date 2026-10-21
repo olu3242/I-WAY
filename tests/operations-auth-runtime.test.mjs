@@ -6,14 +6,14 @@ import {join,resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {resolveAuthRuntimeConfig,createAuthRuntime} from '../server/operations-auth-runtime.mjs';
 import {packageAuthStaging} from '../scripts/package-auth-staging.mjs';
-const valid={VERCEL_ENV:'preview',IWAY_AUTH_ENABLED:'true',IWAY_AUTH_SCHEMA_APPROVED:'b490-v2',
+const valid={VERCEL_ENV:'preview',IWAY_AUTH_ENABLED:'true',IWAY_AUTH_SCHEMA_APPROVED:'b498-v3',
  VERCEL_PROJECT_ID:'prj_synthetic_isolated',IWAY_STAGING_VERCEL_PROJECT_ID:'prj_synthetic_isolated',
  IWAY_AUTH_ORIGIN:'https://synthetic.example.org',IWAY_AUTH_APPROVED_ORIGIN:'https://synthetic.example.org',
  IWAY_AUTH_DATABASE_URL:'postgresql://iway_auth_runtime:synthetic@db.vnoxdinldneeczxibicp.supabase.co:5432/postgres',
  IWAY_SESSION_ENCRYPTION_KEY:Buffer.alloc(32,7).toString('base64url')};
 test('runtime requires isolated preview, approved origin, pinned database and TLS',()=>{
  const result=resolveAuthRuntimeConfig(valid);assert.equal(result.db.ssl.rejectUnauthorized,true);assert.ok(result.db.ssl.ca);
- for(const patch of [{VERCEL_ENV:'production'},{IWAY_AUTH_ENABLED:'false'},{IWAY_AUTH_SCHEMA_APPROVED:''},
+ for(const patch of [{VERCEL_ENV:'production'},{IWAY_AUTH_ENABLED:'false'},{IWAY_AUTH_SCHEMA_APPROVED:''},{IWAY_AUTH_SCHEMA_APPROVED:'b490-v2'},
   {VERCEL_PROJECT_ID:'prj_0vutnbiNCYaxhdrbLfktrsHAvxty',IWAY_STAGING_VERCEL_PROJECT_ID:'prj_0vutnbiNCYaxhdrbLfktrsHAvxty'},
   {IWAY_AUTH_ORIGIN:'https://other.example.org'},{IWAY_AUTH_DATABASE_URL:valid.IWAY_AUTH_DATABASE_URL+'?sslmode=disable'},
   {IWAY_AUTH_DATABASE_URL:valid.IWAY_AUTH_DATABASE_URL.replace('iway_auth_runtime','postgres')},
