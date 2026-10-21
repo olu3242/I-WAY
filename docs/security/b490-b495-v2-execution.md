@@ -33,7 +33,7 @@ flowchart LR
 | --- | --- | --- | --- | --- |
 | B490.1/.4 | Inspect, repair independent binding, generate transaction, harmonize cookie, support code-only callback, reject mismatch, reject replay, test expiry/error, verify, commit/register | focused 72/0/0; full 751/0/0 | `0cbce1cca0476c9c526070e91178d69dc9e18827` | Three workflows green; hosted blocked; proceeded to integration |
 | B490.2/.3/.5–B493 | Provider client, verified identity, durable refresh, concurrency/recovery, retained PKCE, restricted migration, resource permissions, Node endpoints, deployment package, CI/register | focused 81/0/0; full 760/0/0; real PG 8/0/0 (parent + 7 subtests) | `12115b821b86c2ce9c13d3c90b1b14c07708908d` | Four workflows green; no hosted provider execution |
-| B493–B495 follow-up | Fixation, CSRF, provider mismatch/outage, real PG expiry, browser runner, runner gates, isolated project creation, domain verification, full verification, evidence/register | focused 82/0/0; full 761/0/0; added PG expiry assertion awaits this batch CI | commit recorded below after push | No hosted deployment; external prerequisites below |
+| B493–B495 follow-up | Fixation, CSRF, provider mismatch/outage, real PG expiry, browser runner, runner gates, isolated project creation, domain verification, full verification, evidence/register | focused 82/0/0; full 761/0/0; real PG 10/0/0 (parent + 9 subtests) | `02ba5002c3d863a53e80de91b6258e34c1262278` | Four workflows green; no hosted deployment; external prerequisites below |
 
 Release decision for every batch: **NO-GO** for production and tester onboarding.
 
@@ -128,3 +128,9 @@ Hosted health/login/session/tenant isolation/performance/recovery/rollback: **NO
 - `tests/operations-supabase-real-http-integration-experimental.test.mjs`
 - `tests/operations-supabase-real-http-origin-integration-experimental.test.mjs`
 - `tests/operations-supabase-session-http-guard-experimental.test.mjs`
+
+## Final implementation CI receipt
+
+Commit `02ba5002c3d863a53e80de91b6258e34c1262278`: all four workflows succeeded: [Verify](https://github.com/olu3242/I-WAY/actions/runs/39582412594), [Identity](https://github.com/olu3242/I-WAY/actions/runs/39582412603), [existing PostgreSQL](https://github.com/olu3242/I-WAY/actions/runs/39582412619), [auth lifecycle PostgreSQL](https://github.com/olu3242/I-WAY/actions/runs/39582412598). Job 119162956572 recorded focused 82/0/0 and real PostgreSQL 10/0/0, including legacy migration compatibility, no cascading deletion, expiry cleanup and complete HTTP lifecycle. Final local release gate: 761/0/0, all source/build/IP/site checks pass.
+
+This receipt is a documentation-only follow-up to that tested implementation. No hosted success is inferred from these results.
