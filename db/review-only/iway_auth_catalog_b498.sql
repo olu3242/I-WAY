@@ -25,4 +25,25 @@ SELECT parent.rolname AS parent_role,member.rolname AS member_role,m.admin_optio
  WHERE member.rolname='iway_auth_runtime';
 SELECT pg_get_userbyid(defaclrole) AS owner,defaclnamespace::regnamespace::text AS schema,defaclobjtype,defaclacl
  FROM pg_default_acl WHERE defaclnamespace IN (0,COALESCE((SELECT oid FROM pg_namespace WHERE nspname='iway_private'),0));
+-- B511: defaults, generated columns, dependencies and privilege paths (metadata only).
+SELECT c.relname,a.attname,a.attnotnull,a.attidentity,a.attgenerated,
+ pg_get_expr(d.adbin,d.adrelid) AS default_expression
+ FROM pg_attribute a JOIN pg_class c ON c.oid=a.attrelid JOIN pg_namespace n ON n.oid=c.relnamespace
+ LEFT JOIN pg_attrdef d ON d.adrelid=a.attrelid AND d.adnum=a.attnum
+ WHERE n.nspname='iway_private' AND c.relname='auth_tenant_roles' AND a.attnum>0 AND NOT a.attisdropped;
+SELECT pg_describe_object(d.classid,d.objid,d.objsubid) AS dependent,d.deptype
+ FROM pg_depend d WHERE d.refobjid=to_regclass('iway_private.auth_tenant_roles');
+SELECT n.nspname,c.relname,
+ has_table_privilege('iway_auth_runtime',c.oid,'SELECT') AS can_select,
+ has_table_privilege('iway_auth_runtime',c.oid,'INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') AS can_mutate
+ FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+ WHERE EXISTS(SELECT 1 FROM pg_roles WHERE rolname='iway_auth_runtime') AND n.nspname IN ('public','auth','iway_private')
+ AND c.relkind IN ('r','p','v','m');
+-- History values: only version identifiers, never migration statements or row data.
+DO $history$ BEGIN
+ IF to_regclass('supabase_migrations.schema_migrations') IS NOT NULL THEN
+  EXECUTE 'CREATE TEMP TABLE b511_versions ON COMMIT DROP AS SELECT version FROM supabase_migrations.schema_migrations';
+ ELSE CREATE TEMP TABLE b511_versions(version text) ON COMMIT DROP; END IF;
+END $history$;
+SELECT version FROM b511_versions ORDER BY version;
 COMMIT;
