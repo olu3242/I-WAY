@@ -65,3 +65,9 @@ All batches use the source/evidence commit listed in the final receipt/Git histo
 | B540 | Evidence and recovery limitations recorded | NOT RUN hosted recovery/rollback | NO-GO |
 
 Modified paths: server/operations-auth-database-check.mjs; tests/local/operations-auth-postgres.test.mjs; tests/operations-auth-runtime.test.mjs; db/review-only/iway_auth_runtime_review_b533.sql; docs/security/b531-live-evidence.json; this report; final receipt if present. Source gate and CI outcomes are recorded with the final evidence. No public-site changes or merge.
+
+## Exact implementation and CI receipt
+
+Implementation commit: eb3c5442e696cd01b16712588ac9bf84f4050fa1. All four workflows passed: [Verify](https://github.com/olu3242/I-WAY/actions/runs/39687754156), [Identity access certification](https://github.com/olu3242/I-WAY/actions/runs/39687754172), [Auth lifecycle PostgreSQL / standalone Vercel build](https://github.com/olu3242/I-WAY/actions/runs/39687754168), [B391/B392 isolated PostgreSQL](https://github.com/olu3242/I-WAY/actions/runs/39687754138). Source syntax/conflict checks PASS. Final receipt: b540-certification-receipt.json; its documentation-only commit follows the tested implementation. The receipt hashes local evidence logs (ignored artifacts) and the retained catalog/SQL files. No public-site files differ from baseline.
+
+B531–B534 findings are classified and the checker is corrected; genuine runtime login and all downstream hosted requirements remain unfulfilled. The next concrete prerequisite is an approved secure workflow to configure and inject the staging role credential, plus the OAuth provider and synthetic test-account owner. The proposed callback alone does not supply those prerequisites. No additional database permission change is requested or warranted by the observed two findings.
