@@ -5,7 +5,7 @@ BEGIN;
 CREATE SCHEMA IF NOT EXISTS iway_private;
 CREATE TABLE IF NOT EXISTS iway_private.auth_pkce_transactions (
  state_hash text PRIMARY KEY CHECK (state_hash ~ '^[0-9a-f]{64}$'),
- verifier text NOT NULL CHECK (length(verifier) BETWEEN 40 AND 128),
+ verifier text NOT NULL CHECK (verifier LIKE 'v1.%'),
  expires_at timestamptz NOT NULL,
  created_at timestamptz NOT NULL DEFAULT now()
 );
