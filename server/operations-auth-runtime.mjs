@@ -1,3 +1,4 @@
+import {assertAuthDatabaseReady} from './operations-auth-database-check.mjs';
 import {createConfiguredSessionCipher} from './operations-supabase-session-config.experimental.mjs';
 import {createPostgresPkceTransactionStore} from './operations-supabase-pkce-postgres-store.experimental.mjs';
 import {createPostgresOpaqueSessionStore} from './operations-supabase-opaque-session-store.experimental.mjs';
@@ -30,22 +31,7 @@ export async function createAuthRuntime({env=process.env,PoolClass,fetchImpl=fet
  const Pool=PoolClass??(await import('pg')).Pool,pool=new Pool(config.db);
  pool.on('error',()=>{}); // Never serialize driver errors/connection details.
  try{
-  const identity=await pool.query(`SELECT current_user AS name,rolsuper,rolbypassrls,rolcreaterole,rolcreatedb,
-   has_schema_privilege(current_user,'iway_private','CREATE') AS can_create
-   FROM pg_roles WHERE rolname=current_user`);
-  const role=identity.rows[0];
-  if(role?.name!=='iway_auth_runtime'||role.rolsuper||role.rolbypassrls||role.rolcreaterole||role.rolcreatedb||role.can_create)
-   throw Error('AUTH_DATABASE_PRIVILEGES_INVALID');
-  const tables=await pool.query(`SELECT c.relname,c.relrowsecurity,c.relforcerowsecurity,
-   pg_get_userbyid(c.relowner)=current_user AS owns,
-   (has_table_privilege(current_user,c.oid,'DELETE,TRUNCATE,TRIGGER,REFERENCES') OR
-    (c.relname IN ('auth_tenant_roles','auth_tenants','auth_resources') AND
-     has_table_privilege(current_user,c.oid,'INSERT,UPDATE'))) AS excessive
-   FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='iway_private'
-   AND c.relname=ANY($1::text[]) AND c.relkind='r'`,
-   [['auth_pkce_transactions','auth_server_sessions','auth_tenant_roles','auth_tenants','auth_resources']]);
-  if(tables.rowCount!==5||tables.rows.some(r=>!r.relrowsecurity||!r.relforcerowsecurity||r.owns||r.excessive))
-   throw Error('AUTH_DATABASE_PRIVILEGES_INVALID');
+  await assertAuthDatabaseReady({query:(sql,args)=>pool.query(sql,args)});
   const query=(text,values)=>pool.query(text,values);
   const transactions=createPostgresPkceTransactionStore({query,cipher}),sessions=createPostgresOpaqueSessionStore({query,cipher});
   await transactions.expire();await sessions.recoverStale();

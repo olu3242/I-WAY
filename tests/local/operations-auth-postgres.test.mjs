@@ -1,3 +1,4 @@
+import {assertAuthDatabaseReady} from '../../server/operations-auth-database-check.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -37,6 +38,31 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
    assert.ok(row.revoked_at);assert.equal(row.access_token,null);assert.equal(row.refresh_token,null);
    const column=(await admin.query("SELECT attnotnull FROM pg_attribute WHERE attrelid='iway_private.auth_pkce_transactions'::regclass AND attname='verifier'")).rows[0];assert.equal(column.attnotnull,false);
    await assert.rejects(admin.query('DELETE FROM auth.users WHERE id=$1',[user]),error=>error.code==='23503');
+  });
+  await t.test('migration rejects incompatible columns and unreviewed policies without partial changes',async()=>{
+   const migration=(await readFile(new URL('../../db/review-only/iway_private_auth_sessions_b460.sql',import.meta.url),'utf8')).replace('BEGIN;','').replace(/COMMIT;\s*$/,'');
+   for(const mutation of [
+    "ALTER TABLE iway_private.auth_server_sessions RENAME COLUMN expires_at TO incorrect_expiry",
+    "ALTER TABLE iway_private.auth_server_sessions ALTER COLUMN access_expires_at TYPE text USING access_expires_at::text",
+    "CREATE POLICY unexpected_allow ON iway_private.auth_resources USING(true)",
+    "ALTER TABLE iway_private.auth_resources DROP CONSTRAINT auth_resources_pkey",
+    "ALTER TABLE iway_private.auth_resources DROP CONSTRAINT auth_resources_tenant_id_fkey"
+   ]){
+    const client=await admin.connect();try{await client.query('BEGIN');await client.query(mutation);
+     await assert.rejects(client.query(migration),/AUTH_SCHEMA_/);
+    }finally{await client.query('ROLLBACK');client.release();}
+   }
+   assert.equal(await assertAuthDatabaseReady({query}),true);
+  });
+  await t.test('runtime detects column grants, changed policies and role membership',async()=>{
+   assert.equal(await assertAuthDatabaseReady({query}),true);
+   await admin.query('GRANT UPDATE(active) ON iway_private.auth_tenants TO iway_auth_runtime');
+   try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE UPDATE(active) ON iway_private.auth_tenants FROM iway_auth_runtime');}
+   await admin.query('ALTER POLICY auth_runtime_resources ON iway_private.auth_resources USING(true)');
+   try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query("ALTER POLICY auth_runtime_resources ON iway_private.auth_resources USING(active AND EXISTS(SELECT 1 FROM iway_private.auth_tenants t WHERE t.tenant_id=auth_resources.tenant_id))");}
+   await admin.query('CREATE ROLE fixture_untrusted NOLOGIN; GRANT fixture_untrusted TO iway_auth_runtime');
+   try{await assert.rejects(assertAuthDatabaseReady({query}),/AUTH_DATABASE_PRIVILEGES_INVALID/);}finally{await admin.query('REVOKE fixture_untrusted FROM iway_auth_runtime');}
+   assert.equal(await assertAuthDatabaseReady({query}),true);
   });
   await t.test('runtime privilege and RLS boundaries are real',async()=>{
    assert.equal((await runtime.query('SELECT current_user')).rows[0].current_user,'iway_auth_runtime');

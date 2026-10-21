@@ -22,9 +22,9 @@ test('runtime requires isolated preview, approved origin, pinned database and TL
 test('runtime denies elevated roles and excessive table rights before accepting requests',async()=>{
  for(const elevated of [true,false]){
   let closed=false,calls=0;
-  class Pool {on(){} async end(){closed=true;} async query(){calls++;return calls===1?{rows:[{name:'iway_auth_runtime',rolsuper:elevated}]}:
+  class Pool {on(){} async end(){closed=true;} async query(){calls++;return calls===1?{rows:[{name:'iway_auth_runtime',rolsuper:elevated,rolcanlogin:true}]}:
    {rowCount:5,rows:[{relrowsecurity:true,relforcerowsecurity:true,owns:false,excessive:true}]};}}
-  await assert.rejects(createAuthRuntime({env:valid,PoolClass:Pool}),/AUTH_RUNTIME_UNAVAILABLE/);assert.equal(closed,true);
+  await assert.rejects(createAuthRuntime({env:valid,PoolClass:Pool}),/AUTH_RUNTIME_UNAVAILABLE/);assert.equal(closed,true);assert.equal(calls,elevated?1:2);
  }
 });
 test('deploy package includes runtime dependencies and excludes private docs, requires empty output',async()=>{
