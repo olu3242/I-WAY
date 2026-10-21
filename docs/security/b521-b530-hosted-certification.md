@@ -65,3 +65,23 @@ Candidate callback from existing runtime: https://iway-auth-staging.vercel.app/a
 | B530 | Hosted outages, recovery, workload and rollback NOT RUN; NO-GO |
 
 Modified files: this report and b521-live-inspection.json only. Baseline CI passed all four workflows as recorded in B520; fresh documentation commit CI must be checked separately. Production, merge and real-tester onboarding remain unauthorized. The next concrete approval is the staged B513/B512 package above; it does not authorize secrets, provider configuration, accounts or deployment by implication.
+
+## Approved execution update — B524
+
+The user explicitly approved the staged B513 role and B512 migration package. Both file SHA256 values matched the approval package immediately before execution. Applied through the authorized OLU connection to vnoxdinldneeczxibicp only:
+
+- 20261021222437 — b524_restricted_auth_runtime_role.
+- 20261021222452 — b524_private_auth_persistence_b512.
+
+Full B512 preflight passed after role creation and before schema migration; it passed again afterward. Both migration calls returned success and migration history confirms both identifiers. The new four private tables, five forced-RLS tables, five expected policies, expiry indexes, constraints, deny-default columns and narrow grants were inspected live. The original role table OID17715 and constraint OIDs17719/17723/17724 remain unchanged, including CASCADE semantics. Registration table OID17614, constraint OIDs, ACL, policy and indexes remain unchanged. No role records were activated or provisioned; no customer/session rows were read.
+
+B524 schema application and catalog verification are complete. B523 runtime certification is NOT complete. The management connection's attempt to run the postflight with SET LOCAL ROLE iway_auth_runtime returned SQLSTATE42501 (permission denied to set role). No membership was modified to circumvent that denial. Catalog checks using has_table_privilege for the named runtime role confirm only SELECT/INSERT/UPDATE on session/PKCE and SELECT on authorization projections, with no DELETE/TRUNCATE/TRIGGER/REFERENCES, no public/private CREATE, and no superuser/BYPASSRLS/CREATEROLE/CREATEDB/replication/inheritance flags.
+
+Two newly observed readiness blockers require review before credentials or deployment:
+
+1. The new role has postgres as a member with admin_option=true, inherit_option=false, set_option=false. The approved CREATE ROLE contains no GRANT membership statement. This creator/admin membership is present in the live platform; the current runtime checker rejects any membership in either direction. Do not claim runtime inherits postgres privileges: the membership direction is the reverse. No membership change or checker exception was made.
+2. PUBLIC SELECT on extensions.pg_stat_statements and extensions.pg_stat_statements_info gives runtime unrelated read privileges. The current runtime checker rejects these effective privileges. A role-specific REVOKE cannot override PUBLIC; changing shared extension grants has wider impact and was not approved. No statistics rows or query text were read.
+
+No runtime password, encryption key, provider configuration, synthetic account, environment update or deployment was created. The role was created with PASSWORD NULL. B525–B530 remain blocked. The next remediation must address the two exact readiness findings, then securely provision restricted credentials and test a real runtime login. Catalog permission checks are not a substitute for actual restricted-login positive/negative tests.
+
+Evidence: b524-migration-receipt.json. Recovery remains forward-only with auth disabled; do not delete the role/tables, restore erased tokens, or change PUBLIC grants without review. Production and real-tester onboarding remain NO-GO. Earlier absent-role and unapplied-migration statements describe the pre-approval snapshot and are superseded by this update.
