@@ -18,8 +18,17 @@ export function pkceTransactionCookie({name='__Host-iway-pkce',value,maxAge=600}
  return name+'='+value+'; Path=/; Max-Age='+maxAge+'; HttpOnly; Secure; SameSite=Lax';
 }
 export function sessionCookie({value,maxAge=3600}={}){
- if(typeof value!=='string'||!/^[A-Za-z0-9_-]{32,512}$/.test(value)||!Number.isInteger(maxAge)||maxAge<1||maxAge>3600)throw Error('SESSION_COOKIE_INVALID');
+ if(typeof value!=='string'||!/^[A-Za-z0-9_-]{40,128}$/.test(value)||!Number.isInteger(maxAge)||maxAge<1||maxAge>3600)throw Error('SESSION_COOKIE_INVALID');
  return '__Host-iway-session='+value+'; Path=/; Max-Age='+maxAge+'; HttpOnly; Secure; SameSite=Lax';
 }
 export const clearPkceCookie=()=> '__Host-iway-pkce=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax';
 export const clearSessionCookie=()=> '__Host-iway-session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax';
+
+export const PKCE_COOKIE='__Host-iway-pkce';
+export const SESSION_COOKIE='__Host-iway-session';
+export function readAuthCookie(headers,name=SESSION_COOKIE){
+ const raw=headers?.cookie;
+ if(typeof raw!=='string'||raw.length>8192)return null;
+ const values=raw.split(';').filter(item=>item.slice(0,item.indexOf('=')).trim()===name).map(item=>item.slice(item.indexOf('=')+1).trim());
+ return values.length===1&&/^[A-Za-z0-9_-]{40,128}$/.test(values[0])?values[0]:null;
+}

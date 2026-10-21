@@ -20,7 +20,7 @@ test('B484 real chunked mutation body is bounded before protected pipeline',asyn
   await once(server,'listening');
   const url='http://127.0.0.1:'+server.address().port+'/api/fleet/update';
   const send=async size=>{
-   const reqHeaders={cookie:'iway_session='+ 'a'.repeat(43),origin:'https://staging.iway.example','sec-fetch-site':'same-origin'};
+   const reqHeaders={cookie:'__Host-iway-session='+ 'a'.repeat(43),origin:'https://staging.iway.example','sec-fetch-site':'same-origin'};
    const body=(async function*(){yield Buffer.alloc(size,65);})();
    const response=await fetch(url,{method:'POST',headers:reqHeaders,body,duplex:'half'});
    return response;

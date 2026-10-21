@@ -23,14 +23,14 @@ test('B478 actual HTTP mutation requires exact configured Origin',async()=>{
   const url='http://127.0.0.1:'+server.address().port+'/api/fleet/update';
   for(const origin of [undefined,'https://attacker.example','https://staging.iway.example.attacker']){
    const response=await fetch(url,{method:'POST',headers:{
-    cookie:'iway_session='+sid,...(origin?{origin}:{})
+    cookie:'__Host-iway-session='+sid,...(origin?{origin}:{})
    }});
    assert.equal(response.status,404);
    assert.equal(response.headers.get('cache-control'),'no-store');
    assert.equal(writes,0);
   }
   const allowed=await fetch(url,{method:'POST',headers:{
-   cookie:'iway_session='+sid,origin:'https://staging.iway.example'
+   cookie:'__Host-iway-session='+sid,origin:'https://staging.iway.example'
   }});
   assert.equal(allowed.status,200);
   assert.deepEqual(await allowed.json(),{ok:true});

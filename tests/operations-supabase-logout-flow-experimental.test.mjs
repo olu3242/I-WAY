@@ -7,7 +7,7 @@ test('B464 revokes local session even when provider logout fails',async()=>{
   getSession:async()=>({access_token:'secret'}),
   revokeSession:async()=>{order.push('local');return true;},
   revokeProviderSession:async()=>{order.push('provider');throw Error('network');},
-  clearCookie:()=> 'iway_session=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax'
+  clearCookie:()=> '__Host-iway-session=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax'
  });
  const result=await logout({sessionId:'opaque'});
  assert.equal(result.ok,true);

@@ -5,7 +5,7 @@ test('B470 Node adapter strips query parameters and emits safe headers',async()=
  let received;
  const handler=createNodeProtectedRouteHandler({pipeline:async request=>{received=request;return {status:200,body:'{"ok":true}'};}});
  const headers={};const response={setHeader:(key,value)=>headers[key]=value,end:body=>response.body=body};
- await handler({method:'GET',url:'/api/fleet/tracking?tenantId=attacker',headers:{cookie:'iway_session=opaque'}},response);
+ await handler({method:'GET',url:'/api/fleet/tracking?tenantId=attacker',headers:{cookie:'__Host-iway-session=opaque'}},response);
  assert.equal(received.path,'/api/fleet/tracking');
  assert.equal(response.statusCode,200);assert.equal(headers['cache-control'],'no-store');assert.equal(headers['x-content-type-options'],'nosniff');
  assert.equal(response.body,'{"ok":true}');

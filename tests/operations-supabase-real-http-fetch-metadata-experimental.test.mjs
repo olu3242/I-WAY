@@ -24,19 +24,19 @@ test('B480 actual HTTP rejects cross-site metadata even when Origin matches',asy
   const url='http://127.0.0.1:'+server.address().port+'/api/fleet/update';
   for(const site of ['cross-site','same-site','none']){
    const response=await fetch(url,{method:'POST',headers:{
-    cookie:'iway_session='+sid,origin:'https://staging.iway.example','sec-fetch-site':site
+    cookie:'__Host-iway-session='+sid,origin:'https://staging.iway.example','sec-fetch-site':site
    }});
    assert.equal(response.status,404);
    assert.equal(mutations,0);
   }
   const permitted=await fetch(url,{method:'POST',headers:{
-   cookie:'iway_session='+sid,origin:'https://staging.iway.example','sec-fetch-site':'same-origin'
+   cookie:'__Host-iway-session='+sid,origin:'https://staging.iway.example','sec-fetch-site':'same-origin'
   }});
   assert.equal(permitted.status,200);
   assert.deepEqual(await permitted.json(),{ok:true});
   assert.equal(mutations,1);
   const invalidOrigin=await fetch(url,{method:'POST',headers:{
-   cookie:'iway_session='+sid,origin:'https://evil.example','sec-fetch-site':'same-origin'
+   cookie:'__Host-iway-session='+sid,origin:'https://evil.example','sec-fetch-site':'same-origin'
   }});
   assert.equal(invalidOrigin.status,404);
   assert.equal(mutations,1);

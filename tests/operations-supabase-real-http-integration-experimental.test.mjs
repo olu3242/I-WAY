@@ -25,7 +25,7 @@ test('B476 real HTTP requests enforce tenant role, cookie and safe responses',as
   await once(server,'listening');
   const origin='http://127.0.0.1:'+server.address().port;
   const valid=await fetch(origin+'/api/fleet/tracking?tenantId=attacker&role=platform',{
-   headers:{cookie:'iway_session='+sid}
+   headers:{cookie:'__Host-iway-session='+sid}
   });
   assert.equal(valid.status,200);
   assert.deepEqual(await valid.json(),{ok:true});
@@ -33,12 +33,12 @@ test('B476 real HTTP requests enforce tenant role, cookie and safe responses',as
   const missing=await fetch(origin+'/api/fleet/tracking');
   assert.equal(missing.status,401);
   const duplicate=await fetch(origin+'/api/fleet/tracking',{
-   headers:{cookie:'iway_session='+sid+'; iway_session='+sid}
+   headers:{cookie:'__Host-iway-session='+sid+'; __Host-iway-session='+sid}
   });
   assert.equal(duplicate.status,401);
   const wrongMethod=await fetch(origin+'/api/fleet/tracking',{method:'POST'});
   assert.equal(wrongMethod.status,404);
-  const traversal=await fetch(origin+'/api//fleet/tracking',{headers:{cookie:'iway_session='+sid}});
+  const traversal=await fetch(origin+'/api//fleet/tracking',{headers:{cookie:'__Host-iway-session='+sid}});
   assert.equal(traversal.status,404);
   assert.equal(protectedCalls,1);
   for(const response of [valid,missing,duplicate,wrongMethod,traversal]){
@@ -60,7 +60,7 @@ test('B476 real HTTP response never reflects provider secrets on backend failure
  try{
   await once(server,'listening');
   const response=await fetch('http://127.0.0.1:'+server.address().port+'/api/fleet/tracking',{
-   headers:{cookie:'iway_session='+'s'.repeat(43)}
+   headers:{cookie:'__Host-iway-session='+'s'.repeat(43)}
   });
   assert.equal(response.status,503);
   const body=await response.text();

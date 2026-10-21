@@ -9,7 +9,7 @@ const routes=[{method:'POST',path:'/api/fleet/update',tenantId:'synthetic',role:
 for(const outcome of ['denied','outage','allowed','oversize','aborted'])test('B492 body ordering: '+outcome,async()=>{
  let reads=0,calls=0;const order=[];
  const pipeline=createProtectedRoutePipeline({routes,authorizeSession:async()=>{order.push('auth');if(outcome==='outage')throw Error('private');return {ok:outcome!=='denied',userId:'synthetic-user'};},handleAuthorized:async({body})=>{order.push('handler');calls++;assert.equal(body.toString(),'ok');return {ok:true};}});
- const req={method:'POST',url:'/api/fleet/update',headers:{origin,cookie:'iway_session='+'a'.repeat(43)},async *[Symbol.asyncIterator](){reads++;order.push('body');if(outcome==='aborted')this.aborted=true;yield Buffer.alloc(outcome==='oversize'?65537:2,outcome==='oversize'?65:undefined);}};
+ const req={method:'POST',url:'/api/fleet/update',headers:{origin,cookie:'__Host-iway-session='+'a'.repeat(43)},async *[Symbol.asyncIterator](){reads++;order.push('body');if(outcome==='aborted')this.aborted=true;yield Buffer.alloc(outcome==='oversize'?65537:2,outcome==='oversize'?65:undefined);}};
  if(outcome==='allowed')req[Symbol.asyncIterator]=async function*(){reads++;order.push('body');yield Buffer.from('ok');};
  const res={setHeader(){},end(body){this.body=body;}};
  await createNodeProtectedRouteHandler({pipeline,expectedOrigin:origin})(req,res);
