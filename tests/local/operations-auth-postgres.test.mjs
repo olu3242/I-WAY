@@ -28,6 +28,16 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
   await admin.query('INSERT INTO iway_private.auth_tenants VALUES($1,true),($2,true)',[tenant,otherTenant]);
   await admin.query("INSERT INTO iway_private.auth_tenant_roles(user_id,tenant_id,role,active,permissions,principal_id,fleet_id) VALUES($1,$2,'carrier',true,ARRAY['load:view'],$1,$2),($3,$4,'carrier',true,ARRAY['load:view'],$3,$4)",[user,tenant,otherUser,otherTenant]);
   await admin.query("INSERT INTO iway_private.auth_resources(resource_id,tenant_id,kind,fleet_id,driver_id,active) VALUES($1,$2,'load',$2,$3,true),($4,$5,'load',$5,$6,true)",[resource,tenant,user,otherResource,otherTenant,otherUser]);
+  await t.test('migration upgrade deactivates legacy expiry and remains idempotent without cascaded deletion',async()=>{
+   const legacy='0'.repeat(64);
+   await admin.query("INSERT INTO iway_private.auth_server_sessions(session_hash,user_id,access_token,refresh_token,expires_at) VALUES($1,$2,$3,$4,now()+interval '1 hour')",[legacy,user,cipher.encrypt('synthetic-legacy-access'),cipher.encrypt('synthetic-legacy-refresh')]);
+   await admin.query('ALTER TABLE iway_private.auth_pkce_transactions ALTER COLUMN verifier SET NOT NULL');
+   await admin.query(await readFile(new URL('../../db/review-only/iway_private_auth_sessions_b460.sql',import.meta.url),'utf8'));
+   const row=(await admin.query('SELECT revoked_at,access_token,refresh_token FROM iway_private.auth_server_sessions WHERE session_hash=$1',[legacy])).rows[0];
+   assert.ok(row.revoked_at);assert.equal(row.access_token,null);assert.equal(row.refresh_token,null);
+   const column=(await admin.query("SELECT attnotnull FROM pg_attribute WHERE attrelid='iway_private.auth_pkce_transactions'::regclass AND attname='verifier'")).rows[0];assert.equal(column.attnotnull,false);
+   await assert.rejects(admin.query('DELETE FROM auth.users WHERE id=$1',[user]),error=>error.code==='23503');
+  });
   await t.test('runtime privilege and RLS boundaries are real',async()=>{
    assert.equal((await runtime.query('SELECT current_user')).rows[0].current_user,'iway_auth_runtime');
    assert.equal((await runtime.query('SELECT * FROM iway_private.auth_tenant_roles')).rowCount,0);
@@ -78,6 +88,15 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
    const pid=(await client.query('SELECT pg_backend_pid() AS pid')).rows[0].pid;
    await admin.query('SELECT pg_terminate_backend($1)',[pid]);await assert.rejects(client.query('SELECT 1'));client.release(true);
    assert.ok(await restarted.get(active.id));
+  });
+  await t.test('absolute expiry denies lookup and refresh and erases tokens during recovery',async()=>{
+   const item=await makeSession();
+   await admin.query("UPDATE iway_private.auth_server_sessions SET expires_at=now()-interval '1 second' WHERE session_hash=encode(sha256($1::bytea),'hex')",[Buffer.from(item.id)]);
+   assert.equal(await sessions.get(item.id),null);let exchanges=0;
+   assert.equal(await sessions.refresh(item.id,async()=>{exchanges++;return tokenPair();}),null);assert.equal(exchanges,0);
+   await sessions.recoverStale();
+   const row=(await admin.query("SELECT revoked_at,access_token,refresh_token FROM iway_private.auth_server_sessions WHERE session_hash=encode(sha256($1::bytea),'hex')",[Buffer.from(item.id)])).rows[0];
+   assert.ok(row.revoked_at);assert.equal(row.access_token,null);assert.equal(row.refresh_token,null);
   });
   await t.test('four roles, permissions, tenant and relationship isolation',async()=>{
    const authorize=createPrivateResourceAuthorizer({pool:runtime});
