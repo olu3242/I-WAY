@@ -16,6 +16,7 @@ export function createNodeProtectedRouteHandler({pipeline}={}){
   res.setHeader('content-type','application/json; charset=utf-8');
   res.setHeader('cache-control','no-store');
   res.setHeader('x-content-type-options','nosniff');
-  res.end(typeof result?.body==='string'&&status===result.status?result.body:'{"error":"SERVICE_UNAVAILABLE"}');
+  const safeBody={200:'{"ok":true}',401:'{"error":"AUTH_REQUIRED"}',403:'{"error":"ACCESS_DENIED"}',404:'{"error":"NOT_FOUND"}',503:'{"error":"SERVICE_UNAVAILABLE"}'};
+  res.end(safeBody[status]);
  };
 }
