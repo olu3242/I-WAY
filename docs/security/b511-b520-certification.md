@@ -183,3 +183,32 @@ PostgreSQL18/TLS on this workstation, 20 read authorizations, concurrency4: 13.4
 6. Approve bounded staging-only fault injection and workload, identify and test a known-good rollback candidate, then independently evaluate B520. Production and real tester onboarding remain unauthorized.
 
 References consulted: PostgreSQL ALTER TABLE https://www.postgresql.org/docs/current/sql-altertable.html and Supabase RLS https://supabase.com/docs/guides/database/postgres/row-level-security . Grants, RLS and server resource policy remain separate requirements.
+
+## B520 — final certification assessment
+Objective: Bind implementation, tests and remaining blockers to exact source.
+Implementation completed: [Machine-readable receipt](b520-certification-receipt.json) records the complete changed-file inventory, review-only SQL hashes, local artifact hashes and successful CI run IDs.
+Files changed: this report and docs/security/b520-certification-receipt.json.
+Tests passed / failed / skipped: repository 765 / 0 / 0; focused authentication 86 / 0 / 0; source checks PASS.
+PostgreSQL verification: local disposable PostgreSQL18 with TLS 16 / 0 / 0; CI PostgreSQL16 PASS.
+GitHub CI: [Verify](https://github.com/olu3242/I-WAY/actions/runs/39683852164), [isolated PostgreSQL](https://github.com/olu3242/I-WAY/actions/runs/39683852256), [auth lifecycle](https://github.com/olu3242/I-WAY/actions/runs/39683852326), [identity](https://github.com/olu3242/I-WAY/actions/runs/39683852133), all successful at implementation SHA 0573f5cf4c4a3c3c56cf1f5239ec2253f6543c3b. This supersedes pending-CI statements above.
+Commit SHA: tested implementation 0573f5cf4c4a3c3c56cf1f5239ec2253f6543c3b; the final evidence-only commit follows it.
+Hosted verification: only Vercel read-only metadata inspected. Live Supabase catalog blocked by 403; no hosted schema, role, secret or deployment changes. Real-provider lifecycle, deployed recovery and rollback NOT RUN.
+Security findings: local fail-closed behavior passes; unknown live schema and absent hosted evidence prevent certification.
+Outstanding blockers: B511-01, B515-01, B516-01, B518-01 and B519-01 remain open.
+Next execution: restore authorized catalog access and follow the explicit administrative sequence above.
+Release decision: NO-GO for hosted certification, production and real tester onboarding. No merge.
+
+| Batch | Repository evidence | Hosted acceptance |
+| --- | --- | --- |
+| B511 | Catalog query exercised against isolated fixture; compatibility matrix recorded | BLOCKED: live catalog unknown |
+| B512 | Existing rows and constraint/policy OIDs preserved; incompatible shapes abort | NOT APPLIED |
+| B513 | Restricted-role provisioning candidate; excess grants and memberships denied | NOT PROVISIONED |
+| B514 | Existing encrypted stores tested with restricted database, rotation, erasure and recovery | NOT VERIFIED |
+| B515 | Four-role tenant and relationship fixtures pass | Mapping/identities unapproved |
+| B516 | Readiness and exact project pin unit-tested | BLOCKED |
+| B517 | Clean exact-SHA standalone Node24 build passes | NOT DEPLOYED |
+| B518 | Hosted evidence gates and local HTTP lifecycle pass | Real provider NOT RUN |
+| B519 | Real local query timeout denies; unlock recovers; 20 reads have zero errors | Deployed recovery/rollback NOT RUN |
+| B520 | Source-bound receipt and CI evidence complete | NOT CERTIFIED |
+
+The standalone build manifest covers 23 files from clean implementation 0573f5cf4c4a3c3c56cf1f5239ec2253f6543c3b and remains outside the served package. Local logs are ignored artifacts; linked CI provides independently retained workflow evidence. Local performance does not establish hosted capacity. No site/ files changed from baseline 82ecb58b832ebecbab6126873302fb8ffce6abab. Original workspace edits remain untouched.
