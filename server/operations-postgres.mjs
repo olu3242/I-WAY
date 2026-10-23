@@ -61,6 +61,7 @@ async function verifiedClient(client,config){
  ensure([row.rolsuper,row.rolbypassrls,row.rolcreaterole,row.rolcreatedb,row.rolreplication,row.elevated_membership,row.owns_operations].every(v=>v===false),'RESTRICTED_ROLE');
  return {identityVerified:true,tlsVerified:true,restrictedRole:true};
 }
+export async function verifyOperationsPgClient(client,config){ensure(configs.has(config));return verifiedClient(client,config);}
 function dataJSON(value){
  ensure(value&&typeof value==='object'&&!Array.isArray(value),'INPUT');
  let encoded;try{encoded=JSON.stringify(value)}catch{throw new OperationsPgError('INPUT')}

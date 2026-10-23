@@ -111,11 +111,15 @@ export function createAutomation({step=()=>{}}={}){
  };
 }
 // A server-owned service actor can run checkpoints, never decide approvals or change commercial terms.
-export function runWorkflowTick(ops){
+export function runWorkflowTick(ops,{maxJobs=50,readyFirst=false}={}){
+ if(!Number.isInteger(maxJobs)||maxJobs<1||maxJobs>50)throw new TypeError('Invalid bounded workflow count');
+ if(typeof readyFirst!=='boolean')throw new TypeError('Invalid workflow scheduling preference');
  const tenants=ops.store.db.prepare('SELECT id FROM tenants').all();let progressed=0;
  for(const tenant of tenants){
   const actor={id:'workflow-service',tenantId:tenant.id,role:'automation',active:true,permissions:['workflow:run']};
-  const candidates=ops.store.list('workflow',tenant.id).filter(w=>['pending','approved','waiting_approval'].includes(w.status)||w.status==='retry'&&w.nextAttemptAt<=ops.now().toISOString()).slice(0,50);
+  const eligible=ops.store.list('workflow',tenant.id).filter(w=>['pending','approved','waiting_approval'].includes(w.status)||w.status==='retry'&&w.nextAttemptAt<=ops.now().toISOString());
+  if(readyFirst)eligible.sort((a,b)=>Number(a.status==='waiting_approval')-Number(b.status==='waiting_approval'));
+  const candidates=eligible.slice(0,maxJobs);
   for(const candidate of candidates)ops.store.transaction(()=>{
    const w=ops.read('workflow',candidate.id,actor);
    if(w.version!==candidate.version)return;

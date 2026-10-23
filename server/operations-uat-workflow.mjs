@@ -20,7 +20,7 @@ export function validateUatRoster(roster){
 }
 export function createUatWorkflow({roster,store,provider,sessions,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer,deliver,clock=()=>Date.now()}={}){
  const entries=validateUatRoster(roster),byId=new Map(entries.map(e=>[e.userId,e])),byEmail=new Map(entries.map(e=>[e.email,e]));
- if(!store||![provider?.inspect,provider?.passwordLogin,provider?.verifySetup,provider?.setPassword,provider?.logout,provider?.refresh,provider?.challengeMfa,provider?.verifyMfa,sessions?.create,sessions?.get,sessions?.revoke,sessions?.refresh,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer?.generateRecovery,deliver].every(fn=>typeof fn==='function'))throw Error('UAT_SECURE_DEPENDENCIES_REQUIRED');
+ if(!store||![provider?.inspect,provider?.passwordLogin,provider?.verifySetup,provider?.setPassword,provider?.logout,provider?.refresh,provider?.challengeMfa,provider?.verifyMfa,sessions?.create,sessions?.get,sessions?.getForRefresh,sessions?.revoke,sessions?.refresh,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer?.generateRecovery,deliver].every(fn=>typeof fn==='function'))throw Error('UAT_SECURE_DEPENDENCIES_REQUIRED');
  async function limit(network,entry){
   if(typeof network!=='string'||network.length>100||!await store.limit('global',60,60000)||!await store.limit('network:'+network,10,60000)||entry&&!await store.limit('account:'+entry.userId,5,900000))denied();
  }
@@ -115,22 +115,58 @@ export function createUatWorkflow({roster,store,provider,sessions,lookupMembersh
    finally{if(!success)await provider.logout(row.tokens.accessToken).catch(()=>{});}
   },
   async beginGoogle({network}){await limit(network);},
+  async cancelMfa(pending){
+   if(!opaque(pending))return {ok:true};
+   const row=await store.consumeMfa(pending);
+   if(row){await provider.logout(row.tokens.accessToken).catch(()=>{});await store.audit('mfa.cancelled',row.user_id);}
+   return {ok:true};
+  },
   async googleSession(tokens,{network}={}){try{if(network)await limit(network);return await createSession(tokens,'google');}catch{if(tokens?.accessToken)await provider.logout(tokens.accessToken).catch(()=>{});denied();}},
   async session(id){
    if(!opaque(id))return null;
    try{
-    const binding=await store.binding(id),current=await sessions.get(id);if(!binding||!current||binding.user_id!==current.user_id)denied();
+    const binding=await store.binding(id);if(!binding)denied();
+    const current=await sessions.get(id);
+    // An expired access token or an in-flight refresh grants no request access.
+    // Keep the absolute-lifetime row available for its atomic refresh claim.
+    if(!current)return null;
+    if(binding.user_id!==current.user_id)denied();
     const {entry,state,identity}=await admit(current.access_token,binding.method,binding.user_id);
     if(state.version!==binding.version||['platform','carrier'].includes(entry.role)&&identity.assurance!=='aal2')denied();
     return {id:entry.principalId,active:true,userId:entry.userId,role:entry.role,tenantId:entry.tenantId,fleetId:entry.fleetId,principalId:entry.principalId,permissions:[...entry.permissions]};
    }catch{await sessions.revoke(id).catch(()=>{});return null;}
   },
   async refresh(id){
-   if(!await this.session(id))denied();
-   await sessions.refresh(id,async refreshToken=>{
-    const tokens=await provider.refresh(refreshToken);await admit(tokens.accessToken,'session');return tokens;
-   });
-   if(!await this.session(id))denied();return {ok:true};
+   // Access-token expiry is the reason to refresh, not a reason to revoke the
+   // absolute-lifetime session before its restricted store can claim refresh.
+   let tokens,unclaimed=false;
+   try{
+    if(!opaque(id))denied();
+    const binding=await store.binding(id),entry=byId.get(binding?.user_id);
+    if(!entry||(await membership(entry)).version!==binding.version)denied();
+    const result=await sessions.refresh(id,async refreshToken=>{
+     tokens=await provider.refresh(refreshToken);
+     const admitted=await admit(tokens.accessToken,binding.method,binding.user_id);
+     if(admitted.state.version!==binding.version||['platform','carrier'].includes(entry.role)&&admitted.identity.assurance!=='aal2')denied();
+     return tokens;
+    });
+    // Losing the store's claim is not a failed provider exchange. In particular,
+    // it must not revoke the winning concurrent request's pending refresh.
+    if(!result){unclaimed=true;denied();}
+    if(!await this.session(id))denied();return {ok:true};
+   }catch{
+    if(!unclaimed&&opaque(id))await sessions.revoke(id).catch(()=>{});
+    if(tokens?.accessToken)await provider.logout(tokens.accessToken).catch(()=>{});
+    throw Error('UAT_ACCESS_DENIED');
+   }
+  },
+  async sessionForRefresh(id){
+   if(!opaque(id))return null;
+   try{
+    const binding=await store.binding(id),current=await sessions.getForRefresh(id),entry=byId.get(binding?.user_id);
+    if(!entry||!current||current.user_id!==entry.userId||(await membership(entry)).version!==binding.version)denied();
+    return {id:entry.principalId,active:true,userId:entry.userId,role:entry.role,tenantId:entry.tenantId,fleetId:entry.fleetId,principalId:entry.principalId,permissions:[...entry.permissions]};
+   }catch{return null;}
   },
   async logout(id){const current=opaque(id)?await sessions.get(id).catch(()=>null):null;if(opaque(id))await sessions.revoke(id);if(current)await provider.logout(current.access_token).catch(()=>{});return {ok:true};},
   async revoke({adminSession,userId}){const {actor}=await admin(adminSession,userId);await store.revoke(userId,{deactivate:true,actorId:actor.id});return {ok:true};}

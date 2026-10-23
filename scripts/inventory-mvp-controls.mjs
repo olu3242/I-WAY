@@ -3,7 +3,7 @@ import {readFileSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-export const inventorySources=['apps/operations/index.html','apps/operations/login.html','apps/operations/admin.html','apps/operations/ops.js','apps/operations/extended.js','apps/operations/intelligence.js','apps/operations/admin.js','apps/operations/login.js','server/operations-app.mjs','server/operations-uat-http.mjs','server/operations-uat-application.mjs'];
+export const inventorySources=['apps/operations/index.html','apps/operations/login.html','apps/operations/admin.html','apps/operations/ops.js','apps/operations/extended.js','apps/operations/intelligence.js','apps/operations/admin.js','apps/operations/login.js','server/operations-app.mjs','server/operations-uat-http.mjs','server/operations-uat-application.mjs','server/operations-durable-uat.mjs'];
 export function inventoryMvp({readSource=path=>readFileSync(path,'utf8')}={}){
  const entries=new Map(),sourceHashes={};
  for(const path of inventorySources){

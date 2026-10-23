@@ -48,7 +48,8 @@ export async function createUatCandidateRuntime({env=process.env,roster,verifier
   const workflow=createUatWorkflow({roster:entries,store,provider,sessions,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer,deliver});
   await workflow.maintain();await sessions.recoverStale();await transactions.expire();
   const dependencies={origin:config.auth.origin,workflow,googleProvider,transactions,authorizeResource:({actor,resourceId})=>authorize({userId:actor.userId,resourceId})};
-  const handler=application?createIntegratedUatApplication({...dependencies,providerSessions:sessions,store:application.store,operations:application.operations,identityVerifier:verifier,platformNamespaceId:application.platformNamespaceId}).handler:createUatCandidateHttp(dependencies);
+  const assembled=typeof application==='function'?await application({dependencies,providerSessions:sessions,identityVerifier:verifier}):application?createIntegratedUatApplication({...dependencies,providerSessions:sessions,store:application.store,operations:application.operations,identityVerifier:verifier,platformNamespaceId:application.platformNamespaceId}):null;
+  const handler=assembled?.handler??createUatCandidateHttp(dependencies);
   return {handler,workflow,maintain:async()=>{await workflow.maintain();await sessions.recoverStale();await transactions.expire();},close:()=>Promise.all([authPool.end(),brokerPool.end()])};
  }catch{await Promise.allSettled([authPool.end(),brokerPool.end()]);throw Error('UAT_RUNTIME_UNAVAILABLE');}
 }

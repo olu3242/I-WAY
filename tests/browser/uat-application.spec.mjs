@@ -3,11 +3,16 @@ import {trackControls,verifiedOutcome} from './control-evidence.mjs';
 import {createServer,request as httpRequest} from 'node:http';
 import {uatApplicationFixture} from '../helpers/uat-application-fixture.mjs';
 import {syntheticPassword} from '../helpers/uat-fixture.mjs';
+import {durablePostgresFixture,durableUatFixture} from '../helpers/durable-uat-fixture.mjs';
+const durable=process.env.IWAY_BROWSER_DURABLE_OPT_IN==='true';let postgres;
+test.beforeAll(async()=>{if(durable)postgres=await durablePostgresFixture();});
+test.afterAll(async()=>{if(postgres)await postgres.close();});
 // Synthetic HTTPS browser origin forwarded into loopback; no external OAuth or mail.
 for(const method of ['google','password'])for(const width of [390,1440])for(const role of ['platform','carrier','fleet','driver'])test(`integrated ${method} ${role} application lifecycle at ${width}`,async({browser})=>{
  test.setTimeout(180000);
  const cleanup=[],f=await uatApplicationFixture({after:fn=>cleanup.push(fn)},{fullPermissions:true});f.setLoginRole(role);
- const server=createServer(f.integrated.handler);await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ let application=durable?await durableUatFixture(f,postgres):f.integrated;
+ const server=createServer((req,res)=>application.handler(req,res));await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await context.route(f.origin+'/**',async route=>{
   const incoming=route.request(),url=new URL(incoming.url());
@@ -31,8 +36,22 @@ for(const method of ['google','password'])for(const width of [390,1440])for(cons
    await expect(page).toHaveURL(f.origin+(role==='platform'?'/uat/control':'/app'));
   }
   await expect(page.locator('h1')).toBeVisible();
+  if(durable)application={...application,...await application.restart()};
+  if(durable&&method==='google'&&role==='driver'&&width===1440){
+   await postgres.pg.admin.query('REVOKE UPDATE(payload,version) ON operations_engine_private.state FROM iway_operations_fixture');
+   try{expect(await page.evaluate(async()=>{const r=await fetch('/api/ops/state');return r.status;})).toBe(503);}
+   finally{await postgres.pg.admin.query('GRANT UPDATE(payload,version) ON operations_engine_private.state TO iway_operations_fixture');}
+  }
   const state=await page.evaluate(async()=>{const r=await fetch('/api/ops/session');return {status:r.status,body:await r.json()};});
   expect(state.status).toBe(200);expect(state.body.actor.role).toBe(role);
+  if(durable&&method==='google'&&role==='carrier'&&width===1440){
+   const progress=await page.evaluate(async()=>{
+    const before=await(await fetch('/api/ops/state')).json(),load=before.loads[0];
+    const sent=await fetch('/api/ops/commands',{method:'POST',headers:{'content-type':'application/json','x-csrf-token':before.csrf},body:JSON.stringify({action:'orchestration:request',resourceId:load.id,expectedVersion:load.version,payload:{},idempotencyKey:crypto.randomUUID()})});
+    const after=await(await fetch('/api/ops/state')).json();return {status:sent.status,job:after.orchestrations[0]?.status,decisions:after.agentDecisions.length};
+   });
+   expect(progress).toEqual({status:200,job:'completed',decisions:5});
+  }
   if(role==='platform'){
    await axeAccessibility(page,'platform-governance');await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Skip to administration'})).toBeFocused();await page.keyboard.press('Enter');await expect(page.locator('#main')).toBeFocused();
    await page.route('**/api/ops/platform',route=>route.fulfill({status:503,contentType:'application/json',body:'{}'}));await page.getByRole('button',{name:'View administration activity'}).click();await expect(page.getByRole('alert')).toContainText('Try again');await expect(page.getByRole('alert')).toBeFocused();

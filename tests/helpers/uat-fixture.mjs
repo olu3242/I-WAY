@@ -31,6 +31,7 @@ export function uatFixture({path=':memory:',now=Date.now(),roster=syntheticRoste
  const sessions={
   create:async data=>{const token=randomBytes(32).toString('base64url');rows.set(token,{user_id:data.userId,access_token:data.accessToken,refresh_token:data.refreshToken,expires:clock()+3600000});return {id:token};},
   get:async token=>{const row=rows.get(token);return row&&row.expires>clock()?row:null;},
+  getForRefresh:async token=>{const row=rows.get(token);return row&&row.expires>clock()?{user_id:row.user_id}:null;},
   revoke:async token=>rows.delete(token),
   refresh:async(token,fn)=>{const row=rows.get(token);if(!row)throw Error('synthetic denied');const next=await fn(row.refresh_token);if(next.user.id!==row.user_id)throw Error('synthetic denied');row.access_token=next.accessToken;row.refresh_token=next.refreshToken;return {id:token};}
  };

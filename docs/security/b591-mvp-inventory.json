@@ -23,8 +23,9 @@
     "apps/operations/admin.js": "37ae785572fd7ef180d3ec6b760c18bfa01205dfc056fefbe5d0ae168ea36669",
     "apps/operations/login.js": "07bebededc2f7ce2df237feb5739b0240c25b794f13585f7d6a90b2dc0d3e3dd",
     "server/operations-app.mjs": "6c547f01de6d358b0e4c7ffd83bd0775cf618dbb23dcd4300a37e0db473c0821",
-    "server/operations-uat-http.mjs": "497a700e092bc4e579406c8458713f1421fe8ad0ff049b3a7584c407721e4316",
-    "server/operations-uat-application.mjs": "4429cbf8b61a020a16c4c2dc1d9e71c379c797a1b2fee003c5ea0abc00a8c26c"
+    "server/operations-uat-http.mjs": "97cce1ea4c0de33eb9ecd01ce92a1a6474b0d9187515a53e9396a4f31ac74cf7",
+    "server/operations-uat-application.mjs": "990f06853dba413a1c88adf371bf9f3b815f5799574fcd2f6439305aea4331a5",
+    "server/operations-durable-uat.mjs": "e0f05087a702193ede1111afd67e1a647ae6e4e823ac09c2e4b10fc47d46b1f9"
   },
   "counts": {
     "action": 40,
@@ -2788,6 +2789,14 @@
         {
           "path": "server/operations-uat-application.mjs",
           "line": 20
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 45
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2801,6 +2810,10 @@
         {
           "path": "server/operations-uat-application.mjs",
           "line": 20
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2911,6 +2924,10 @@
         {
           "path": "server/operations-app.mjs",
           "line": 79
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 52
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3111,6 +3128,10 @@
         {
           "path": "server/operations-uat-application.mjs",
           "line": 4
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 53
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3226,11 +3247,19 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 51
+          "line": 52
         },
         {
           "path": "server/operations-uat-application.mjs",
           "line": 20
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 45
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3244,6 +3273,10 @@
         {
           "path": "server/operations-uat-application.mjs",
           "line": 20
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3391,11 +3424,11 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 60
+          "line": 61
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 67
+          "line": 68
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3412,7 +3445,7 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 82
+          "line": 83
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3426,6 +3459,10 @@
         {
           "path": "server/operations-app.mjs",
           "line": 83
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 38
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3475,6 +3512,14 @@
         {
           "path": "server/operations-uat-application.mjs",
           "line": 20
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 45
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3500,6 +3545,10 @@
         {
           "path": "server/operations-uat-application.mjs",
           "line": 20
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3516,7 +3565,7 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 66
+          "line": 67
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3537,11 +3586,15 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 51
+          "line": 52
         },
         {
           "path": "server/operations-uat-application.mjs",
           "line": 14
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3559,6 +3612,10 @@
         {
           "path": "server/operations-uat-application.mjs",
           "line": 18
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3579,11 +3636,15 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 65
+          "line": 66
         },
         {
           "path": "server/operations-uat-application.mjs",
           "line": 4
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 45
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3596,7 +3657,7 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 87
+          "line": 88
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3613,11 +3674,11 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 87
+          "line": 88
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 96
+          "line": 97
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3634,11 +3695,11 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 87
+          "line": 88
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 94
+          "line": 95
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3651,15 +3712,27 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 87
+          "line": 88
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 98
+          "line": 99
         },
         {
           "path": "server/operations-uat-application.mjs",
           "line": 11
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 12
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 43
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3673,6 +3746,10 @@
         {
           "path": "server/operations-uat-application.mjs",
           "line": 11
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3685,11 +3762,15 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 77
+          "line": 78
         },
         {
           "path": "server/operations-uat-application.mjs",
           "line": 11
+        },
+        {
+          "path": "server/operations-durable-uat.mjs",
+          "line": 41
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3710,19 +3791,19 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 65
+          "line": 66
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 65
+          "line": 66
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 87
+          "line": 88
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 95
+          "line": 96
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"

@@ -45,9 +45,10 @@ export function createUatCandidateHttp({origin,workflow,googleProvider,transacti
    let applicationCookie;
    try{
     if(previous){if(applicationSession)await applicationSession.logout(req);else await workflow.logout(previous);}
+    await workflow.cancelMfa(readAuthCookie(req.headers,mfaCookie));
     if(result.id&&applicationSession)applicationCookie=await applicationSession.establish(result.id);
-   }catch{if(result.id)await workflow.logout(result.id).catch(()=>{});throw Error('UAT_SESSION_REPLACEMENT_FAILED');}
-   if(req.aborted){if(result.id)await workflow.logout(result.id);return;}
+   }catch{if(result.id)await workflow.logout(result.id).catch(()=>{});if(result.pending)await workflow.cancelMfa(result.pending).catch(()=>{});throw Error('UAT_SESSION_REPLACEMENT_FAILED');}
+   if(req.aborted){if(result.id)await workflow.logout(result.id);if(result.pending)await workflow.cancelMfa(result.pending);return;}
    const next=applicationSession?(result.mfaRequired?'/uat/login#mfa':(await workflow.session(result.id))?.role==='platform'?'/uat/control':'/app'):null;
    const cookies=result.mfaRequired?[pendingCookie(result.pending),clearSessionCookie(),clearPkceCookie(),...(applicationSession?[applicationSession.clearCookie]:[])]:[sessionCookie({value:result.id}),clearPending(),clearPkceCookie(),...(applicationCookie?[applicationCookie]:[])];
    return respond(redirect&&next?303:200,result.mfaRequired?{mfaRequired:true}:{ok:true,...(next?{next}:{})},{'set-cookie':cookies,...(redirect&&next?{location:next}:{})});
@@ -97,10 +98,11 @@ export function createUatCandidateHttp({origin,workflow,googleProvider,transacti
    const id=readAuthCookie(req.headers,SESSION_COOKIE);
    if(path==='/uat/refresh'){
     const result=await workflow.refresh(id);
-    try{const cookie=applicationSession?await applicationSession.establish(id,readAuthCookie(req.headers,'iway_ops')):null;return respond(200,result,cookie?{'set-cookie':cookie}:{});}
+    try{const cookie=applicationSession?await applicationSession.establish(id,readAuthCookie(req.headers,'iway_ops'),{refresh:true}):null;return respond(200,result,cookie?{'set-cookie':cookie}:{});}
     catch{await workflow.logout(id);return respond(401,{error:'ACCESS_DENIED'});}
    }
-   if(applicationSession)await applicationSession.logout(req);else await workflow.logout(id);
+   try{await workflow.cancelMfa(readAuthCookie(req.headers,mfaCookie));}
+   finally{if(applicationSession)await applicationSession.logout(req);else await workflow.logout(id);}
    return respond(200,{ok:true},{'set-cookie':[clearSessionCookie(),clearPending(),clearPkceCookie(),...(applicationSession?[applicationSession.clearCookie]:[])]});
   }catch{return respond(401,{error:'ACCESS_DENIED'});}
  };

@@ -32,6 +32,6 @@ export function evidenceFixture(t){
  const stores=[];const open=()=>{const store=new HostedEvidenceStore({database:join(root,'ledger.sqlite'),artifactRoot:root,policy,binding,now:()=>now});stores.push(store);return store};
  let count=0;
  const request=(r,from,to,revision,key='collector',requestId='request_'+(++count))=>({record:revision===0?r:undefined,envelope:envelope(key,{recordId:r.id,recordDigest:digest(canonical(r)),from,to,revision,at:now,requestId,authorizationRef:r.authorizationRef}),authorization});
- t.after(()=>{for(const s of stores)try{s.close()}catch{}const path=resolve(root);if(!path.startsWith(resolve(tmpdir())+sep+'iway-evidence-test-'))throw Error('UNSAFE_TEST_CLEANUP');rmSync(path,{recursive:true,force:true})});
+ t.after(()=>{for(const s of stores)try{s.close()}catch{}const path=resolve(root);if(!path.startsWith(resolve(tmpdir())+sep+'iway-evidence-test-'))throw Error('UNSAFE_TEST_CLEANUP');rmSync(path,{recursive:true,force:true,maxRetries:5,retryDelay:100})});
  return {root,binding,policy,authorization,envelope,record,open,request,setNow:value=>{now=value},now:()=>now};
 }

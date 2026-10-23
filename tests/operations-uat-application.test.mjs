@@ -93,3 +93,14 @@ test('privileged Google AAL1 requires one-use MFA before either application sess
   assert.equal((await f.send('/uat/mfa',{method:'POST',body:{code:'123456'},cookies:pending})).status,401);
  }
 });
+
+test('native JWT expiry permits verified refresh but idle expiry still denies renewal',async t=>{
+ const f=await fixture(t);await f.login('driver');
+ const before=f.jar.get('iway_ops');
+ f.store.db.prepare('UPDATE sessions SET expires_at=? WHERE user_id=?').run(Date.now()-1,f.driver.id);
+ assert.equal((await f.send('/uat/refresh',{method:'POST',body:{}})).status,200);
+ assert.notEqual(f.jar.get('iway_ops'),before);
+ assert.equal((await f.send('/api/ops/state')).status,200);
+ f.store.db.prepare('UPDATE session_security SET last_seen_at=?').run(Date.now()-8*3600000);
+ assert.equal((await f.send('/uat/refresh',{method:'POST',body:{}})).status,401);
+});

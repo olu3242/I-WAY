@@ -158,11 +158,27 @@ test('isolated real PostgreSQL auth persistence, refresh, RLS and HTTP lifecycle
    const refresh=async()=>{calls++;started();await barrier;return tokenPair();};
    const first=sessions.refresh(id,refresh);await entered;
    assert.equal(await sessions.get(id),null);
+   assert.equal(await sessions.getForRefresh(id),null);
    const rest=await Promise.all(Array.from({length:8},()=>sessions.refresh(id,refresh)));
    assert.ok(rest.every(x=>x===null));release();assert.equal((await first).id,id);assert.equal(calls,1);
    assert.equal((await sessions.get(id)).access_token,'synthetic-next-access');
    const row=(await admin.query('SELECT token_version,access_token,refresh_token FROM iway_private.auth_server_sessions WHERE revoked_at IS NULL')).rows[0];
    assert.equal(Number(row.token_version),1);assert.ok(row.access_token.startsWith('v1.'));assert.ok(row.refresh_token.startsWith('v1.'));
+  });
+  await t.test('B668 access expiry permits token-free refresh preflight but absolute expiry and logout deny it',async()=>{
+   const active=await makeSession();let expired;
+   try{
+   await admin.query("UPDATE iway_private.auth_server_sessions SET access_expires_at=now()-interval '1 second' WHERE session_hash=encode(sha256($1::bytea),'hex')",[Buffer.from(active.id)]);
+   assert.equal(await sessions.get(active.id),null);
+   assert.deepEqual(await sessions.getForRefresh(active.id),{user_id:user});
+   assert.equal((await sessions.refresh(active.id,async()=>tokenPair())).id,active.id);
+   assert.ok(await sessions.get(active.id));await sessions.revoke(active.id);
+   assert.equal(await sessions.getForRefresh(active.id),null);
+   expired=await makeSession();
+   await admin.query("UPDATE iway_private.auth_server_sessions SET expires_at=now()-interval '1 second' WHERE session_hash=encode(sha256($1::bytea),'hex')",[Buffer.from(expired.id)]);
+   assert.equal(await sessions.getForRefresh(expired.id),null);
+   let exchanged=false;assert.equal(await sessions.refresh(expired.id,async()=>{exchanged=true;return tokenPair();}),null);assert.equal(exchanged,false);
+   }finally{await sessions.revoke(active.id);if(expired)await sessions.revoke(expired.id);}
   });
   await t.test('logout wins against in-flight refresh; uncertain provider outcomes revoke',async()=>{
    const {id}=await makeSession();let release,started;
