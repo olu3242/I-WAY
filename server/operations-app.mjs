@@ -11,16 +11,17 @@ import {authenticate,session,logout} from './operations-auth.mjs';
 import {readDocument} from '../domain/operations-documents.mjs';
 import {OpsError,fields} from '../domain/operations-errors.mjs';
 const assets=new Map([['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/admin','admin.html'],['/assets/admin.js','admin.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
-export function makeOperationsApp({store,operations,logSink=()=>{},identityVerifier,invitationTransport}){
+export function makeOperationsApp({store,operations,logSink=()=>{},identityVerifier,invitationTransport,externalSessionBridge}){
+ if(externalSessionBridge&&(!externalSessionBridge.origin?.startsWith('https://')||new URL(externalSessionBridge.origin).origin!==externalSessionBridge.origin||![externalSessionBridge.read,externalSessionBridge.logout].every(f=>typeof f==='function')))throw Error('EXTERNAL_SESSION_BRIDGE_INVALID');
  const loginAttempts=new Map(),enrollmentAttempts=new Map();
  const invitations=createInvitationService(store,{verifier:identityVerifier,transport:invitationTransport});
  const admin=createOperationsAdmin(store);
  const server=createServer(async(req,res)=>{
   observeRequest(req,res,{sink:logSink});
-  const origin='http://127.0.0.1:'+server.address().port;
+  const origin=externalSessionBridge?.origin??'http://127.0.0.1:'+server.address().port;
   const sendAdmin=result=>send(result.ok?200:({FORBIDDEN:403,INVALID_INPUT:422,CONFLICT:409}[result.code]??400),result);
   const send=(status,data)=>{res.writeHead(status,{...securityHeaders(),'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(data));};
-  if(req.headers.host!=='127.0.0.1:'+server.address().port)return send(403,{error:'Local host required.'});
+  if(req.headers.host!==new URL(origin).host)return send(403,{error:'Approved host required.'});
   const token=(req.headers.cookie??'').split(';').map(x=>x.trim()).find(x=>x.startsWith('iway_ops='))?.slice(9);
   let auth;
   let path;try{path=new URL(req.url,origin).pathname}catch{return send(400,{error:'Invalid URL.'})}
@@ -30,7 +31,9 @@ export function makeOperationsApp({store,operations,logSink=()=>{},identityVerif
    try{return JSON.parse(body)}catch{throw new OpsError(400,'JSON','Invalid JSON.')}
   };
   try{
-   auth=session(store,token);
+   auth=externalSessionBridge?await externalSessionBridge.read(req):session(store,token);
+   if(externalSessionBridge&&['/api/ops/login','/api/ops/identity-login','/api/ops/invitations/open','/api/ops/invitations/accept','/api/ops/invitations/reject'].includes(path))return send(403,{error:'Use the approved sign-in flow.'});
+   if(externalSessionBridge&&path==='/login'){res.writeHead(303,{Location:'/uat/login',...securityHeaders()});return res.end();}
    if(req.method==='POST'){
     if(req.headers.origin!==origin)return send(403,{error:'Same-origin request required.'});
     if(['/api/ops/identity-login','/api/ops/invitations/open','/api/ops/invitations/accept','/api/ops/invitations/reject'].includes(path)){
@@ -65,7 +68,11 @@ export function makeOperationsApp({store,operations,logSink=()=>{},identityVerif
     if(path==='/api/ops/invitations/send'){const input=await readBody();fields(input,['id','key']);return send(200,invitations.send(auth,input.id,input.key));}
     if(path==='/api/ops/invitations/revoke'){const input=await readBody();fields(input,['id']);return send(200,invitations.revoke(auth,input.id));}
     if(path==='/api/ops/invitations/inspect'){const input=await readBody();fields(input,['id']);return send(200,invitations.inspect(auth,input.id));}
-    if(path==='/api/ops/logout'){logout(store,token,auth.actor);res.setHeader('Set-Cookie','iway_ops=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');return send(200,{ok:true});}
+    if(path==='/api/ops/logout'){
+     if(externalSessionBridge){await externalSessionBridge.logout(req);res.setHeader('Set-Cookie',[externalSessionBridge.clearCookie,'__Host-iway-session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax']);}
+     else{logout(store,token,auth.actor);res.setHeader('Set-Cookie','iway_ops=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');}
+     return send(200,{ok:true});
+    }
     if(path==='/api/ops/admin/settings'){const input=await readBody();fields(input,['settings','expectedVersion']);return sendAdmin(admin.updateSettings(auth.actor,input.settings,input.expectedVersion));}
     if(path==='/api/ops/admin/items'){const input=await readBody();fields(input,['kind','id','data','expectedVersion']);return sendAdmin(admin.upsert(auth.actor,input.kind,input.id,input.data,input.expectedVersion));}
     if(path==='/api/ops/admin/delete'){const input=await readBody();fields(input,['kind','id','expectedVersion']);return sendAdmin(admin.remove(auth.actor,input.kind,input.id,input.expectedVersion));}
@@ -74,6 +81,7 @@ export function makeOperationsApp({store,operations,logSink=()=>{},identityVerif
    }
    if(req.method!=='GET'&&req.method!=='HEAD')return send(405,{error:'Method not allowed.'});
    if(path==='/health'){store.db.prepare('SELECT 1').get();return send(200,{status:'ok',storage:'ready',scope:'local'});}
+   if(path==='/api/ops/session'){if(!auth)return send(401,{error:'Sign in required.'});return send(200,{actor:auth.actor,csrf:auth.csrf});}
    if(path==='/api/ops/admin/settings'){if(!auth)return send(401,{error:'Sign in required.'});return sendAdmin(admin.getSettings(auth.actor));}
    if(path==='/api/ops/admin/audit'){if(!auth)return send(401,{error:'Sign in required.'});return sendAdmin(admin.audit(auth.actor));}
    if(path==='/api/ops/admin/items'){if(!auth)return send(401,{error:'Sign in required.'});const kind=new URL(req.url,origin).searchParams.get('kind');return sendAdmin(admin.list(auth.actor,kind));}

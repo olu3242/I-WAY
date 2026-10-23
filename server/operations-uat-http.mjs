@@ -9,6 +9,7 @@ const setup=location.pathname==='/uat/setup';
 let invitation=setup?location.hash.slice(1):'';
 if(setup)history.replaceState(null,'',location.pathname);
 const status=document.querySelector('#status');
+if(!setup&&location.hash==='#mfa'){history.replaceState(null,'',location.pathname);document.querySelector('#mfa').hidden=false;status.textContent='Enter your authenticator code.';}
 document.querySelector('#credentials').addEventListener('submit',async event=>{
  event.preventDefault();const form=event.currentTarget,button=form.querySelector('button');button.disabled=true;
  const values=new FormData(form);
@@ -19,6 +20,7 @@ document.querySelector('#credentials').addEventListener('submit',async event=>{
   status.textContent=response.ok?(data.mfaRequired?'Enter your authenticator code.':setup?'Password set. Return to sign in.':'Signed in.'):'Sign-in or setup could not be completed.';
   if(data.mfaRequired)document.querySelector('#mfa').hidden=false;
   if(setup&&response.ok)invitation='';
+  if(response.ok&&['/app','/uat/control'].includes(data.next))location.assign(data.next);
  }catch{status.textContent='Unable to continue.';}
  finally{form.querySelector('[name=password]').value='';button.disabled=false;}
 });
@@ -28,20 +30,27 @@ document.querySelector('#mfa').addEventListener('submit',async event=>{
  try{
   const response=await fetch('/uat/mfa',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code})});
   status.textContent=response.ok?'Signed in.':'Authentication could not be completed.';
+  const data=await response.json();if(response.ok&&['/app','/uat/control'].includes(data.next))location.assign(data.next);
  }catch{status.textContent='Unable to continue.';}
  finally{form.reset();button.disabled=false;}
 });`;
 function page(setup){return `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>I-WAY UAT sign in</title><main><h1>${setup?'Set your I-WAY password':'I-WAY UAT sign in'}</h1><p>Access is limited to approved testers. Recovery requires your UAT administrator.</p>${setup?'':'<form action="/auth/login" method="post"><button>Continue with Google</button></form>'}<form id="credentials">${setup?'':'<label>Email <input name="email" type="email" autocomplete="username" required></label>'}<label>${setup?'New password':'Password'} <input name="password" type="password" autocomplete="${setup?'new-password':'current-password'}" ${setup?'minlength="15"':''} maxlength="128" required></label><button>${setup?'Set password':'Sign in'}</button></form><form id="mfa" hidden><label>Authenticator code <input name="code" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code" required></label><button>Verify</button></form><p id="status" role="status" aria-live="polite"></p><a href="/uat/login">Return to sign in</a></main><script src="/uat/client.js" defer></script></html>`;}
-export function createUatCandidateHttp({origin,workflow,googleProvider,transactions,authorizeResource}={}){
+export function createUatCandidateHttp({origin,workflow,googleProvider,transactions,authorizeResource,applicationSession}={}){
  if(new URL(origin).origin!==origin||!origin.startsWith('https://')||!workflow||![googleProvider?.authorizationUrl,googleProvider?.exchangeCode,transactions?.save,transactions?.consume,authorizeResource].every(f=>typeof f==='function'))throw Error('UAT_HTTP_DEPENDENCIES_REQUIRED');
  const login=createSupabaseLogin({saveTransaction:transactions.save,consumeTransaction:transactions.consume,authorizationUrl:googleProvider.authorizationUrl});
  return async function handle(req,res){
   function respond(status,body,headers={}){if(status>=400)res.shouldKeepAlive=false;res.writeHead(status,{'content-type':'application/json; charset=utf-8','cache-control':'no-store','referrer-policy':'no-referrer','x-content-type-options':'nosniff',...(status>=400?{connection:'close'}:{}),'content-security-policy':"default-src 'none'; script-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",...headers});res.end(typeof body==='string'?body:JSON.stringify(body));}
-  async function finish(result){
+  async function finish(result,{redirect=false}={}){
    const previous=readAuthCookie(req.headers,SESSION_COOKIE);
-   try{if(previous)await workflow.logout(previous);}catch{if(result.id)await workflow.logout(result.id).catch(()=>{});throw Error('UAT_SESSION_REPLACEMENT_FAILED');}
+   let applicationCookie;
+   try{
+    if(previous){if(applicationSession)await applicationSession.logout(req);else await workflow.logout(previous);}
+    if(result.id&&applicationSession)applicationCookie=await applicationSession.establish(result.id);
+   }catch{if(result.id)await workflow.logout(result.id).catch(()=>{});throw Error('UAT_SESSION_REPLACEMENT_FAILED');}
    if(req.aborted){if(result.id)await workflow.logout(result.id);return;}
-   return result.mfaRequired?respond(200,{mfaRequired:true},{'set-cookie':[pendingCookie(result.pending),clearSessionCookie(),clearPkceCookie()]}):respond(200,{ok:true},{'set-cookie':[sessionCookie({value:result.id}),clearPending(),clearPkceCookie()]});
+   const next=applicationSession?(result.mfaRequired?'/uat/login#mfa':(await workflow.session(result.id))?.role==='platform'?'/uat/control':'/app'):null;
+   const cookies=result.mfaRequired?[pendingCookie(result.pending),clearSessionCookie(),clearPkceCookie(),...(applicationSession?[applicationSession.clearCookie]:[])]:[sessionCookie({value:result.id}),clearPending(),clearPkceCookie(),...(applicationCookie?[applicationCookie]:[])];
+   return respond(redirect&&next?303:200,result.mfaRequired?{mfaRequired:true}:{ok:true,...(next?{next}:{})},{'set-cookie':cookies,...(redirect&&next?{location:next}:{})});
   }
   try{
    if(typeof req.url!=='string'||req.url.length>4096||!req.url.startsWith('/')||req.url.startsWith('//')||req.url.includes('#'))return respond(404,{error:'NOT_FOUND'});
@@ -61,7 +70,7 @@ export function createUatCandidateHttp({origin,workflow,googleProvider,transacti
       createSession:async tokens=>{result=await workflow.googleSession(tokens,{network});return {id:result.id??result.pending};}});
      const response=await callback({url:origin+req.url,headers:req.headers});
      if(!response.ok)return respond(401,{error:'ACCESS_DENIED'},{'set-cookie':clearPkceCookie()});
-     return await finish(result);
+     return await finish(result,{redirect:!!applicationSession});
     }
     const current=await workflow.session(readAuthCookie(req.headers,SESSION_COOKIE));
     if(!current)return respond(401,{error:'AUTH_REQUIRED'});
@@ -86,8 +95,13 @@ export function createUatCandidateHttp({origin,workflow,googleProvider,transacti
    if(path==='/uat/setup')return respond(200,await workflow.setup({token:body.token,password:body.password,network}));
    if(path==='/uat/mfa')return await finish(await workflow.completeMfa({pending:readAuthCookie(req.headers,mfaCookie),code:body.code,network}));
    const id=readAuthCookie(req.headers,SESSION_COOKIE);
-   if(path==='/uat/refresh')return respond(200,await workflow.refresh(id));
-   await workflow.logout(id);return respond(200,{ok:true},{'set-cookie':[clearSessionCookie(),clearPending(),clearPkceCookie()]});
+   if(path==='/uat/refresh'){
+    const result=await workflow.refresh(id);
+    try{const cookie=applicationSession?await applicationSession.establish(id,readAuthCookie(req.headers,'iway_ops')):null;return respond(200,result,cookie?{'set-cookie':cookie}:{});}
+    catch{await workflow.logout(id);return respond(401,{error:'ACCESS_DENIED'});}
+   }
+   if(applicationSession)await applicationSession.logout(req);else await workflow.logout(id);
+   return respond(200,{ok:true},{'set-cookie':[clearSessionCookie(),clearPending(),clearPkceCookie(),...(applicationSession?[applicationSession.clearCookie]:[])]});
   }catch{return respond(401,{error:'ACCESS_DENIED'});}
  };
 }
