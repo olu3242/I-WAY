@@ -1,0 +1,25 @@
+case,tester,persona,expected,prerequisite,status
+UAT-01,oadeyemo306@gmail.com,platform,Individual Vercel access without team membership,Approved Preview grant and eligible plan,NOT RUN
+UAT-02,martin@tm88investments.com,carrier,Individual Vercel access without team membership,Approved Preview grant and eligible plan,NOT RUN
+UAT-03,info@tm88investments.com,fleet,Individual Vercel access without team membership,Approved Preview grant and eligible plan,NOT RUN
+UAT-04,cassiomey@gmail.com,driver,Individual Vercel access without team membership,Approved Preview grant and eligible plan,NOT RUN
+UAT-05,oadeyemo306@gmail.com,platform,Google subject maps only to approved Auth UUID,Provisioned verified subject and control-plane mapping,NOT RUN
+UAT-06,martin@tm88investments.com,carrier,Google subject maps only to approved Auth UUID,Provisioned verified subject and tenant,NOT RUN
+UAT-07,info@tm88investments.com,fleet,Google subject maps only to approved Auth UUID,Provisioned verified subject and fleet/tenant,NOT RUN
+UAT-08,cassiomey@gmail.com,driver,Google subject maps only to approved Auth UUID,Provisioned verified subject and employment,NOT RUN
+UAT-09,oadeyemo306@gmail.com,platform,One-time setup then password plus verified MFA resolves same UUID,Approved issuance and enrolled factor,NOT RUN
+UAT-10,martin@tm88investments.com,carrier,One-time setup then password plus verified MFA resolves same UUID,Approved issuance and enrolled factor,NOT RUN
+UAT-11,info@tm88investments.com,fleet,One-time setup then password resolves same UUID,Approved issuance and provider activation,NOT RUN
+UAT-12,cassiomey@gmail.com,driver,One-time setup then password resolves same UUID,Approved issuance and provider activation,NOT RUN
+UAT-13,all four,all,Refresh/logout/revocation/absolute expiry deny session reuse,Actual provider and shared restricted storage,NOT RUN
+UAT-14,controlled unapproved identity,none,Fifth user gets no application session or data,Approved negative-test identity outside roster,NOT RUN
+UAT-15,carrier and fleet,tenant roles,Cross-tenant access denied,Recorded approved synthetic tenant fixtures,NOT RUN
+UAT-16,fleet,fleet,Cross-fleet access denied within same tenant,Recorded own and other synthetic fleets,NOT RUN
+UAT-17,driver,driver,Unassigned driver resources and inactive employment denied,Recorded synthetic employment and assignments,NOT RUN
+UAT-18,platform,platform,No carrier/fleet operational data or privileges,Separate control-plane adapter and approved actions,NOT RUN
+UAT-19,platform and carrier,privileged,Missing or forged MFA grants no application session,Real provider MFA and signing-key verification,NOT RUN
+UAT-20,all four,all,Expired/replayed/revoked setup links fail and secrets are erased,Approved delivery and scheduled maintenance,NOT RUN
+UAT-21,all four,all,Revoked Vercel collaborator access fails before application,Approved access and explicit revocation test,NOT RUN
+UAT-22,all four,all,No access to public-production app or unapproved deployment branches,Scope review and negative URL checks,NOT RUN
+UAT-23,all four,all,No client-selected role tenant fleet or UUID changes authority,Approved deployed candidate and recorded bindings,NOT RUN
+UAT-24,all four,all,Outage and rollback remain denied until approved recovery,Known-good reviewed Preview and rollback plan,NOT RUN
