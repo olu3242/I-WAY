@@ -7,7 +7,7 @@ export function validateConfiguredRecord(store,tenantId,kind,record){
  const rows=store.db.prepare("SELECT id,data FROM organization_admin WHERE tenant_id=? AND kind='validation-rule' ORDER BY id LIMIT 200").all(tenantId);
  for(const row of rows){
   let rule;try{rule=JSON.parse(row.data)}catch{return {valid:false,code:'INVALID_RULE'};}
-  if(rule.object!==kind||rule.enabled===false)continue;
+  if(rule._deactivated||rule.object!==kind||rule.enabled===false)continue;
   const normalized={...rule,id:row.id,version:1,enabled:true};
   if(!validateRuleDefinition(normalized))return {valid:false,code:'INVALID_RULE'};
   const result=evaluateValidationRule(normalized,record);

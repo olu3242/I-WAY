@@ -43,7 +43,7 @@ export function createOperationsAdmin(store){
  return Object.freeze({
   list(actor,kind){
    if(!authorize(actor,actor.tenantId)||!TYPES.includes(kind))return {ok:false,code:'FORBIDDEN'};
-   const items=store.db.prepare('SELECT id,version,data FROM organization_admin WHERE tenant_id=? AND kind=? ORDER BY id LIMIT 200').all(actor.tenantId,kind);
+   const items=store.db.prepare("SELECT id,version,data FROM organization_admin WHERE tenant_id=? AND kind=? AND coalesce(json_extract(data,'$._deactivated'),0)=0 ORDER BY id LIMIT 200").all(actor.tenantId,kind);
    return {ok:true,items:items.map(x=>({id:x.id,version:x.version,...JSON.parse(x.data)}))};
   },
   getSettings(actor){
@@ -76,10 +76,12 @@ export function createOperationsAdmin(store){
   remove(actor,kind,id,expectedVersion){
    if(!authorize(actor,actor.tenantId)||!TYPES.includes(kind)||!idOk(id)||!Number.isSafeInteger(expectedVersion))return {ok:false,code:'FORBIDDEN'};
    return store.transaction(()=>{
-    const row=store.db.prepare('SELECT version FROM organization_admin WHERE tenant_id=? AND kind=? AND id=?').get(actor.tenantId,kind,id);
+    const row=store.db.prepare('SELECT version,data FROM organization_admin WHERE tenant_id=? AND kind=? AND id=?').get(actor.tenantId,kind,id);
     if(!row||row.version!==expectedVersion)return {ok:false,code:'CONFLICT'};
-    store.db.prepare('DELETE FROM organization_admin WHERE tenant_id=? AND kind=? AND id=?').run(actor.tenantId,kind,id);
-    audit(actor,kind,id,'delete',expectedVersion);return {ok:true};
+    if(JSON.parse(row.data)._deactivated)return {ok:false,code:'CONFLICT'};
+    const version=expectedVersion+1;
+    store.db.prepare('UPDATE organization_admin SET version=?,data=? WHERE tenant_id=? AND kind=? AND id=?').run(version,JSON.stringify({...JSON.parse(row.data),_deactivated:true}),actor.tenantId,kind,id);
+    audit(actor,kind,id,'deactivate',version);return {ok:true,version};
    });
   },
   audit(actor){

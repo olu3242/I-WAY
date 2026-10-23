@@ -17,3 +17,9 @@ test('invalid active rule fails closed',()=>{
  db.prepare('INSERT INTO organization_admin VALUES(?,?,?,?)').run('a','validation-rule','broken',JSON.stringify({object:'load',field:'x',operator:'javascript'}));
  assert.equal(validateConfiguredRecord({db},'a','load',{}).code,'INVALID_RULE');
 });
+
+test('retained deactivated rules do not block new records',()=>{
+ const db=new DatabaseSync(':memory:');db.exec('CREATE TABLE organization_admin(tenant_id TEXT,kind TEXT,id TEXT,data TEXT)');
+ db.prepare('INSERT INTO organization_admin VALUES(?,?,?,?)').run('a','validation-rule','retained',JSON.stringify({name:'retained',object:'load',field:'customerId',operator:'required',enabled:true,_deactivated:true}));
+ assert.deepEqual(validateConfiguredRecord({db},'a','load',{}),{valid:true});db.close();
+});

@@ -1,4 +1,5 @@
-import {test,expect} from '@playwright/test';
+import {test,expect} from './workspace.mjs';
+import {trackControls,verifiedJourney} from './control-evidence.mjs';
 import {createServer} from 'node:http';
 import {uatFixture,syntheticRoster,syntheticPassword} from '../helpers/uat-fixture.mjs';
 import {createUatCandidateHttp} from '../../server/operations-uat-http.mjs';
@@ -15,6 +16,7 @@ for(const width of [390,1440])test('isolated UAT password setup, Google choice a
   await route.fulfill({response});
  });
  try{
+  await trackControls(page);
   await f.workflow.issue({adminSession:'synthetic-approved-admin',userId:syntheticRoster[1].userId});
   await page.goto(origin+'/uat/setup#'+f.mail[0].token);await expect(page).toHaveURL(origin+'/uat/setup');
   await page.getByLabel('New password').fill(syntheticPassword);await page.getByRole('button',{name:'Set password',exact:true}).click();await expect(page.getByRole('status')).toContainText('Password set');
@@ -24,5 +26,6 @@ for(const width of [390,1440])test('isolated UAT password setup, Google choice a
   await page.getByLabel('Authenticator code').fill('123456');await page.getByRole('button',{name:'Verify',exact:true}).click();await expect(page.getByRole('status')).toHaveText('Signed in.');
   const identity=await page.evaluate(async()=>{const r=await fetch('/uat/session');return r.json();});expect(identity).toEqual({authenticated:true,role:'carrier'});
   expect(await page.evaluate(()=>document.cookie)).not.toContain('iway');expect(errors).toEqual([]);
+  await verifiedJourney(['form:credentials','form:mfa','button:Set password','button:Sign in','button:Verify'],async()=>{expect(identity).toEqual({authenticated:true,role:'carrier'});});
  }finally{await context.close();server.closeAllConnections();await new Promise(r=>server.close(r));f.db.close();}
 });

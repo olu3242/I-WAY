@@ -1,5 +1,6 @@
 import {test,expect,signIn,basicAccessibility,axeAccessibility} from './workspace.mjs';
 import {password} from '../helpers/operations-fixture.mjs';
+import {verifiedJourney,trackControls} from './control-evidence.mjs';
 
 test('WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable',async({page,workspace})=>{
  // Full multi-view/persona journey includes repeated axe scans; assertion deadlines remain unchanged.
@@ -19,6 +20,7 @@ test('WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usab
 });
 
 test('sign-in failure is announced and focused and recovers with keyboard input',async({page,workspace})=>{
+ await trackControls(page);
  await page.setViewportSize({width:390,height:844});
  await page.goto(workspace.baseURL+'/login');
  await axeAccessibility(page,'login-form');
@@ -90,5 +92,6 @@ test('fleet completes employment and equipment work and server errors remain rec
  await expect(page.locator('#view')).toContainText('inactive');
  const hired=workspace.store.db.prepare('SELECT data FROM users WHERE username=?').get('fleet-hire@illustrative.invalid');
  expect(JSON.parse(hired.data).active).toBe(false);
+ await verifiedJourney(['form:fleet-driver','form:vehicle','form:asset-edit','action:user:deactivate','action:edit-vehicle'],async()=>{expect(JSON.parse(hired.data).active).toBe(false);expect(workspace.store.get('vehicle',own.id,workspace.manager.tenantId).maintenance).toBe('out_of_service');});
  await basicAccessibility(page);
 });

@@ -6,13 +6,13 @@ import {addUser} from '../../server/operations-auth.mjs';
 import {createIdentityVerifier} from '../../server/operations-identity.mjs';
 import {createOperationsFeatures} from '../../domain/operations-features.mjs';
 import {createIntegratedUatApplication} from '../../server/operations-uat-application.mjs';
-export async function uatApplicationFixture(t){
+export async function uatApplicationFixture(t,{fullPermissions=false}={}){
  const native=await fixture(t,createOperationsFeatures()),governance=randomUUID();
  native.store.db.prepare('INSERT INTO tenants VALUES(?,?,?)').run(governance,'Illustrative governance namespace','UTC');
  const platform=addUser(native.store,{tenantId:governance,username:syntheticRoster[0].email,name:'Illustrative Platform',role:'platform',identityOnly:true,permissions:['platform:audit']});
  const assignment=native.assign();
  const actors=[platform,native.manager,native.fleetUser,native.driver];
- const roster=syntheticRoster.map((entry,i)=>({...entry,principalId:actors[i].id,tenantId:i===0?null:actors[i].tenantId,fleetId:i>=2?native.fleet.id:null}));
+ const roster=syntheticRoster.map((entry,i)=>({...entry,permissions:fullPermissions?[...actors[i].permissions]:entry.permissions,principalId:actors[i].id,tenantId:i===0?null:actors[i].tenantId,fleetId:i>=2?native.fleet.id:null}));
  for(let i=0;i<4;i++){
   const actor={...actors[i],identityOnly:true,permissions:[...roster[i].permissions],fleetId:roster[i].fleetId};
   native.store.db.prepare('UPDATE users SET data=?,password=? WHERE id=?').run(JSON.stringify(actor),'federated-only',actor.id);

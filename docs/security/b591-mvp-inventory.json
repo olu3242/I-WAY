@@ -1,0 +1,3726 @@
+{
+  "schemaVersion": 1,
+  "scope": "Implemented local Operations role views, company administration, platform governance and UAT authentication; excludes internal prototype and future features",
+  "personas": [
+    "platform",
+    "carrier",
+    "fleet",
+    "driver"
+  ],
+  "limitations": [
+    "Source expressions are expanded where known; runtime DOM inventory supplements discovery.",
+    "Source discovery and test references do not certify a control outcome.",
+    "APIs and form controls are inventoried separately; totals are not unique business-feature counts."
+  ],
+  "sourceHashes": {
+    "apps/operations/index.html": "ab94d01c7303778a5d51e2c51323f89a792f171510e352639e9fb033221293e1",
+    "apps/operations/login.html": "b3031b34d639f17f5a9c8cdbeeb05d803c87d047005182d4bd3f72909030b44d",
+    "apps/operations/admin.html": "d7f7936f869351ee62b7573846eb8391d993f51fee9188d749d639668c3377c4",
+    "apps/operations/ops.js": "57704703cb5160bcd16e55c4729222c9f6f499f0a9bce42e6cf372f63cfdb126",
+    "apps/operations/extended.js": "7e2aadf3b5f6de25eef70c9da59509bd7e7390037cb98be1f8d6ef2a8fed59aa",
+    "apps/operations/intelligence.js": "45cf4934cc393658fa05ed57e6ae881be9e0c62dbde8c39d8e72269b8128076d",
+    "apps/operations/admin.js": "65b25ac1e6e03f220ae8de8d4f7a8b4920e21e9348dd30f85a6f1c4a9e2daf64",
+    "apps/operations/login.js": "f10f679720017c8c74d6a2b0d5b012fdbd1ae296d6cc6ff9fa6b29a1ea857bb2",
+    "server/operations-app.mjs": "28828d1044cfee18d5ed173aee3ee0d566d0e33bb437db352522e8b17a62f249",
+    "server/operations-uat-http.mjs": "497a700e092bc4e579406c8458713f1421fe8ad0ff049b3a7584c407721e4316",
+    "server/operations-uat-application.mjs": "4429cbf8b61a020a16c4c2dc1d9e71c379c797a1b2fee003c5ea0abc00a8c26c"
+  },
+  "counts": {
+    "action": 40,
+    "button": 30,
+    "dialog": 12,
+    "disclosure": 1,
+    "field": 76,
+    "form": 25,
+    "navigation": 18,
+    "route": 48
+  },
+  "controls": [
+    {
+      "key": "action:approval:approve",
+      "type": "action",
+      "value": "approval:approve",
+      "label": "Approve recommendation",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 117
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:approval:reject",
+      "type": "action",
+      "value": "approval:reject",
+      "label": "Reject",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 117
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:back",
+      "type": "action",
+      "value": "back",
+      "label": "Back to loads",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 44
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 76
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 92
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:billing:generate",
+      "type": "action",
+      "value": "billing:generate",
+      "label": "Generate verified invoice",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 64
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:billing:issue",
+      "type": "action",
+      "value": "billing:issue",
+      "label": "Issue invoice",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 64
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:billing:void",
+      "type": "action",
+      "value": "billing:void",
+      "label": "Void invoice",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 64
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:capacity:apply",
+      "type": "action",
+      "value": "capacity:apply",
+      "label": "Apply approved assignment",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:capacity:approve",
+      "type": "action",
+      "value": "capacity:approve",
+      "label": "Approve capacity proposal",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:capacity:recommend",
+      "type": "action",
+      "value": "capacity:recommend",
+      "label": "Recommend capacity",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:capacity:reject",
+      "type": "action",
+      "value": "capacity:reject",
+      "label": "Reject capacity proposal",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:connector:cancel",
+      "type": "action",
+      "value": "connector:cancel",
+      "label": "Cancel review",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:connector:retry",
+      "type": "action",
+      "value": "connector:retry",
+      "label": "Retry review",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:document:reject",
+      "type": "action",
+      "value": "document:reject",
+      "label": "Reject document",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:document:scan",
+      "type": "action",
+      "value": "document:scan",
+      "label": "Check document requirements",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:document:validate",
+      "type": "action",
+      "value": "document:validate",
+      "label": "Validate document",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:driver:approve",
+      "type": "action",
+      "value": "driver:approve",
+      "label": "Carrier approval",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:edit-driver",
+      "type": "action",
+      "value": "edit-driver",
+      "label": "Manage driver",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:edit-vehicle",
+      "type": "action",
+      "value": "edit-vehicle",
+      "label": "Manage vehicle",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:finance:approve",
+      "type": "action",
+      "value": "finance:approve",
+      "label": "Approve record",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 122
+        },
+        {
+          "path": "apps/operations/extended.js",
+          "line": 64
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:finance:prepare",
+      "type": "action",
+      "value": "finance:prepare",
+      "label": "Prepare invoice",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 122
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:load:accept",
+      "type": "action",
+      "value": "load:accept",
+      "label": "Accept assignment",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 63
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:load:close",
+      "type": "action",
+      "value": "load:close",
+      "label": "Close delivery",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 59
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:load:pickup",
+      "type": "action",
+      "value": "load:pickup",
+      "label": "Complete pickup",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 64
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:load:ready",
+      "type": "action",
+      "value": "load:ready",
+      "label": "Mark ready",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 57
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:load:transit",
+      "type": "action",
+      "value": "load:transit",
+      "label": "Start transit",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 65
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:load:unassign",
+      "type": "action",
+      "value": "load:unassign",
+      "label": "Cancel assignment",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 58
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:load:validate",
+      "type": "action",
+      "value": "load:validate",
+      "label": "Validate load",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 60
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:load:void",
+      "type": "action",
+      "value": "load:void",
+      "label": "Void load",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 68
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:new-load",
+      "type": "action",
+      "value": "new-load",
+      "label": "new-load",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 39
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 139
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:open",
+      "type": "action",
+      "value": "open",
+      "label": "Open",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 35
+        },
+        {
+          "path": "apps/operations/extended.js",
+          "line": 27
+        },
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 64
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:orchestration:cancel",
+      "type": "action",
+      "value": "orchestration:cancel",
+      "label": "Cancel review",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:orchestration:request",
+      "type": "action",
+      "value": "orchestration:request",
+      "label": "Start coordinated review",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:orchestration:retry",
+      "type": "action",
+      "value": "orchestration:retry",
+      "label": "Retry review",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:payment:reconcile",
+      "type": "action",
+      "value": "payment:reconcile",
+      "label": "Reconcile evidence",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 67
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:payment:reject",
+      "type": "action",
+      "value": "payment:reject",
+      "label": "Reject evidence",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 67
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:risk:analyze",
+      "type": "action",
+      "value": "risk:analyze",
+      "label": "Analyze risk",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:user:deactivate",
+      "type": "action",
+      "value": "user:deactivate",
+      "label": "Deactivate account",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 104
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 106
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:vehicle:approve",
+      "type": "action",
+      "value": "vehicle:approve",
+      "label": "Carrier approval",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:workflow:advance",
+      "type": "action",
+      "value": "workflow:advance",
+      "label": "Advance workflow",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 115
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:workflow:restart",
+      "type": "action",
+      "value": "workflow:restart",
+      "label": "Restart review",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 116
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Add fleet",
+      "type": "button",
+      "value": "Add fleet",
+      "label": "Add fleet",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Add vehicle",
+      "type": "button",
+      "value": "Add vehicle",
+      "label": "Add vehicle",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 101
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Confirm delivery",
+      "type": "button",
+      "value": "Confirm delivery",
+      "label": "Confirm delivery",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 66
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Continue with Google",
+      "type": "button",
+      "value": "Continue with Google",
+      "label": "Continue with Google",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Create account",
+      "type": "button",
+      "value": "Create account",
+      "label": "Create account",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Create customer relationship",
+      "type": "button",
+      "value": "Create customer relationship",
+      "label": "Create customer relationship",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 30
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Create draft load",
+      "type": "button",
+      "value": "Create draft load",
+      "label": "Create draft load",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 51
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Create driver account",
+      "type": "button",
+      "value": "Create driver account",
+      "label": "Create driver account",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 104
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Create load",
+      "type": "button",
+      "value": "Create load",
+      "label": "Create load",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 39
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 139
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Deactivate configuration",
+      "type": "button",
+      "value": "Deactivate configuration",
+      "label": "Deactivate configuration",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Evaluate arrival estimate",
+      "type": "button",
+      "value": "Evaluate arrival estimate",
+      "label": "Evaluate arrival estimate",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Ingest document",
+      "type": "button",
+      "value": "Ingest document",
+      "label": "Ingest document",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Queue local adapter",
+      "type": "button",
+      "value": "Queue local adapter",
+      "label": "Queue local adapter",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Record acknowledgment",
+      "type": "button",
+      "value": "Record acknowledgment",
+      "label": "Record acknowledgment",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Record cost",
+      "type": "button",
+      "value": "Record cost",
+      "label": "Record cost",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Record distance evidence",
+      "type": "button",
+      "value": "Record distance evidence",
+      "label": "Record distance evidence",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 95
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Record evidence",
+      "type": "button",
+      "value": "Record evidence",
+      "label": "Record evidence",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 66
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Record update",
+      "type": "button",
+      "value": "Record update",
+      "label": "Record update",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 83
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Report exception",
+      "type": "button",
+      "value": "Report exception",
+      "label": "Report exception",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 83
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save advisory policy",
+      "type": "button",
+      "value": "Save advisory policy",
+      "label": "Save advisory policy",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save assignment",
+      "type": "button",
+      "value": "Save assignment",
+      "label": "Save assignment",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 74
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save changes",
+      "type": "button",
+      "value": "Save changes",
+      "label": "Save changes",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 95
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save company settings",
+      "type": "button",
+      "value": "Save company settings",
+      "label": "Save company settings",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save configuration",
+      "type": "button",
+      "value": "Save configuration",
+      "label": "Save configuration",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save preferences",
+      "type": "button",
+      "value": "Save preferences",
+      "label": "Save preferences",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 28
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Set password",
+      "type": "button",
+      "value": "Set password",
+      "label": "Set password",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Sign in",
+      "type": "button",
+      "value": "Sign in",
+      "label": "Sign in",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Sign out",
+      "type": "button",
+      "value": "Sign out",
+      "label": "Sign out",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Verify",
+      "type": "button",
+      "value": "Verify",
+      "label": "Verify",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:View administration activity",
+      "type": "button",
+      "value": "View administration activity",
+      "label": "View administration activity",
+      "locations": [
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Deactivate this configuration?",
+      "type": "dialog",
+      "value": "Deactivate this configuration?",
+      "label": "Deactivate this configuration?",
+      "locations": [
+        {
+          "path": "apps/operations/admin.js",
+          "line": 42
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Invoice due date (YYYY-MM-DD)",
+      "type": "dialog",
+      "value": "Invoice due date (YYYY-MM-DD)",
+      "label": "Invoice due date (YYYY-MM-DD)",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for ",
+      "type": "dialog",
+      "value": "Reason for ",
+      "label": "Reason for ",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 155
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for approving this financial record",
+      "type": "dialog",
+      "value": "Reason for approving this financial record",
+      "label": "Reason for approving this financial record",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 161
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for deactivating this account",
+      "type": "dialog",
+      "value": "Reason for deactivating this account",
+      "label": "Reason for deactivating this account",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 154
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for requesting a fresh review",
+      "type": "dialog",
+      "value": "Reason for requesting a fresh review",
+      "label": "Reason for requesting a fresh review",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 159
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for the carrier approval decision",
+      "type": "dialog",
+      "value": "Reason for the carrier approval decision",
+      "label": "Reason for the carrier approval decision",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 157
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for this capacity decision",
+      "type": "dialog",
+      "value": "Reason for this capacity decision",
+      "label": "Reason for this capacity decision",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 41
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for this decision",
+      "type": "dialog",
+      "value": "Reason for this decision",
+      "label": "Reason for this decision",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 160
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for this document review",
+      "type": "dialog",
+      "value": "Reason for this document review",
+      "label": "Reason for this document review",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 41
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for this financial record decision",
+      "type": "dialog",
+      "value": "Reason for this financial record decision",
+      "label": "Reason for this financial record decision",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for this workflow action",
+      "type": "dialog",
+      "value": "Reason for this workflow action",
+      "label": "Reason for this workflow action",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 44
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "disclosure:Input examples and provenance",
+      "type": "disclosure",
+      "value": "Input examples and provenance",
+      "label": "Input examples and provenance",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:active",
+      "type": "field",
+      "value": "active",
+      "label": "active",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 93
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:actualMiles",
+      "type": "field",
+      "value": "actualMiles",
+      "label": "actualMiles",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 92
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:adapterInput",
+      "type": "field",
+      "value": "adapterInput",
+      "label": "adapterInput",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:amountCents",
+      "type": "field",
+      "value": "amountCents",
+      "label": "amountCents",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 66
+        },
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:assignmentReason",
+      "type": "field",
+      "value": "assignmentReason",
+      "label": "assignmentReason",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 74
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:available",
+      "type": "field",
+      "value": "available",
+      "label": "available",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 93
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:averageMph",
+      "type": "field",
+      "value": "averageMph",
+      "label": "averageMph",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:baselineRouteId",
+      "type": "field",
+      "value": "baselineRouteId",
+      "label": "baselineRouteId",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 94
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:basis",
+      "type": "field",
+      "value": "basis",
+      "label": "basis",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:capability",
+      "type": "field",
+      "value": "capability",
+      "label": "capability",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:capacityLb",
+      "type": "field",
+      "value": "capacityLb",
+      "label": "capacityLb",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 100
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:category",
+      "type": "field",
+      "value": "category",
+      "label": "category",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:chargeCents",
+      "type": "field",
+      "value": "chargeCents",
+      "label": "chargeCents",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 49
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:chargeLabel",
+      "type": "field",
+      "value": "chargeLabel",
+      "label": "chargeLabel",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 49
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:code",
+      "type": "field",
+      "value": "code",
+      "label": "code",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:commodity",
+      "type": "field",
+      "value": "commodity",
+      "label": "commodity",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 48
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:compliance",
+      "type": "field",
+      "value": "compliance",
+      "label": "compliance",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 94
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:currency",
+      "type": "field",
+      "value": "currency",
+      "label": "currency",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:customer",
+      "type": "field",
+      "value": "customer",
+      "label": "customer",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 45
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:customerId",
+      "type": "field",
+      "value": "customerId",
+      "label": "customerId",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 46
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:data",
+      "type": "field",
+      "value": "data",
+      "label": "data",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:delivery",
+      "type": "field",
+      "value": "delivery",
+      "label": "delivery",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 49
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:deliveryAt",
+      "type": "field",
+      "value": "deliveryAt",
+      "label": "deliveryAt",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 49
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:departureAt",
+      "type": "field",
+      "value": "departureAt",
+      "label": "departureAt",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:disabledTools",
+      "type": "field",
+      "value": "disabledTools",
+      "label": "disabledTools",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:dispatcherId",
+      "type": "field",
+      "value": "dispatcherId",
+      "label": "dispatcherId",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 47
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:displayName",
+      "type": "field",
+      "value": "displayName",
+      "label": "displayName",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:distanceMiles",
+      "type": "field",
+      "value": "distanceMiles",
+      "label": "distanceMiles",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:distanceReference",
+      "type": "field",
+      "value": "distanceReference",
+      "label": "distanceReference",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 93
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:documentContent",
+      "type": "field",
+      "value": "documentContent",
+      "label": "documentContent",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:documentType",
+      "type": "field",
+      "value": "documentType",
+      "label": "documentType",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:dotNumber",
+      "type": "field",
+      "value": "dotNumber",
+      "label": "dotNumber",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:driverId",
+      "type": "field",
+      "value": "driverId",
+      "label": "driverId",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 72
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:email",
+      "type": "field",
+      "value": "email",
+      "label": "email",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:enabled",
+      "type": "field",
+      "value": "enabled",
+      "label": "enabled",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 28
+        },
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:evidenceReference",
+      "type": "field",
+      "value": "evidenceReference",
+      "label": "evidenceReference",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expiresOn",
+      "type": "field",
+      "value": "expiresOn",
+      "label": "expiresOn",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 94
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:factored",
+      "type": "field",
+      "value": "factored",
+      "label": "factored",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 50
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:factorName",
+      "type": "field",
+      "value": "factorName",
+      "label": "factorName",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 51
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:fleetId",
+      "type": "field",
+      "value": "fleetId",
+      "label": "fleetId",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 101
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:fleetName",
+      "type": "field",
+      "value": "fleetName",
+      "label": "fleetName",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:handlingMinutes",
+      "type": "field",
+      "value": "handlingMinutes",
+      "label": "handlingMinutes",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:invoiceId",
+      "type": "field",
+      "value": "invoiceId",
+      "label": "invoiceId",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 65
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:invoiceReference",
+      "type": "field",
+      "value": "invoiceReference",
+      "label": "invoiceReference",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 66
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:kind",
+      "type": "field",
+      "value": "kind",
+      "label": "kind",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:legalName",
+      "type": "field",
+      "value": "legalName",
+      "label": "legalName",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:lifecycle",
+      "type": "field",
+      "value": "lifecycle",
+      "label": "lifecycle",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 28
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:loadId",
+      "type": "field",
+      "value": "loadId",
+      "label": "loadId",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 18
+        },
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:location",
+      "type": "field",
+      "value": "location",
+      "label": "location",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 83
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:maintenance",
+      "type": "field",
+      "value": "maintenance",
+      "label": "maintenance",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 94
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:measurementLoadId",
+      "type": "field",
+      "value": "measurementLoadId",
+      "label": "measurementLoadId",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 92
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:mimeType",
+      "type": "field",
+      "value": "mimeType",
+      "label": "mimeType",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:name",
+      "type": "field",
+      "value": "name",
+      "label": "name",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 100
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 104
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        },
+        {
+          "path": "apps/operations/extended.js",
+          "line": 30
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:note",
+      "type": "field",
+      "value": "note",
+      "label": "note",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 83
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:observedAt",
+      "type": "field",
+      "value": "observedAt",
+      "label": "observedAt",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 93
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:password",
+      "type": "field",
+      "value": "password",
+      "label": "password",
+      "locations": [
+        {
+          "path": "apps/operations/login.html",
+          "line": 1
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 104
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:pickup",
+      "type": "field",
+      "value": "pickup",
+      "label": "pickup",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 49
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:pickupAt",
+      "type": "field",
+      "value": "pickupAt",
+      "label": "pickupAt",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 49
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:previousDocId",
+      "type": "field",
+      "value": "previousDocId",
+      "label": "previousDocId",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:proofReference",
+      "type": "field",
+      "value": "proofReference",
+      "label": "proofReference",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 66
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:provenance",
+      "type": "field",
+      "value": "provenance",
+      "label": "provenance",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 66
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:rateCents",
+      "type": "field",
+      "value": "rateCents",
+      "label": "rateCents",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 49
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:reason",
+      "type": "field",
+      "value": "reason",
+      "label": "reason",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 83
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 95
+        },
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:receivedAt",
+      "type": "field",
+      "value": "receivedAt",
+      "label": "receivedAt",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 66
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:recipientAcknowledged",
+      "type": "field",
+      "value": "recipientAcknowledged",
+      "label": "recipientAcknowledged",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:record-id",
+      "type": "field",
+      "value": "record-id",
+      "label": "record-id",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:reference",
+      "type": "field",
+      "value": "reference",
+      "label": "reference",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 45
+        },
+        {
+          "path": "apps/operations/extended.js",
+          "line": 66
+        },
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:role",
+      "type": "field",
+      "value": "role",
+      "label": "role",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:source",
+      "type": "field",
+      "value": "source",
+      "label": "source",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:stopId",
+      "type": "field",
+      "value": "stopId",
+      "label": "stopId",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:timeZone",
+      "type": "field",
+      "value": "timeZone",
+      "label": "timeZone",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:type",
+      "type": "field",
+      "value": "type",
+      "label": "type",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 83
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:username",
+      "type": "field",
+      "value": "username",
+      "label": "username",
+      "locations": [
+        {
+          "path": "apps/operations/login.html",
+          "line": 1
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 104
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:vehicleId",
+      "type": "field",
+      "value": "vehicleId",
+      "label": "vehicleId",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 73
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:version",
+      "type": "field",
+      "value": "version",
+      "label": "version",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:weightLb",
+      "type": "field",
+      "value": "weightLb",
+      "label": "weightLb",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 48
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:asset-edit",
+      "type": "form",
+      "value": "asset-edit",
+      "label": "asset-edit",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 93
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:assign",
+      "type": "form",
+      "value": "assign",
+      "label": "assign",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 71
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:connector-request",
+      "type": "form",
+      "value": "connector-request",
+      "label": "connector-request",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:cost-record",
+      "type": "form",
+      "value": "cost-record",
+      "label": "cost-record",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:create-load",
+      "type": "form",
+      "value": "create-load",
+      "label": "create-load",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 45
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:credentials",
+      "type": "form",
+      "value": "credentials",
+      "label": "credentials",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:customer-create",
+      "type": "form",
+      "value": "customer-create",
+      "label": "customer-create",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 30
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:deliver",
+      "type": "form",
+      "value": "deliver",
+      "label": "deliver",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 66
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:distance-evidence",
+      "type": "form",
+      "value": "distance-evidence",
+      "label": "distance-evidence",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 91
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:document-ingest",
+      "type": "form",
+      "value": "document-ingest",
+      "label": "document-ingest",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:editor",
+      "type": "form",
+      "value": "editor",
+      "label": "editor",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:exception",
+      "type": "form",
+      "value": "exception",
+      "label": "exception",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 83
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:fleet",
+      "type": "form",
+      "value": "fleet",
+      "label": "fleet",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:fleet-driver",
+      "type": "form",
+      "value": "fleet-driver",
+      "label": "fleet-driver",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 104
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:governance-update",
+      "type": "form",
+      "value": "governance-update",
+      "label": "governance-update",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:login",
+      "type": "form",
+      "value": "login",
+      "label": "login",
+      "locations": [
+        {
+          "path": "apps/operations/login.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:mfa",
+      "type": "form",
+      "value": "mfa",
+      "label": "mfa",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:notification-preference",
+      "type": "form",
+      "value": "notification-preference",
+      "label": "notification-preference",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 28
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:payment-record",
+      "type": "form",
+      "value": "payment-record",
+      "label": "payment-record",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 65
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:pod-record",
+      "type": "form",
+      "value": "pod-record",
+      "label": "pod-record",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:route-evaluate",
+      "type": "form",
+      "value": "route-evaluate",
+      "label": "route-evaluate",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:settings",
+      "type": "form",
+      "value": "settings",
+      "label": "settings",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:tracking",
+      "type": "form",
+      "value": "tracking",
+      "label": "tracking",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 83
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:user",
+      "type": "form",
+      "value": "user",
+      "label": "user",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:vehicle",
+      "type": "form",
+      "value": "vehicle",
+      "label": "vehicle",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 100
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:analytics",
+      "type": "navigation",
+      "value": "analytics",
+      "label": "Operations analytics",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 6
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:assets",
+      "type": "navigation",
+      "value": "assets",
+      "label": "People & equipment",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 131
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:audit",
+      "type": "navigation",
+      "value": "audit",
+      "label": "Activity",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 136
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:billing",
+      "type": "navigation",
+      "value": "billing",
+      "label": "Billing & receivables",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 4
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:costs",
+      "type": "navigation",
+      "value": "costs",
+      "label": "Cost intelligence",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 7
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:customer-invoices",
+      "type": "navigation",
+      "value": "customer-invoices",
+      "label": "Invoices",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 9
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:customers",
+      "type": "navigation",
+      "value": "customers",
+      "label": "Customers",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 7
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:documents",
+      "type": "navigation",
+      "value": "documents",
+      "label": "Document review",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 5
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:finance",
+      "type": "navigation",
+      "value": "finance",
+      "label": "Invoice readiness",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 134
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:governance",
+      "type": "navigation",
+      "value": "governance",
+      "label": "Governance",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 6
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:integrations",
+      "type": "navigation",
+      "value": "integrations",
+      "label": "Local adapters",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 5
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:loads",
+      "type": "navigation",
+      "value": "loads",
+      "label": "Loads / My assignments",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:notifications",
+      "type": "navigation",
+      "value": "notifications",
+      "label": "Notifications",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 8
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:overview",
+      "type": "navigation",
+      "value": "overview",
+      "label": "Overview",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 130
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:people",
+      "type": "navigation",
+      "value": "people",
+      "label": "Workspace access",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 135
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:runtime",
+      "type": "navigation",
+      "value": "runtime",
+      "label": "Workflow runtime",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 4
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:tower",
+      "type": "navigation",
+      "value": "tower",
+      "label": "Control tower",
+      "locations": [
+        {
+          "path": "apps/operations/intelligence.js",
+          "line": 3
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:workflows",
+      "type": "navigation",
+      "value": "workflows",
+      "label": "Review & recovery",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 133
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/admin",
+      "type": "route",
+      "value": "/admin",
+      "label": "/admin",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 94
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 95
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/",
+      "type": "route",
+      "value": "/api/ops/",
+      "label": "/api/ops/",
+      "locations": [
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/admin/audit",
+      "type": "route",
+      "value": "/api/ops/admin/audit",
+      "label": "/api/ops/admin/audit",
+      "locations": [
+        {
+          "path": "apps/operations/admin.js",
+          "line": 28
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 86
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/admin/delete",
+      "type": "route",
+      "value": "/api/ops/admin/delete",
+      "label": "/api/ops/admin/delete",
+      "locations": [
+        {
+          "path": "apps/operations/admin.js",
+          "line": 43
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 78
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/admin/items",
+      "type": "route",
+      "value": "/api/ops/admin/items",
+      "label": "/api/ops/admin/items",
+      "locations": [
+        {
+          "path": "apps/operations/admin.js",
+          "line": 38
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 77
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 87
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/admin/items?kind=",
+      "type": "route",
+      "value": "/api/ops/admin/items?kind=",
+      "label": "/api/ops/admin/items?kind=",
+      "locations": [
+        {
+          "path": "apps/operations/admin.js",
+          "line": 17
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/admin/settings",
+      "type": "route",
+      "value": "/api/ops/admin/settings",
+      "label": "/api/ops/admin/settings",
+      "locations": [
+        {
+          "path": "apps/operations/admin.js",
+          "line": 12
+        },
+        {
+          "path": "apps/operations/admin.js",
+          "line": 33
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 76
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 85
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/commands",
+      "type": "route",
+      "value": "/api/ops/commands",
+      "label": "/api/ops/commands",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 30
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 79
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/documents/",
+      "type": "route",
+      "value": "/api/ops/documents/",
+      "label": "/api/ops/documents/",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 15
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 89
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 89
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/health",
+      "type": "route",
+      "value": "/api/ops/health",
+      "label": "/api/ops/health",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 88
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/identity-login",
+      "type": "route",
+      "value": "/api/ops/identity-login",
+      "label": "/api/ops/identity-login",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 35
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 39
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 45
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/invitations/accept",
+      "type": "route",
+      "value": "/api/ops/invitations/accept",
+      "label": "/api/ops/invitations/accept",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 35
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/invitations/create",
+      "type": "route",
+      "value": "/api/ops/invitations/create",
+      "label": "/api/ops/invitations/create",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 67
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/invitations/inspect",
+      "type": "route",
+      "value": "/api/ops/invitations/inspect",
+      "label": "/api/ops/invitations/inspect",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 70
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/invitations/open",
+      "type": "route",
+      "value": "/api/ops/invitations/open",
+      "label": "/api/ops/invitations/open",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 35
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/invitations/reject",
+      "type": "route",
+      "value": "/api/ops/invitations/reject",
+      "label": "/api/ops/invitations/reject",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 35
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/invitations/revoke",
+      "type": "route",
+      "value": "/api/ops/invitations/revoke",
+      "label": "/api/ops/invitations/revoke",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 69
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/invitations/send",
+      "type": "route",
+      "value": "/api/ops/invitations/send",
+      "label": "/api/ops/invitations/send",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 68
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/login",
+      "type": "route",
+      "value": "/api/ops/login",
+      "label": "/api/ops/login",
+      "locations": [
+        {
+          "path": "apps/operations/login.js",
+          "line": 7
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 35
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 53
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/logout",
+      "type": "route",
+      "value": "/api/ops/logout",
+      "label": "/api/ops/logout",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 142
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 71
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 4
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/platform",
+      "type": "route",
+      "value": "/api/ops/platform",
+      "label": "/api/ops/platform",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 66
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 4
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/session",
+      "type": "route",
+      "value": "/api/ops/session",
+      "label": "/api/ops/session",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 16
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 84
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 4
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/state",
+      "type": "route",
+      "value": "/api/ops/state",
+      "label": "/api/ops/state",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 25
+        },
+        {
+          "path": "apps/operations/admin.js",
+          "line": 11
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 90
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/app",
+      "type": "route",
+      "value": "/app",
+      "label": "/app",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        },
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        },
+        {
+          "path": "apps/operations/login.js",
+          "line": 8
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 91
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 93
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 96
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 23
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 33
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 51
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/",
+      "type": "route",
+      "value": "/assets/",
+      "label": "/assets/",
+      "locations": [
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/admin.js",
+      "type": "route",
+      "value": "/assets/admin.js",
+      "label": "/assets/admin.js",
+      "locations": [
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/extended.js",
+      "type": "route",
+      "value": "/assets/extended.js",
+      "label": "/assets/extended.js",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/i-way-logo.svg",
+      "type": "route",
+      "value": "/assets/i-way-logo.svg",
+      "label": "/assets/i-way-logo.svg",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "apps/operations/login.html",
+          "line": 1
+        },
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/intelligence.js",
+      "type": "route",
+      "value": "/assets/intelligence.js",
+      "label": "/assets/intelligence.js",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/login.js",
+      "type": "route",
+      "value": "/assets/login.js",
+      "label": "/assets/login.js",
+      "locations": [
+        {
+          "path": "apps/operations/login.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/ops.css",
+      "type": "route",
+      "value": "/assets/ops.css",
+      "label": "/assets/ops.css",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "apps/operations/login.html",
+          "line": 1
+        },
+        {
+          "path": "apps/operations/admin.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/ops.js",
+      "type": "route",
+      "value": "/assets/ops.js",
+      "label": "/assets/ops.js",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/auth/callback",
+      "type": "route",
+      "value": "/auth/callback",
+      "label": "/auth/callback",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 60
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 67
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/auth/login",
+      "type": "route",
+      "value": "/auth/login",
+      "label": "/auth/login",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 82
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/health",
+      "type": "route",
+      "value": "/health",
+      "label": "/health",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 83
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/login",
+      "type": "route",
+      "value": "/login",
+      "label": "/login",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 17
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 23
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 142
+        },
+        {
+          "path": "apps/operations/admin.js",
+          "line": 7
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 36
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 91
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 94
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 96
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/portal",
+      "type": "route",
+      "value": "/portal",
+      "label": "/portal",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 13
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 92
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 93
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/client.js",
+      "type": "route",
+      "value": "/uat/client.js",
+      "label": "/uat/client.js",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 66
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/control",
+      "type": "route",
+      "value": "/uat/control",
+      "label": "/uat/control",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 23
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 33
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 51
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 14
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/control.js",
+      "type": "route",
+      "value": "/uat/control.js",
+      "label": "/uat/control.js",
+      "locations": [
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 14
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/login",
+      "type": "route",
+      "value": "/uat/login",
+      "label": "/uat/login",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 36
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 37
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 65
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 4
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/logout",
+      "type": "route",
+      "value": "/uat/logout",
+      "label": "/uat/logout",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 87
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/mfa",
+      "type": "route",
+      "value": "/uat/mfa",
+      "label": "/uat/mfa",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 31
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 87
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 96
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/password",
+      "type": "route",
+      "value": "/uat/password",
+      "label": "/uat/password",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 18
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 87
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 94
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/refresh",
+      "type": "route",
+      "value": "/uat/refresh",
+      "label": "/uat/refresh",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 87
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 98
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/resources/",
+      "type": "route",
+      "value": "/uat/resources/",
+      "label": "/uat/resources/",
+      "locations": [
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/session",
+      "type": "route",
+      "value": "/uat/session",
+      "label": "/uat/session",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 77
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/setup",
+      "type": "route",
+      "value": "/uat/setup",
+      "label": "/uat/setup",
+      "locations": [
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 8
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 18
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 65
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 65
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 87
+        },
+        {
+          "path": "server/operations-uat-http.mjs",
+          "line": 95
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    }
+  ]
+}

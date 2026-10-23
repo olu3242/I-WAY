@@ -1,6 +1,7 @@
 const notice=document.querySelector('#notice'),settings=document.querySelector('#settings'),kind=document.querySelector('#kind');
 let csrf='',settingsVersion=0;
-const say=s=>{notice.textContent=s};
+const say=(s,error=false)=>{notice.setAttribute('role',error?'alert':'status');notice.setAttribute('aria-live',error?'assertive':'polite');notice.tabIndex=-1;notice.textContent=s;if(s!=='Ready')notice.focus();};
+const resetEditor=()=>{document.querySelector('#editor').reset();document.querySelector('#delete').disabled=true;};
 async function api(path,method='GET',body){
  const r=await fetch(path,{method,headers:{'Content-Type':'application/json','X-CSRF-Token':csrf},body:body===undefined?undefined:JSON.stringify(body)});
  if(r.status===401){location.assign('/login');throw Error('Sign in required')}
@@ -19,7 +20,7 @@ async function refreshItems(){
  const ul=document.createElement('ul');
  for(const item of response.items){
   const li=document.createElement('li'),btn=document.createElement('button');btn.type='button';btn.textContent=item.name+' (v'+item.version+')';
-  btn.addEventListener('click',()=>{document.querySelector('#record-id').value=item.id;document.querySelector('#version').value=item.version;const {id,version,...data}=item;document.querySelector('#data').value=JSON.stringify(data,null,2)});
+  btn.addEventListener('click',()=>{document.querySelector('#record-id').value=item.id;document.querySelector('#version').value=item.version;const {id,version,...data}=item;document.querySelector('#data').value=JSON.stringify(data,null,2);document.querySelector('#delete').disabled=false;document.querySelector('#record-id').focus();});
   li.append(btn);ul.append(li);
  }list.append(ul);
 }
@@ -30,15 +31,16 @@ async function refreshAudit(){
 settings.addEventListener('submit',async e=>{e.preventDefault();try{
  const data=Object.fromEntries(new FormData(settings));for(const k of Object.keys(data))if(!data[k])delete data[k];
  await api('/api/ops/admin/settings','POST',{settings:data,expectedVersion:settingsVersion});await refresh();say('Company settings saved');
-}catch(e){say(e.message)}});
-kind.addEventListener('change',()=>refreshItems().catch(e=>say(e.message)));
+}catch(e){say(e.message,true)}});
+kind.addEventListener('change',()=>{resetEditor();refreshItems().catch(e=>say(e.message,true));});
 document.querySelector('#editor').addEventListener('submit',async e=>{e.preventDefault();try{
  const data=JSON.parse(document.querySelector('#data').value);
- await api('/api/ops/admin/items','POST',{kind:kind.value,id:document.querySelector('#record-id').value,expectedVersion:Number(document.querySelector('#version').value),data});
+ const saved=await api('/api/ops/admin/items','POST',{kind:kind.value,id:document.querySelector('#record-id').value,expectedVersion:Number(document.querySelector('#version').value),data});
+ document.querySelector('#version').value=saved.version;document.querySelector('#delete').disabled=false;
  await refreshItems();await refreshAudit();say('Configuration saved');
-}catch(e){say(e.message)}});
-document.querySelector('#delete').addEventListener('click',async()=>{if(!confirm('Delete this configuration?'))return;try{
+}catch(e){say(e.message,true)}});
+document.querySelector('#delete').addEventListener('click',async()=>{if(!confirm('Deactivate this configuration?'))return;try{
  await api('/api/ops/admin/delete','POST',{kind:kind.value,id:document.querySelector('#record-id').value,expectedVersion:Number(document.querySelector('#version').value)});
- await refreshItems();await refreshAudit();say('Configuration deleted');
-}catch(e){say(e.message)}});
-refresh().catch(e=>say(e.message));
+ resetEditor();await refreshItems();await refreshAudit();say('Configuration deactivated');
+}catch(e){say(e.message,true)}});
+refresh().catch(e=>say(e.message,true));

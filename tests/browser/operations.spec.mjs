@@ -1,6 +1,7 @@
 import {test,expect,signIn,basicAccessibility,noConsoleErrors} from './workspace.mjs';
 import {password} from '../helpers/operations-fixture.mjs';
 import {runFeatureTick} from '../../domain/operations-features.mjs';
+import {verifiedJourney} from './control-evidence.mjs';
 
 for(const persona of [
  {key:'manager',label:'carrier',width:1440,height:1000},
@@ -164,6 +165,7 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await pages.customer.reload();
   await pages.customer.getByRole('button',{name:'Invoices',exact:true}).click();
   await expect(pages.customer.locator('#view')).toContainText('paid');
+  await verifiedJourney(['navigation:customer-invoices'],async()=>{await expect(pages.customer.locator('#view')).toContainText('paid');});
   await carrier.getByRole('button',{name:'Cost intelligence',exact:true}).click();
   await carrier.getByLabel('Delivered shipment',{exact:true}).selectOption(load.id);
   await carrier.getByLabel('Reported distance (miles)',{exact:true}).fill('165.5');
@@ -177,7 +179,7 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await expect(carrier.locator('#view')).toContainText('ROI and savings are unavailable');
   await expect(carrier.locator('#view')).toContainText('Based on 1 records.');
   await basicAccessibility(carrier);
-  expect(errors).toEqual([]);
+  await verifiedJourney(['form:create-load','form:document-ingest','form:assign','form:deliver','form:tracking','form:exception','form:pod-record','form:payment-record','form:distance-evidence','action:new-load','action:open','action:document:validate','action:load:validate','action:load:accept','action:load:pickup','action:load:transit','action:workflow:advance','action:approval:approve','action:finance:prepare','action:finance:approve','action:billing:issue','action:payment:reconcile'],async()=>{expect(errors).toEqual([]);expect(workspace.store.get('invoice',invoice.id,workspace.manager.tenantId).status).toBe('paid');});
  }finally{for(const context of contexts)await context.close();}
 });
 
@@ -308,6 +310,7 @@ test('Wave 4 browser joins advisory analysis, human assignment approval and boun
   await carrier.getByRole('button',{name:'Loads',exact:true}).click();
   await carrier.getByRole('button',{name:'Open',exact:true}).click();
   await carrier.getByRole('button',{name:'Start coordinated review',exact:true}).click();
+  await expect.poll(()=>workspace.store.list('orchestration',workspace.manager.tenantId).length).toBe(1);
   for(let i=0;i<5;i++)await runFeatureTick(workspace.ops);
   await carrier.reload();
   await carrier.getByRole('button',{name:'Workflow runtime',exact:true}).click();
@@ -334,6 +337,7 @@ test('Wave 4 browser joins advisory analysis, human assignment approval and boun
   await expect(carrier.getByRole('status')).toContainText('Saved.');
 
   await carrier.getByRole('button',{name:'Local adapters',exact:true}).click();
+  await carrier.getByText('Input examples and provenance',{exact:true}).click();await expect(carrier.locator('details')).toHaveAttribute('open','');
   await carrier.getByLabel('Shipment',{exact:true}).selectOption(load.id);
   await carrier.getByLabel('Capability',{exact:true}).selectOption('mapping');
   await carrier.getByLabel('Local evidence (JSON)',{exact:true}).fill(JSON.stringify({source:'user_estimate',distanceMiles:150,averageMph:50,handlingMinutes:30,departureAt:new Date().toISOString()}));
@@ -370,7 +374,7 @@ test('Wave 4 browser joins advisory analysis, human assignment approval and boun
   const image=testInfo.outputPath('control-tower-1440.png');
   await carrier.screenshot({path:image,fullPage:true});
   await testInfo.attach('control-tower-1440',{path:image,contentType:'image/png'});
-  expect(errors).toEqual([]);
+  await verifiedJourney(['form:route-evaluate','form:governance-update','form:connector-request','form:cost-record','action:risk:analyze','action:capacity:recommend','action:capacity:approve','action:capacity:apply','action:orchestration:request','disclosure:Input examples and provenance'],async()=>{expect(errors).toEqual([]);expect(result.provenance.live).toBe(false);expect(workspace.store.list('assignment',workspace.manager.tenantId).filter(a=>a.status==='active')).toHaveLength(1);});
  }finally{for(const context of contexts)await context.close();}
 });
 
@@ -383,5 +387,5 @@ test('Wave 4 browser joins advisory analysis, human assignment approval and boun
   workspace.command(workspace.dispatcher,'load:assign',load,{driverId:workspace.driver.id,vehicleId:workspace.vehicle.id,reason:'Synthetic assignment'});
   await page.reload();await page.getByRole('button',{name:'Loads',exact:true}).click();await page.getByRole('button',{name:'Open',exact:true}).click();page.once('dialog',dialog=>dialog.accept('Human cancels synthetic assignment'));
   await page.getByRole('button',{name:'Cancel assignment',exact:true}).click();await expect(page.getByRole('button',{name:'Cancel assignment',exact:true})).toHaveCount(0);
-  expect(workspace.store.list('assignment',workspace.manager.tenantId).filter(a=>a.status==='active')).toHaveLength(0);await basicAccessibility(page);
+  await verifiedJourney(['action:load:ready','action:load:unassign'],async()=>{expect(workspace.store.list('assignment',workspace.manager.tenantId).filter(a=>a.status==='active')).toHaveLength(0);});await basicAccessibility(page);
  });

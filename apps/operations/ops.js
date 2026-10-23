@@ -12,6 +12,13 @@ const pageHead=(title,description,action='')=>'<div class="page-head"><div><p cl
 function alertMessage(text,error=false){message.className=error?'error-message':'success-message';message.role=error?'alert':'status';message.ariaLive=error?'assertive':'polite';message.ariaAtomic='true';message.tabIndex=-1;message.textContent=text;message.focus?.({preventScroll:true});message.scrollIntoView({block:'nearest'});}
 function showView(){message.textContent='';message.className='';message.role='status';message.ariaLive='polite';render();const heading=view.querySelector('h1');if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});heading.scrollIntoView({block:'nearest'});}}
 async function request(path,options={}){
+ if(options.method==='POST'&&state){
+  const current=await fetch('/api/ops/session');
+  if(current.status===401){location.assign('/login');throw new Error('Sign in required.');}
+  if(!current.ok)throw new Error('Session verification failed.');
+  const identity=await current.json();if(identity.actor.id!==state.actor.id)throw new Error('Session changed. Reload the workspace.');
+  state.csrf=identity.csrf;
+ }
  const response=await fetch(path,{...options,headers:{'Content-Type':'application/json','X-CSRF-Token':state?.csrf??'',...options.headers}});
  const data=await response.json();if(response.status===401){location.assign('/login');throw new Error('Sign in required.');}if(!response.ok)throw new Error(data.error??'Request failed.');return data;
 }
