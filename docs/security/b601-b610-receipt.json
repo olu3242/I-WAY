@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-23",
+  "branch": "work/b561-b580-external-uat",
+  "startingCommit": "64fe0aaf7f181d2a9f926f2e7d41d6dfde44c1bd",
+  "reviewedCandidateCommit": "70f16c9a33834d81f63bff180d7039201476a016",
+  "testedImplementationCommit": "f2823e3c499aa49e86d45738c9e54d79c17256c6",
+  "documentation": "Receipt/report are a separate documentation commit",
+  "pushStatus": "HELD_UNVERIFIED_GIT_DEPLOYMENT_AUTOMATION",
+  "candidateReview": {
+    "files": 26,
+    "sourceHashDrift": 0,
+    "allPreserved": true
+  },
+  "changedFilesSinceStart": [
+    ".github/workflows/identity-access.yml",
+    "apps/operations/admin.html",
+    "apps/operations/admin.js",
+    "apps/operations/ops.js",
+    "docs/security/b591-b600-local-mvp.md",
+    "docs/security/b591-b600-receipt.json",
+    "docs/security/b591-mvp-inventory.json",
+    "docs/security/b601-b610-certification.md",
+    "docs/security/b601-b610-receipt.json",
+    "docs/security/b604-b605-readonly-inspection.json",
+    "docs/security/b605-preview-proposal.json",
+    "docs/security/b609-hosted-execution-matrix.csv",
+    "docs/security/b609-hosted-readiness.md",
+    "domain/operations-admin-policy.mjs",
+    "domain/operations-admin-validation.mjs",
+    "scripts/inventory-mvp-controls.mjs",
+    "scripts/report-mvp-coverage.mjs",
+    "server/operations-admin.mjs",
+    "server/operations-uat-application.mjs",
+    "tests/browser/accessibility.spec.mjs",
+    "tests/browser/certification-permutations.spec.mjs",
+    "tests/browser/control-evidence.mjs",
+    "tests/browser/evidence-reporter.mjs",
+    "tests/browser/mvp-actions.spec.mjs",
+    "tests/browser/mvp-controls.spec.mjs",
+    "tests/browser/operations.spec.mjs",
+    "tests/browser/uat-application.spec.mjs",
+    "tests/browser/uat.spec.mjs",
+    "tests/browser/workspace.mjs",
+    "tests/helpers/uat-application-fixture.mjs",
+    "tests/mvp-inventory.test.mjs",
+    "tests/operations-admin-policy.test.mjs",
+    "tests/operations-admin-validation.test.mjs",
+    "tests/operations-admin.test.mjs"
+  ],
+  "integrationCommitFiles": [
+    ".github/workflows/identity-access.yml",
+    "apps/operations/admin.js",
+    "docs/security/b591-mvp-inventory.json",
+    "docs/security/b604-b605-readonly-inspection.json",
+    "docs/security/b605-preview-proposal.json",
+    "docs/security/b609-hosted-execution-matrix.csv",
+    "docs/security/b609-hosted-readiness.md",
+    "scripts/inventory-mvp-controls.mjs",
+    "scripts/report-mvp-coverage.mjs",
+    "tests/browser/certification-permutations.spec.mjs",
+    "tests/browser/uat-application.spec.mjs",
+    "tests/mvp-inventory.test.mjs"
+  ],
+  "sourceHashes": {
+    ".github/workflows/identity-access.yml": "4187546cd7fb5de54ff1dc8d32114ecca7ff6f833a4a219fac074d3c08594823",
+    "apps/operations/admin.html": "d7f7936f869351ee62b7573846eb8391d993f51fee9188d749d639668c3377c4",
+    "apps/operations/admin.js": "c3da25d98088d7e609699d32b236c79385bb2a87631014a2165397d8610d0cfe",
+    "apps/operations/ops.js": "57704703cb5160bcd16e55c4729222c9f6f499f0a9bce42e6cf372f63cfdb126",
+    "docs/security/b591-b600-local-mvp.md": "3591a4d79a56ea8a0b93d85747c0430a118461ae3ec0476b7c10a4e3adae29c9",
+    "docs/security/b591-b600-receipt.json": "ab96dd790e35fe12a47446cffe1cde05f8e450c256fab1605701cde812b4a5d9",
+    "docs/security/b591-mvp-inventory.json": "600bc8f51e937f7600394eed6e1f32674513b823c5e3b82e9cdcdd3293c01f41",
+    "docs/security/b601-b610-certification.md": "ba9a7a70542b401feb5beaba34a03900b4ed2c4cf5ff133a2e10061360fd1048",
+    "docs/security/b604-b605-readonly-inspection.json": "e36dd228c99215c4a222409855ec9c783081c2d301414ff4bdf8305f6f10175d",
+    "docs/security/b605-preview-proposal.json": "534c1006c3ab874dbf817b7821dcbac7df76be315e939b3ddd67dc4b588bed0d",
+    "docs/security/b609-hosted-execution-matrix.csv": "58e2c5089523f9e072a40b5bd62d7c60f7976b0abb840917a10cd08eeb1aaa93",
+    "docs/security/b609-hosted-readiness.md": "3342a4e12e3d7bd5d5738c58afcf6640f935e4238b700e359d1af3f65eb35b3b",
+    "domain/operations-admin-policy.mjs": "938624d8c04c8b907de26b66b8905021e2abda634ff1f8aebd3865546bc85d3d",
+    "domain/operations-admin-validation.mjs": "630f684cd4003f776deb42f09870c9d2f7f1d0b8679f7f5ee9b39b36a8218d05",
+    "scripts/inventory-mvp-controls.mjs": "f9b3b869ffa784742210a11ffcee180b5fa70f3cb26b9956caa652f8bcac427b",
+    "scripts/report-mvp-coverage.mjs": "e1e62e71fdd5576173ea2965ba0370317f01468f87f8b29a390e6ece3e16b469",
+    "server/operations-admin.mjs": "c8f0f579e4c8671a4862b1b06316a53319a5f1f24f3edb49f282f8e59c6ae38f",
+    "server/operations-uat-application.mjs": "4429cbf8b61a020a16c4c2dc1d9e71c379c797a1b2fee003c5ea0abc00a8c26c",
+    "tests/browser/accessibility.spec.mjs": "e07ea92f4dbc56ab8cbf82bde376bdc9af1729ce8fbf8155cbfee71313db32cc",
+    "tests/browser/certification-permutations.spec.mjs": "5eb5223ea5ab72a283dc7c145bfe0e40d67c0208fbfeb73734f9fed27acc8bb6",
+    "tests/browser/control-evidence.mjs": "e9bf99fe0a9ef5317a15534d7e7b786c34859fe4a1cada29cebc66cd3bc31e8e",
+    "tests/browser/evidence-reporter.mjs": "5768e59452f50becd715f3f87773634d91095499b2c7d058ce89736676940932",
+    "tests/browser/mvp-actions.spec.mjs": "da2acb7657391b0864dc9e158e0d0db3ea5e4418e341ece887f5c04454293575",
+    "tests/browser/mvp-controls.spec.mjs": "48acf0d4973f83f50ee53576b9271223cca8e59ed3649dd942da8cc9873da309",
+    "tests/browser/operations.spec.mjs": "7dba70d4d14668966a3f7b0b238f0cf11c9cae0d78f659a805712952fa68b46e",
+    "tests/browser/uat-application.spec.mjs": "6bb46d750c6f98e1500c028ea251b7d5a0cd5613e8f9dfbfabb729b1932f909c",
+    "tests/browser/uat.spec.mjs": "b8c98711d6480ba5bd7d9f107b6bbe9351c93e50a40ebfd0483ee5c4e57b3252",
+    "tests/browser/workspace.mjs": "dfdc48c9b025d942de1f7b33b9ddcb2b1545466ac71b39d0fa0759c3bfe3f07b",
+    "tests/helpers/uat-application-fixture.mjs": "c4afd95f9719118494d72a9d7d95b8e4649839ddce793792d89c38d2eeaff39e",
+    "tests/mvp-inventory.test.mjs": "81917010f3bb139f53e6e4569148e09959d3c91e1db7d468880aa3f12613fe66",
+    "tests/operations-admin-policy.test.mjs": "de5dd8de51e350624909234e66e6b6ed03d7cc1f8d8a8667024c6f0f23d5d099",
+    "tests/operations-admin-validation.test.mjs": "581d3b6b1e25af8ce4f695f16ab9ccb1fbb4e4127992aaa7549622d1945094e9",
+    "tests/operations-admin.test.mjs": "8d47bdfba7d7e33e11f3967e652301fdafc39af17a396792f8e620de10b48196"
+  },
+  "tests": {
+    "baseline": {
+      "repository": 805,
+      "browser": 40,
+      "postgres": 41,
+      "failed": 0
+    },
+    "final": {
+      "repository": {
+        "passed": 806,
+        "failed": 0,
+        "skipped": 0
+      },
+      "browser": {
+        "total": 52,
+        "passed": 52,
+        "failed": 0,
+        "skipped": 0
+      },
+      "postgres": {
+        "auth": 18,
+        "broker": 7,
+        "operations": 16,
+        "totalPassed": 41,
+        "failed": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "accessibility": {
+    "scans": 105,
+    "violations": 0,
+    "humanScreenReader": "NOT_RUN",
+    "fullConformance": "NOT_CERTIFIED"
+  },
+  "controlCoverage": {
+    "action": {
+      "inventoried": 40,
+      "observed": 39,
+      "interacted": 40,
+      "verifiedOutcome": 40
+    },
+    "button": {
+      "inventoried": 30,
+      "observed": 30,
+      "interacted": 30,
+      "verifiedOutcome": 30
+    },
+    "dialog": {
+      "inventoried": 12,
+      "observed": 0,
+      "interacted": 0,
+      "verifiedOutcome": 0
+    },
+    "disclosure": {
+      "inventoried": 1,
+      "observed": 0,
+      "interacted": 0,
+      "verifiedOutcome": 1
+    },
+    "field": {
+      "inventoried": 76,
+      "observed": 76,
+      "interacted": 55,
+      "verifiedOutcome": 0
+    },
+    "form": {
+      "inventoried": 25,
+      "observed": 25,
+      "interacted": 25,
+      "verifiedOutcome": 25
+    },
+    "navigation": {
+      "inventoried": 18,
+      "observed": 18,
+      "interacted": 18,
+      "verifiedOutcome": 18
+    },
+    "route": {
+      "inventoried": 48,
+      "observed": 7,
+      "interacted": 0,
+      "verifiedOutcome": 0
+    }
+  },
+  "controlGaps": [],
+  "localDecision": "GO_COVERED_WORKFLOWS",
+  "hostedDecision": "NO_GO_BLOCKED",
+  "hostedCases": 32,
+  "hostedExecuted": 0,
+  "evidence": [
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b601-b610/b601-verify.log",
+      "sha256": "70f8cdd9961e36778712f9440c7dc9f5d35fa29f3ad50f2da20179473a3a6a1c"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b601-b610/b608-verify-final.log",
+      "sha256": "fc73127a54851d92073d97e855145824e3a80ae837a5a6b83233e7010383b39c"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b601-b610/b608-browser.log",
+      "sha256": "33225d27341872427ad8ef2f2021b58c50ec739224d9ba1eed2897d68e4915b9"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b601-b610/b608-auth-postgres.log",
+      "sha256": "445333e64b3cd90ed7ccdce3a4b6d6d43ecfad13d5736838ad9f2f14baaf8947"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b601-b610/b608-broker-postgres.log",
+      "sha256": "8c697dcf46447caeb39fc5efa03f31b7d50d22d9545d5a76acc5b8b4eea91d08"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b601-b610/b608-operations-postgres.log",
+      "sha256": "3275cb40ad1fb645bb58741db45e89bb6f8ca5afee47d26b0ada6ed99b7138ef"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b601-b610/browser-evidence.json",
+      "sha256": "8327ba290d81eebcfb5b41507a386852ff480f29a70571c9f1c742355f3a2f99"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b601-b610/mvp-control-evidence.json",
+      "sha256": "ee72b10c69cdb059ed88e5778fd869bfe16494f59c76004a9e31cd06d6db05e3"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b601-b610/mvp-coverage.json",
+      "sha256": "85e7c3fd545ef1a63f776fc2d7488539b3070985bfcaf5262c00266d719d8e65"
+    }
+  ],
+  "externalWrites": []
+}
