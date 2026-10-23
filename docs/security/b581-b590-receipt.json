@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-23",
+  "branch": "work/b561-b580-external-uat",
+  "implementationCommit": "859cee7bd77263b20e3f50de8febdfdb30a21901",
+  "reviewedCandidateCommit": "9a8b19afdabc13805bbbec9813812c0fc00a1f0a",
+  "localDecision": "GO_SYNTHETIC_ENGINEERING_ONLY",
+  "hostedDecision": "NO_GO",
+  "tests": {
+    "repository": {
+      "pass": 802,
+      "fail": 0,
+      "skipped": 0
+    },
+    "localPostgres": {
+      "pass": 25,
+      "fail": 0
+    },
+    "browser": {
+      "pass": 28,
+      "fail": 0
+    },
+    "latestIntegratedBrowserSubset": {
+      "pass": 8,
+      "fail": 0
+    }
+  },
+  "changedFiles": [
+    "db/review-only/iway_uat_state_b574.sql",
+    "docs/security/b561-b580-external-uat.md",
+    "docs/security/b561-b580-hosted-matrix.csv",
+    "docs/security/b561-b580-inspection.json",
+    "docs/security/b581-b590-environment-policy.md",
+    "docs/security/b587-external-access-options.md",
+    "docs/security/uat-approved-roster.json",
+    "docs/security/uat-provisioning-manifest.json",
+    "scripts/uat-handoff-preflight.mjs",
+    "server/operations-app.mjs",
+    "server/operations-uat-application.mjs",
+    "server/operations-uat-fixture-store.mjs",
+    "server/operations-uat-http.mjs",
+    "server/operations-uat-postgres.mjs",
+    "server/operations-uat-provider.mjs",
+    "server/operations-uat-runtime.mjs",
+    "server/operations-uat-session-bridge.mjs",
+    "server/operations-uat-workflow.mjs",
+    "tests/browser/uat-application.spec.mjs",
+    "tests/browser/uat.spec.mjs",
+    "tests/helpers/uat-application-fixture.mjs",
+    "tests/helpers/uat-fixture.mjs",
+    "tests/local/uat-postgres.test.mjs",
+    "tests/operations-uat-application.test.mjs",
+    "tests/operations-uat-http.test.mjs",
+    "tests/operations-uat-provider.test.mjs",
+    "tests/operations-uat-runtime.test.mjs",
+    "tests/operations-uat.test.mjs",
+    "tests/uat-handoff-preflight.test.mjs"
+  ],
+  "evidence": [
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b581-b590/b589-verify-final.log",
+      "sha256": "c064471a60731fa780f4d54fabb39f722f334cc969af239adb668d747ac6408e"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b581-b590/b589-auth-postgres.log",
+      "sha256": "5c157213df761332692a7b2c05f36bcd2f37f7398ce689476685f4aa05197eaf"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b581-b590/b589-broker-postgres.log",
+      "sha256": "5611d3c5321bb3d6908bd395f350c8a05b575344731e6d0bf845ce58b3ab76f0"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b581-b590/b589-browser-final.log",
+      "sha256": "43c448723071d23f02bc9c8e76064fc913cbeac506407c01b3fb04b978bcfdb3"
+    },
+    {
+      "path": "C:/Cdev/I-WAY/pkg/dist/b581-b590/b589-integrated-browser-final.log",
+      "sha256": "77f3e51da0a5ceaf0e918136a3be4b070d4d43dc04946a93c558580c609327f5"
+    }
+  ],
+  "hostedGoogleE2E": "NOT_RUN",
+  "actualRuntimeDatabaseLogin": "BLOCKED_MISSING_AUTH_AND_BROKER_CREDENTIALS",
+  "approvalsExecuted": []
+}
