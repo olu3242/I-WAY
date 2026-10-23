@@ -6,7 +6,7 @@ import {addUser} from '../../server/operations-auth.mjs';
 import {createIdentityVerifier} from '../../server/operations-identity.mjs';
 import {createOperationsFeatures} from '../../domain/operations-features.mjs';
 import {createIntegratedUatApplication} from '../../server/operations-uat-application.mjs';
-export async function uatApplicationFixture(t,{fullPermissions=false}={}){
+export async function uatApplicationFixture(t,{fullPermissions=false,googleAssurance}={}){
  const native=await fixture(t,createOperationsFeatures()),governance=randomUUID();
  native.store.db.prepare('INSERT INTO tenants VALUES(?,?,?)').run(governance,'Illustrative governance namespace','UTC');
  const platform=addUser(native.store,{tenantId:governance,username:syntheticRoster[0].email,name:'Illustrative Platform',role:'platform',identityOnly:true,permissions:['platform:audit']});
@@ -29,7 +29,7 @@ export async function uatApplicationFixture(t,{fullPermissions=false}={}){
  for(const entry of roster)native.store.db.prepare('INSERT INTO identity_bindings VALUES(?,?,?,?,1)').run(issuer,createHash('sha256').update(entry.userId).digest('hex'),entry.principalId,entry.role==='platform'?governance:entry.tenantId);
  const origin='https://uat.illustrative.invalid',transactions=new Map();let loginRole='driver';
  const integrated=createIntegratedUatApplication({origin,workflow:uat.workflow,providerSessions:uat.sessions,store:native.store,operations:native.ops,identityVerifier:verifier,platformNamespaceId:governance,
-  googleProvider:{authorizationUrl:()=>origin+'/auth/callback?code=synthetic',exchangeCode:async()=>uat.tokens(roster.find(e=>e.role===loginRole).userId,['platform','carrier'].includes(loginRole)?'aal2':'aal1')},
+  googleProvider:{authorizationUrl:()=>origin+'/auth/callback?code=synthetic',exchangeCode:async()=>uat.tokens(roster.find(e=>e.role===loginRole).userId,googleAssurance??(['platform','carrier'].includes(loginRole)?'aal2':'aal1'))},
   transactions:{save:async tx=>transactions.set(tx.state,tx),consume:async id=>{const tx=transactions.get(id);transactions.delete(id);return tx;}},authorizeResource:async()=>false});
  return {...native,uat,roster,origin,integrated,governance,assignment,setLoginRole:role=>{loginRole=role;}};
 }

@@ -4,8 +4,8 @@ import {createServer,request} from 'node:http';
 import {uatApplicationFixture} from './helpers/uat-application-fixture.mjs';
 import {syntheticPassword} from './helpers/uat-fixture.mjs';
 const addCookies=(jar,response)=>{for(const value of response.headers.getSetCookie()){const [name,valuePart]=value.split(';')[0].split('=');if(valuePart)jar.set(name,valuePart);else jar.delete(name);}return jar;};
-async function fixture(t){
- const f=await uatApplicationFixture(t),server=createServer(f.integrated.handler);await new Promise(r=>server.listen(0,'127.0.0.1',r));
+async function fixture(t,options){
+ const f=await uatApplicationFixture(t,options),server=createServer(f.integrated.handler);await new Promise(r=>server.listen(0,'127.0.0.1',r));
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
  const jar=new Map(),base='http://127.0.0.1:'+server.address().port;
  const send=async(path,{method='GET',body,csrf,cookies=jar,origin=f.origin,host=new URL(f.origin).host}={})=>{
@@ -74,4 +74,22 @@ test('native administrative revocation fences the parent and cannot be bypassed 
  assert.equal((await f.send('/api/ops/state')).status,401);
  await assert.rejects(f.integrated.bridge.establish(id,native));
  assert.equal(await f.uat.workflow.session(id),null);
+});
+
+test('privileged Google AAL1 requires one-use MFA before either application session is usable',async t=>{
+ for(const role of ['platform','carrier']){
+  const f=await fixture(t,{googleAssurance:'aal1'}),callback=await f.login(role);
+  assert.equal(callback.headers.get('location'),'/uat/login#mfa');
+  assert.equal(f.jar.has('iway_ops'),false);assert.equal(f.jar.has('__Host-iway-session'),false);
+  assert.equal((await f.send('/uat/session')).status,401);
+  assert.equal((await f.send('/api/ops/session')).status,401);
+  const pending=new Map(f.jar);
+  assert.equal((await f.send('/uat/mfa',{method:'POST',body:{code:'123456'},origin:'https://unapproved.illustrative.invalid'})).status,403);
+  const elevated=await f.send('/uat/mfa',{method:'POST',body:{code:'123456'}});
+  assert.equal(elevated.status,200);
+  assert.equal((await elevated.json()).next,role==='platform'?'/uat/control':'/app');
+  const identity=await(await f.send('/api/ops/session')).json();
+  assert.equal(identity.actor.id,f.roster.find(e=>e.role===role).principalId);
+  assert.equal((await f.send('/uat/mfa',{method:'POST',body:{code:'123456'},cookies:pending})).status,401);
+ }
 });
