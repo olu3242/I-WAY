@@ -8,3 +8,8 @@ test('implemented MVP inventory matches current sources and never claims executi
  for(const key of ['action:load:accept','action:connector:retry','form:payment-record','navigation:loads','route:/uat/control'])assert.ok(inventory.controls.some(c=>c.key===key));
  assert.ok(inventory.controls.every(c=>c.verification==='NOT_CERTIFIED_BY_DISCOVERY'));
 });
+
+test('Windows CRLF and Linux LF checkouts produce the same committed inventory',()=>{
+ const lf=path=>readFileSync(path,'utf8').replace(/\r\n/g,'\n');
+ assert.deepEqual(inventoryMvp({readSource:path=>lf(path).replace(/\n/g,'\r\n')}),inventoryMvp({readSource:lf}));
+});

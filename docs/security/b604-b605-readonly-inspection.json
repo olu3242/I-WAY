@@ -1,0 +1,96 @@
+{
+  "observedAt": "2026-10-23T22:43:11.666Z",
+  "supabase": {
+    "authUsers": 0,
+    "googleIdentities": 0,
+    "activeMemberships": 0,
+    "method": "read-only aggregate catalog query; not restricted runtime login proof"
+  },
+  "vercel": {
+    "projectId": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+    "ssoProtection": {
+      "enabled": true,
+      "deploymentType": "all"
+    },
+    "deployment": {
+      "id": "dpl_APs1ZkJVQfADo9H8Vq6wxDFBfPNc",
+      "target": "production",
+      "readyState": "READY",
+      "gitCommit": "e53192fc076aa3b96f84fc6fb7f2e6b616785fdc"
+    },
+    "environmentNames": [
+      {
+        "key": "PORT",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      },
+      {
+        "key": "DATABASE_URL",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      },
+      {
+        "key": "PGSSL",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      },
+      {
+        "key": "SUPABASE_SERVICE_ROLE_KEY",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      },
+      {
+        "key": "SUPABASE_PROJECT_REF",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      },
+      {
+        "key": "OPENAI_API_KEY",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      },
+      {
+        "key": "IWAY_AUTH_ORIGIN",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      },
+      {
+        "key": "IWAY_AUTH_PROVIDER",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      },
+      {
+        "key": "IWAY_AUTH_CLIENT_ID",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      },
+      {
+        "key": "IWAY_AUTH_CLIENT_SECRET",
+        "target": [
+          "production"
+        ],
+        "gitBranch": null
+      }
+    ],
+    "previewConfiguredNames": []
+  },
+  "changesPerformed": []
+}

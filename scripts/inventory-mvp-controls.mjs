@@ -4,10 +4,10 @@ import {createHash} from 'node:crypto';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 export const inventorySources=['apps/operations/index.html','apps/operations/login.html','apps/operations/admin.html','apps/operations/ops.js','apps/operations/extended.js','apps/operations/intelligence.js','apps/operations/admin.js','apps/operations/login.js','server/operations-app.mjs','server/operations-uat-http.mjs','server/operations-uat-application.mjs'];
-export function inventoryMvp(){
+export function inventoryMvp({readSource=path=>readFileSync(path,'utf8')}={}){
  const entries=new Map(),sourceHashes={};
  for(const path of inventorySources){
-  const source=readFileSync(path,'utf8');sourceHashes[path]=createHash('sha256').update(source).digest('hex');
+  const source=readSource(path).replace(/\r\n/g,'\n');sourceHashes[path]=createHash('sha256').update(source).digest('hex');
   function collect(type,pattern,value=m=>m[1],label=m=>m[1]){for(const m of source.matchAll(pattern)){
    const key=type+':'+value(m),location={path,line:source.slice(0,m.index).split('\n').length};
    if(!entries.has(key))entries.set(key,{key,type,value:value(m),label:label(m),locations:[],verification:'NOT_CERTIFIED_BY_DISCOVERY'});
@@ -32,6 +32,6 @@ export function inventoryMvp(){
  entries.set('navigation:loads',{key:'navigation:loads',type:'navigation',value:'loads',label:'Loads / My assignments',locations:[{path:'apps/operations/ops.js',expression:true}],verification:'NOT_CERTIFIED_BY_DISCOVERY'});
  for(const label of ['Set password','Sign in'])entries.set('button:'+label,{key:'button:'+label,type:'button',value:label,label,locations:[{path:'server/operations-uat-http.mjs',expression:true}],verification:'NOT_CERTIFIED_BY_DISCOVERY'});
  const controls=[...entries.values()].sort((a,b)=>a.key.localeCompare(b.key));
- return {schemaVersion:1,scope:'Implemented local Operations role views, company administration, platform governance and UAT authentication; excludes internal prototype and future features',personas:['platform','carrier','fleet','driver'],limitations:['Source expressions are expanded where known; runtime DOM inventory supplements discovery.','Source discovery and test references do not certify a control outcome.','APIs and form controls are inventoried separately; totals are not unique business-feature counts.'],sourceHashes,counts:Object.fromEntries([...new Set(controls.map(c=>c.type))].sort().map(type=>[type,controls.filter(c=>c.type===type).length])),controls};
+ return {schemaVersion:1,scope:'Implemented local Operations role views, company administration, platform governance and UAT authentication; excludes internal prototype and future features',personas:['platform','carrier','fleet','driver'],limitations:['Source expressions are expanded where known; runtime DOM inventory supplements discovery.','Source discovery and test references do not certify a control outcome.','APIs and form controls are inventoried separately; totals are not unique business-feature counts.'],sourceHashEncoding:'sha256 over UTF-8 with LF line endings',sourceHashes,counts:Object.fromEntries([...new Set(controls.map(c=>c.type))].sort().map(type=>[type,controls.filter(c=>c.type===type).length])),controls};
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){const result=inventoryMvp();writeFileSync('docs/security/b591-mvp-inventory.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result.counts));}

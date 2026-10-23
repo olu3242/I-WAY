@@ -2,8 +2,9 @@ import {test,expect,axeAccessibility} from './workspace.mjs';
 import {trackControls,verifiedOutcome} from './control-evidence.mjs';
 import {createServer,request as httpRequest} from 'node:http';
 import {uatApplicationFixture} from '../helpers/uat-application-fixture.mjs';
+import {syntheticPassword} from '../helpers/uat-fixture.mjs';
 // Synthetic HTTPS browser origin forwarded into loopback; no external OAuth or mail.
-for(const width of [390,1440])for(const role of ['platform','carrier','fleet','driver'])test(`integrated ${role} application lifecycle at ${width}`,async({browser})=>{
+for(const method of ['google','password'])for(const width of [390,1440])for(const role of ['platform','carrier','fleet','driver'])test(`integrated ${method} ${role} application lifecycle at ${width}`,async({browser})=>{
  test.setTimeout(180000);
  const cleanup=[],f=await uatApplicationFixture({after:fn=>cleanup.push(fn)},{fullPermissions:true});f.setLoginRole(role);
  const server=createServer(f.integrated.handler);await new Promise(r=>server.listen(0,'127.0.0.1',r));
@@ -19,8 +20,16 @@ for(const width of [390,1440])for(const role of ['platform','carrier','fleet','d
  });
  try{
   await trackControls(page);
-  await page.goto(f.origin+'/uat/login');await page.getByRole('button',{name:'Continue with Google'}).click();
-  await verifiedOutcome('button:Continue with Google',async()=>{await expect(page).toHaveURL(f.origin+(role==='platform'?'/uat/control':'/app'));});
+  if(method==='google'){
+   await page.goto(f.origin+'/uat/login');await page.getByRole('button',{name:'Continue with Google'}).click();
+   await verifiedOutcome('button:Continue with Google',async()=>{await expect(page).toHaveURL(f.origin+(role==='platform'?'/uat/control':'/app'));});
+  }else{
+   const entry=f.roster.find(e=>e.role===role);await f.uat.workflow.issue({adminSession:'synthetic-approved-admin',userId:entry.userId});
+   await page.goto(f.origin+'/uat/setup#'+f.uat.mail[0].token);await expect(page).toHaveURL(f.origin+'/uat/setup');await page.getByLabel('New password').fill(syntheticPassword);await page.getByRole('button',{name:'Set password',exact:true}).click();await expect(page.getByRole('status')).toContainText('Password set');
+   await page.getByRole('link',{name:'Return to sign in'}).click();await page.getByLabel('Email',{exact:true}).fill(entry.email);await page.getByLabel('Password',{exact:true}).fill(syntheticPassword);await page.getByRole('button',{name:'Sign in',exact:true}).click();
+   if(['platform','carrier'].includes(role)){await expect(page.getByLabel('Authenticator code')).toBeVisible();await page.getByLabel('Authenticator code').fill('123456');await page.getByRole('button',{name:'Verify',exact:true}).click();}
+   await expect(page).toHaveURL(f.origin+(role==='platform'?'/uat/control':'/app'));
+  }
   await expect(page.locator('h1')).toBeVisible();
   const state=await page.evaluate(async()=>{const r=await fetch('/api/ops/session');return {status:r.status,body:await r.json()};});
   expect(state.status).toBe(200);expect(state.body.actor.role).toBe(role);
@@ -34,7 +43,11 @@ for(const width of [390,1440])for(const role of ['platform','carrier','fleet','d
    await axeAccessibility(page,role+'-integrated-workspace');
   }
   expect(await page.evaluate(()=>document.cookie)).not.toContain('iway_ops');
+  if(role==='carrier'){await page.goto(f.origin+'/admin');await expect(page.locator('#notice')).toHaveText('Ready');}
   const refresh=await page.evaluate(async()=>{const r=await fetch('/uat/refresh',{method:'POST',headers:{'content-type':'application/json'},body:'{}'});return r.status;});expect(refresh).toBe(200);
+  if(role==='carrier'){
+   await page.getByLabel('Legal name',{exact:true}).fill('Illustrative refreshed administration');await page.getByRole('button',{name:'Save company settings',exact:true}).click();await expect(page.locator('#notice')).toHaveText('Company settings saved');await page.getByRole('link',{name:'Operations',exact:true}).click();await expect(page.locator('#identity')).toContainText('carrier');
+  }
   await page.getByRole('button',{name:'Sign out',exact:true}).click();await verifiedOutcome('button:Sign out',async()=>{await expect(page).toHaveURL(f.origin+'/uat/login');});
   const after=await page.evaluate(async()=> (await fetch('/api/ops/session')).status);expect(after).toBe(401);expect(errors).toEqual([]);
  }finally{await context.close();server.closeAllConnections();await new Promise(r=>server.close(r));for(const fn of cleanup.reverse())await fn();}

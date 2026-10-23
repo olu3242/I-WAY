@@ -12,16 +12,17 @@
     "Source discovery and test references do not certify a control outcome.",
     "APIs and form controls are inventoried separately; totals are not unique business-feature counts."
   ],
+  "sourceHashEncoding": "sha256 over UTF-8 with LF line endings",
   "sourceHashes": {
     "apps/operations/index.html": "ab94d01c7303778a5d51e2c51323f89a792f171510e352639e9fb033221293e1",
     "apps/operations/login.html": "b3031b34d639f17f5a9c8cdbeeb05d803c87d047005182d4bd3f72909030b44d",
     "apps/operations/admin.html": "d7f7936f869351ee62b7573846eb8391d993f51fee9188d749d639668c3377c4",
-    "apps/operations/ops.js": "57704703cb5160bcd16e55c4729222c9f6f499f0a9bce42e6cf372f63cfdb126",
-    "apps/operations/extended.js": "7e2aadf3b5f6de25eef70c9da59509bd7e7390037cb98be1f8d6ef2a8fed59aa",
-    "apps/operations/intelligence.js": "45cf4934cc393658fa05ed57e6ae881be9e0c62dbde8c39d8e72269b8128076d",
-    "apps/operations/admin.js": "65b25ac1e6e03f220ae8de8d4f7a8b4920e21e9348dd30f85a6f1c4a9e2daf64",
-    "apps/operations/login.js": "f10f679720017c8c74d6a2b0d5b012fdbd1ae296d6cc6ff9fa6b29a1ea857bb2",
-    "server/operations-app.mjs": "28828d1044cfee18d5ed173aee3ee0d566d0e33bb437db352522e8b17a62f249",
+    "apps/operations/ops.js": "a5249bb84fc4869df3c721125defdcd02c0857c99c6045727f8ee73d3061f3cd",
+    "apps/operations/extended.js": "e416af06dae7d52d132e0ecc0d0c27f6e5bf0b758bdfa2efc9d5be67362ff866",
+    "apps/operations/intelligence.js": "d8ecf46ea1e3b42a8a7bea4872c576999f2103d98009d65c7d8f1b4cd51d7b1d",
+    "apps/operations/admin.js": "37ae785572fd7ef180d3ec6b760c18bfa01205dfc056fefbe5d0ae168ea36669",
+    "apps/operations/login.js": "07bebededc2f7ce2df237feb5739b0240c25b794f13585f7d6a90b2dc0d3e3dd",
+    "server/operations-app.mjs": "6c547f01de6d358b0e4c7ffd83bd0775cf618dbb23dcd4300a37e0db473c0821",
     "server/operations-uat-http.mjs": "497a700e092bc4e579406c8458713f1421fe8ad0ff049b3a7584c407721e4316",
     "server/operations-uat-application.mjs": "4429cbf8b61a020a16c4c2dc1d9e71c379c797a1b2fee003c5ea0abc00a8c26c"
   },
@@ -990,7 +991,7 @@
       "locations": [
         {
           "path": "apps/operations/admin.js",
-          "line": 42
+          "line": 50
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2812,7 +2813,7 @@
       "locations": [
         {
           "path": "apps/operations/admin.js",
-          "line": 28
+          "line": 36
         },
         {
           "path": "server/operations-app.mjs",
@@ -2829,7 +2830,7 @@
       "locations": [
         {
           "path": "apps/operations/admin.js",
-          "line": 43
+          "line": 51
         },
         {
           "path": "server/operations-app.mjs",
@@ -2846,7 +2847,7 @@
       "locations": [
         {
           "path": "apps/operations/admin.js",
-          "line": 38
+          "line": 46
         },
         {
           "path": "server/operations-app.mjs",
@@ -2867,7 +2868,7 @@
       "locations": [
         {
           "path": "apps/operations/admin.js",
-          "line": 17
+          "line": 25
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2880,11 +2881,11 @@
       "locations": [
         {
           "path": "apps/operations/admin.js",
-          "line": 12
+          "line": 20
         },
         {
           "path": "apps/operations/admin.js",
-          "line": 33
+          "line": 41
         },
         {
           "path": "server/operations-app.mjs",
@@ -3142,6 +3143,10 @@
           "line": 16
         },
         {
+          "path": "apps/operations/admin.js",
+          "line": 10
+        },
+        {
           "path": "server/operations-app.mjs",
           "line": 84
         },
@@ -3164,7 +3169,7 @@
         },
         {
           "path": "apps/operations/admin.js",
-          "line": 11
+          "line": 19
         },
         {
           "path": "server/operations-app.mjs",
@@ -3445,7 +3450,7 @@
         },
         {
           "path": "apps/operations/admin.js",
-          "line": 7
+          "line": 15
         },
         {
           "path": "server/operations-app.mjs",
