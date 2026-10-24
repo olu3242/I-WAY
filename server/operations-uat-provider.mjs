@@ -2,6 +2,11 @@
 // automatic linking or OAuth token decoding without signature verification.
 import {verifyIdentityProof} from './operations-identity.mjs';
 const projectOrigin='https://vnoxdinldneeczxibicp.supabase.co';
+// Supabase Auth serializes provider_id as `id`; identity_id is the database UUID.
+// See supabase/auth internal/models/identity.go and auth-js UserIdentity.
+export function verifiedGoogleSubjects(user){
+ return (Array.isArray(user?.identities)?user.identities:[]).filter(i=>i.provider==='google'&&i.user_id===user.id&&typeof i.id==='string'&&!!i.id&&i.identity_data?.sub===i.id&&(i.provider_id===undefined||i.provider_id===i.id)).map(i=>i.id);
+}
 export function createUatSupabaseProvider({apiKey,verifier,fetchImpl=fetch,clock=()=>Date.now()}={}){
  if(typeof apiKey!=='string'||!apiKey||/[\r\n]/.test(apiKey)||!verifier)throw Error('UAT_PROVIDER_CONFIG_REQUIRED');
  async function request(path,{method='GET',body,accessToken}={}){
@@ -20,7 +25,7 @@ export function createUatSupabaseProvider({apiKey,verifier,fetchImpl=fetch,clock
   const user=await request('/user',{accessToken});
   if(user?.id!==proof.subject||user.is_anonymous===true||!user.email_confirmed_at||user.banned_until&&Date.parse(user.banned_until)>clock())throw Error('UAT_IDENTITY_REJECTED');
   return {id:user.id,email:user.email,emailConfirmed:true,anonymous:false,assurance:proof.assurance,
-   googleSubjects:(user.identities??[]).filter(i=>i.provider==='google'&&i.user_id===user.id&&i.identity_data?.sub===i.provider_id).map(i=>i.provider_id)};
+   googleSubjects:verifiedGoogleSubjects(user)};
  }
  async function tokens(result){
   if(typeof result?.access_token!=='string'||typeof result?.refresh_token!=='string'||result.token_type?.toLowerCase()!=='bearer'||!Number.isInteger(result.expires_in)||result.expires_in<1||result.expires_in>86400)throw Error('UAT_PROVIDER_RESPONSE_INVALID');

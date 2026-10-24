@@ -6,8 +6,14 @@ const pendingCookie=value=>`${mfaCookie}=${value}; Path=/; Max-Age=300; HttpOnly
 const clearPending=()=>`${mfaCookie}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict`;
 const script=`
 const setup=location.pathname==='/uat/setup';
-let invitation=setup?location.hash.slice(1):'';
-if(setup)history.replaceState(null,'',location.pathname);
+let invitation='';
+function captureInvitation(){
+ if(!setup)return;
+ const next=location.hash.slice(1);invitation=/^[A-Za-z0-9_-]{43}$/.test(next)?next:'';
+ history.replaceState(null,'',location.pathname);
+ document.querySelector('#credentials').reset();document.querySelector('#status').textContent='';
+}
+if(setup){captureInvitation();addEventListener('hashchange',captureInvitation);}
 const status=document.querySelector('#status');
 if(!setup&&location.hash==='#mfa'){history.replaceState(null,'',location.pathname);document.querySelector('#mfa').hidden=false;status.textContent='Enter your authenticator code.';}
 document.querySelector('#credentials').addEventListener('submit',async event=>{

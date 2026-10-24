@@ -1,5 +1,10 @@
 {
   "version": 2,
   "buildCommand": null,
-  "outputDirectory": "site/public"
+  "outputDirectory": "site/public",
+  "git": {
+    "deploymentEnabled": {
+      "work/b561-b580-external-uat": false
+    }
+  }
 }

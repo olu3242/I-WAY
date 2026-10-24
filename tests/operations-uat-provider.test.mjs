@@ -9,7 +9,7 @@ function fixture(){
  const verifier=createIdentityVerifier({issuer:origin+'/auth/v1',audience:'authenticated',requireMfa:false,keys:[{kid:'synthetic',algorithm:'ES256',publicKey:keys.publicKey}]});
  const encode=v=>Buffer.from(JSON.stringify(v)).toString('base64url');
  function jwt(patch={}){const message=encode({alg:'ES256',kid:'synthetic',typ:'JWT'})+'.'+encode({iss:origin+'/auth/v1',aud:'authenticated',sub:id,aal:'aal1',iat:Math.floor(now/1000),exp:Math.floor(now/1000)+300,...patch});return message+'.'+sign('sha256',Buffer.from(message),{key:keys.privateKey,dsaEncoding:'ieee-p1363'}).toString('base64url');}
- const user={id,email:'platform@illustrative.invalid',email_confirmed_at:new Date(now).toISOString(),is_anonymous:false,identities:[{provider:'google',user_id:id,provider_id:'synthetic-google',identity_data:{sub:'synthetic-google'}}]};
+ const user={id,email:'platform@illustrative.invalid',email_confirmed_at:new Date(now).toISOString(),is_anonymous:false,identities:[{provider:'google',user_id:id,id:'synthetic-google',identity_id:'90000000-0000-4000-8000-000000000081',identity_data:{sub:'synthetic-google'}}]};
  const makeTokens=()=>({access_token:jwt(),refresh_token:'synthetic-refresh',token_type:'bearer',expires_in:300,user:{id}});
  const provider=createUatSupabaseProvider({apiKey:'synthetic-publishable',verifier,clock:()=>now,fetchImpl:async(url,options)=>{requests.push({url,options});return new Response(JSON.stringify(url.endsWith('/user')?user:makeTokens()),{headers:{'content-type':'application/json'}});}});
  return {provider,user,jwt,requests,verifier,now};
@@ -39,4 +39,11 @@ test('control-plane recovery issuer rejects user mismatch and never creates acco
  let request;const issuer=createUatRecoveryIssuer({adminClient:{auth:{admin:{generateLink:async input=>{request=input;return {data:{user:{id},properties:{hashed_token:'synthetic-proof'}}};}}}}});
  assert.deepEqual(await issuer.generateRecovery({email:'platform@illustrative.invalid',userId:id}),{userId:id,tokenHash:'synthetic-proof'});assert.equal(request.type,'recovery');assert.equal(request.password,undefined);
  await assert.rejects(issuer.generateRecovery({email:'platform@illustrative.invalid',userId:'other'}),/ISSUER_UNAVAILABLE/);
+});
+test('documented Google subject id/sub binding rejects crossed identities and database UUID confusion',async()=>{
+ const f=fixture(),token=f.jwt(),identity=structuredClone(f.user.identities[0]);assert.deepEqual((await f.provider.inspect(token)).googleSubjects,['synthetic-google']);
+ for(const patch of [{id:identity.identity_id},{id:''},{user_id:'other-canonical-user'},{identity_data:{sub:'different-subject'}},{provider_id:'conflicting-provider-id'},{provider:'email'}]){
+  f.user.identities=[{...identity,...patch}];assert.deepEqual((await f.provider.inspect(token)).googleSubjects,[]);
+ }
+ f.user.identities=[{...identity,provider_id:identity.id}];assert.deepEqual((await f.provider.inspect(token)).googleSubjects,['synthetic-google']);
 });

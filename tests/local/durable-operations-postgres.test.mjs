@@ -131,5 +131,15 @@ test('B662-B676 durable domain engine on restricted disposable PostgreSQL',{time
    assert.equal(await transact(b,ops=>ops.store.list('load',b.tenantId).length),0);
    await assert.rejects(engine.transaction({...a,actorId:b.actorId},()=>true),error=>error.code==='AUTHORIZATION');
   });
+  await t.test('actual database server restart preserves durable resources, idempotency and audit with tenant isolation',async()=>{
+   const c=newCommand(),result=await transact(a,ops=>ops.execute(native.manager.id,c)),before=await persisted();
+   await pool.end();pool=null;await pg.restartDatabase();
+   pool=new Pool(config);pool.on('error',()=>{});engine=new DurableOperationsPgEngine({pool,config,operationsOptions:{now}});
+   assert.deepEqual(await persisted(),before);assert.deepEqual(await transact(a,ops=>ops.execute(native.manager.id,c)),result);
+   const afterReplay=await persisted();assert.deepEqual(afterReplay.payload,before.payload);assert.deepEqual(afterReplay.audit,before.audit);
+   assert.equal(BigInt(afterReplay.version),BigInt(before.version)+1n); // Engine transaction version advances; business result and audit do not.
+   assert.equal(await transact(b,ops=>ops.store.list('load',b.tenantId).length),0);
+   assert.deepEqual(await engine.health(),{storage:'postgresql',identityVerified:true,restrictedRole:true,rls:true,scope:'tenant'});
+  });
  }finally{if(pool)await pool.end();await pg.cleanup();}
 });

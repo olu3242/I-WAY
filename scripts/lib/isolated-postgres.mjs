@@ -67,7 +67,13 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   await admin.query('GRANT USAGE ON ALL SEQUENCES IN SCHEMA operations_private TO iway_operations_fixture');
   const restricted={...common,user:'iway_operations_fixture',password:restrictedPassword,database:'iway_fixture'};
   const pool=new Pool(restricted);pools.push(pool);
-  return {admin,pool,ssl,restricted,caPath:join(root,'ca.crt'),createPool(options={}){const p=new Pool({...restricted,...options});pools.push(p);return p},cleanup};
+  return {get admin(){return admin},pool,ssl,restricted,caPath:join(root,'ca.crt'),createPool(options={}){const p=new Pool({...restricted,...options});pools.push(p);return p},
+   async restartDatabase(){
+    // Fixture-owned paths and process only. Callers close their borrowed pools first.
+    await Promise.allSettled(pools.map(p=>p.end()));await admin.end();admin=null;
+    run(join(bin,'pg_ctl'),['-D',data,'-m','fast','-w','restart']);
+    admin=new Pool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
+   },cleanup};
  }catch(error){
   let diagnostic='';
   if(stage==='LOCAL_FIXTURE_INITDB'&&existsSync(join(root,'initdb.log')))diagnostic=readFileSync(join(root,'initdb.log'),'utf8').slice(-700).replaceAll(root,'[fixture]').replaceAll(password,'[redacted]');

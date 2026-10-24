@@ -71,7 +71,9 @@ test('B256 independent database connections serialize competing signed revisions
  const policy=structuredClone({...f.policy,readAttestation:undefined});
  const run=request=>new Promise((resolve,reject)=>{
   const w=new Worker(`const {parentPort,workerData:d}=require('node:worker_threads');(async()=>{const {HostedEvidenceStore,safeRead}=await import(d.moduleUrl);let s;try{s=new HostedEvidenceStore({database:d.root+'/ledger.sqlite',artifactRoot:d.root,policy:{...d.policy,readAttestation:h=>safeRead(d.root,'attestations/'+h+'.json')},binding:d.binding,now:()=>d.now});s.apply(d.request);parentPort.postMessage('PASS')}catch(e){parentPort.postMessage(e.message)}finally{s?.close()}})()`,{eval:true,workerData:{moduleUrl,root:f.root,policy,binding:f.binding,now:f.now(),request}});
-  w.once('message',resolve);w.once('error',reject);
+  // A message can precede the worker's finally/SQLite close on Windows.
+  let result;w.once('message',value=>{result=value;});w.once('error',reject);
+  w.once('exit',code=>code===0&&typeof result==='string'?resolve(result):reject(Error('SYNTHETIC_EVIDENCE_WORKER_FAILED')));
  });
  const results=await Promise.all([run(f.request(r,'DRAFT','SUBMITTED',1)),run(f.request(r,'DRAFT','SUBMITTED',1))]);assert.deepEqual(results.sort(),['PASS','STALE_REVISION']);assert.equal(s.inspect(r.id).revision,1);
 });
