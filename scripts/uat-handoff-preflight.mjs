@@ -3,7 +3,45 @@ import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
 import {validateUatRoster} from '../server/operations-uat-workflow.mjs';
+import {resolveAuthRuntimeConfig} from '../server/operations-auth-runtime.mjs';
+import {resolveUatRuntimeConfig} from '../server/operations-uat-runtime.mjs';
+import {resolveHostedOperationsConfig} from '../server/operations-uat-hosted-runtime.mjs';
+import {createConfiguredSessionCipher} from '../server/operations-supabase-session-config.experimental.mjs';
 export const requiredUatNames=Object.freeze(['IWAY_AUTH_ENABLED','IWAY_AUTH_SCHEMA_APPROVED','IWAY_STAGING_VERCEL_PROJECT_ID','IWAY_AUTH_ORIGIN','IWAY_AUTH_APPROVED_ORIGIN','IWAY_AUTH_DATABASE_URL','IWAY_AUTH_PROVIDER','IWAY_SUPABASE_PUBLISHABLE_KEY','IWAY_SESSION_ENCRYPTION_KEY','IWAY_UAT_ENABLED','IWAY_UAT_SCHEMA_APPROVED','IWAY_UAT_DATABASE_URL','IWAY_OPERATIONS_DATABASE_URL']);
+export const uatEnvironmentContract=Object.freeze([
+ ['IWAY_AUTH_ENABLED','Authentication activation','Exact true; owner approval required'],
+ ['IWAY_AUTH_SCHEMA_APPROVED','Reviewed auth schema','Exact b512-v4'],
+ ['IWAY_STAGING_VERCEL_PROJECT_ID','Isolated project pin','Exact staging project; match genuine VERCEL_PROJECT_ID'],
+ ['IWAY_AUTH_ORIGIN','Application callback and cookie origin','Exact HTTPS origin; no credentials, path, query or fragment'],
+ ['IWAY_AUTH_APPROVED_ORIGIN','Owner-approved callback origin','Exact match to IWAY_AUTH_ORIGIN'],
+ ['IWAY_AUTH_DATABASE_URL','Auth persistence','Pinned PostgreSQL project/database; iway_auth_runtime LOGIN; verified TLS; session port 5432'],
+ ['IWAY_AUTH_PROVIDER','OAuth provider','Exact google'],
+ ['IWAY_SUPABASE_PUBLISHABLE_KEY','Public Auth API credential','Publishable key or pinned-project anon compatibility key; never service-role/secret key'],
+ ['IWAY_SESSION_ENCRYPTION_KEY','Server-side token encryption','Canonical 43-character base64url 32-byte key; server only'],
+ ['IWAY_UAT_ENABLED','UAT broker activation','Exact true; owner approval required'],
+ ['IWAY_UAT_SCHEMA_APPROVED','Reviewed broker schema','Exact b574-candidate-v1'],
+ ['IWAY_UAT_DATABASE_URL','Broker persistence','Pinned PostgreSQL project/database; iway_uat_runtime LOGIN; verified TLS; session port 5432'],
+ ['IWAY_OPERATIONS_DATABASE_URL','Operations persistence','Pinned PostgreSQL project/database; iway_operations_runtime LOGIN; verified TLS; explicit port 5432; password at least 12 characters']
+].map(([name,purpose,validation])=>Object.freeze({name,purpose,validation,project:'prj_7uof3CdmN1QvzKxETkXvHjlrLjVm',scope:'preview',publicProjectAllowed:false})));
+// Pure, offline validation. Only fixed codes and variable names leave this boundary.
+// Runtime resolvers remain authoritative; this never opens a pool or contacts a provider.
+export function validateUatEnvironment(env={}){
+ const missing=requiredUatNames.filter(name=>typeof env[name]!=='string'||!env[name].trim()),issues=[];
+ const check=(code,fn)=>{try{if(fn()===false)throw Error();}catch{issues.push(code);}};
+ check('AUTH_RUNTIME_CONTRACT_INVALID',()=>resolveAuthRuntimeConfig(env));
+ check('BROKER_RUNTIME_CONTRACT_INVALID',()=>resolveUatRuntimeConfig(env));
+ check('OPERATIONS_RUNTIME_CONTRACT_INVALID',()=>resolveHostedOperationsConfig(env));
+ check('SESSION_ENCRYPTION_KEY_INVALID',()=>createConfiguredSessionCipher(env));
+ check('PUBLISHABLE_API_KEY_INVALID',()=>{
+  const key=env.IWAY_SUPABASE_PUBLISHABLE_KEY;
+  if(typeof key!=='string'||/[\s]/.test(key))return false;
+  if(/^sb_publishable_[A-Za-z0-9_-]{20,}$/.test(key))return true;
+  if(!/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(key))return false;
+  const claims=JSON.parse(Buffer.from(key.split('.')[1],'base64url'));
+  return claims.role==='anon'&&claims.ref==='vnoxdinldneeczxibicp';
+ });
+ return {status:missing.length||issues.length?'BLOCKED':'PASS_OFFLINE_CONFIGURATION_ONLY',missing,issues,networkRequests:0,hostedCertified:false};
+}
 export function handoffPreflight({env={},manifest,previewNames=[]}={}){
  const blockers=[];
  const configured=name=>typeof env[name]==='string'&&!!env[name].trim();
@@ -12,7 +50,8 @@ export function handoffPreflight({env={},manifest,previewNames=[]}={}){
  for(const entry of manifest?.testers??[])if(!entry.identityEvidence||!entry.permissionsApproved||entry.role==='driver'&&!entry.employmentEvidence)blockers.push('VERIFIED_PROVISIONING_EVIDENCE_REQUIRED');
  const missingLocal=requiredUatNames.filter(name=>!configured(name));
  const missingPreview=requiredUatNames.filter(name=>!previewNames.includes(name));
- return {status:blockers.length||missingLocal.length||missingPreview.length?'BLOCKED':'REVIEW_REQUIRED',missingLocal,missingPreview,blockers:[...new Set(blockers)],runtimeLogin:{auth:configured('IWAY_AUTH_DATABASE_URL')?'NOT_RUN':'BLOCKED_MISSING_RESTRICTED_CREDENTIAL',broker:configured('IWAY_UAT_DATABASE_URL')?'NOT_RUN':'BLOCKED_MISSING_RESTRICTED_CREDENTIAL',operations:configured('IWAY_OPERATIONS_DATABASE_URL')?'NOT_RUN':'BLOCKED_MISSING_RESTRICTED_CREDENTIAL'},approval:'No deployment, provisioning, credentials, invitations or access changes authorized'};
+ const configuration=validateUatEnvironment(env);if(configuration.status==='BLOCKED')blockers.push('ENVIRONMENT_VALUES_INVALID');
+ return {status:blockers.length||missingLocal.length||missingPreview.length?'BLOCKED':'REVIEW_REQUIRED',missingLocal,missingPreview,configuration,blockers:[...new Set(blockers)],runtimeLogin:{auth:configured('IWAY_AUTH_DATABASE_URL')?'NOT_RUN':'BLOCKED_MISSING_RESTRICTED_CREDENTIAL',broker:configured('IWAY_UAT_DATABASE_URL')?'NOT_RUN':'BLOCKED_MISSING_RESTRICTED_CREDENTIAL',operations:configured('IWAY_OPERATIONS_DATABASE_URL')?'NOT_RUN':'BLOCKED_MISSING_RESTRICTED_CREDENTIAL'},approval:'No deployment, provisioning, credentials, invitations or access changes authorized'};
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const manifest=JSON.parse(readFileSync(new URL('../docs/security/uat-provisioning-manifest.json',import.meta.url),'utf8'));
