@@ -1,11 +1,21 @@
 import {test,expect,signIn,basicAccessibility} from './workspace.mjs';
 import {integratedWorkspace} from './integrated-workspace.mjs';
+import {verifiedOutcome,verifiedJourney} from './control-evidence.mjs';
 import {syntheticPassword} from '../helpers/uat-fixture.mjs';
 
 async function follow(page,id){
  await page.getByRole('button',{name:'First load guide',exact:true}).click();
+ await verifiedOutcome('navigation:first-load',async()=>{
+  await expect(page.locator('h1')).toHaveText('First load guide');
+  await expect(page.getByRole('button',{name:'First load guide',exact:true})).toHaveAttribute('aria-current','page');
+ });
  await page.getByLabel('Visible load',{exact:true}).selectOption(id);
+ const reference=await page.getByLabel('Visible load',{exact:true}).evaluate(el=>el.selectedOptions[0].textContent.split(' · ')[0]);
  await page.getByRole('button',{name:'Follow this load',exact:true}).click();
+ await verifiedJourney(['form:journey-select','button:Follow this load'],async()=>{
+  await expect(page.locator('.first-load-guide strong')).toHaveText(reference);
+  await expect(page.getByRole('status')).toContainText('Following the selected load');
+ });
 }
 const outcome=page=>page.getByRole('heading',{name:'Load assigned. Driver accepted.',exact:true});
 
@@ -17,9 +27,17 @@ for(const width of [390,1440])test(`guided creation to driver acceptance at ${wi
  try{
   await signIn(carrier,workspace,workspace.manager);
   await carrier.getByRole('button',{name:'Start guided dispatch',exact:true}).press('Enter');
-  await expect(carrier.locator('h1')).toBeFocused();
+  await verifiedOutcome('action:journey-start',async()=>{
+   await expect(carrier.locator('h1')).toHaveText('First load guide');
+   await expect(carrier.locator('h1')).toBeFocused();
+   await expect(carrier.locator('.journey-steps')).toBeVisible();
+  });
   await basicAccessibility(carrier);
   await carrier.getByRole('button',{name:'Create guided load',exact:true}).click();
+  await verifiedOutcome('action:journey-create',async()=>{
+   await expect(carrier.locator('h1')).toHaveText('Create a load');
+   await expect(carrier.locator('#create-load')).toBeVisible();
+  });
   await carrier.getByLabel('Load reference',{exact:true}).fill('ILL-FIRST-VALUE');
   await carrier.getByLabel('Customer / broker',{exact:true}).fill('Illustrative customer');
   await carrier.getByLabel('Responsible dispatcher',{exact:true}).selectOption(workspace.dispatcher.id);
@@ -40,12 +58,18 @@ for(const width of [390,1440])test(`guided creation to driver acceptance at ${wi
   await signIn(driver,workspace,workspace.driver);
   await follow(driver,load.id);
   await driver.getByRole('button',{name:'Open guided load',exact:true}).click();
+  await verifiedOutcome('action:journey-open',async()=>{
+   await expect(driver.locator('h1')).toHaveText(load.reference);
+   await expect(driver.getByRole('button',{name:'Accept assignment',exact:true})).toBeVisible();
+  });
   await expect(driver.locator('#view')).not.toContainText('Illustrative customer');
   await driver.getByRole('button',{name:'Accept assignment',exact:true}).click();
   await expect(outcome(driver)).toBeVisible();
   await carrier.getByRole('button',{name:'Check progress',exact:true}).click();
-  await expect(outcome(carrier)).toBeVisible();
-  expect(workspace.store.get('load',load.id,workspace.manager.tenantId).status).toBe('accepted');
+  await verifiedOutcome('action:journey-refresh',async()=>{
+   await expect(outcome(carrier)).toBeVisible();
+   expect(workspace.store.get('load',load.id,workspace.manager.tenantId).status).toBe('accepted');
+  });
   await basicAccessibility(carrier);await basicAccessibility(driver);
   await carrier.screenshot({path:info.outputPath('accepted-'+width+'.png'),fullPage:true});
   // Acceptance is revoked by a real domain action, never retained as a completed badge.
