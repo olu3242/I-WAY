@@ -48,3 +48,15 @@ Automatic deployment is disabled for `work/first-value-demo-20261025`. Public si
 `tests/browser/first-value-persistence.spec.mjs` creates and assigns a new illustrative load through the integrated application, signs in as its driver, accepts it, reloads the application, and checks acceptance from both driver and carrier accounts. It runs at 390 and 1440 pixels.
 
 The ordinary browser run uses disposable SQLite and labels that scope explicitly. The `durable-browser` CI job also runs this file with `IWAY_BROWSER_DURABLE_OPT_IN=true`, using the existing disposable PostgreSQL fixture. That variant restarts the actual fixture database and recreates the application before checking the unchanged accepted load version. No live database, OAuth provider or production deployment is involved. Review the CI result for the exact commit before calling this restart coverage passed.
+
+## Staging connection diagnostics
+
+Before hosted recording, run the read-only preflight against a private, untracked environment file:
+
+```sh
+node scripts/uat-handoff-preflight.mjs /absolute/path/to/private-staging.env
+```
+
+The JSON report identifies each required database variable and reports fixed error codes without printing connection strings, passwords, hosts supplied by the operator, or raw parsing errors. In particular, an HTTPS Supabase API URL produces `API_URL_INSTEAD_OF_POSTGRES_CONNECTION`. The three connections require their respective provisioned restricted roles. Session-pooler usernames append the project reference; use port 5432. Store real values only in the isolated iway-auth-staging project's Preview environment.
+
+`FORMAT_VALID_ONLY` means the connection string has the expected shape. It does not establish that the role exists, that its password works, that grants or schema are correct, or that hosted access is certified. The authoritative runtime validators still determine the offline configuration verdict. No database or provider request is made by this command.
