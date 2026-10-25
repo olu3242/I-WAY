@@ -30,3 +30,17 @@ test('partial responses are aborted; invalid expiry never serves requests',async
  const partial=createHostedUatHandler({createRuntime:async()=>({expiresAt:Date.now()+10000,close:async()=>{},handler:async(req,res)=>{res.writeHead(200,{});throw Error('failed');}})});
  const res=response();await partial({},res);assert.equal(res.destroyed,true);assert.equal(res.body,undefined);
 });
+
+test('stalled initialization times out all waiters, closes late runtime and permits recovery',{timeout:2000},async()=>{
+ const late=deferred();let starts=0,closed=0,served=0;
+ const runtime=()=>({expiresAt:Date.now()+10000,close:async()=>{closed++;},handler:async(req,res)=>{served++;res.writeHead(200,{});res.end('ok');}});
+ const handler=createHostedUatHandler({initializationTimeoutMs:20,logSink:()=>{},createRuntime:()=>++starts===1?late.promise:runtime()});
+ const a=response(),b=response();await Promise.all([handler({},a),handler({},b)]);
+ assert.equal(starts,1);assert.equal(a.status,503);assert.equal(b.status,503);assert.equal(served,0);
+ const recovered=response();await handler({},recovered);assert.equal(recovered.status,200);assert.equal(starts,2);
+ late.resolve(runtime());await tick();assert.equal(closed,1);assert.equal(served,1);
+ await handler({},response());assert.equal(starts,2);assert.equal(served,2);
+});
+test('startup deadline configuration rejects unbounded and invalid values',()=>{
+ for(const initializationTimeoutMs of [0,-1,1.5,60001,Infinity,NaN,'1000'])assert.throws(()=>createHostedUatHandler({createRuntime:()=>{},initializationTimeoutMs}),/UAT_INITIALIZATION_TIMEOUT_INVALID/);
+});

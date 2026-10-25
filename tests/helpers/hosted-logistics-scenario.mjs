@@ -31,6 +31,7 @@ export async function runHostedLogisticsScenario(t,{postgres}={}){
   assert.equal((await send(role,'/auth/callback?code=synthetic')).status,303);
   const identity=await send(role,'/api/ops/session');assert.equal(identity.status,200);assert.equal(identity.json().actor.role,role);
  }
+ for(const path of ['/offline','/driver-sw.js','/domain/driver-offline-replay.mjs'])assert.equal((await send('driver',path)).status,200,path);
  const state=async role=>{const result=await send(role,'/api/ops/state');assert.equal(result.status,200);return result.json();};
  async function command(role,action,resource,payload={},key=randomUUID()){
   const identity=(await send(role,'/api/ops/session')).json();
@@ -40,7 +41,22 @@ export async function runHostedLogisticsScenario(t,{postgres}={}){
  // Free the fixture's pre-existing assignment through an authorized HTTP command.
  await success('carrier','load:void',f.assignment,{reason:'Illustrative fixture replacement'});
  const payload={reference:'ILL-HOSTED-JOURNEY',customer:'Illustrative customer',dispatcherId:f.dispatcher.id,commodity:'Illustrative goods',weightLb:1000,rateCents:10000,charges:[],factored:false,stops:[{type:'pickup',location:'Illustrative origin',at:'2026-12-01T12:00:00Z'},{type:'delivery',location:'Illustrative destination',at:'2026-12-02T12:00:00Z'}]};
- const key=randomUUID();let load=await success('carrier','load:create',null,payload,key);
+ const key=randomUUID();
+ if(postgres){
+  // Fixture-only permission fault after a valid session: let the command run,
+  // then fail its durable write. No success payload may escape that rollback.
+  const identity=(await send('carrier','/api/ops/session')).json();
+  const snapshot=async()=>({state:(await postgres.pg.admin.query('SELECT version,payload FROM operations_engine_private.state WHERE tenant_id=$1',[f.manager.tenantId])).rows,audit:(await postgres.pg.admin.query('SELECT sequence,entry FROM operations_engine_private.audit WHERE tenant_id=$1 ORDER BY sequence',[f.manager.tenantId])).rows});
+  const before=await snapshot();
+  await postgres.pg.admin.query('REVOKE UPDATE(payload,version) ON operations_engine_private.state FROM iway_operations_fixture');
+  try{
+   const failed=await send('carrier','/api/ops/commands',{method:'POST',csrf:identity.csrf,body:{action:'load:create',payload,idempotencyKey:key}});
+   assert.equal(failed.status,503);assert.deepEqual(failed.json(),{error:'UNAVAILABLE'});
+   assert.deepEqual(await snapshot(),before,'failed persistence must roll back state, audit and idempotency receipt');
+  }finally{await postgres.pg.admin.query('GRANT UPDATE(payload,version) ON operations_engine_private.state TO iway_operations_fixture');}
+ }
+ const concurrent=await Promise.all([success('carrier','load:create',null,payload,key),success('carrier','load:create',null,payload,key)]);
+ let load=concurrent[0];assert.deepEqual(concurrent[1],load);
  assert.deepEqual(await success('carrier','load:create',null,payload,key),load);
  assert.equal((await state('carrier')).loads.filter(item=>item.reference===payload.reference).length,1);
  assert.ok([403,404].includes((await command('driver','load:validate',load)).status));
