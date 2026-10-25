@@ -1,4 +1,4 @@
-let state,tab='overview',selected=null,creating=false;
+let state,tab='overview',selected=null,creating=false,loadSearch='',loadFilter='all';
 const view=document.querySelector('#view'),message=document.querySelector('#message');
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const human=value=>String(value??'').replaceAll('_',' ').replaceAll(':',' · ');
@@ -23,11 +23,16 @@ async function request(path,options={}){
  const response=await fetch(path,{...options,headers:{'Content-Type':'application/json','X-CSRF-Token':requestCsrf,...options.headers}});
  const data=await response.json();if(response.status===401){location.assign('/login');throw new Error('Sign in required.');}if(!response.ok)throw new Error(data.error??'Request failed.');return data;
 }
-async function refresh(){state=await request('/api/ops/state');render();}
+async function refresh(){state=await request('/api/ops/state');render();document.dispatchEvent(new CustomEvent('iway:workspace',{detail:state}));}
 const pendingCommands=new Map();
 async function command(action,record,payload={}){
  const signature=JSON.stringify({action,id:record?.id,version:record?.version,payload});
  if(!pendingCommands.has(signature))pendingCommands.set(signature,crypto.randomUUID());
+ if(state.actor.role==='driver'&&['load:accept','load:pickup','load:transit'].includes(action)){
+  if(!window.iwayOffline)throw Error('Device queue is starting. Try again.');
+  const result=await window.iwayOffline.submit(action,record,payload,pendingCommands.get(signature));
+  if(result?.queuedOnDevice)return result;await refresh();pendingCommands.delete(signature);return result;
+ }
  const result=await request('/api/ops/commands',{method:'POST',body:JSON.stringify({action,resourceId:record?.id,expectedVersion:record?.version,payload,idempotencyKey:pendingCommands.get(signature)})});
  await refresh();pendingCommands.delete(signature);return result;
 }
@@ -35,6 +40,7 @@ function loadTable(loads=state.loads){
  if(!loads.length)return '<p class="empty">No loads here yet. Your next move starts with a load.</p>';
  return '<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Load</th><th>Route</th><th>Status</th><th>Pickup</th><th></th></tr></thead><tbody>'+loads.map(load=>'<tr><td><strong>'+esc(load.reference)+'</strong><br><span class="muted">'+esc(load.commodity)+'</span></td><td>'+esc(load.stops[0].location)+' → '+esc(load.stops.at(-1).location)+'</td><td>'+chip(load.lifecycleState??load.status)+'</td><td>'+esc(date(load.stops[0].at))+'</td><td>'+button('Open','open',load.id)+'</td></tr>').join('')+'</tbody></table></div>';
 }
+function loadList(){const needle=loadSearch.trim().toLowerCase(),rows=state.loads.filter(l=>(loadFilter==='all'||(loadFilter==='completed'?['delivered','void'].includes(l.status):!['delivered','void'].includes(l.status)))&&[l.reference,l.commodity,...l.stops.map(s=>s.location)].some(v=>String(v).toLowerCase().includes(needle)));return '<section class="card"><form id="load-search"><div class="grid"><div><label for="loadSearch">Search loads</label><input id="loadSearch" name="loadSearch" type="search" maxlength="120" value="'+esc(loadSearch)+'"></div>'+select('loadFilter','Load list',[['all','All loads'],['active','Active loads'],['completed','Completed and voided']],loadFilter)+'</div><div class="actions"><button>Search loads</button></div></form><p>'+rows.length+' matching loads</p>'+loadTable(rows)+'</section>';}
 function overview(){
  const active=state.loads.filter(l=>!['delivered','void'].includes(l.status));
  return pageHead(state.actor.role==='driver'?'Your next move.':'A clear view of today.','Your loads, people and next actions in '+state.tenant.timezone+'.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+
@@ -61,7 +67,7 @@ function loadDetail(){
  if(can('load:validate')&&load.status==='draft')actions+=button('Validate load','load:validate',load.id);
  if(can('load:execute')){
   const next=load.stops.find(s=>!s.completedAt);
-  if(load.status==='assigned')actions+=button('Accept assignment','load:accept',load.id,'class="primary"');
+  if(load.status==='assigned')actions+=button('Accept assignment','load:accept',load.id,'class="primary"')+button('Reject assignment','load:reject',load.id);
   if(load.status==='accepted')actions+=button('Complete pickup','load:pickup',load.id,'data-stop="'+esc(next?.id)+'" class="primary"');
   if(load.status==='picked_up')actions+=button('Start transit','load:transit',load.id,'class="primary"');
   if(load.status==='in_transit')actions+='<form id="deliver" class="grid">'+field('proofReference','Delivery proof reference')+'<div class="actions"><button class="primary">Confirm delivery</button></div></form>';
@@ -126,6 +132,7 @@ function audit(){
  return pageHead('Activity trail','An append-only record of operational decisions.')+'<section class="card"><div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Time</th><th>Action</th><th>Outcome</th><th>Record</th></tr></thead><tbody>'+state.audit.map(a=>'<tr><td>'+esc(date(a.at))+'</td><td>'+esc(human(a.action))+'</td><td>'+chip(a.outcome)+'</td><td>'+esc(a.resourceId?.slice(0,8)??'Workspace')+'</td></tr>').join('')+'</tbody></table></div></section>';
 }
 function render(){
+ document.body?.setAttribute('data-persona',state.actor.role);
  document.querySelector('#tenant').textContent=state.tenant.name;
  document.querySelector('#identity').textContent=state.actor.name+' · '+human(state.actor.role);
  const tabs=[['overview','Overview'],['loads',state.actor.role==='driver'?'My assignments':'Loads']];
@@ -137,10 +144,11 @@ function render(){
  if(can('audit:view'))tabs.push(['audit','Activity']);
  document.querySelector('#nav').innerHTML=tabs.map(([id,label])=>'<button data-tab="'+id+'" aria-current="'+(tab===id?'page':'false')+'">'+label+'</button>').join('');
  const extension=typeof extendedView==='function'?extendedView(tab):null;
- view.innerHTML=extension??(creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+'<section class="card">'+loadTable()+'</section>':tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview());
+ view.innerHTML=extension??(creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+loadList():tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview());
+ for(const extra of [...(view.querySelectorAll?.('button.primary')??[])].slice(1))extra.classList.replace('primary','secondary');
 }
 document.querySelector('#nav').addEventListener('click',event=>{const btn=event.target.closest('[data-tab]');if(btn){tab=btn.dataset.tab;selected=null;creating=false;showView();}});
-document.querySelector('#logout').addEventListener('click',async()=>{try{await request('/api/ops/logout',{method:'POST'});location.assign('/login');}catch(error){alertMessage(error.message,true)}});
+document.querySelector('#logout').addEventListener('click',async()=>{try{await window.iwayOffline?.clear();await request('/api/ops/logout',{method:'POST'});location.assign('/login');}catch(error){alertMessage(error.message,true)}});
 document.querySelector('#logout').disabled=false;
 view.addEventListener('click',async event=>{
  if(typeof handleExtendedClick==='function'&&await handleExtendedClick(event))return;
@@ -154,14 +162,14 @@ view.addEventListener('click',async event=>{
  try{
   let record=state.loads.find(l=>l.id===id),payload={};
   if(action==='user:deactivate'){record=state.users.find(u=>u.id===id);const reason=prompt('Reason for deactivating this account');if(!reason)return;payload={reason};}
-  if(['load:void','load:unassign','load:close'].includes(action)){const reason=prompt('Reason for '+human(action.split(':')[1]));if(!reason)return;payload={reason};}
+  if(['load:void','load:unassign','load:close','load:reject'].includes(action)){const reason=prompt('Reason for '+human(action.split(':')[1]));if(!reason)return;payload={reason};}
   if(action==='load:pickup')payload={stopId:btn.dataset.stop};
   if(action.endsWith(':approve')&&['driver','vehicle'].includes(action.split(':')[0])){record=state[action.split(':')[0]+'s'].find(r=>r.id===id);const reason=prompt('Reason for the carrier approval decision');if(!reason)return;payload={approved:btn.dataset.approved==='true',reason};}
   if(action.startsWith('workflow:'))record=state.workflows.find(w=>w.id===id);
   if(action==='workflow:restart'){const reason=prompt('Reason for requesting a fresh review');if(!reason)return;payload={reason};}
   if(action.startsWith('approval:')){record=state.approvals.find(a=>a.id===id);const reason=prompt('Reason for this decision');if(!reason)return;await command('approval:decide',record,{decision:action.endsWith('approve')?'approved':'rejected',reason});alertMessage('Decision recorded.');return;}
   if(action==='finance:approve'){record=state.invoices.find(i=>i.id===id);const reason=prompt('Reason for approving this financial record');if(!reason)return;payload={reason};}
-  await command(action,record,payload);alertMessage('Operation saved.');
+  const result=await command(action,record,payload);alertMessage(result?.queuedOnDevice?'Queued on device. The server has not confirmed this action.':'Operation saved.');
  }catch(error){alertMessage(error.message,true);}finally{btn.disabled=false;}
 });
 view.addEventListener('submit',async event=>{
@@ -169,6 +177,7 @@ view.addEventListener('submit',async event=>{
  event.preventDefault();const form=event.target,button=form.querySelector('button[type=submit],button');button.disabled=true;
  const values=Object.fromEntries(new FormData(form)),load=state.loads.find(l=>l.id===selected);
  try{
+  if(form.id==='load-search'){loadSearch=values.loadSearch;loadFilter=values.loadFilter;render();alertMessage('Load list filtered.');return;}
   if(form.id==='create-load'){const payload={reference:values.reference,customer:values.customer,customerId:values.customerId||null,dispatcherId:values.dispatcherId,commodity:values.commodity,weightLb:Number(values.weightLb),rateCents:Number(values.rateCents),charges:values.chargeLabel.trim()?[{label:values.chargeLabel,amountCents:Number(values.chargeCents)}]:[],factored:values.factored==='yes',factorName:values.factorName,stops:[{type:'pickup',location:values.pickup,at:new Date(values.pickupAt+'Z').toISOString()},{type:'delivery',location:values.delivery,at:new Date(values.deliveryAt+'Z').toISOString()}]};const record=await command('load:create',null,payload);creating=false;selected=record.id;tab='loads';render();}
   if(form.id==='assign')await command('load:assign',load,{driverId:values.driverId,vehicleId:values.vehicleId,reason:values.assignmentReason});
   if(form.id==='deliver')await command('load:deliver',load,{stopId:load.stops.find(s=>!s.completedAt).id,proofReference:values.proofReference});
@@ -182,4 +191,6 @@ view.addEventListener('submit',async event=>{
   alertMessage('Saved. The workspace is up to date.');
  }catch(error){alertMessage(error.message,true);}finally{button.disabled=false;}
 });
+document.addEventListener('iway:offline-ready',()=>{if(state)document.dispatchEvent(new CustomEvent('iway:workspace',{detail:state}));});
+document.addEventListener('iway:offline-confirmed',()=>refresh().catch(error=>alertMessage(error.message,true)));
 refresh().catch(error=>alertMessage(error.message,true));

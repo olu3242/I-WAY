@@ -35,3 +35,7 @@ Branch audited: `work/b244-b253-certification-remediation-remote`
 
 ## Release boundary
 Current local baseline reported by operator: 472/472 application tests and 12/12 browser tests PASS; these are not re-run by this document. PostgreSQL parity and hosted execution remain NO-GO. This contract is not implementation or certification evidence.
+
+## Figma gap-closure implementation update — 2026-10-24
+
+The observations above describe the historical audit. The current feature candidate implements the bounded browser status queue, authenticated replay endpoint and static recovery shell. See [implementation contracts](../certification/figma-gap-closure/implementation-contracts.md), [requirement review](../certification/figma-gap-closure/gap-register.md) and the final certification receipt for actual test evidence. Native photos/signatures and hosted authentication remain uncertified.

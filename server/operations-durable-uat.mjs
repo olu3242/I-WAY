@@ -38,7 +38,7 @@ export async function createDurableUatApplication({engine,platformNamespaceId,..
    if(path==='/health'||path==='/api/health'){
     const health=await engine.health();res.writeHead(200,{'content-type':'application/json','cache-control':'no-store'});return res.end(JSON.stringify({status:'ok',storage:health.storage,scope:'protected-preview'}));
    }
-   const native=path==='/'||['/app','/portal','/admin','/login','/uat/control','/uat/control.js','/uat/session','/uat/refresh'].includes(path)||path.startsWith('/assets/')||path.startsWith('/api/ops/')||path.startsWith('/uat/resources/');
+   const native=path==='/'||['/offline','/driver-sw.js','/domain/driver-offline-replay.mjs','/app','/portal','/admin','/login','/uat/control','/uat/control.js','/uat/session','/uat/refresh'].includes(path)||path.startsWith('/assets/')||path.startsWith('/api/ops/')||path.startsWith('/uat/resources/');
    if(!native)return auth(req,res);
    const id=readAuthCookie(req.headers,SESSION_COOKIE),parent=path==='/uat/refresh'?await workflow.sessionForRefresh(id):await workflow.session(id);
    if(!parent){

@@ -1,0 +1,841 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-25T02:13:53.894Z",
+  "git": {
+    "branch": "work/b561-b580-external-uat",
+    "startingCommit": "4a1c39b66fd0db383ef430074f9747c359512a2a",
+    "startingWorktree": "CLEAN",
+    "endingCommit": "Commit containing this receipt; literal SHA in dist/figma-gap-closure/post-commit-verification.json",
+    "localCommitAuthorized": true,
+    "pushAuthorized": false,
+    "hostedMutationAuthorized": false
+  },
+  "decisions": {
+    "localCoveredWorkflows": "GO",
+    "fullFourApplicationConformity": "NO_GO_INCOMPLETE",
+    "hosted": "NO_GO",
+    "production": "NO_GO"
+  },
+  "changedFiles": [
+    "apps/operations/Inter-LICENSE.txt",
+    "apps/operations/InterVariable.woff2",
+    "apps/operations/driver-offline.mjs",
+    "apps/operations/driver-sw.js",
+    "apps/operations/extended.js",
+    "apps/operations/financial.js",
+    "apps/operations/index.html",
+    "apps/operations/maintenance.js",
+    "apps/operations/offline.html",
+    "apps/operations/ops.css",
+    "apps/operations/ops.js",
+    "docs/certification/figma-gap-closure/approval-boundary.md",
+    "docs/certification/figma-gap-closure/certification-report.md",
+    "docs/certification/figma-gap-closure/gap-register.md",
+    "docs/certification/figma-gap-closure/implementation-contracts.md",
+    "docs/certification/figma-gap-closure/receipt.json",
+    "docs/certification/figma-gap-closure/requirements.json",
+    "docs/feature-completion/fcc-03-driver-offline-contract.md",
+    "docs/security/b591-mvp-inventory.json",
+    "domain/authorization.mjs",
+    "domain/driver-offline-replay.mjs",
+    "domain/operations-features.mjs",
+    "domain/operations-lifecycle.mjs",
+    "domain/operations-maintenance.mjs",
+    "domain/operations-projection.mjs",
+    "domain/operations-settlements.mjs",
+    "domain/operations.mjs",
+    "scripts/certify-postgres17.mjs",
+    "scripts/inventory-mvp-controls.mjs",
+    "scripts/package-uat-staging.mjs",
+    "scripts/report-figma-certification.mjs",
+    "scripts/review-candidate-secrets.mjs",
+    "scripts/trace-figma-requirements.mjs",
+    "server/operations-app.mjs",
+    "server/operations-durable-uat.mjs",
+    "server/operations-offline.mjs",
+    "server/operations-store.mjs",
+    "server/operations-uat-application.mjs",
+    "tests/browser/brand-tokens.spec.mjs",
+    "tests/browser/driver-offline.spec.mjs",
+    "tests/browser/evidence-reporter.mjs",
+    "tests/browser/load-search-rejection.spec.mjs",
+    "tests/browser/maintenance.spec.mjs",
+    "tests/browser/responsive-personas.spec.mjs",
+    "tests/browser/settlements.spec.mjs",
+    "tests/driver-assignment-response.test.mjs",
+    "tests/driver-offline-integration.test.mjs",
+    "tests/helpers/settlement-fixture.mjs",
+    "tests/local/figma-finance-offline.postgres.mjs",
+    "tests/operations-client.test.mjs",
+    "tests/operations-maintenance.test.mjs",
+    "tests/operations-settlements.test.mjs",
+    "tests/uat-staging-package.test.mjs"
+  ],
+  "sourceHashEncoding": "SHA-256; UTF-8 LF text, raw WOFF2; receipt self-hash excluded",
+  "sourceFiles": [
+    {
+      "path": "apps/operations/Inter-LICENSE.txt",
+      "sha256LF": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
+    },
+    {
+      "path": "apps/operations/InterVariable.woff2",
+      "sha256LF": "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3"
+    },
+    {
+      "path": "apps/operations/driver-offline.mjs",
+      "sha256LF": "a6e68c3c29ef7d80274ade08a293c056da9836af808f1d309f00d8c85cbbc7d0"
+    },
+    {
+      "path": "apps/operations/driver-sw.js",
+      "sha256LF": "383690b10c6de3bb86983f43288ab7699f7f8660528b380323848bb221c13914"
+    },
+    {
+      "path": "apps/operations/extended.js",
+      "sha256LF": "b783f9be9b40396adfa623df41d4d5f2b9407087ed67185a43792f97b4c2a2f6"
+    },
+    {
+      "path": "apps/operations/financial.js",
+      "sha256LF": "5c86bc2d973b77eca191522e51edd040a8e99537b851776765824c5f160f70d4"
+    },
+    {
+      "path": "apps/operations/index.html",
+      "sha256LF": "905b8a3e9de7eea2000575e6280a6f1d93eb7ca890f00e44a72eac55cb948763"
+    },
+    {
+      "path": "apps/operations/maintenance.js",
+      "sha256LF": "4e55da00c88c2c65a11bfd8f42f6e89eeb95e6f41370df5d1de8b57240338920"
+    },
+    {
+      "path": "apps/operations/offline.html",
+      "sha256LF": "b753561be6a9bc5101984da83b895e93e87cd9797c8c70b6656b4a5d3a03c7c2"
+    },
+    {
+      "path": "apps/operations/ops.css",
+      "sha256LF": "1080856f832a1e3036ed2318512eacba673dae14a4426d67eebe8680ae1a6e92"
+    },
+    {
+      "path": "apps/operations/ops.js",
+      "sha256LF": "5ea605726fc35bd0c3fd2cbfaed467d12df603ebd98b9bafee7aa90c79368663"
+    },
+    {
+      "path": "docs/certification/figma-gap-closure/approval-boundary.md",
+      "sha256LF": "0b655116927a04497b9e49e52176f20657246d811dfb3dab865c77332118386d"
+    },
+    {
+      "path": "docs/certification/figma-gap-closure/certification-report.md",
+      "sha256LF": "3a26e8d3533b6064e4404818cb0fd94a8d60c17574afae9cf5d7eca96547a082"
+    },
+    {
+      "path": "docs/certification/figma-gap-closure/gap-register.md",
+      "sha256LF": "fa6638213ec76c1018ab52920dfde9554956eb9736b097d11196eeb678b3ac11"
+    },
+    {
+      "path": "docs/certification/figma-gap-closure/implementation-contracts.md",
+      "sha256LF": "1e1322bfdcffc9213331837b3505cf425a4998900bdd5b2bd2e401c032d069b8"
+    },
+    {
+      "path": "docs/certification/figma-gap-closure/requirements.json",
+      "sha256LF": "abfed4ba73517bed7eccb48f73dcffdcb195282d9f7014ed8cf666e22c18e231"
+    },
+    {
+      "path": "docs/feature-completion/fcc-03-driver-offline-contract.md",
+      "sha256LF": "3ad8c13faa2b023bb4ae1aee19e6050f2ff02fe33be1b640898a10e4ae0ec3cc"
+    },
+    {
+      "path": "docs/security/b591-mvp-inventory.json",
+      "sha256LF": "0cea38bdd7d85cf5cf4e9bcb934567733d2ef9275699b98589cef65d2b8790f6"
+    },
+    {
+      "path": "domain/authorization.mjs",
+      "sha256LF": "31cbc900f4d083c07dac10d0202c0e0751c58bb9598b36d858836be307b285e6"
+    },
+    {
+      "path": "domain/driver-offline-replay.mjs",
+      "sha256LF": "d3153e17cbd2aef98f2f50da259d8ec10d7b09835345d97333b9f89a90fc3296"
+    },
+    {
+      "path": "domain/operations-features.mjs",
+      "sha256LF": "51466954b35dd2ec40ca4341360068e344c232fc4223fa00bd3c1255a8afa48b"
+    },
+    {
+      "path": "domain/operations-lifecycle.mjs",
+      "sha256LF": "3ebaea747ec682caefaf9f1e12fbc6ba1cbb06d14bc8904f754d5c52177db01c"
+    },
+    {
+      "path": "domain/operations-maintenance.mjs",
+      "sha256LF": "476be01d54cc2680e2ce105cdafbaae5c0369cda9ee45298118029898584ba9b"
+    },
+    {
+      "path": "domain/operations-projection.mjs",
+      "sha256LF": "f4b504a2bf41885afaf439b4469ed80c695c431c81a42690025db4f6db1ec7c2"
+    },
+    {
+      "path": "domain/operations-settlements.mjs",
+      "sha256LF": "0b92b22e56a830938ebcaf647cdef50b0c9daeec9cf7185b2c161f7801172703"
+    },
+    {
+      "path": "domain/operations.mjs",
+      "sha256LF": "bf6692466754568379187792ce69a807ff48eb917abe1226876314b89da986a4"
+    },
+    {
+      "path": "scripts/certify-postgres17.mjs",
+      "sha256LF": "b6c30306fbf47d27c7befc628180525ab272a20c7e1bf6a72f608a07ae34fc51"
+    },
+    {
+      "path": "scripts/inventory-mvp-controls.mjs",
+      "sha256LF": "4f1591478b5082a3e1b12f2c78f201cd65409ed4c4f8b7522cec71f1c9b54aa2"
+    },
+    {
+      "path": "scripts/package-uat-staging.mjs",
+      "sha256LF": "8e08cad96728dd37301bb0e79e49fa21f9666a71af1a5c784458c39deeaf2a28"
+    },
+    {
+      "path": "scripts/report-figma-certification.mjs",
+      "sha256LF": "c77f878f3be97451b35e51c9ce6e08f8cdee71cdda827bedbe02ee64c5d63a81"
+    },
+    {
+      "path": "scripts/review-candidate-secrets.mjs",
+      "sha256LF": "8cfb5f47f956109f7178482278b4debc47283e9ec9664bee0cbbe404ea00a1cf"
+    },
+    {
+      "path": "scripts/trace-figma-requirements.mjs",
+      "sha256LF": "0ea8d2a9b930eb598222ea9714fc2531b68f6d18582cef86a3ea9339aee5eb4f"
+    },
+    {
+      "path": "server/operations-app.mjs",
+      "sha256LF": "700d34c70af63d6ba5c7177c428462a8ebab5e469ba7ff98f0994b220aeb7f31"
+    },
+    {
+      "path": "server/operations-durable-uat.mjs",
+      "sha256LF": "7c0b892337b61d5e51990460cbf44d842d7ddc84606b0687d9a5c28f371f0f50"
+    },
+    {
+      "path": "server/operations-offline.mjs",
+      "sha256LF": "7179d8a610cc65a6500a4e1600530464c4de4e08bf8d472d6bff617b35852a8b"
+    },
+    {
+      "path": "server/operations-store.mjs",
+      "sha256LF": "a923bb6d0d53a56408dd218954579b770bce3813918360ab35bf76494ff5b85a"
+    },
+    {
+      "path": "server/operations-uat-application.mjs",
+      "sha256LF": "6e627a5a93ff6d1083c94d9bf96952e70449bf9c3ec3ea7e375cfa83d3cde077"
+    },
+    {
+      "path": "tests/browser/brand-tokens.spec.mjs",
+      "sha256LF": "ca34f73424179dcff0d85bfe956d44bb1d16df04dd6594d4171000e35a3dfd09"
+    },
+    {
+      "path": "tests/browser/driver-offline.spec.mjs",
+      "sha256LF": "16ff054d67de2cc60e9e11a1edce8fd86bf031aae0399e7c72c6052b9dec5ffc"
+    },
+    {
+      "path": "tests/browser/evidence-reporter.mjs",
+      "sha256LF": "92b21abe5b2e676b1532377a8c2a91593cceca968ec55a9bbc41775b4c371475"
+    },
+    {
+      "path": "tests/browser/load-search-rejection.spec.mjs",
+      "sha256LF": "a4075a9abe13ccf000952ea29edb804349172a641e96a12a75180546940f4f0d"
+    },
+    {
+      "path": "tests/browser/maintenance.spec.mjs",
+      "sha256LF": "5b31f6b6cdfdf3193bdbb37cb7f98d5e6b0525564df257ee779e25f29efc53b5"
+    },
+    {
+      "path": "tests/browser/responsive-personas.spec.mjs",
+      "sha256LF": "883933d5fe8b8875878e6785a38c63ed22db9f6736c28d2207be107c6699eb61"
+    },
+    {
+      "path": "tests/browser/settlements.spec.mjs",
+      "sha256LF": "e34671b5988578203f9d050c0e3413864b363946e22a7b54d26b1faf3209e788"
+    },
+    {
+      "path": "tests/driver-assignment-response.test.mjs",
+      "sha256LF": "551b4df9d54a43968868821ecf00b680e0853d34417676270c03305e8f484546"
+    },
+    {
+      "path": "tests/driver-offline-integration.test.mjs",
+      "sha256LF": "d3164f15c57c9bd98b43272f1c19fae978ba58d15731a681a4046609470d6624"
+    },
+    {
+      "path": "tests/helpers/settlement-fixture.mjs",
+      "sha256LF": "5bd5913a0e24596076ae561acef275ec2b731498189fc6b8bc1f5b81b7452ea8"
+    },
+    {
+      "path": "tests/local/figma-finance-offline.postgres.mjs",
+      "sha256LF": "53c94959c8c0b06516557c4a80d308e4ac47d56cc5c92a47e2ee56f8326455be"
+    },
+    {
+      "path": "tests/operations-client.test.mjs",
+      "sha256LF": "9506a8eafa77193fb04963353200d971a5267cd551fcf9c05db13b09e1dc5b20"
+    },
+    {
+      "path": "tests/operations-maintenance.test.mjs",
+      "sha256LF": "85309be7c4b5278902ba3708e6e4cbb380ecc83a7fe66904e1c8f29ecdd5fcdf"
+    },
+    {
+      "path": "tests/operations-settlements.test.mjs",
+      "sha256LF": "2f32fb471cfa941430d6c58164c09e48a352c4aeed339825adde9be9182e23c0"
+    },
+    {
+      "path": "tests/uat-staging-package.test.mjs",
+      "sha256LF": "615868cd87abf47862be1a392b6f2f55d0590d8a4ecab04fba112fff4b373f58"
+    }
+  ],
+  "evidenceHashEncoding": "SHA-256 exact local artifact bytes",
+  "evidenceFiles": [
+    {
+      "path": "dist/figma-gap-closure/repository.log",
+      "sha256": "61216f12302bd1c1f1debb421b496a41b66a7bfdec60e366812804ea4a49f60e"
+    },
+    {
+      "path": "dist/figma-gap-closure/browser.log",
+      "sha256": "2c81f0bcc512e061075f1fc47d618425343de3ffa958e9d8cf6f56e55e529262"
+    },
+    {
+      "path": "dist/figma-gap-closure/browser-evidence.json",
+      "sha256": "0250f4f9266bb119cf70f203a01d9e84483c71dda3800b1e610ab2b8cb2ea811"
+    },
+    {
+      "path": "dist/figma-gap-closure/mvp-control-evidence.json",
+      "sha256": "ebbfaa095526170d12510066b46ab1245bcc966e948df5a4b54c761be922ddac"
+    },
+    {
+      "path": "dist/figma-gap-closure/mvp-coverage.json",
+      "sha256": "acfc868270b661f21314778720355f84e2f8167f11a4c3b91323940d574449f5"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser.log",
+      "sha256": "593ac8e7936ec0266d8f5450f67d2d29bbbc05cf929a453953cfab1af287698d"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/browser-evidence.json",
+      "sha256": "0a36b430f615eba6c5a7ce6d9186159837bb5303ba10f8500da2c99eca7ff05c"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/mvp-control-evidence.json",
+      "sha256": "7525209e9921a84a5ad3ffe9651f3fd26ff58b594ef595396d0b191af5a35ea4"
+    },
+    {
+      "path": "dist/figma-gap-closure/postgres17-compatibility.json",
+      "sha256": "f0f51da157f301263b51039fbb2911b1ead72d1c5504644e3759f7ce24fbf221"
+    },
+    {
+      "path": "dist/figma-gap-closure/postgres-figma-finance-offline.log",
+      "sha256": "41d45423d906e4254a91f4f887fdcb6b7acb4c119544f9e97168a5372507789a"
+    },
+    {
+      "path": "dist/figma-gap-closure/postgres-auth.log",
+      "sha256": "2478863a9fb9d888572f916e2b8a1082d174e16204278264973c6bb4302f1a74"
+    },
+    {
+      "path": "dist/figma-gap-closure/postgres-broker.log",
+      "sha256": "abafeb0181ff6e722f0a7b5aba0261fdec69a59328299065675dbf17e1aa6394"
+    },
+    {
+      "path": "dist/figma-gap-closure/postgres-operations-contract.log",
+      "sha256": "cddc72ae9e24375b11fee7d8dbfbcf11b84e0777e3ed7de54f5c160af8ab9439"
+    },
+    {
+      "path": "dist/figma-gap-closure/postgres-durable-engine.log",
+      "sha256": "1e6467f2b41c390ed44b413cc6c0424e24cee8b45636bbf1fdd4aeb7b4eaf8fe"
+    },
+    {
+      "path": "dist/figma-gap-closure/postgres-broker-remediation.log",
+      "sha256": "83abfd1e23ba794721c52e76c41368c218fc2d85f6957831089d9450c4aaa42b"
+    },
+    {
+      "path": "dist/figma-gap-closure/postgres-management.log",
+      "sha256": "b7b24224aecd105b45702d8b958554dca799368d5ef589ff4388dfa1d959035b"
+    },
+    {
+      "path": "dist/figma-gap-closure/postgres-staging-schema.log",
+      "sha256": "b0a5eea9f4c10bba7827db8bbaac27589f72d1691212930c88ca316e7954eea6"
+    },
+    {
+      "path": "dist/figma-gap-closure/performance.json",
+      "sha256": "37be18066dce0ecf8588203d35824d0d5ce2a9b27263d1ac7421e328396a923b"
+    },
+    {
+      "path": "dist/figma-gap-closure/recovery.json",
+      "sha256": "01660efccc3f40fe7a381b34e35414885d513d442ef24999e5536722ce18ae22"
+    },
+    {
+      "path": "dist/figma-gap-closure/dependency-audit.json",
+      "sha256": "f7cae21a82432ed5a3c92fe3ceb617a2099ebf523ef396ed94b506b1a21a2c2f"
+    },
+    {
+      "path": "dist/figma-gap-closure/secret-review.json",
+      "sha256": "0378e77aa85649bd838106f980b073bc5bfef63e70dd8e09a23d7f340f52beb9"
+    },
+    {
+      "path": "dist/figma-gap-closure/source-check.log",
+      "sha256": "233349432f53161b522c8706a89c6582ef80aafb1d2984d1705c8bfc62909a27"
+    },
+    {
+      "path": "dist/figma-gap-closure/api-contract-evidence.json",
+      "sha256": "05cd80900586c24a080e5139fe42d8d4e637da4565810ddf987d6761b2d90e4c"
+    },
+    {
+      "path": "dist/figma-gap-closure/screenshots.json",
+      "sha256": "b0487359f8ee58faeb9112c653ebd7912f05667b72b12322fcbab0306b5ccd52"
+    },
+    {
+      "path": "dist/figma-gap-closure/hosted-uat-matrix.json",
+      "sha256": "270397f27b7f098e6c088e12b5aca10c6d2d8b96c9f9e04bcb59fc5c787f4b7b"
+    },
+    {
+      "path": "dist/figma-gap-closure/manual-accessibility.json",
+      "sha256": "79b2c8fa3ecf9240485b020b568487ccb9cecbf626ed7856ea251cd624fce6e5"
+    },
+    {
+      "path": "dist/figma-gap-closure/environment-contract.json",
+      "sha256": "2d446450962923ceef1f71d60d070d54e516b0b24eba0bcb228d73d297275979"
+    },
+    {
+      "path": "dist/figma-gap-closure/font-provenance.json",
+      "sha256": "e5bd71e110f0f5872913cb0bcfe04408e403a5080a7626f1663419e46cd0c61e"
+    },
+    {
+      "path": "dist/browser-results/brand-tokens-approved-bran-33c7c-local-Inter-font-for-driver/brand-driver-390.png",
+      "sha256": "4cdb28b6fbef87405546a20cc1d1c0b689c119bd6308a01827a5f5a3fefcef24"
+    },
+    {
+      "path": "dist/browser-results/brand-tokens-approved-bran-70842-ocal-Inter-font-for-carrier/brand-carrier-390.png",
+      "sha256": "49e9045ab04c9f66927bb4e98ccd13cce8b2bee7d6c2576f9926c2d088e08af6"
+    },
+    {
+      "path": "dist/browser-results/brand-tokens-approved-bran-70d8e-cal-Inter-font-for-platform/brand-platform-390.png",
+      "sha256": "d7c374bd372ffbd2a90471cd4d5e5e583cc8ac268ba7f42ed4bb5e7e31350315"
+    },
+    {
+      "path": "dist/browser-results/brand-tokens-approved-bran-ceb8e--local-Inter-font-for-fleet/brand-fleet-390.png",
+      "sha256": "eeb979f8ca60ef2f5abb7dbd415d6f09929b67dbdcdbaf2f29060572d37f9dd4"
+    },
+    {
+      "path": "dist/browser-results/operations-carrier-has-an--cfb66--scoped-workspace-at-1440px/attachments/carrier-1440-8a2d8807c7c6ce94eac5352b1c40a90d22d0b0d8.png",
+      "sha256": "150831b5b0d8e8fdb11ae1f54579cc0c5a68a63bdbe88c152cb171d5dfd0aeae"
+    },
+    {
+      "path": "dist/browser-results/operations-carrier-has-an--cfb66--scoped-workspace-at-1440px/carrier-1440.png",
+      "sha256": "150831b5b0d8e8fdb11ae1f54579cc0c5a68a63bdbe88c152cb171d5dfd0aeae"
+    },
+    {
+      "path": "dist/browser-results/operations-customer-portal-881c4-d-protects-revision-history/attachments/customer-documents-390-ec4058758a65822d0d8551a31e657c9403add58c.png",
+      "sha256": "8ec7bd0446219a9e8a4981374f1cfdcb45b684a573618b5c212a567c7cf1fcd2"
+    },
+    {
+      "path": "dist/browser-results/operations-customer-portal-881c4-d-protects-revision-history/customer-documents-390.png",
+      "sha256": "8ec7bd0446219a9e8a4981374f1cfdcb45b684a573618b5c212a567c7cf1fcd2"
+    },
+    {
+      "path": "dist/browser-results/operations-dispatcher-has--8074c--scoped-workspace-at-1440px/attachments/dispatcher-1440-4d06d618decbb6ff18fb878a2f2e0da50a952954.png",
+      "sha256": "42174e090ca5073d3ccb27cbab6ba6c35303edeb76e9e38ff89bb2188e78d20a"
+    },
+    {
+      "path": "dist/browser-results/operations-dispatcher-has--8074c--scoped-workspace-at-1440px/dispatcher-1440.png",
+      "sha256": "42174e090ca5073d3ccb27cbab6ba6c35303edeb76e9e38ff89bb2188e78d20a"
+    },
+    {
+      "path": "dist/browser-results/operations-driver-has-an-a-d608c-e-scoped-workspace-at-390px/attachments/driver-390-c2b440c85bb9de98f0c2dfd0aacb8d5931cfc41d.png",
+      "sha256": "f0d3dac1b4468be8d3b51cc3d3a1f0787fb295cb427ce8b8c502986f1dd7d596"
+    },
+    {
+      "path": "dist/browser-results/operations-driver-has-an-a-d608c-e-scoped-workspace-at-390px/driver-390.png",
+      "sha256": "f0d3dac1b4468be8d3b51cc3d3a1f0787fb295cb427ce8b8c502986f1dd7d596"
+    },
+    {
+      "path": "dist/browser-results/operations-fleet-has-an-ac-2f78e-e-scoped-workspace-at-390px/attachments/fleet-390-89879bb5d5b45cbc84ae5f44afa0601f47ee1dae.png",
+      "sha256": "e65887346478c3095ed5a1e673bcb6a03f62f317c640571c2b5b05a76c505644"
+    },
+    {
+      "path": "dist/browser-results/operations-fleet-has-an-ac-2f78e-e-scoped-workspace-at-390px/fleet-390.png",
+      "sha256": "e65887346478c3095ed5a1e673bcb6a03f62f317c640571c2b5b05a76c505644"
+    },
+    {
+      "path": "dist/browser-results/operations-Wave-4-browser--22927-nd-bounded-runtime-recovery/attachments/control-tower-1440-da96cf54d4e4b0c448f918ba9965125062fd0752.png",
+      "sha256": "6720b7f6157242bd695e9df420dc2f9d4532f2ac6e41e8d7ecf3afa2747c02cb"
+    },
+    {
+      "path": "dist/browser-results/operations-Wave-4-browser--22927-nd-bounded-runtime-recovery/control-tower-1440.png",
+      "sha256": "6720b7f6157242bd695e9df420dc2f9d4532f2ac6e41e8d7ecf3afa2747c02cb"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-11f3c-t-persisted-workflow-at-320/fleet-320.png",
+      "sha256": "387de169682b017c6cd92873cd7975529a07733169ed68367b413663c771a4cc"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-1ab49-r-persisted-workflow-at-768/carrier-768.png",
+      "sha256": "3aee7392a3eaaf499f5fcf522c6e2e9f3192e0a09a8f053c0d3a0e83c7813047"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-2ba5c--persisted-workflow-at-1024/platform-1024.png",
+      "sha256": "b40e978aa4a635c984ba0ccf599cd38bce11d78c8ac1cd8270da99fda3cb5a54"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-2cb74-r-persisted-workflow-at-320/carrier-320.png",
+      "sha256": "bef74dd9890b5bc9a859aa0da29d4e4643000758d4621145fdd19dab3a5e4b3d"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-3a8fc-t-persisted-workflow-at-375/fleet-375.png",
+      "sha256": "1b058bcf553109ade20a5de2cc62db833a37b05a910e8d8a7ef236d8cd1c73ea"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-5b1bd--persisted-workflow-at-1024/carrier-1024.png",
+      "sha256": "2121511d3f6d67f3f01c9f5c668ac0100c8468245d0ea97c46c3c0b0b9624ee5"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-5d16f-r-persisted-workflow-at-768/driver-768.png",
+      "sha256": "9153b9218800e9ea5509c7ea87be6f48f715dc10dd4be263a32c27d6bb89f310"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-5dbfd-m-persisted-workflow-at-320/platform-320.png",
+      "sha256": "ec052c562ecad6fc89697d4892734ac2d526cce9ffbab2f0c404a2b54448afb9"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-66a5c-t-persisted-workflow-at-390/fleet-390.png",
+      "sha256": "e7a26962e9de2d388e93ce00e717657243b806265aa5cfeee1ad9a3fb4baf68a"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-6d00b--persisted-workflow-at-1440/driver-1440.png",
+      "sha256": "94e230c5f9acc08369667719f401dda241ef22640b1bde805c7765bc99bce285"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-6d332-m-persisted-workflow-at-390/platform-390.png",
+      "sha256": "b1f9fd70f1f9b9f6ce648c2c6265027767a7ecfc22bf1d9fdf34512eda1f22cb"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-72cb4-r-persisted-workflow-at-375/driver-375.png",
+      "sha256": "3aebf8735bd9c8c4a64e079ac85bccab908c3f8f40281cdf0e6ac66313383780"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-845a2-m-persisted-workflow-at-768/platform-768.png",
+      "sha256": "7f200190543c22ce286b7d546e50dcc97f6de64b96d04401ff63ea2446300f5e"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-85d41--persisted-workflow-at-1440/fleet-1440.png",
+      "sha256": "9e78d684cd5757b022ebefe2b4feb002c45855b113710a501ce53f01ae4da192"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-ab5c5-m-persisted-workflow-at-375/platform-375.png",
+      "sha256": "95c6b77ddfa8eef8ac9b3beb04a525f49fb744f12445a6a4354c22926872f46a"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-b2785-r-persisted-workflow-at-375/carrier-375.png",
+      "sha256": "453fae2897de8055cd2194a969cecbd44007bd178ffd0c67deeb866124c5dd05"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-ba96c-r-persisted-workflow-at-390/carrier-390.png",
+      "sha256": "0199ec53f3414f94cdceecaff7539400de9fc228ca0b9c3e656d41771498391e"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-ca030--persisted-workflow-at-1440/carrier-1440.png",
+      "sha256": "501204018f6349ed3b4071fa06cb64ce098754b126b610277463ca9e8f7a3ee5"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-cb736-r-persisted-workflow-at-390/driver-390.png",
+      "sha256": "06d4ba5145007c057b685f650c75cf8aff94407c5fb6df539965c606342abacd"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-cd5f5--persisted-workflow-at-1440/platform-1440.png",
+      "sha256": "62a634dffa30b9d4a6e0a9e6a426f53fbc521ebbf3cb8a151266a8e4c27cec1b"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-d5946-t-persisted-workflow-at-768/fleet-768.png",
+      "sha256": "94e930cb677fddca43af3b4d7a5abb954c2a715aef1143be54e4c1e8e1671560"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-defb0--persisted-workflow-at-1024/fleet-1024.png",
+      "sha256": "156aa667873315a3debfc8156d75b932eb8f62b03c7164ebe9833e0ecf282c1c"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-edf2e-r-persisted-workflow-at-320/driver-320.png",
+      "sha256": "847fcf1dd64d32f7593cf38aa07e4327d5afd4c6613db498aa0cd363b56d4018"
+    },
+    {
+      "path": "dist/browser-results/responsive-personas-respon-f4b63--persisted-workflow-at-1024/driver-1024.png",
+      "sha256": "825c9dbe54a946c5be488f2f0673ce4ae47c5bd3fd62bb21d2dbb423e7fa3f51"
+    },
+    {
+      "path": "dist/browser-results/settlements-carrier-settle-def5e-gs-have-persistent-outcomes/carrier-settlement-1440.png",
+      "sha256": "806445b621328c7eb0d59391afdc07fe3a577b0eba0e4cdcbbc8329c13e10d4d"
+    },
+    {
+      "path": "dist/browser-results/settlements-carrier-settle-def5e-gs-have-persistent-outcomes/driver-earnings-390.png",
+      "sha256": "36f76ef2bb7593803d3b42c77ea345289d72d80f627258f574719987c26dec15"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-11f3c-t-persisted-workflow-at-320/fleet-320.png",
+      "sha256": "2c4393d26adf0d9a56fb68a52c91f611d724a2cd8543025f3cd13638af1bc3c4"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-1ab49-r-persisted-workflow-at-768/carrier-768.png",
+      "sha256": "27f5d921d9a40df291429281cab9d966f1a5dabe3f828d5a046c36f165df84c6"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-2ba5c--persisted-workflow-at-1024/platform-1024.png",
+      "sha256": "25e9f5789654f30c15fd99ce57bd46f9bbdc71cd009aadd32c71727cceb3647e"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-2cb74-r-persisted-workflow-at-320/carrier-320.png",
+      "sha256": "cbc2d75a84b958e02bf95780d6d9b823f7464b952d0eb337cf7961bfa52eac60"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-3a8fc-t-persisted-workflow-at-375/fleet-375.png",
+      "sha256": "f9d6c8c23f2be86d5d18eb588a18a753550cdad6a52654e68bddda2bbc401f5d"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-5b1bd--persisted-workflow-at-1024/carrier-1024.png",
+      "sha256": "512dee56357c8c14a47b2823f58f429411457a8727ca30778ed99cd0a8182378"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-5d16f-r-persisted-workflow-at-768/driver-768.png",
+      "sha256": "08e97dd12969e71ba34072cad780abc83144d293fefac388c480e139b65c233b"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-5dbfd-m-persisted-workflow-at-320/platform-320.png",
+      "sha256": "50615d556bbf0c5d36d387f972b74d23bdd4756d7d50c6c7306acaa351a6a8f6"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-66a5c-t-persisted-workflow-at-390/fleet-390.png",
+      "sha256": "e8b0ffd7486d69cfd87803745911ec5c4fd4bf5c66f943c4af77df590f41a9db"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-6d00b--persisted-workflow-at-1440/driver-1440.png",
+      "sha256": "78bab21f08eb96a0be5ad1266ea22b9ccbb109432c32984bba513772ab68281d"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-6d332-m-persisted-workflow-at-390/platform-390.png",
+      "sha256": "3fd946120bccf799a9f5c5fdab2404b5c733b103c8f13a691f95376533b94171"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-72cb4-r-persisted-workflow-at-375/driver-375.png",
+      "sha256": "5ff59edef70b0d406d7957fae4d79f5ec7c36b446876031d0492973b219ee297"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-845a2-m-persisted-workflow-at-768/platform-768.png",
+      "sha256": "e6beb619e60c8d96ee6bfb6e01ffd0ac3e974cfb5ab115c166db439421fb1011"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-85d41--persisted-workflow-at-1440/fleet-1440.png",
+      "sha256": "cbe5c0c4fc641289f66adc7a66dd0eab9e1dea77fba07b29c3143a043554d2c6"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-ab5c5-m-persisted-workflow-at-375/platform-375.png",
+      "sha256": "7b5c44ba18d362a7e9f82cb79730056a64ea6402e9fb5c4360e5be02440ef2a3"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-b2785-r-persisted-workflow-at-375/carrier-375.png",
+      "sha256": "23951823ec188f6bd36ba77e60bb17827383a43cd8451297dd7c97db5b979b79"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-ba96c-r-persisted-workflow-at-390/carrier-390.png",
+      "sha256": "e891553efb049cef0c8622442d9e94883bb35c55d6ca8162620afe57b89060a5"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-ca030--persisted-workflow-at-1440/carrier-1440.png",
+      "sha256": "784ef51f0423eca3633132c3b3fd5cebc6b458abf841151ca65dcac601583f8b"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-cb736-r-persisted-workflow-at-390/driver-390.png",
+      "sha256": "ece170125d9556c4b4777ab377462449c7900fed6237ac88ef3037d8f785f4a2"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-cd5f5--persisted-workflow-at-1440/platform-1440.png",
+      "sha256": "1e4fa58268690a313da0b409c0ef148693e1b4b7f5b5069c7e4d1e005b162f7c"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-d5946-t-persisted-workflow-at-768/fleet-768.png",
+      "sha256": "f65fe1c57509064f4a11c50f23db7cb91a11add01bb45a238e177488ebdbfb8d"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-defb0--persisted-workflow-at-1024/fleet-1024.png",
+      "sha256": "e4fed5b3e4d7a09c2d1e31f2fe66f2f8e2de5111cfd0bb4a32c8c86de9463ebd"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-edf2e-r-persisted-workflow-at-320/driver-320.png",
+      "sha256": "c3378f7bd7effffba57c7040ae04a60ea432906d61eedd9fc6ce05ae478637a9"
+    },
+    {
+      "path": "dist/figma-gap-closure/durable-browser/results/responsive-personas-respon-f4b63--persisted-workflow-at-1024/driver-1024.png",
+      "sha256": "e97ef198c35233ba7a0e4776341745b93409897536b9f5b5d44919b9a7e4748a"
+    }
+  ],
+  "tests": {
+    "repository": {
+      "tests": 893,
+      "pass": 893,
+      "fail": 0,
+      "skipped": 0
+    },
+    "browser": {
+      "total": 97,
+      "passed": 97,
+      "failed": 0,
+      "skipped": 0,
+      "backend": "disposable SQLite",
+      "sourceUnchanged": true
+    },
+    "durableBrowser": {
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "backend": "disposable PostgreSQL",
+      "sourceUnchanged": true,
+      "overlapsGeneral": true
+    },
+    "postgres": {
+      "version": {
+        "version": "17.11",
+        "number": 170011
+      },
+      "leafScenarios": 86,
+      "nodeChecks": 94,
+      "orchestrationParents": 8
+    },
+    "performance": {
+      "status": "PASS",
+      "scenarios": 4
+    },
+    "recovery": {
+      "status": "PASS",
+      "observedRtoMs": 402.78060000000005,
+      "observedRpoMs": 595
+    },
+    "hosted": {
+      "executed": 0,
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 92,
+      "NOT RUN": 0
+    },
+    "humanAccessibility": {
+      "status": "NOT RUN",
+      "cases": 56
+    },
+    "dependencyAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "accessibility": {
+    "generalScans": 176,
+    "generalViolations": 0,
+    "durableScans": 46,
+    "durableViolations": 0,
+    "conformance": "MANUAL_REVIEW_REQUIRED"
+  },
+  "interactionCoverage": {
+    "action": {
+      "inventoried": 55,
+      "observed": 50,
+      "interacted": 50,
+      "verifiedOutcome": 55
+    },
+    "button": {
+      "inventoried": 39,
+      "observed": 39,
+      "interacted": 39,
+      "verifiedOutcome": 39
+    },
+    "dialog": {
+      "inventoried": 15,
+      "observed": 0,
+      "interacted": 0,
+      "verifiedOutcome": 0
+    },
+    "disclosure": {
+      "inventoried": 1,
+      "observed": 0,
+      "interacted": 0,
+      "verifiedOutcome": 1
+    },
+    "field": {
+      "inventoried": 102,
+      "observed": 100,
+      "interacted": 78,
+      "verifiedOutcome": 0
+    },
+    "form": {
+      "inventoried": 30,
+      "observed": 30,
+      "interacted": 30,
+      "verifiedOutcome": 30
+    },
+    "navigation": {
+      "inventoried": 21,
+      "observed": 21,
+      "interacted": 21,
+      "verifiedOutcome": 21
+    },
+    "route": {
+      "inventoried": 55,
+      "observed": 7,
+      "interacted": 0,
+      "verifiedOutcome": 0
+    }
+  },
+  "newApiContracts": {
+    "passed": 15,
+    "total": 15,
+    "percentage": 100,
+    "overallRepositoryPercentage": null
+  },
+  "requirements": {
+    "total": 72,
+    "counts": {
+      "IMPLEMENTED_LOCAL": 6,
+      "PARTIAL": 57,
+      "MISSING": 7,
+      "BLOCKED_DECISION": 2
+    },
+    "strictCompleteRequirementRatio": {
+      "numerator": 6,
+      "denominator": 72,
+      "percentage": 8.333333333333334,
+      "meaning": "Whole PRD rows implemented and locally verifiable; partial compound requirements receive zero full-row credit. This is not a Figma visual or functional conformity percentage."
+    },
+    "figmaFunctionality": {
+      "status": "NOT_CERTIFIED",
+      "percentage": null,
+      "reason": "Complete screen/action/state acceptance evidence is absent; original Make provenance is not version-pinned."
+    },
+    "visual": {
+      "status": "BLOCKED_REFERENCE",
+      "percentage": null
+    }
+  },
+  "approvals": {
+    "identifiers": [
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06",
+      "A07",
+      "A08",
+      "A09",
+      "A10",
+      "A11",
+      "A12"
+    ],
+    "allPending": true,
+    "exclusiveStagingDatabase": null,
+    "managementConnectionOwner": null,
+    "invitationProviderOwner": null
+  },
+  "limits": [
+    "Synthetic identity tests are not hosted authentication",
+    "Status-only browser queue is not native/photos/signature certification",
+    "Per-load fleet pay is not the complete PRD pay-model set",
+    "Source route/control inventory is not complete Figma or API coverage",
+    "Repository-safe implementation gaps remain open; see complete gap register"
+  ],
+  "postCommitVerification": "dist/figma-gap-closure/post-commit-verification.json"
+}

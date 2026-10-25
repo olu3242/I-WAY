@@ -1,0 +1,2906 @@
+{
+  "schemaVersion": 1,
+  "sourceHashEncoding": "SHA-256; text UTF-8 with LF, binary WOFF2 raw bytes",
+  "authority": {
+    "functional": "Checked-in prototype and PRD, subject to documented decisions",
+    "visual": "Brand Kit; legacy dark/amber prototype styling superseded",
+    "canonicalFigmaVersion": null,
+    "originalScreenExports": null
+  },
+  "counts": {
+    "IMPLEMENTED_LOCAL": 6,
+    "PARTIAL": 57,
+    "MISSING": 7,
+    "BLOCKED_DECISION": 2
+  },
+  "total": 72,
+  "strictCompleteRequirementRatio": {
+    "numerator": 6,
+    "denominator": 72,
+    "percentage": 8.333333333333334,
+    "meaning": "Whole PRD rows implemented and locally verifiable; partial compound requirements receive zero full-row credit. This is not a Figma visual or functional conformity percentage."
+  },
+  "figmaFunctionalityConformity": {
+    "status": "NOT_CERTIFIED",
+    "percentage": null,
+    "reason": "Complete screen/action/state acceptance evidence is absent; original Make provenance is not version-pinned."
+  },
+  "visualConformity": {
+    "status": "BLOCKED_REFERENCE",
+    "percentage": null
+  },
+  "requirements": [
+    {
+      "id": "FR-DRV-001",
+      "requirement": "Sign in/out, reset password, set/change PIN, biometric sign-in, MFA when triggered, trusted device, notification preferences. Drivers cannot create their own carrier/fleet relationship.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Synthetic Google/password/session lifecycle and preferences",
+      "remaining": "Native PIN, biometrics and trusted-device contract (ADR-002); real provider/MFA activation A07-A09",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-002",
+      "requirement": "Invite-based onboarding: accept invitation, verify phone/email, profile, CDL, emergency contact, employment information requested by the owning company, document upload, agreements, optional banking, submit.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Invitation acceptance and canonical identity mapping under synthetic providers",
+      "remaining": "Complete onboarding/profile and sensitive document storage (OQ-08); approved delivery and real identities",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-003",
+      "requirement": "Onboarding status visible: Invited → Registration Started → Profile Incomplete → Documents Required → Submitted → Under Review → Approved → Active/Dispatch Eligible; exceptions Needs Information, Rejected, Restricted, Suspended, Inactive.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Active/compliance/approval gates and invitation lifecycle",
+      "remaining": "Full onboarding status progression and needs-information review UI",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-004",
+      "requirement": "Home: current and next load, status, pickup/delivery appointments, miles remaining, ETA, recent messages, compliance alerts, earnings summary, settlement notification.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Scoped current assignments, compliance and approved earnings views",
+      "remaining": "ETA, distance, messages and complete dashboard summaries; approved map/tracking provider",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-settlements.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-005",
+      "requirement": "Receive assignment, view load, accept, or reject with reason. Drivers cannot create, re-rate, reassign or cancel loads.",
+      "priority": "P0",
+      "status": "IMPLEMENTED_LOCAL",
+      "implemented": "Assigned load view, accept, reject with reason, release and replay-safe audited receipt",
+      "remaining": "Hosted identity certification remains separate",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-006",
+      "requirement": "Execution flow per stop: navigate, confirm arrival, loading, loaded, in transit, arrive at delivery, unloading, delivered, POD submitted. With multiple pickups and drop-offs, each stop is confirmed individually.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Ordered multi-stop pickup, transit, delivery and acknowledgment",
+      "remaining": "Arrival/loading/unloading milestones and navigation integration",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-007",
+      "requirement": "Geofence arrival prompt with a manual \"confirm arrival\" fallback when the prompt fails (network or location). Prompt must not obscure key load information.",
+      "priority": "P0",
+      "status": "MISSING",
+      "implemented": "No implemented geofence arrival workflow",
+      "remaining": "Approved location/native contract plus manual-arrival UI and event transitions",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-008",
+      "requirement": "Active load screen shows a clear pickup-to-delivery route line including intermediate stops, and a tracking map with truck position.",
+      "priority": "P0",
+      "status": "MISSING",
+      "implemented": "No live map or truck position claimed",
+      "remaining": "Approved map/tracking provider, location consent and native/background decision",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-009",
+      "requirement": "View the rate confirmation as a PDF.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Authorized immutable text/JSON shipping-document revisions",
+      "remaining": "Rate-confirmation PDF storage and renderer",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-010",
+      "requirement": "Capture BOL at pickup with electronic signatures (drawn signature) by driver and shipper; same document carried to the receiver for signature at delivery; the signed PDF is pushed to the broker and the carrier's load record.",
+      "priority": "P0",
+      "status": "BLOCKED_DECISION",
+      "implemented": "Bounded recipient acknowledgment references only",
+      "remaining": "Signed BOL/POD image storage, retention and signature evidence review (OQ-08/ADR-002); approved broker delivery",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-011",
+      "requirement": "Report exceptions (delay, detention, breakdown, accident, cargo, pickup/delivery/route/weather issue, other) with photo, comment, location, timestamp, attachment.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Audited bounded text exceptions and human recovery workflow",
+      "remaining": "Photo/attachment/location capture and remaining categories; reviewed storage and consent",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-012",
+      "requirement": "Documents: view, upload, replace, submit CDL, medical certificate, MVR where applicable, agreements; load documents (BOL, POD, lumper, scale ticket, fuel/expense receipt). A **Renew** action replaces expired documents. Drivers cannot approve their own documents.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Shipping-document ingestion/revisions and independent human review",
+      "remaining": "Driver identity-document upload/renewal and sensitive storage OQ-08",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-013",
+      "requirement": "Compliance view: Valid, Expiring Soon, Expired, Under Review, Rejected, with configurable reminders (e.g. 60/30/14/7 days). Carrier decides eligibility.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Expiry/compliance gates deny dispatch",
+      "remaining": "Complete compliance states, document types and configurable reminder windows",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-014",
+      "requirement": "See the assigned dispatcher on each load, with chat and call.",
+      "priority": "P1",
+      "status": "MISSING",
+      "implemented": "No chat or call workflow claimed",
+      "remaining": "Dispatcher contact consent, contact model and approved communications adapter",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-015",
+      "requirement": "Assigned truck page populated from the carrier's equipment record, with truck documents (registration/cab card, insurance, annual DOT inspection, lease if applicable).",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "implemented": "Assigned equipment and service information",
+      "remaining": "Truck-document access, registration/insurance/lease storage contract",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-maintenance.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-016",
+      "requirement": "Driver can add truck service information; entries sync with the carrier's truck service history.",
+      "priority": "P1",
+      "status": "IMPLEMENTED_LOCAL",
+      "implemented": "Assigned driver service reports persist into equipment-owner history",
+      "remaining": "Hosted synchronization remains untested",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-maintenance.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-017",
+      "requirement": "Service-due prompt when the odometer approaches the carrier-configured service interval, using load distance and driver geolocation while driver and truck are both in service.",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "implemented": "Explicit carrier service interval, odometer reports and due warnings",
+      "remaining": "Automatic load-distance/geolocation odometer integration; ADR-002 and approved provider",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-maintenance.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-018",
+      "requirement": "Profile: direct-deposit information viewable and editable; notification settings, change password and help/support pages functional.",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "implemented": "Notification preferences and local authentication workflows",
+      "remaining": "Direct-deposit storage OQ-08; complete profile, password-change and support screens",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-019",
+      "requirement": "Earnings: current week, month-to-date, year-to-date, annual, all-time; load earnings, deductions, escrow, reimbursements, net settlement; previous settlement breakdown with PDF; summary reports (this week, last week, last month, YTD) with PDF. Source depends on driver type; fleet drivers do not see the carrier-to-fleet settlement.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Only own approved carrier settlement or fleet driver pay; commercial source fields withheld",
+      "remaining": "Period summaries, reimbursements, statement/report PDFs and full history filters",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-settlements.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-020",
+      "requirement": "Submit expenses against a load.",
+      "priority": "P1",
+      "status": "MISSING",
+      "implemented": "No driver expense submission claimed",
+      "remaining": "Owned expense submission/review contract, UI, evidence storage and reimbursement linkage",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DRV-021",
+      "requirement": "The app is a true mobile application (not a desktop layout in a frame). Offline-tolerant queueing for status, photos and signatures. [DECISION D-05: native vs. cross-platform, see ADR-002]",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "IndexedDB bounded status queue, static recovery shell, reload/reconnect and exactly-once server replay",
+      "remaining": "Native delivery ADR-002; secure photos/signatures offline storage and device review",
+      "reference": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/driver-offline.mjs",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands",
+        "GET /api/ops/offline/context",
+        "POST /api/ops/offline"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/driver-offline-integration.test.mjs",
+        "tests/browser/driver-offline.spec.mjs",
+        "tests/driver-assignment-response.test.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-001",
+      "requirement": "Dashboard KPIs: active loads, unassigned, awaiting acceptance, pickups/deliveries today, delayed, available drivers/trucks, compliance exceptions, revenue, settlements payable; fleet breakdown (carrier fleet vs. managed fleet) when R3 is live.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Tenant-scoped operational totals and analytics",
+      "remaining": "Full finance/resource/compliance KPI set and fleet breakdown",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-002",
+      "requirement": "**Create load** wizard exactly per the documented flow: (1) customer and broker (inline add; time zone auto-set), (2) pickups and drop-offs with multiple stops, schedule windows and private notes, (3) rate and line items, commodity type, optional dimensions, (4) billing: factored shows factoring company only, non-factored shows Bill To only. Select the responsible dispatcher.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Validated load creation with rates, ordered stops and dispatcher ownership",
+      "remaining": "Four-step wizard, inline broker/customer/facility creation, windows, private notes and dimensions",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-003",
+      "requirement": "Load manager: Active and Completed lists with search; request dates in the carrier's time zone.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Search plus active/completed lists with carrier-time-zone presentation",
+      "remaining": "Request-date range filters and complete reference list columns",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-004",
+      "requirement": "**Load detail** page: all list fields plus full stop detail, current location, miles driven and remaining (in transit) or total (completed), rate confirmation, driver-uploaded PODs/BOLs/photos, assigned driver and dispatcher, and a control to email a live location/tracking link to the broker contact.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Owned load detail, human tracking, assignment and reviewed shipping metadata",
+      "remaining": "Live location/distance, PDF attachments and approved broker tracking-link delivery",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-005",
+      "requirement": "Assign/reassign driver and truck; assigning a new load to a driver works end to end; one active assignment per load (BR-013).",
+      "priority": "P0",
+      "status": "IMPLEMENTED_LOCAL",
+      "implemented": "Eligible assignment/reassignment, one active assignment, audited cancellation",
+      "remaining": "Hosted four-persona certification remains blocked",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-006",
+      "requirement": "Dispatch board shows all resources with ownership visible; live-tracking map (US map with truck positions and route lines between pickup and delivery).",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Scoped resource/capacity overview and human dispatch",
+      "remaining": "Live map, truck positions and route lines; approved tracking provider",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-007",
+      "requirement": "Edit load in any status with audit; **void** instead of delete; TONU with reason and rate edit.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Audited void and pre-pickup assignment changes",
+      "remaining": "Full status-aware correction/TONU contract protecting approved financial sources",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-008",
+      "requirement": "Broker notification emails when a load is picked up and when delivered, to the broker email in the carrier's book of record; a further event sends driver-uploaded BOL/POD documents to that email.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Local lifecycle notification outbox and broker connector mocks",
+      "remaining": "Owner-approved broker book of record, delivery provider/sender and real delivery certification",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-009",
+      "requirement": "**Onboarding hub**: \"New\" for driver, vehicle, truck owner, broker, customer and factoring company. Queue of in-progress items with working Open and Review actions. Admin-completed onboarding as well as invite-driven onboarding for driver, owner and truck. Draft / needs-changes records stay invisible to dispatch until approved.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Protected invitation/session workflow and company configuration",
+      "remaining": "Complete typed onboarding hub for all resource classes and document approval gates",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-010",
+      "requirement": "Broker records support an optional address; factoring company records support an optional address.",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "implemented": "Company directory configuration scaffolding",
+      "remaining": "Verified typed broker/factor address forms and relationship workflows",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-011",
+      "requirement": "**Asset** nav with sub-navigation Drivers and Assets. Truck list shows owner of truck; truck details editable.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Role-scoped drivers/equipment, ownership, edits and approvals",
+      "remaining": "Asset subnavigation and full typed truck detail",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-012",
+      "requirement": "Add-vehicle flow with vehicle types including box truck and reefer and truck size; steps in a left-hand step list with a financial-settings step (revenue share between truck and driver, other deductions). Required truck documents: annual DOT inspection, registration/cab card, lease agreement where needed, insurance.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Vehicle ownership, capacity and approval gates",
+      "remaining": "Vehicle-type wizard, financial settings and sensitive document package",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-013",
+      "requirement": "Truck detail: assign or update drivers; edit financial settings in isolation (only that section opens) with the ability to add other deduction lines; document and maintenance cards open only the relevant section on Update.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Scoped equipment maintenance edits and separate service-plan form",
+      "remaining": "Section-specific truck/driver assignment, financial terms and deduction editor",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-maintenance.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-014",
+      "requirement": "Service intervals: carrier states miles-until-service at truck setup; value carries to truck detail and the driver's truck page; warnings in both when the odometer approaches the interval (FR-DRV-017). Service history entered by admin or driver appears on the truck detail.",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "implemented": "Carrier intervals, warnings and driver/owner service history",
+      "remaining": "Automatic load-distance/location integration required by linked FR-DRV-017",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-maintenance.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-015",
+      "requirement": "Driver detail: statuses, full profile and documents (including driver application, W-4, motor vehicle record), edit driver opens Profile + Employment, edit pay + deductions opens only that section with time-stamped edits, escrow summary (total to collect, collected so far; automated, non-editable per BR-018), pay-settlement history with PDF per line.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Driver availability/compliance edits and approved pay projection",
+      "remaining": "Full profile/employment/documents, vehicle pay terms, escrow history and PDFs",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-settlements.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-016",
+      "requirement": "Driver onboarding progress is visible for invited drivers and adapted for admin-completed onboarding.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Invitation lifecycle and dispatch eligibility gates",
+      "remaining": "Complete admin/invite onboarding progress UI",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-017",
+      "requirement": "Dispatcher management: onboard and update dispatchers; payment terms as a percentage of gross load dispatched, editable; onboarding captures required identity and payment information (SSN, ID card, account information) under the sensitive-data rules in §12.3; performance views (week-to-date, last settlement, month-to-date, year-to-date); settlement history with PDF.",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "implemented": "Dispatcher account management and scoped permissions",
+      "remaining": "Dispatcher payment models/reports and sensitive onboarding policy OQ-08",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-018",
+      "requirement": "Compliance: carrier authority over drivers, equipment and fleet companies; document expiry reminders; critical non-compliance sets Dispatch Eligible = No (BR-020).",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Carrier approvals, expiry gates and out-of-service hold enforcement",
+      "remaining": "All driver/equipment/fleet document classes, complete review/reminder states",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-maintenance.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-019",
+      "requirement": "Customer/broker management (customers, shippers, receivers, brokers, rates, payment terms, history). Shippers and receivers are saved facilities.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Customer relationships and bounded administrative configuration",
+      "remaining": "Typed broker/factor/facility/rate/terms/history modules",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-020",
+      "requirement": "Users & Roles: carrier user management; roles include manager, dispatcher, accounting.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Carrier account/permission governance with tenant-scoped denies",
+      "remaining": "Accounting role and complete approved role catalog/delegation UI",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-021",
+      "requirement": "**Settlements**: pay-week tabs previous / current / next; move a load to another week (appears in that week's tab); add adjustment; no adjustments on an approved settlement; settlement details visible per payee; search previous settlements and open the approved PDF; preview → approve per payee → PDF → un-approve with reason.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Weekly draft/recalculate/adjust/approve/unapprove, immutable evidence and fleet disputes",
+      "remaining": "Week navigation, moves, search and approved statement PDFs; cutoff policy OQ-04",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-022",
+      "requirement": "Settlement calculation follows §12.4 and the vehicle's financial settings; end to end from load creation through driver completion to settlement.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Integer-cent fixture calculation, weekly uniqueness, source-version checks and escrow cap",
+      "remaining": "Vehicle-sourced approved terms, full pay models and v1 parallel reconciliation data",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-settlements.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-023",
+      "requirement": "Completed-loads section; **generate invoice** (invoice number format carrier prefix + year + sequence); a review page lists links to POD, rate confirmation and broker-created invoice before sending; download of all three; send to broker or factoring company; final invoice visible from the load manager; manual download for emailing.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Document-reviewed invoice generation, issue and receivable lifecycle",
+      "remaining": "Three-PDF packet, invoice-format OQ-05, downloads and approved broker/factor delivery",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-024",
+      "requirement": "Payment tracking: record broker/factor payments manually (date, amount, notes) and by integration, with status Unpaid / Partially paid / Paid / Void and reconciliation to factoring remittance.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Reported payment evidence, independent review and reconciliation fixtures",
+      "remaining": "Actual provider/remittance integration and owner-approved payment scope OQ-06",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-settlements.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-025",
+      "requirement": "Reports (§12.4 list) and dashboard KPIs for accounting.",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "implemented": "Measured operational analytics",
+      "remaining": "Complete accounting report list, period summaries and exports",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-026",
+      "requirement": "Fleet Companies (create, invite, review, approve, agreement, fees, escrow, settlement frequency, documents, banking, approve trucks/drivers, restrict, suspend, terminate); Fleet Management Agreement as its own object with statuses Draft, Pending Signature, Active, Suspended, Expired, Terminated.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Fleet ownership, employment, equipment and carrier eligibility controls",
+      "remaining": "Fleet Management Agreement lifecycle, all financial/document/banking controls",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-CAR-027",
+      "requirement": "Fleet settlement: gross revenue, management fee, insurance, fuel advance, escrow, maintenance deductions, other deductions, adjustments, net payable; the carrier approves and pays.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Fleet revenue/fees/deductions/escrow/adjustment/net approval",
+      "remaining": "Actual payment execution and complete agreement-bound financial terms",
+      "reference": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/admin.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-settlements.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/administration.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs",
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-FLT-001",
+      "requirement": "Dashboard: trucks owned/active/dispatched/available, drivers, loads, weekly/MTD/YTD earnings, pending/paid settlements, escrow balance, compliance and maintenance alerts.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Own assets, assignments, settlements and driver-pay views",
+      "remaining": "Full period earnings/payment/maintenance dashboard",
+      "reference": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-settlements.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/accessibility.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-FLT-002",
+      "requirement": "Drivers: create → invite → maintain → assign → deactivate; documents; pay configuration; view loads and performance. Cannot make a driver carrier-approved or dispatch eligible.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Own driver employment, account activation fixtures and carrier approval boundary",
+      "remaining": "Complete invite/document/pay configuration and performance views; hosted identities A08-A09",
+      "reference": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/accessibility.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-FLT-003",
+      "requirement": "Equipment: add truck/trailer, registration, insurance, inspection, maintenance, assign driver, odometer, internal availability, request removal. Carrier retains approval, eligibility and out-of-service authority.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Own vehicle creation/editing and maintenance reports preserve carrier holds",
+      "remaining": "Trailer/type, document and removal-request workflows",
+      "reference": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-maintenance.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/accessibility.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-FLT-004",
+      "requirement": "Load visibility for its own equipment and drivers; cannot change broker/customer rates, assignments outside its fleet, carrier invoices or factoring.",
+      "priority": "P0",
+      "status": "IMPLEMENTED_LOCAL",
+      "implemented": "Own driver/equipment loads only; commercial rates and foreign assignments withheld",
+      "remaining": "Hosted certification remains blocked",
+      "reference": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/accessibility.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-FLT-005",
+      "requirement": "Maintenance owned by the fleet company; carrier sees compliance-relevant information only.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Fleet-owned service review; carrier receives compliance-relevant projection",
+      "remaining": "Complete maintenance scheduling/vendor/cost workflows",
+      "reference": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-maintenance.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/accessibility.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-FLT-006",
+      "requirement": "Settlement: view, download, acknowledge, dispute carrier-generated settlements; cannot modify them.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Own carrier settlement view and immutable dispute sidecar",
+      "remaining": "Acknowledgment, approved PDF and dispute resolution workflow",
+      "reference": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-settlements.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/accessibility.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-FLT-007",
+      "requirement": "Driver pay models: percentage of load, per mile, per load, flat weekly, salary, custom; the carrier does not control how the fleet divides its net settlement unless the agreement says so.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Explicit per-load draft and approval with current employment and settlement budget checks",
+      "remaining": "Percentage, mileage, flat-week, salary and custom terms with approved calculation bases",
+      "reference": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs",
+        "domain/operations-settlements.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/accessibility.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-FLT-008",
+      "requirement": "Escrow ledger view (opening balance, contributions, deductions, claims, adjustments, refunds, closing balance); dispute but not edit.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Read-only system-calculated approved contributions",
+      "remaining": "Full opening/debit/claim/refund/closing escrow ledger and dispute resolution",
+      "reference": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/accessibility.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-FLT-009",
+      "requirement": "Users and settings for fleet staff.",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "implemented": "Own driver employment and preferences",
+      "remaining": "Fleet staff roles, invitations and company settings contract",
+      "reference": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/financial.js",
+        "apps/operations/maintenance.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/accessibility.spec.mjs",
+        "tests/operations-settlements.test.mjs",
+        "tests/browser/settlements.spec.mjs",
+        "tests/operations-maintenance.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-ADM-001",
+      "requirement": "Create and verify carrier tenants, configure subscription, activate/restrict/suspend/terminate; statuses Draft, Pending, Under Review, Approved, Active, Restricted, Suspended, Closed.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Protected governance namespace and tenant-bound synthetic fixtures",
+      "remaining": "Carrier-tenant lifecycle, subscriptions and approved management-plane authority",
+      "reference": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+      "route": "/uat/control",
+      "ui": [
+        "server/operations-uat-application.mjs"
+      ],
+      "api": [
+        "POST /api/ops/platform"
+      ],
+      "domain": [
+        "server/operations-platform.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/uat-application.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-ADM-002",
+      "requirement": "Platform user management with MFA.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Canonical privileged invitation/MFA fixtures and session gates",
+      "remaining": "Real AAL2 evidence, staff account management and approved identity provisioning",
+      "reference": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+      "route": "/uat/control",
+      "ui": [
+        "server/operations-uat-application.mjs"
+      ],
+      "api": [
+        "POST /api/ops/platform"
+      ],
+      "domain": [
+        "server/operations-platform.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/uat-application.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-ADM-003",
+      "requirement": "Cross-tenant visibility for support, risk and investigation; sensitive actions need elevated permission and a reason code; platform does not perform carrier dispatch (BR-008).",
+      "priority": "P0",
+      "status": "MISSING",
+      "implemented": "Platform operational tenant access is denied",
+      "remaining": "Explicit scoped support grant/reason/expiry contract and management-plane read API; no authorization bypass",
+      "reference": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+      "route": "/uat/control",
+      "ui": [
+        "server/operations-uat-application.mjs"
+      ],
+      "api": [
+        "POST /api/ops/platform"
+      ],
+      "domain": [
+        "server/operations-platform.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/uat-application.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-ADM-004",
+      "requirement": "Platform financial monitoring: payment activity, failed/returned payments, platform fees, subscription revenue, exceptions. Carrier accounting stays with the carrier.",
+      "priority": "P1",
+      "status": "MISSING",
+      "implemented": "No platform finance monitoring claimed",
+      "remaining": "Approved billing/payment providers and isolated aggregate monitoring contracts",
+      "reference": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+      "route": "/uat/control",
+      "ui": [
+        "server/operations-uat-application.mjs"
+      ],
+      "api": [
+        "POST /api/ops/platform"
+      ],
+      "domain": [
+        "server/operations-platform.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/uat-application.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-ADM-005",
+      "requirement": "Case management: sources (driver, fleet, carrier, system), categories (payment, settlement, load, account, compliance, document, technical, dispute, other), workflow New → Assigned → In Progress → Waiting on User → Resolved → Closed.",
+      "priority": "P1",
+      "status": "MISSING",
+      "implemented": "No platform case-management application claimed",
+      "remaining": "Case schema, owner role permissions and end-to-end case workflow",
+      "reference": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+      "route": "/uat/control",
+      "ui": [
+        "server/operations-uat-application.mjs"
+      ],
+      "api": [
+        "POST /api/ops/platform"
+      ],
+      "domain": [
+        "server/operations-platform.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/uat-application.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-ADM-006",
+      "requirement": "Global configuration: document types, notification templates, platform roles, feature flags, standard statuses, default expiry rules, payment methods, integrations, platform fees, security settings; carrier overrides only where permitted.",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "implemented": "Carrier configuration is isolated from platform governance",
+      "remaining": "Platform global configuration with approved override/delegation catalog",
+      "reference": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+      "route": "/uat/control",
+      "ui": [
+        "server/operations-uat-application.mjs"
+      ],
+      "api": [
+        "POST /api/ops/platform"
+      ],
+      "domain": [
+        "server/operations-platform.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/uat-application.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-ADM-007",
+      "requirement": "Audit viewer across all audit events.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Protected platform governance audit viewer",
+      "remaining": "Scoped cross-tenant audit access with reason-bound grants and sensitive-data policy",
+      "reference": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+      "route": "/uat/control",
+      "ui": [
+        "server/operations-uat-application.mjs"
+      ],
+      "api": [
+        "POST /api/ops/platform"
+      ],
+      "domain": [
+        "server/operations-platform.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/uat-application.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-X-001",
+      "requirement": "**Statuses** are standardized (§8) and defined once, shared by all apps.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Shared lifecycle compatibility projection",
+      "remaining": "Complete PRD status/substatus mapping and all unimplemented resource lifecycles",
+      "reference": "reference/figma-make-prototype/src/context/OperationsContext.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-auth-authorization.test.mjs",
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/mvp-controls.spec.mjs",
+        "tests/local/durable-operations-postgres.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-X-002",
+      "requirement": "**Notifications**: a single engine for in-app, push, email and SMS by event and user preference (§9).",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "In-app records, preferences, durable outbox and mocked adapters",
+      "remaining": "Approved email/push/SMS providers, sender/owner and actual delivery certification",
+      "reference": "reference/figma-make-prototype/src/context/OperationsContext.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-auth-authorization.test.mjs",
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/mvp-controls.spec.mjs",
+        "tests/local/durable-operations-postgres.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-X-003",
+      "requirement": "**Permissions**: role + permission + tenant + relationship + resource ownership evaluated on every request (§10).",
+      "priority": "P0",
+      "status": "IMPLEMENTED_LOCAL",
+      "implemented": "Role, permission, tenant, relationship and ownership gates; restricted PostgreSQL FORCE RLS tested locally",
+      "remaining": "Hosted target, authenticated restricted login and roster certification remain blocked",
+      "reference": "reference/figma-make-prototype/src/context/OperationsContext.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-auth-authorization.test.mjs",
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/mvp-controls.spec.mjs",
+        "tests/local/durable-operations-postgres.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-X-004",
+      "requirement": "**Audit** events for BR-012 actions with actor, time, before/after and reason.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Audited local consequential actions and append-only evidence",
+      "remaining": "Full BR-012 coverage cannot be certified for unimplemented actions",
+      "reference": "reference/figma-make-prototype/src/context/OperationsContext.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-auth-authorization.test.mjs",
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/mvp-controls.spec.mjs",
+        "tests/local/durable-operations-postgres.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-X-005",
+      "requirement": "Sensitive fields (bank details, SSN, ID images) masked by default, encrypted at rest, access logged.",
+      "priority": "P0",
+      "status": "BLOCKED_DECISION",
+      "implemented": "Sensitive collection is not enabled",
+      "remaining": "Owner-approved encryption, access logging, retention/deletion and legal/security policy OQ-08",
+      "reference": "reference/figma-make-prototype/src/context/OperationsContext.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-auth-authorization.test.mjs",
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/mvp-controls.spec.mjs",
+        "tests/local/durable-operations-postgres.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-X-006",
+      "requirement": "File names sanitized; special characters never break downloads (known v1 defect).",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Bounded document references and immutable text content",
+      "remaining": "PDF/upload/download pipeline with hostile filename tests",
+      "reference": "reference/figma-make-prototype/src/context/OperationsContext.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-auth-authorization.test.mjs",
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/mvp-controls.spec.mjs",
+        "tests/local/durable-operations-postgres.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-X-007",
+      "requirement": "Lists refresh after every save (known v1 defect).",
+      "priority": "P1",
+      "status": "IMPLEMENTED_LOCAL",
+      "implemented": "Implemented views refresh from persisted API state after saves",
+      "remaining": "No claim for absent screens",
+      "reference": "reference/figma-make-prototype/src/context/OperationsContext.tsx",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/operations-auth-authorization.test.mjs",
+        "tests/operations-uat-application.test.mjs",
+        "tests/browser/mvp-controls.spec.mjs",
+        "tests/local/durable-operations-postgres.test.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "FR-DS-01",
+      "requirement": "All applications use the I-way brand tokens and component rules; the Make prototype's dark amber theme is replaced. Status chips always pair colour with a word.",
+      "priority": "P0",
+      "status": "PARTIAL",
+      "implemented": "Unmodified logo, local Inter, token colors, card/button radii, driver targets and textual status chips tested",
+      "remaining": "Original Figma exports/version BLOCKED_REFERENCE; complete typography/icon/spacing review and human accessibility remain outstanding",
+      "reference": "reference/figma-make-prototype/src/index.css",
+      "route": "/app",
+      "ui": [
+        "apps/operations/ops.css",
+        "apps/operations/i-way-logo.svg",
+        "apps/operations/InterVariable.woff2"
+      ],
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "domain": [
+        "domain/operations.mjs",
+        "domain/authorization.mjs"
+      ],
+      "database": [
+        "server/operations-store.mjs",
+        "server/operations-durable-postgres.mjs",
+        "db/review-only/b662-operations-engine.sql"
+      ],
+      "testFiles": [
+        "tests/browser/brand-tokens.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs"
+      ],
+      "evidence": "dist/figma-gap-closure/receipt.json (final executed-suite evidence; a test-file reference alone is not PASS)",
+      "hostedStatus": "BLOCKED",
+      "visualStatus": "BLOCKED_REFERENCE"
+    }
+  ],
+  "sourceHashes": {
+    "apps/operations/InterVariable.woff2": "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3",
+    "apps/operations/admin.js": "37ae785572fd7ef180d3ec6b760c18bfa01205dfc056fefbe5d0ae168ea36669",
+    "apps/operations/driver-offline.mjs": "a6e68c3c29ef7d80274ade08a293c056da9836af808f1d309f00d8c85cbbc7d0",
+    "apps/operations/extended.js": "b783f9be9b40396adfa623df41d4d5f2b9407087ed67185a43792f97b4c2a2f6",
+    "apps/operations/financial.js": "5c86bc2d973b77eca191522e51edd040a8e99537b851776765824c5f160f70d4",
+    "apps/operations/i-way-logo.svg": "194f6d30e18998c37fda202cef6fd5b5ec1eb10f785179df3d77e323df4a8af4",
+    "apps/operations/maintenance.js": "4e55da00c88c2c65a11bfd8f42f6e89eeb95e6f41370df5d1de8b57240338920",
+    "apps/operations/ops.css": "1080856f832a1e3036ed2318512eacba673dae14a4426d67eebe8680ae1a6e92",
+    "apps/operations/ops.js": "5ea605726fc35bd0c3fd2cbfaed467d12df603ebd98b9bafee7aa90c79368663",
+    "db/review-only/b662-operations-engine.sql": "3e8f8f9d502a3aa39a826702ca56aae0815b46e85f5c7353a00c9dd0c9001e20",
+    "docs/PRD.md": "7e061a04d352f374e07edeb4ca3f3167c55e6f5fea6462432514f0fb35e568aa",
+    "docs/brand/tokens/iway-tokens.json": "4a1381edbeabdc41e6898459c7f01d2ae3bdf0f3c54f713ca17d5562c1de6aa7",
+    "domain/authorization.mjs": "31cbc900f4d083c07dac10d0202c0e0751c58bb9598b36d858836be307b285e6",
+    "domain/operations-maintenance.mjs": "476be01d54cc2680e2ce105cdafbaae5c0369cda9ee45298118029898584ba9b",
+    "domain/operations-settlements.mjs": "0b92b22e56a830938ebcaf647cdef50b0c9daeec9cf7185b2c161f7801172703",
+    "domain/operations.mjs": "bf6692466754568379187792ce69a807ff48eb917abe1226876314b89da986a4",
+    "reference/README.md": "725853eb2677d927a3070da6f6daae00ab3018c500e5b3e0b389303c8984749a",
+    "reference/figma-make-prototype/src/components/CarrierAdmin.tsx": "aff1f49c2c6a98227758854848fc93d95cb7e018b46d18912bab1b1e9d7255f2",
+    "reference/figma-make-prototype/src/components/DriverApp.tsx": "9a6994d6c1a99fde14e25fac347a62762c53d2657329f9062174374c99849e89",
+    "reference/figma-make-prototype/src/components/FleetPortal.tsx": "5a1900444ed60673b8b2cdf804969667d174051eef8fdab5fd9d55712a7722c3",
+    "reference/figma-make-prototype/src/components/PlatformAdmin.tsx": "cadc023a5c718b6635b4114fde5061151ee1a3d2175ab2eed2c61c14e4cdb137",
+    "reference/figma-make-prototype/src/context/OperationsContext.tsx": "70baa27101ac076480d0d23e177ddf6aabc17a64e48857b4edac3134807c190f",
+    "reference/figma-make-prototype/src/index.css": "1a8e0e889ca994e57dd5826d5330a0222ceb754b7b38c62ce5858b738dd50dde",
+    "server/operations-durable-postgres.mjs": "92b937cc9edc4bf62ce7ce1f5c971154309961d4aae553a729bf451d9d32f74e",
+    "server/operations-platform.mjs": "b9823e62291fc51b524db57f7cb2ee2c5aa8cb358fe8ee703e8c8d6d39bc9e22",
+    "server/operations-store.mjs": "a923bb6d0d53a56408dd218954579b770bce3813918360ab35bf76494ff5b85a",
+    "server/operations-uat-application.mjs": "6e627a5a93ff6d1083c94d9bf96952e70449bf9c3ec3ea7e375cfa83d3cde077",
+    "tests/browser/accessibility.spec.mjs": "8f286da93d0a8223cd238be972700ea8611c1daf2a63537cb478606366c99e57",
+    "tests/browser/administration.spec.mjs": "11a2425b2d00e44b05862c7487dd88f83e9e52b1fe980986f5481b66bcd60c8e",
+    "tests/browser/brand-tokens.spec.mjs": "ca34f73424179dcff0d85bfe956d44bb1d16df04dd6594d4171000e35a3dfd09",
+    "tests/browser/driver-offline.spec.mjs": "16ff054d67de2cc60e9e11a1edce8fd86bf031aae0399e7c72c6052b9dec5ffc",
+    "tests/browser/load-search-rejection.spec.mjs": "a4075a9abe13ccf000952ea29edb804349172a641e96a12a75180546940f4f0d",
+    "tests/browser/maintenance.spec.mjs": "5b31f6b6cdfdf3193bdbb37cb7f98d5e6b0525564df257ee779e25f29efc53b5",
+    "tests/browser/mvp-controls.spec.mjs": "48acf0d4973f83f50ee53576b9271223cca8e59ed3649dd942da8cc9873da309",
+    "tests/browser/operations.spec.mjs": "2210cf0d1b4b026f039dc1ccf77b8f7afbfafaaf9062b433bdbd98906baf52ec",
+    "tests/browser/responsive-personas.spec.mjs": "883933d5fe8b8875878e6785a38c63ed22db9f6736c28d2207be107c6699eb61",
+    "tests/browser/settlements.spec.mjs": "e34671b5988578203f9d050c0e3413864b363946e22a7b54d26b1faf3209e788",
+    "tests/browser/uat-application.spec.mjs": "7c814cff9963b000536c4fb780b5bc40ba1ccdbb3edb2d3bb1035179ccd379e9",
+    "tests/driver-assignment-response.test.mjs": "551b4df9d54a43968868821ecf00b680e0853d34417676270c03305e8f484546",
+    "tests/driver-offline-integration.test.mjs": "d3164f15c57c9bd98b43272f1c19fae978ba58d15731a681a4046609470d6624",
+    "tests/local/durable-operations-postgres.test.mjs": "7acf06446b828215eeda76c83c10bb0211a4cff1079b01873b16bfe4a6f9fa36",
+    "tests/operations-auth-authorization.test.mjs": "331f7d10f8f8892c2412b7f20ff18ba51aea6b1dfef53e2b5ad4749ef5816d7c",
+    "tests/operations-maintenance.test.mjs": "85309be7c4b5278902ba3708e6e4cbb380ecc83a7fe66904e1c8f29ecdd5fcdf",
+    "tests/operations-settlements.test.mjs": "2f32fb471cfa941430d6c58164c09e48a352c4aeed339825adde9be9182e23c0",
+    "tests/operations-uat-application.test.mjs": "add32a7f4459e0cf254f75454c8a78f53a50e8cc1dd3c39b128ed890df7d337b"
+  }
+}

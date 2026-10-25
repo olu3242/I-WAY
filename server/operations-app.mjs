@@ -1,3 +1,4 @@
+import {offlineContext,executeOfflineCommand} from './operations-offline.mjs';
 import {createInvitationService} from './operations-invitations.mjs';
 import {authenticateIdentity} from './operations-identity.mjs';
 import {platformGovernance} from './operations-platform.mjs';
@@ -10,7 +11,7 @@ import {securityHeaders} from './security-headers.mjs';
 import {authenticate,session,logout} from './operations-auth.mjs';
 import {readDocument} from '../domain/operations-documents.mjs';
 import {OpsError,fields} from '../domain/operations-errors.mjs';
-const assets=new Map([['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/admin','admin.html'],['/assets/admin.js','admin.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
+const assets=new Map([['/assets/InterVariable.woff2','InterVariable.woff2'],['/assets/Inter-LICENSE.txt','Inter-LICENSE.txt'],['/offline','offline.html'],['/driver-sw.js','driver-sw.js'],['/assets/driver-offline.mjs','driver-offline.mjs'],['/domain/driver-offline-replay.mjs','../../domain/driver-offline-replay.mjs'],['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/maintenance.js','maintenance.js'],['/assets/financial.js','financial.js'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/admin','admin.html'],['/assets/admin.js','admin.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
 export function makeOperationsApp({store,operations,logSink=()=>{},identityVerifier,invitationTransport,externalSessionBridge}){
  if(externalSessionBridge&&(!externalSessionBridge.origin?.startsWith('https://')||new URL(externalSessionBridge.origin).origin!==externalSessionBridge.origin||![externalSessionBridge.read,externalSessionBridge.logout].every(f=>typeof f==='function')))throw Error('EXTERNAL_SESSION_BRIDGE_INVALID');
  const loginAttempts=new Map(),enrollmentAttempts=new Map();
@@ -76,11 +77,13 @@ export function makeOperationsApp({store,operations,logSink=()=>{},identityVerif
     if(path==='/api/ops/admin/settings'){const input=await readBody();fields(input,['settings','expectedVersion']);return sendAdmin(admin.updateSettings(auth.actor,input.settings,input.expectedVersion));}
     if(path==='/api/ops/admin/items'){const input=await readBody();fields(input,['kind','id','data','expectedVersion']);return sendAdmin(admin.upsert(auth.actor,input.kind,input.id,input.data,input.expectedVersion));}
     if(path==='/api/ops/admin/delete'){const input=await readBody();fields(input,['kind','id','expectedVersion']);return sendAdmin(admin.remove(auth.actor,input.kind,input.id,input.expectedVersion));}
+    if(path==='/api/ops/offline')return send(200,executeOfflineCommand(operations,auth.actor,await readBody()));
     if(path==='/api/ops/commands')return send(200,operations.execute(auth.actor.id,await readBody()));
     return send(404,{error:'Not found.'});
    }
    if(req.method!=='GET'&&req.method!=='HEAD')return send(405,{error:'Method not allowed.'});
    if(path==='/health'){store.db.prepare('SELECT 1').get();return send(200,{status:'ok',storage:'ready',scope:'local'});}
+   if(path==='/api/ops/offline/context'){if(!auth)return send(401,{error:'Sign in required.'});return send(200,{context:offlineContext(auth.actor),csrf:auth.csrf});}
    if(path==='/api/ops/session'){if(!auth)return send(401,{error:'Sign in required.'});return send(200,{actor:auth.actor,csrf:auth.csrf});}
    if(path==='/api/ops/admin/settings'){if(!auth)return send(401,{error:'Sign in required.'});return sendAdmin(admin.getSettings(auth.actor));}
    if(path==='/api/ops/admin/audit'){if(!auth)return send(401,{error:'Sign in required.'});return sendAdmin(admin.audit(auth.actor));}
@@ -96,7 +99,7 @@ export function makeOperationsApp({store,operations,logSink=()=>{},identityVerif
    if(path==='/app'&&!auth){res.writeHead(302,{Location:'/login',...securityHeaders()});return res.end();}
    const asset=assets.get(path);if(!asset)return send(404,{error:'Not found.'});
    const body=await readFile(new URL('../apps/operations/'+asset,import.meta.url));
-   const type={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml'}[extname(asset)];
+   const type={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8'}[extname(asset)];
    res.writeHead(200,{...securityHeaders(),'Content-Type':type,'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"});res.end(req.method==='HEAD'?undefined:body);
   }catch(e){send(e instanceof OpsError?e.status:503,{error:e instanceof OpsError?e.message:'Operation unavailable.',code:e instanceof OpsError?e.code:'UNAVAILABLE'});}
  });

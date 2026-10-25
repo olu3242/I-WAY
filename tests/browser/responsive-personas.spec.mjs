@@ -20,7 +20,7 @@ async function layout(page,label){
  expect(result.clipped,label+' clipped form controls').toEqual([]);
 }
 
-for(const width of [375,768,1440])for(const role of ['platform','carrier','fleet','driver'])test(`responsive ${role} persisted workflow at ${width}`,async({browser})=>{
+for(const width of [320,375,390,768,1024,1440])for(const role of ['platform','carrier','fleet','driver'])test(`responsive ${role} persisted workflow at ${width}`,async({browser})=>{
  test.setTimeout(90000);
  const f=await integratedWorkspace(browser,{role,width,postgres}),{page}=f;
  try{
@@ -69,7 +69,7 @@ for(const width of [375,768,1440])for(const role of ['platform','carrier','fleet
    }
   }
   await page.screenshot({path:test.info().outputPath(role+'-'+width+'.png'),fullPage:true});
-  await page.getByRole('button',{name:'Sign out',exact:true}).press('Enter');await expect(page).toHaveURL(f.origin+'/uat/login');
+  await expect(page.getByRole('button',{name:'Sign out',exact:true})).toBeEnabled();await page.getByRole('button',{name:'Sign out',exact:true}).press('Enter');await expect(page).toHaveURL(f.origin+'/uat/login');
   expect(f.errors).toEqual([]);
   await test.info().attach('responsive-workflow',{body:JSON.stringify({kind:'responsive-workflow',role,width,scope:'LOCAL_SYNTHETIC_AUTH',backend:durable?'disposable PostgreSQL':'disposable SQLite',hostedAuthentication:false,persistence:'verified after restart/reload',keyboard:'PASS',nativeDialogAssistiveTechnology:'NOT RUN'}),contentType:'application/json'});
  }finally{await f.close();}

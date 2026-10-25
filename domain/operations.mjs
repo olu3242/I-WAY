@@ -156,7 +156,7 @@ export class Operations{
     if(kind==='driver'){
      if(p.compliance!==undefined){requireValue(actor.role==='carrier','COMPLIANCE','Only the carrier changes compliance.',403);requireValue(['valid','critical'].includes(p.compliance),'COMPLIANCE','Invalid compliance state.');patch.compliance=p.compliance;}
      if(p.expiresOn!==undefined){requireValue(actor.role==='carrier','COMPLIANCE','Only the carrier records verified expiry.',403);requireValue(/^\d{4}-\d{2}-\d{2}$/.test(p.expiresOn)&&Number.isFinite(Date.parse(p.expiresOn))&&new Date(p.expiresOn).toISOString().slice(0,10)===p.expiresOn,'EXPIRY','Enter a valid expiry date.');patch.expiresOn=p.expiresOn;}
-    }else if(p.maintenance!==undefined){requireValue(['ready','due','out_of_service'].includes(p.maintenance),'MAINTENANCE','Invalid maintenance state.');patch.maintenance=p.maintenance;}
+    }else if(p.maintenance!==undefined){requireValue(['ready','due','out_of_service'].includes(p.maintenance),'MAINTENANCE','Invalid maintenance state.');requireValue(actor.role==='carrier'||r.maintenance!=='out_of_service'||p.maintenance==='out_of_service','CARRIER_HOLD','Carrier review is required to clear an out-of-service hold.',403);patch.maintenance=p.maintenance;}
    }
    return this.change(actor,r,patch,c.action,reason);
   }

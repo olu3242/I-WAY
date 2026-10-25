@@ -1,9 +1,11 @@
+import {financialProjection} from './operations-settlements.mjs';
 import {authorize} from './authorization.mjs';
 import {requireValue} from './operations-errors.mjs';
 const pick=(object,keys)=>Object.fromEntries(keys.filter(k=>object[k]!==undefined).map(k=>[k,object[k]]));
 export function projectResult(ops,actor,value){
  if(Array.isArray(value))return value.map(v=>projectResult(ops,actor,v));
  if(!value||typeof value!=='object')return value;
+ if(['settlement','driverpay','settlementdispute','settlementapproval'].includes(value.kind))return financialProjection(ops,actor,value);
  if(value.kind&&value.loadId){const related=ops.read('load',value.loadId,actor,'load:view');ops.guard(actor,({document:'document:view',pod:'document:view',invoice:actor.role==='customer'?'invoice:view':'finance:manage',payment:'billing:manage',operationcost:'cost:manage',measurement:'cost:manage',routeevaluation:'intelligence:view',risk:'intelligence:view',capacityproposal:'intelligence:view',orchestration:'orchestration:manage',connectorjob:'connector:request',integrationreceipt:'connector:request',integrationjob:'connector:request',providerrecommendation:'intelligence:view'})[value.kind]??'load:view',related);}
  if(['retentionpolicy','retentionpreview','governanceexport'].includes(value.kind))ops.guard(actor,'governance:manage',{tenantId:value.tenantId});
  if(value.kind==='governanceexport')ops.guard(actor,'audit:view',{tenantId:value.tenantId});

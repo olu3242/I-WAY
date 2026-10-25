@@ -1,6 +1,6 @@
 // Private local operational views. Content is escaped; documents never enter public assets.
 function extendedTabs(){
- const tabs=typeof intelligenceTabs==='function'?intelligenceTabs():[];
+ const tabs=[...(typeof maintenanceTabs==='function'?maintenanceTabs():[]),...(typeof financialTabs==='function'?financialTabs():[]),...(typeof intelligenceTabs==='function'?intelligenceTabs():[])];
  if(can('billing:manage'))tabs.push(['billing','Billing & receivables']);
  if(can('document:review'))tabs.push(['documents','Document review']);
  if(can('analytics:view'))tabs.push(['analytics','Operations analytics']);
@@ -22,6 +22,8 @@ function extendedLoadPanels(load){
  return html+(typeof intelligenceLoadPanels==='function'?intelligenceLoadPanels(load):'');
 }
 function extendedView(name){
+ const maintenance=typeof maintenanceView==='function'?maintenanceView(name):null;if(maintenance!==null)return maintenance;
+ const financial=typeof financialView==='function'?financialView(name):null;if(financial!==null)return financial;
  const intelligence=typeof intelligenceView==='function'?intelligenceView(name):null;if(intelligence!==null)return intelligence;
  if(name==='billing')return billingView();
  if(name==='documents')return pageHead('Document review','Review extracted shipping fields and resolve document exceptions.')+'<section class="notice">Classification uses deterministic local parsing. PDF/image OCR and model extraction are not configured.</section><section class="card"><h2>Exception queue</h2>'+(state.documentexceptions??[]).filter(e=>e.status==='open').map(e=>'<div class="inline-record"><div><strong>'+esc(state.loads.find(l=>l.id===e.loadId)?.reference)+'</strong><p>'+esc(e.issueCodes.join(', '))+' · '+esc(e.escalation)+'</p></div>'+button('Open shipment','open',e.loadId)+'</div>').join('')+'</section>'+loadTable(state.loads.filter(l=>(state.documents??[]).some(d=>d.loadId===l.id&&d.reviewNeeded)));
@@ -32,6 +34,8 @@ function extendedView(name){
  return null;
 }
 async function handleExtendedClick(event){
+ if(typeof handleMaintenanceClick==='function'&&await handleMaintenanceClick(event))return true;
+ if(typeof handleFinancialClick==='function'&&await handleFinancialClick(event))return true;
  if(typeof handleIntelligenceClick==='function'&&await handleIntelligenceClick(event))return true;
  const b=event.target.closest('[data-action]');if(!b||!['document','billing','payment'].includes(b.dataset.action.split(':')[0]))return false;
  b.disabled=true;try{
@@ -43,6 +47,8 @@ async function handleExtendedClick(event){
  }catch(e){alertMessage(e.message,true)}finally{b.disabled=false}return true;
 }
 async function handleExtendedSubmit(event){
+ if(typeof handleMaintenanceSubmit==='function'&&await handleMaintenanceSubmit(event))return true;
+ if(typeof handleFinancialSubmit==='function'&&await handleFinancialSubmit(event))return true;
  if(typeof handleIntelligenceSubmit==='function'&&await handleIntelligenceSubmit(event))return true;
  const form=event.target;if(!['document-ingest','pod-record','notification-preference','payment-record','customer-create'].includes(form.id))return false;
  event.preventDefault();const b=form.querySelector('button'),v=Object.fromEntries(new FormData(form));b.disabled=true;
