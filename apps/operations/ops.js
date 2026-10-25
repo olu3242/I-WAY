@@ -1,5 +1,5 @@
 let state,tab='overview',selected=null,creating=false,loadSearch='',loadFilter='all';
-let journeyLoadId=null,journeyActive=false;
+let journeyLoadId=null,journeyActive=false,progressStale=false;
 const view=document.querySelector('#view'),message=document.querySelector('#message');
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const human=value=>String(value??'').replaceAll('_',' ').replaceAll(':',' · ');
@@ -24,7 +24,11 @@ async function request(path,options={}){
  const response=await fetch(path,{...options,headers:{'Content-Type':'application/json','X-CSRF-Token':requestCsrf,...options.headers}});
  const data=await response.json();if(response.status===401){location.assign('/login');throw new Error('Sign in required.');}if(!response.ok)throw new Error(data.error??'Request failed.');return data;
 }
-async function refresh(){state=await request('/api/ops/state');render();document.dispatchEvent(new CustomEvent('iway:workspace',{detail:state}));}
+async function refresh(){
+ try{state=await request('/api/ops/state');}
+ catch(error){progressStale=true;if(state)render();throw error;}
+ progressStale=false;render();document.dispatchEvent(new CustomEvent('iway:workspace',{detail:state}));
+}
 const pendingCommands=new Map();
 async function command(action,record,payload={}){
  const signature=JSON.stringify({action,id:record?.id,version:record?.version,payload});
@@ -54,8 +58,8 @@ function firstLoadPanel(){
  const labels=['Workspace access verified','Load created','Load validated','Driver and vehicle assigned','Driver accepted'];
  const complete=[true,step>=0,step>=1,step>=2,accepted];
  const guidance=!load?(state.actor.role==='driver'?'Choose an assigned load to begin.':'Choose an existing load or create one to begin.'):load.status==='void'?'This load is voided. Choose another load to continue.':step===0?'Review the load details, then validate the load.':step===1?'Choose an eligible driver and vehicle and record your assignment reason.':step===2?(state.actor.role==='driver'?'Review the job, then accept the assignment.':'Ask the assigned driver to sign in and accept. Check progress after their response.') :accepted?'Driver acceptance is confirmed.':'Review the current load status before continuing.';
- return '<section class="card first-load-guide" aria-labelledby="first-load-title"><p class="eyebrow">GUIDED DISPATCH</p><h2 id="first-load-title">'+(accepted?'Load assigned. Driver accepted.':'Your first accepted load')+'</h2><p>'+esc(guidance)+'</p>'+
- '<ol class="journey-steps">'+labels.map((label,i)=>'<li'+(!complete[i]&&(i===0||complete[i-1])?' aria-current="step"':'')+'><span class="chip '+(complete[i]?'done':'warn')+'">'+(complete[i]?'Complete':'Pending')+'</span> '+esc(label)+'</li>').join('')+'</ol>'+
+ return '<section class="card first-load-guide" aria-labelledby="first-load-title"><p class="eyebrow">GUIDED DISPATCH</p><h2 id="first-load-title">'+(progressStale?'Progress needs verification':accepted?'Load assigned. Driver accepted.':'Your first accepted load')+'</h2><p>'+esc(progressStale?'Refresh failed. The details below are the last confirmed snapshot. Check progress again before relying on this assignment.':guidance)+'</p>'+
+ '<ol class="journey-steps">'+labels.map((label,i)=>'<li'+(!complete[i]&&(i===0||complete[i-1])?' aria-current="step"':'')+'><span class="chip '+(complete[i]?'done':'warn')+'">'+(progressStale?'Last confirmed: ':'')+(complete[i]?'Complete':'Pending')+'</span> '+esc(label)+'</li>').join('')+'</ol>'+
  (load?'<p><strong>'+esc(load.reference)+'</strong> · '+chip(load.lifecycleState??load.status)+'</p>':'')+
  '<p class="muted small">Progress updates when you select Check progress. Queued actions still need confirmation. Complete account setup and carrier approvals before dispatch.</p>'+
  '<div class="actions">'+button('Check progress','journey-refresh')+(load?button('Open guided load','journey-open',load.id):'')+(can('load:create')?button('Create guided load','journey-create'):'')+'</div></section>';

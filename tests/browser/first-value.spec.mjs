@@ -177,3 +177,37 @@ test('unconfirmed acceptance does not complete the first-value guide',async({pag
  await expect(page.locator('.journey-steps li').last()).toContainText('Pending');
  expect(workspace.store.get('load',load.id,workspace.manager.tenantId).status).toBe('assigned');
 });
+
+test('failed refresh marks accepted progress stale until confirmed recovery',async({page,workspace})=>{
+ const load=workspace.assign();
+ await signIn(page,workspace,workspace.driver);
+ await follow(page,load.id);
+ await page.getByRole('button',{name:'Open guided load',exact:true}).click();
+ await page.getByRole('button',{name:'Accept assignment',exact:true}).click();
+ await expect(outcome(page)).toBeVisible();
+ const unavailable=route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Operation unavailable.'})});
+ await page.route('**/api/ops/state',unavailable);
+ await page.getByRole('button',{name:'Check progress',exact:true}).click();
+ await expect(outcome(page)).toHaveCount(0);
+ await expect(page.getByRole('heading',{name:'Progress needs verification',exact:true})).toBeVisible();
+ await expect(page.locator('.journey-steps li').last()).toContainText('Last confirmed: Complete');
+ // Changing views must not turn an old snapshot back into a current success.
+ await page.getByRole('button',{name:'First load guide',exact:true}).click();
+ await expect(outcome(page)).toHaveCount(0);
+ await expect(page.locator('.first-load-guide')).toContainText('Refresh failed');
+ await basicAccessibility(page);
+ await page.unroute('**/api/ops/state',unavailable);
+ await page.getByRole('button',{name:'Check progress',exact:true}).click();
+ await expect(outcome(page)).toBeVisible();
+ await expect(page.locator('.first-load-guide')).not.toContainText('Last confirmed:');
+ // A cancellation while disconnected must be reflected on recovery.
+ await page.route('**/api/ops/state',unavailable);
+ workspace.command(workspace.manager,'load:unassign',workspace.store.get('load',load.id,workspace.manager.tenantId),{reason:'Illustrative cancellation during outage'});
+ await page.getByRole('button',{name:'Check progress',exact:true}).click();
+ await expect(outcome(page)).toHaveCount(0);
+ await page.unroute('**/api/ops/state',unavailable);
+ await page.getByRole('button',{name:'Check progress',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Progress needs verification',exact:true})).toHaveCount(0);
+ await expect(outcome(page)).toHaveCount(0);
+ await expect(page.locator('.first-load-guide')).not.toContainText(load.reference);
+});
