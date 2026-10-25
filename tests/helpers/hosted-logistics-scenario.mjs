@@ -70,7 +70,22 @@ export async function runHostedLogisticsScenario(t,{postgres}={}){
  assert.equal((await command('carrier','load:validate',initial)).status,409);
  load=await success('carrier','load:assign',load,{driverId:f.driver.id,vehicleId:f.vehicle.id,reason:'Illustrative authorized dispatch'});
  assert.equal((await command('driver','load:deliver',load,{stopId:load.stops[1].id,proofReference:'ILL-POD'})).status,409);
- for(const [action,payload]of [['load:accept',{}],['load:pickup',{stopId:load.stops[0].id}],['load:transit',{}],['load:deliver',{stopId:load.stops[1].id,proofReference:'ILL-POD'}]])load=await success('driver',action,load,payload);
+ for(const role of ['platform','carrier','fleet'])assert.equal((await send(role,'/api/ops/offline/context')).status,403);
+ let lastOffline;
+ async function offline(envelope){
+  const session=(await send('driver','/api/ops/offline/context')).json();
+  return send('driver','/api/ops/offline',{method:'POST',csrf:session.csrf,body:envelope});
+ }
+ for(const [action,payload]of [['load:accept',{}],['load:pickup',{stopId:load.stops[0].id}],['load:transit',{}]]){
+  const session=(await send('driver','/api/ops/offline/context')).json();
+  const envelope={schemaVersion:1,...session.context,action,payload,resourceId:load.id,expectedVersion:load.version,idempotencyKey:randomUUID(),createdAt:Date.now()};
+  for(const patch of [{tenantId:foreign.tenantId},{actorId:f.outsider.id},{authorityFingerprint:'0'.repeat(64)},{action:'load:deliver'}])assert.equal((await offline({...envelope,...patch})).status,409);
+  const first=await offline(envelope);assert.equal(first.status,200,first.text);const receipt=first.json();
+  assert.equal(receipt.confirmed,true);assert.equal(receipt.idempotencyKey,envelope.idempotencyKey);
+  const duplicate=await offline(envelope);assert.equal(duplicate.status,200);assert.deepEqual(duplicate.json(),receipt);
+  load=receipt.result;lastOffline={envelope,receipt};
+ }
+ load=await success('driver','load:deliver',load,{stopId:load.stops[1].id,proofReference:'ILL-POD'});
  assert.equal(load.status,'delivered');
  if(postgres){await postgres.restartDatabase();app={...app,...await app.restart()};}
  for(const role of ['carrier','fleet','driver']){
@@ -78,10 +93,12 @@ export async function runHostedLogisticsScenario(t,{postgres}={}){
   assert.equal(view.shipments.find(item=>item.loadId===load.id)?.status,'delivered');
   assert.ok(!view.loads.some(item=>item.id===foreign.id));
  }
+ const offlineReplay=await offline(lastOffline.envelope);assert.equal(offlineReplay.status,200);assert.deepEqual(offlineReplay.json(),lastOffline.receipt);
  const replay=await success('carrier','load:create',null,payload,key);assert.equal(replay.id,load.id);
  const carrier=await state('carrier');
  assert.equal(carrier.loads.filter(item=>item.id===load.id).length,1);
  assert.equal(carrier.loads.find(item=>item.id===load.id).status,'delivered');
+ for(const action of ['load:accept','load:pickup','load:transit'])assert.equal(carrier.audit.filter(item=>item.action===action&&item.resourceId===load.id&&item.outcome==='success').length,1);
  assert.equal(carrier.assignments.filter(item=>item.loadId===load.id).length,1);
  assert.ok(carrier.assignments.filter(item=>item.loadId===load.id).every(item=>item.status==='ended'));
  assert.equal(carrier.audit.filter(item=>item.action==='load:create'&&item.resourceId===load.id).length,1);
