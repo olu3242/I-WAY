@@ -1,6 +1,6 @@
 // Cache this static recovery shell only. Never cache APIs, Auth, documents,
 // personalized HTML, customer/load data, request bodies or credentials.
-const CACHE='iway-driver-shell-v3',STATIC=['/assets/InterVariable.woff2','/offline','/assets/ops.css','/assets/driver-offline.mjs','/domain/driver-offline-replay.mjs'];
+const CACHE='iway-driver-shell-v4',STATIC=['/assets/InterVariable.woff2','/offline','/assets/ops.css','/assets/driver-offline.mjs','/domain/driver-offline-replay.mjs'];
 async function installShell(){
  // Authentication expiry can redirect these protected paths to HTML sign-in.
  // Validate the entire response set before storing any recovery asset.
@@ -9,7 +9,9 @@ async function installShell(){
   const type=response.headers.get('content-type')?.split(';')[0].trim().toLowerCase();
   const expected=path==='/offline'?['text/html']:path.endsWith('.css')?['text/css']:path.endsWith('.woff2')?['font/woff2','application/font-woff2']:['text/javascript','application/javascript'];
   if(!response.ok||response.redirected||!expected.includes(type))throw Error('OFFLINE_SHELL_UNAVAILABLE: '+path);
-  return response;
+  // Drain each body before waiting for the other assets; unread streams can
+  // exhaust browser connections during installation. Cache only after all pass.
+  return new Response(await response.arrayBuffer(),{status:response.status,headers:response.headers});
  }));
  const cache=await caches.open(CACHE);
  await Promise.all(STATIC.map((path,index)=>cache.put(path,responses[index])));
