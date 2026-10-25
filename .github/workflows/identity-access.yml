@@ -19,6 +19,15 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
       - run: node scripts/report-mvp-coverage.mjs
+      - name: Retain synthetic browser diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-diagnostics
+          path: |
+            dist/browser-results
+            dist/browser-report
+          retention-days: 7
   disposable-postgres:
     runs-on: ubuntu-24.04
     timeout-minutes: 15

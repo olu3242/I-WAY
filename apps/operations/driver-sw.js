@@ -8,7 +8,7 @@ async function installShell(){
   const response=await fetch(path,{redirect:'error',cache:'no-store'});
   const type=response.headers.get('content-type')?.split(';')[0].trim().toLowerCase();
   const expected=path==='/offline'?['text/html']:path.endsWith('.css')?['text/css']:path.endsWith('.woff2')?['font/woff2','application/font-woff2']:['text/javascript','application/javascript'];
-  if(!response.ok||response.redirected||!expected.includes(type))throw Error('OFFLINE_SHELL_UNAVAILABLE');
+  if(!response.ok||response.redirected||!expected.includes(type))throw Error('OFFLINE_SHELL_UNAVAILABLE: '+path);
   return response;
  }));
  const cache=await caches.open(CACHE);

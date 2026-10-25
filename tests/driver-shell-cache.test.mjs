@@ -20,6 +20,6 @@ test('driver shell caches only validated static responses and disallows redirect
 });
 test('sign-in HTML, redirects and failed assets cannot populate recovery cache',async()=>{
  for(const patch of [{ok:false},{redirected:true},{headers:new Headers({'content-type':'text/html'})},{headers:new Headers()}]){
-  const result=await install(patch);assert.equal(result.error?.message,'OFFLINE_SHELL_UNAVAILABLE');assert.equal(result.opened,0);assert.deepEqual(result.stored,[]);
+  const result=await install(patch);assert.equal(result.error?.message,'OFFLINE_SHELL_UNAVAILABLE: /assets/driver-offline.mjs');assert.equal(result.opened,0);assert.deepEqual(result.stored,[]);
  }
 });
