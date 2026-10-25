@@ -2,13 +2,14 @@
 import {createServer,request as httpRequest} from 'node:http';
 import {uatApplicationFixture} from '../helpers/uat-application-fixture.mjs';
 import {durableUatFixture} from '../helpers/durable-uat-fixture.mjs';
+import {createHostedUatHandler} from '../../server/operations-uat-hosted-handler.mjs';
 import {trackControls} from './control-evidence.mjs';
 
 export async function integratedWorkspace(browser,{role,width,postgres}={}){
  const cleanup=[],f=await uatApplicationFixture({after:fn=>cleanup.push(fn)},{fullPermissions:true});
  f.setLoginRole(role);
  let application=postgres?await durableUatFixture(f,postgres):f.integrated;
- const server=createServer((req,res)=>application.handler(req,res));
+ const server=createServer(createHostedUatHandler({createRuntime:async()=>({expiresAt:Date.now()+300000,handler:(req,res)=>application.handler(req,res),close:async()=>{}})}));
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<1000});
  const page=await context.newPage(),errors=[];

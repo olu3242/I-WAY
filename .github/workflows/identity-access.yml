@@ -65,6 +65,12 @@ jobs:
           IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
           IWAY_LOCAL_OPENSSL: /usr/bin/openssl
         run: node --test tests/local/uat-management-postgres.test.mjs
+      - name: Certify hosted HTTP logistics across an actual PostgreSQL restart
+        env:
+          IWAY_BROWSER_DURABLE_OPT_IN: 'true'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: node --test tests/local/hosted-logistics-postgres.test.mjs
   durable-browser:
     runs-on: ubuntu-24.04
     timeout-minutes: 30

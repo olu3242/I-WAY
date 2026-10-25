@@ -13,11 +13,13 @@ export async function durablePostgresFixture(){
   const sql=(await readFile(new URL('../../db/review-only/b662-operations-engine.sql',import.meta.url),'utf8')).replaceAll('iway_operations_runtime','iway_operations_fixture');
   await pg.admin.query(sql);
   const config=buildLocalOperationsPgConfig({optIn:true,connection:pg.restricted,ca:pg.ssl.ca});
-  const pool=new Pool(config);pool.on('error',()=>{});
-  return {pg,config,pool,close:async()=>{await pool.end();await pg.cleanup();}};
+  const connect=()=>{const pool=new Pool(config);pool.on('error',()=>{});return pool;};
+  let pool=connect();
+  return {pg,config,get pool(){return pool},restartDatabase:async()=>{await pool.end();await pg.restartDatabase();pool=connect();},close:async()=>{await pool.end();await pg.cleanup();}};
  }catch(error){await pg.cleanup();throw error;}
 }
-export async function durableUatFixture(f,{pg,pool,config}){
+export async function durableUatFixture(f,postgres){
+ const {pg,config}=postgres;
  for(const tenant of f.store.db.prepare('SELECT id FROM tenants').all()){
   const state=exportTenantState(f.store,tenant.id);
   await pg.admin.query('INSERT INTO operations_engine_private.realms(tenant_id,governance) VALUES($1,$2)',[tenant.id,tenant.id===f.governance]);
@@ -25,7 +27,9 @@ export async function durableUatFixture(f,{pg,pool,config}){
   await pg.admin.query('INSERT INTO operations_engine_private.state(tenant_id,version,payload) VALUES($1,1,$2::jsonb)',[tenant.id,JSON.stringify(state.payload)]);
   for(const entry of state.audit)await pg.admin.query('INSERT INTO operations_engine_private.audit(tenant_id,sequence,entry) VALUES($1,$2,$3::jsonb)',[tenant.id,entry.sequence,JSON.stringify(entry)]);
  }
- const engine=new DurableOperationsPgEngine({pool,config});
- const make=()=>createDurableUatApplication({...f.dependencies,engine,platformNamespaceId:f.governance});
- return {engine,...await make(),restart:make};
+ const make=async()=>{
+  const engine=new DurableOperationsPgEngine({pool:postgres.pool,config});
+  return {engine,...await createDurableUatApplication({...f.dependencies,engine,platformNamespaceId:f.governance})};
+ };
+ return {...await make(),restart:make};
 }
