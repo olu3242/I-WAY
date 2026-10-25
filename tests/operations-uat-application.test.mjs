@@ -19,6 +19,7 @@ test('OAuth callback creates a trusted native session and opens existing Operati
  for(const role of ['carrier','fleet','driver']){
   const callback=await f.login(role);assert.equal(callback.headers.get('location'),'/app');assert.ok(f.jar.has('iway_ops'));assert.ok(f.jar.has('__Host-iway-session'));
   assert.equal((await f.send('/app')).status,200);const state=await f.send('/api/ops/state');assert.equal(state.status,200);const data=await state.json();assert.equal(data.actor.role,role);assert.ok(data.csrf);
+  assert.equal(data.loads.length,1);assert.equal(data.loads[0].fleetId,f.fleet.id);
   assert.equal((await f.send('/api/ops/login',{method:'POST',body:{username:'synthetic',password:'synthetic'}})).status,403);
   assert.equal((await f.send('/api/ops/identity-login',{method:'POST',body:{identityToken:'synthetic'}})).status,403);
  }

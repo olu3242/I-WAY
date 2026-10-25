@@ -14,3 +14,6 @@ h1,td,.inline-record,.detail-line,.topbar,.card,.stat{overflow-wrap:anywhere}
 nav > a[href$="app"] {
     color: #ffffff;
 }
+
+/* Platform audit records wrap within the same accessible workspace controls. */
+.platform-page{max-width:960px}.platform-page #activity{margin-top:24px;min-width:0}

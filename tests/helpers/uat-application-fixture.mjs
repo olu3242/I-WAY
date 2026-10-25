@@ -10,6 +10,12 @@ export async function uatApplicationFixture(t,{fullPermissions=false,googleAssur
  const native=await fixture(t,createOperationsFeatures()),governance=randomUUID();
  native.store.db.prepare('INSERT INTO tenants VALUES(?,?,?)').run(governance,'Illustrative governance namespace','UTC');
  const platform=addUser(native.store,{tenantId:governance,username:syntheticRoster[0].email,name:'Illustrative Platform',role:'platform',identityOnly:true,permissions:['platform:audit']});
+ const driver=native.store.get('driver',native.driver.id,native.driver.tenantId);native.store.update('driver',driver.id,driver.tenantId,driver.version,{fleetId:native.fleet.id});
+ // Seed matching synthetic vehicle ownership before assignment; never move
+ // hosted equipment or employment through this test-only fixture.
+ const vehicle=native.store.get('vehicle',native.vehicle.id,native.manager.tenantId);
+ native.store.update('vehicle',vehicle.id,vehicle.tenantId,vehicle.version,{fleetId:native.fleet.id,ownerType:'fleet',ownerId:native.fleet.id});
+ // Assign after the explicit synthetic fleet employment is established.
  const assignment=native.assign();
  const actors=[platform,native.manager,native.fleetUser,native.driver];
  const roster=syntheticRoster.map((entry,i)=>({...entry,permissions:fullPermissions?[...actors[i].permissions]:entry.permissions,principalId:actors[i].id,tenantId:i===0?null:actors[i].tenantId,fleetId:i>=2?native.fleet.id:null}));
@@ -17,7 +23,6 @@ export async function uatApplicationFixture(t,{fullPermissions=false,googleAssur
   const actor={...actors[i],identityOnly:true,permissions:[...roster[i].permissions],fleetId:roster[i].fleetId};
   native.store.db.prepare('UPDATE users SET data=?,password=? WHERE id=?').run(JSON.stringify(actor),'federated-only',actor.id);
  }
- const driver=native.store.get('driver',native.driver.id,native.driver.tenantId);native.store.update('driver',driver.id,driver.tenantId,driver.version,{fleetId:native.fleet.id});
  const {publicKey,privateKey}=generateKeyPairSync('ec',{namedCurve:'prime256v1'}),issuer='https://vnoxdinldneeczxibicp.supabase.co/auth/v1';
  const verifier=createIdentityVerifier({issuer,audience:'authenticated',requireMfa:false,keys:[{kid:'synthetic-app',algorithm:'ES256',publicKey}]});
  const encode=x=>Buffer.from(JSON.stringify(x)).toString('base64url');

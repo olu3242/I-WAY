@@ -14,17 +14,17 @@
   ],
   "sourceHashEncoding": "sha256 over UTF-8 with LF line endings",
   "sourceHashes": {
-    "apps/operations/index.html": "ab94d01c7303778a5d51e2c51323f89a792f171510e352639e9fb033221293e1",
+    "apps/operations/index.html": "196cfc7a641a0aa015eb4dee131efe5995f3d83cef06cbe125c05b86555c4ff6",
     "apps/operations/login.html": "b3031b34d639f17f5a9c8cdbeeb05d803c87d047005182d4bd3f72909030b44d",
     "apps/operations/admin.html": "d7f7936f869351ee62b7573846eb8391d993f51fee9188d749d639668c3377c4",
-    "apps/operations/ops.js": "a5249bb84fc4869df3c721125defdcd02c0857c99c6045727f8ee73d3061f3cd",
+    "apps/operations/ops.js": "3c928508d901f1f113c6c744fb1efd564ea194a07ad42f4f6def85500b4c9777",
     "apps/operations/extended.js": "e416af06dae7d52d132e0ecc0d0c27f6e5bf0b758bdfa2efc9d5be67362ff866",
     "apps/operations/intelligence.js": "d8ecf46ea1e3b42a8a7bea4872c576999f2103d98009d65c7d8f1b4cd51d7b1d",
     "apps/operations/admin.js": "37ae785572fd7ef180d3ec6b760c18bfa01205dfc056fefbe5d0ae168ea36669",
     "apps/operations/login.js": "07bebededc2f7ce2df237feb5739b0240c25b794f13585f7d6a90b2dc0d3e3dd",
     "server/operations-app.mjs": "6c547f01de6d358b0e4c7ffd83bd0775cf618dbb23dcd4300a37e0db473c0821",
     "server/operations-uat-http.mjs": "090b8d7d0cc86e9673ca3f7df76eddf82c112b86ce534f65f8dfcda1fe526de8",
-    "server/operations-uat-application.mjs": "990f06853dba413a1c88adf371bf9f3b815f5799574fcd2f6439305aea4331a5",
+    "server/operations-uat-application.mjs": "ac2483e629af2721b2abdf06b109c90df641f5d307b9a1ee7e8ba37500e45b50",
     "server/operations-durable-uat.mjs": "e0f05087a702193ede1111afd67e1a647ae6e4e823ac09c2e4b10fc47d46b1f9"
   },
   "counts": {
@@ -46,7 +46,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 117
+          "line": 118
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -59,7 +59,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 117
+          "line": 118
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -72,15 +72,15 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 44
+          "line": 45
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 76
+          "line": 77
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 92
+          "line": 93
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -288,7 +288,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 122
+          "line": 123
         },
         {
           "path": "apps/operations/extended.js",
@@ -305,7 +305,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 122
+          "line": 123
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -318,7 +318,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 63
+          "line": 64
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -331,7 +331,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 59
+          "line": 60
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -344,7 +344,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 64
+          "line": 65
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -357,7 +357,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 57
+          "line": 58
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -370,7 +370,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 65
+          "line": 66
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -383,7 +383,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 58
+          "line": 59
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -396,7 +396,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 60
+          "line": 61
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -409,7 +409,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 68
+          "line": 69
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -422,11 +422,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 39
+          "line": 40
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 139
+          "line": 140
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -439,7 +439,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 35
+          "line": 36
         },
         {
           "path": "apps/operations/extended.js",
@@ -538,11 +538,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 104
+          "line": 105
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 106
+          "line": 107
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -568,7 +568,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 115
+          "line": 116
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -581,7 +581,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 116
+          "line": 117
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -594,7 +594,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -607,7 +607,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 101
+          "line": 102
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -620,7 +620,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 66
+          "line": 67
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -646,7 +646,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -672,7 +672,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 51
+          "line": 52
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -685,7 +685,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 104
+          "line": 105
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -698,11 +698,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 39
+          "line": 40
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 139
+          "line": 140
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -819,7 +819,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 83
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -832,7 +832,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 83
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -858,7 +858,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 74
+          "line": 75
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -871,7 +871,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 95
+          "line": 96
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1018,7 +1018,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 155
+          "line": 157
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1031,7 +1031,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 161
+          "line": 163
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1044,7 +1044,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 154
+          "line": 156
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1057,7 +1057,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 159
+          "line": 161
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1070,7 +1070,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 157
+          "line": 159
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1096,7 +1096,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 160
+          "line": 162
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1161,7 +1161,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 93
+          "line": 94
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1217,7 +1217,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 74
+          "line": 75
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1230,7 +1230,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 93
+          "line": 94
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1295,7 +1295,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 100
+          "line": 101
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1321,7 +1321,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 49
+          "line": 50
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1334,7 +1334,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 49
+          "line": 50
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1360,7 +1360,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 48
+          "line": 49
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1373,7 +1373,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 94
+          "line": 95
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1399,7 +1399,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 45
+          "line": 46
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1412,11 +1412,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 46
+          "line": 47
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1442,7 +1442,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 49
+          "line": 50
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1455,7 +1455,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 49
+          "line": 50
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1494,7 +1494,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 47
+          "line": 48
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1585,7 +1585,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 72
+          "line": 73
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1641,7 +1641,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 94
+          "line": 95
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1654,7 +1654,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 50
+          "line": 51
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1667,7 +1667,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 51
+          "line": 52
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1680,11 +1680,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 101
+          "line": 102
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1697,7 +1697,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1805,7 +1805,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 83
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1818,7 +1818,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 94
+          "line": 95
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1857,15 +1857,15 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 100
+          "line": 101
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 104
+          "line": 105
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         },
         {
           "path": "apps/operations/extended.js",
@@ -1882,7 +1882,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 83
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1912,11 +1912,11 @@
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 104
+          "line": 105
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         },
         {
           "path": "server/operations-uat-http.mjs",
@@ -1933,7 +1933,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 49
+          "line": 50
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1946,7 +1946,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 49
+          "line": 50
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1972,7 +1972,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 66
+          "line": 67
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1998,7 +1998,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 49
+          "line": 50
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2011,11 +2011,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 83
+          "line": 84
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 95
+          "line": 96
         },
         {
           "path": "apps/operations/intelligence.js",
@@ -2071,7 +2071,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 45
+          "line": 46
         },
         {
           "path": "apps/operations/extended.js",
@@ -2092,7 +2092,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2144,7 +2144,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 83
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2161,11 +2161,11 @@
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 104
+          "line": 105
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2178,7 +2178,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 73
+          "line": 74
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2204,7 +2204,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 48
+          "line": 49
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2217,7 +2217,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 93
+          "line": 94
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2230,7 +2230,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 71
+          "line": 72
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2269,7 +2269,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 45
+          "line": 46
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2308,7 +2308,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 66
+          "line": 67
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2360,7 +2360,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 83
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2373,7 +2373,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2386,7 +2386,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 104
+          "line": 105
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2503,7 +2503,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 83
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2516,7 +2516,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2529,7 +2529,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 100
+          "line": 101
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2555,7 +2555,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 131
+          "line": 132
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2568,7 +2568,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 136
+          "line": 137
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2646,7 +2646,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 134
+          "line": 135
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2711,7 +2711,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 130
+          "line": 131
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2724,7 +2724,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 135
+          "line": 136
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2763,7 +2763,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 133
+          "line": 134
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2919,7 +2919,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 30
+          "line": 31
         },
         {
           "path": "server/operations-app.mjs",
@@ -3119,7 +3119,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 142
+          "line": 143
         },
         {
           "path": "server/operations-app.mjs",
@@ -3161,7 +3161,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 16
+          "line": 17
         },
         {
           "path": "apps/operations/admin.js",
@@ -3186,7 +3186,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 25
+          "line": 26
         },
         {
           "path": "apps/operations/admin.js",
@@ -3395,6 +3395,10 @@
         {
           "path": "server/operations-app.mjs",
           "line": 13
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 18
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3475,15 +3479,15 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 17
+          "line": 18
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 23
+          "line": 24
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 142
+          "line": 143
         },
         {
           "path": "apps/operations/admin.js",
