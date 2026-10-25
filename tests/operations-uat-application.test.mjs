@@ -2,10 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer,request} from 'node:http';
 import {uatApplicationFixture} from './helpers/uat-application-fixture.mjs';
+import {createHostedUatHandler} from '../server/operations-uat-hosted-handler.mjs';
 import {syntheticPassword} from './helpers/uat-fixture.mjs';
 const addCookies=(jar,response)=>{for(const value of response.headers.getSetCookie()){const [name,valuePart]=value.split(';')[0].split('=');if(valuePart)jar.set(name,valuePart);else jar.delete(name);}return jar;};
 async function fixture(t,options){
- const f=await uatApplicationFixture(t,options),server=createServer(f.integrated.handler);await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ const f=await uatApplicationFixture(t,options);
+ const handler=createHostedUatHandler({createRuntime:async()=>({...f.integrated,expiresAt:Date.now()+300000,close:async()=>{}})});
+ const server=createServer(handler);await new Promise(r=>server.listen(0,'127.0.0.1',r));
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
  const jar=new Map(),base='http://127.0.0.1:'+server.address().port;
  const send=async(path,{method='GET',body,csrf,cookies=jar,origin=f.origin,host=new URL(f.origin).host}={})=>{

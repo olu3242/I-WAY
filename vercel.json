@@ -4,7 +4,8 @@
   "outputDirectory": "site/public",
   "git": {
     "deploymentEnabled": {
-      "work/b561-b580-external-uat": false
+      "work/b561-b580-external-uat": false,
+      "work/b721-b740-hosted-integration-20261025": false
     }
   }
 }
