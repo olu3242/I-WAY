@@ -1,4 +1,5 @@
 let state,tab='overview',selected=null,creating=false,loadSearch='',loadFilter='all';
+let journeyLoadId=null,journeyActive=false;
 const view=document.querySelector('#view'),message=document.querySelector('#message');
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const human=value=>String(value??'').replaceAll('_',' ').replaceAll(':',' · ');
@@ -41,9 +42,33 @@ function loadTable(loads=state.loads){
  return '<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable records"><table><thead><tr><th>Load</th><th>Route</th><th>Status</th><th>Pickup</th><th></th></tr></thead><tbody>'+loads.map(load=>'<tr><td><strong>'+esc(load.reference)+'</strong><br><span class="muted">'+esc(load.commodity)+'</span></td><td>'+esc(load.stops[0].location)+' → '+esc(load.stops.at(-1).location)+'</td><td>'+chip(load.lifecycleState??load.status)+'</td><td>'+esc(date(load.stops[0].at))+'</td><td>'+button('Open','open',load.id)+'</td></tr>').join('')+'</tbody></table></div>';
 }
 function loadList(){const needle=loadSearch.trim().toLowerCase(),rows=state.loads.filter(l=>(loadFilter==='all'||(loadFilter==='completed'?['delivered','void'].includes(l.status):!['delivered','void'].includes(l.status)))&&[l.reference,l.commodity,...l.stops.map(s=>s.location)].some(v=>String(v).toLowerCase().includes(needle)));return '<section class="card"><form id="load-search"><div class="grid"><div><label for="loadSearch">Search loads</label><input id="loadSearch" name="loadSearch" type="search" maxlength="120" value="'+esc(loadSearch)+'"></div>'+select('loadFilter','Load list',[['all','All loads'],['active','Active loads'],['completed','Completed and voided']],loadFilter)+'</div><div class="actions"><button>Search loads</button></div></form><p>'+rows.length+' matching loads</p>'+loadTable(rows)+'</section>';}
+function supportsFirstLoad(){return ['carrier','dispatcher','driver'].includes(state.actor.role);}
+function firstLoadProgress(load){
+ const statuses=['draft','validated','assigned','accepted','picked_up','in_transit','delivered'];
+ const step=statuses.indexOf(load?.status);
+ const accepted=step>=3&&Boolean(load?.driverId)&&Boolean(load?.vehicleId);
+ return {step,accepted};
+}
+function firstLoadPanel(){
+ const load=state.loads.find(l=>l.id===journeyLoadId),{step,accepted}=firstLoadProgress(load);
+ const labels=['Workspace access verified','Load created','Load validated','Driver and vehicle assigned','Driver accepted'];
+ const complete=[true,step>=0,step>=1,step>=2,accepted];
+ const guidance=!load?(state.actor.role==='driver'?'Choose an assigned load to begin.':'Choose an existing load or create one to begin.'):load.status==='void'?'This load is voided. Choose another load to continue.':step===0?'Review the load details, then validate the load.':step===1?'Choose an eligible driver and vehicle and record your assignment reason.':step===2?(state.actor.role==='driver'?'Review the job, then accept the assignment.':'Ask the assigned driver to sign in and accept. Check progress after their response.') :accepted?'Driver acceptance is confirmed.':'Review the current load status before continuing.';
+ return '<section class="card first-load-guide" aria-labelledby="first-load-title"><p class="eyebrow">GUIDED DISPATCH</p><h2 id="first-load-title">'+(accepted?'Load assigned. Driver accepted.':'Your first accepted load')+'</h2><p>'+esc(guidance)+'</p>'+
+ '<ol class="journey-steps">'+labels.map((label,i)=>'<li'+(!complete[i]&&(i===0||complete[i-1])?' aria-current="step"':'')+'><span class="chip '+(complete[i]?'done':'warn')+'">'+(complete[i]?'Complete':'Pending')+'</span> '+esc(label)+'</li>').join('')+'</ol>'+
+ (load?'<p><strong>'+esc(load.reference)+'</strong> · '+chip(load.lifecycleState??load.status)+'</p>':'')+
+ '<p class="muted small">Progress updates when you select Check progress. Queued actions still need confirmation. Complete account setup and carrier approvals before dispatch.</p>'+
+ '<div class="actions">'+button('Check progress','journey-refresh')+(load?button('Open guided load','journey-open',load.id):'')+(can('load:create')?button('Create guided load','journey-create'):'')+'</div></section>';
+}
+function firstLoadView(){
+ return pageHead('First load guide','Follow one load from creation to driver acceptance.')+firstLoadPanel()+
+ '<form id="journey-select" class="card"><h2>Choose a load</h2>'+select('journeyLoad','Visible load',[['','Choose a load'],...state.loads.map(l=>[l.id,l.reference+' · '+human(l.status)])],journeyLoadId??'')+'<div class="actions"><button>Follow this load</button></div></form>'+
+ '<section class="card"><h2>Your daily workflow</h2><p>Use Loads to find a job, open its assignment, and review its recorded milestones. Driver acceptance is the first outcome; pickup and delivery come next.</p></section>';
+}
 function overview(){
  const active=state.loads.filter(l=>!['delivered','void'].includes(l.status));
  return pageHead(state.actor.role==='driver'?'Your next move.':'A clear view of today.','Your loads, people and next actions in '+state.tenant.timezone+'.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+
+ (supportsFirstLoad()?'<section class="card"><h2>Get your first load moving</h2><p>Follow a load through validation, assignment and driver acceptance.</p>'+button('Start guided dispatch','journey-start')+'</section>':'')+
  '<section class="stats" aria-label="Operational totals">'+[['Active loads',active.length],['Awaiting assignment',active.filter(l=>['draft','validated'].includes(l.status)).length],['Open exceptions',state.exceptions.filter(e=>e.status==='open').length],['Delivered',state.loads.filter(l=>l.status==='delivered').length]].map(([label,n])=>'<article class="stat"><p>'+label+'</p><strong>'+n+'</strong></article>').join('')+'</section><section class="card"><h2>'+ (state.actor.role==='driver'?'Your assignments':'Active operations')+'</h2>'+loadTable(active)+'</section>';
 }
 function createLoad(){
@@ -136,6 +161,7 @@ function render(){
  document.querySelector('#tenant').textContent=state.tenant.name;
  document.querySelector('#identity').textContent=state.actor.name+' · '+human(state.actor.role);
  const tabs=[['overview','Overview'],['loads',state.actor.role==='driver'?'My assignments':'Loads']];
+ if(supportsFirstLoad())tabs.push(['first-load','First load guide']);
  if(can('asset:view'))tabs.push(['assets','People & equipment']);
  if(typeof extendedTabs==='function')tabs.push(...extendedTabs());
  if(state.capabilities.includes('workflow:advance')&&(can('workflow:run')||can('approval:decide')))tabs.push(['workflows','Review & recovery']);
@@ -144,7 +170,8 @@ function render(){
  if(can('audit:view'))tabs.push(['audit','Activity']);
  document.querySelector('#nav').innerHTML=tabs.map(([id,label])=>'<button data-tab="'+id+'" aria-current="'+(tab===id?'page':'false')+'">'+label+'</button>').join('');
  const extension=typeof extendedView==='function'?extendedView(tab):null;
- view.innerHTML=extension??(creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+loadList():tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview());
+ view.innerHTML=tab==='first-load'&&supportsFirstLoad()?firstLoadView():extension??(creating?createLoad():tab==='loads'&&selected?loadDetail():tab==='loads'?pageHead('Loads','Manage each move from draft to delivery.',can('load:create')?'<button class="primary" data-action="new-load">Create load</button>':'')+loadList():tab==='assets'?assets():tab==='people'?people():tab==='workflows'?workflows():tab==='finance'?finance():tab==='audit'?audit():overview());
+ if(journeyActive&&supportsFirstLoad()&&tab==='loads'&&!creating&&selected===journeyLoadId)view.querySelector('.page-head')?.insertAdjacentHTML('afterend',firstLoadPanel());
  for(const extra of [...(view.querySelectorAll?.('button.primary')??[])].slice(1))extra.classList.replace('primary','secondary');
 }
 document.querySelector('#nav').addEventListener('click',event=>{const btn=event.target.closest('[data-tab]');if(btn){tab=btn.dataset.tab;selected=null;creating=false;showView();}});
@@ -154,6 +181,15 @@ view.addEventListener('click',async event=>{
  if(typeof handleExtendedClick==='function'&&await handleExtendedClick(event))return;
  const btn=event.target.closest('[data-action]');if(!btn)return;
  const action=btn.dataset.action,id=btn.dataset.id;
+ if(action.startsWith('journey-')){
+  if(!supportsFirstLoad())return;
+  if(action==='journey-refresh'){btn.disabled=true;try{await refresh();alertMessage('Progress updated.');}catch(error){alertMessage(error.message,true);}finally{btn.disabled=false;}return;}
+  journeyActive=true;
+  if(action==='journey-start'){tab='first-load';creating=false;selected=null;}
+  if(action==='journey-open'){tab='loads';selected=journeyLoadId;creating=false;}
+  if(action==='journey-create'){tab='loads';creating=true;selected=null;}
+  return showView();
+ }
  if(action==='open'){tab='loads';selected=id;creating=false;return showView();}
  if(action==='new-load'){tab='loads';creating=true;return showView();}
  if(action==='back'){selected=null;creating=false;return showView();}
@@ -177,8 +213,9 @@ view.addEventListener('submit',async event=>{
  event.preventDefault();const form=event.target,button=form.querySelector('button[type=submit],button');button.disabled=true;
  const values=Object.fromEntries(new FormData(form)),load=state.loads.find(l=>l.id===selected);
  try{
+  if(form.id==='journey-select'){if(!supportsFirstLoad()||!state.loads.some(l=>l.id===values.journeyLoad))throw Error('Choose a visible load.');journeyLoadId=values.journeyLoad;journeyActive=true;render();alertMessage('Following the selected load.');return;}
   if(form.id==='load-search'){loadSearch=values.loadSearch;loadFilter=values.loadFilter;render();alertMessage('Load list filtered.');return;}
-  if(form.id==='create-load'){const payload={reference:values.reference,customer:values.customer,customerId:values.customerId||null,dispatcherId:values.dispatcherId,commodity:values.commodity,weightLb:Number(values.weightLb),rateCents:Number(values.rateCents),charges:values.chargeLabel.trim()?[{label:values.chargeLabel,amountCents:Number(values.chargeCents)}]:[],factored:values.factored==='yes',factorName:values.factorName,stops:[{type:'pickup',location:values.pickup,at:new Date(values.pickupAt+'Z').toISOString()},{type:'delivery',location:values.delivery,at:new Date(values.deliveryAt+'Z').toISOString()}]};const record=await command('load:create',null,payload);creating=false;selected=record.id;tab='loads';render();}
+  if(form.id==='create-load'){const payload={reference:values.reference,customer:values.customer,customerId:values.customerId||null,dispatcherId:values.dispatcherId,commodity:values.commodity,weightLb:Number(values.weightLb),rateCents:Number(values.rateCents),charges:values.chargeLabel.trim()?[{label:values.chargeLabel,amountCents:Number(values.chargeCents)}]:[],factored:values.factored==='yes',factorName:values.factorName,stops:[{type:'pickup',location:values.pickup,at:new Date(values.pickupAt+'Z').toISOString()},{type:'delivery',location:values.delivery,at:new Date(values.deliveryAt+'Z').toISOString()}]};const record=await command('load:create',null,payload);creating=false;selected=record.id;if(journeyActive)journeyLoadId=record.id;tab='loads';render();}
   if(form.id==='assign')await command('load:assign',load,{driverId:values.driverId,vehicleId:values.vehicleId,reason:values.assignmentReason});
   if(form.id==='deliver')await command('load:deliver',load,{stopId:load.stops.find(s=>!s.completedAt).id,proofReference:values.proofReference});
   if(form.id==='vehicle')await command('vehicle:create',null,{name:values.name,capacityLb:Number(values.capacityLb),fleetId:values.fleetId||null});

@@ -22,3 +22,6 @@ nav > a[href$="app"] {
 .offline-queue ul{list-style:none;padding:0}.offline-queue li{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:12px}.offline-queue p{overflow-wrap:anywhere}
 
 fieldset{min-inline-size:0;border:1px solid #DCE7F3;border-radius:12px;padding:16px}legend{font-weight:700;color:#092448}.deduction-row{margin-bottom:16px}.service-entry{padding:16px 0;border-bottom:1px solid #DCE7F3}[data-persona=driver] .actions .primary{min-height:52px}
+
+/* The guided path reports confirmed state without replacing operational controls. */
+.journey-steps{padding:0;list-style:none;display:grid;gap:12px}.journey-steps li{display:flex;align-items:center;gap:12px}.journey-steps .chip{min-width:78px;text-align:center}.first-load-guide{border-top:4px solid #1261F3}

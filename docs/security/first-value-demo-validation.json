@@ -1,0 +1,268 @@
+{
+  "scope": "Local synthetic validation only; not hosted certification",
+  "baseCommit": "a2090b9d8ad70329eb2412a1af4befbac241b918",
+  "branch": "work/first-value-demo-20261025",
+  "node": "24.22.1",
+  "verify": {
+    "command": "npm run verify",
+    "result": "PASS",
+    "repositoryTests": 910,
+    "failed": 0,
+    "sourceCheck": "PASS",
+    "publicContentScan": "PASS",
+    "siteContract": "PASS"
+  },
+  "browser": {
+    "status": "passed",
+    "counts": {
+      "total": 30,
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0
+    },
+    "sourceUnchanged": true,
+    "backend": "disposable SQLite",
+    "startedAt": "2026-10-25T21:02:15.163Z",
+    "completedAt": "2026-10-25T21:03:24.677Z",
+    "tests": [
+      {
+        "title": "guided creation to driver acceptance at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 4040,
+        "retry": 0
+      },
+      {
+        "title": "guided creation to driver acceptance at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 4009,
+        "retry": 0
+      },
+      {
+        "title": "guide scopes loads, rejects empty selection, and reports refresh failure",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 777,
+        "retry": 0
+      },
+      {
+        "title": "invitation setup through first driver acceptance preserves MFA",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2742,
+        "retry": 0
+      },
+      {
+        "title": "unconfirmed acceptance does not complete the first-value guide",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 920,
+        "retry": 0
+      },
+      {
+        "title": "carrier has an accessible role-scoped workspace at 1440px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1812,
+        "retry": 0
+      },
+      {
+        "title": "dispatcher has an accessible role-scoped workspace at 1440px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1633,
+        "retry": 0
+      },
+      {
+        "title": "driver has an accessible role-scoped workspace at 390px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1591,
+        "retry": 0
+      },
+      {
+        "title": "fleet has an accessible role-scoped workspace at 390px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1428,
+        "retry": 0
+      },
+      {
+        "title": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 7941,
+        "retry": 0
+      },
+      {
+        "title": "browser rejects unauthorized sessions and preserves tenant isolation",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 910,
+        "retry": 0
+      },
+      {
+        "title": "customer portal exposes only its latest reviewed BOL and protects revision history",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2884,
+        "retry": 0
+      },
+      {
+        "title": "Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 9277,
+        "retry": 0
+      },
+      {
+        "title": "dispatcher can mark ready and cancel an assignment without duplicate active claims",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2673,
+        "retry": 0
+      },
+      {
+        "title": "integrated google platform application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1488,
+        "retry": 0
+      },
+      {
+        "title": "integrated google carrier application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3167,
+        "retry": 0
+      },
+      {
+        "title": "integrated google fleet application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1445,
+        "retry": 0
+      },
+      {
+        "title": "integrated google driver application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1378,
+        "retry": 0
+      },
+      {
+        "title": "integrated google platform application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1026,
+        "retry": 0
+      },
+      {
+        "title": "integrated google carrier application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2138,
+        "retry": 0
+      },
+      {
+        "title": "integrated google fleet application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1386,
+        "retry": 0
+      },
+      {
+        "title": "integrated google driver application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1278,
+        "retry": 0
+      },
+      {
+        "title": "integrated password platform application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1181,
+        "retry": 0
+      },
+      {
+        "title": "integrated password carrier application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2366,
+        "retry": 0
+      },
+      {
+        "title": "integrated password fleet application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1325,
+        "retry": 0
+      },
+      {
+        "title": "integrated password driver application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1456,
+        "retry": 0
+      },
+      {
+        "title": "integrated password platform application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1236,
+        "retry": 0
+      },
+      {
+        "title": "integrated password carrier application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2263,
+        "retry": 0
+      },
+      {
+        "title": "integrated password fleet application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1429,
+        "retry": 0
+      },
+      {
+        "title": "integrated password driver application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1409,
+        "retry": 0
+      }
+    ]
+  },
+  "accessibility": {
+    "scans": 40,
+    "violations": 0,
+    "manualReviewRequired": true
+  },
+  "browserRuntime": {
+    "playwright": "1.64.0",
+    "chromium": "153.0.8010.0",
+    "source": "temporary @sparticuz/chromium npm package; standard CDN download unavailable",
+    "flags": [
+      "--no-sandbox",
+      "--no-zygote",
+      "--disable-dev-shm-usage",
+      "--disable-gpu"
+    ],
+    "productDependenciesChanged": false
+  },
+  "sourceHashes": {
+    "apps/operations/ops.js": "6667cc18c46f81bbed2438887ba7b41076fc589e3a7bd68598e0c0d826bbd5a6",
+    "apps/operations/ops.css": "2b3d8ba386120db3de51babe4332f3662ed4a9f29c25119a9d2d21f90ff1d9ed",
+    "tests/browser/first-value.spec.mjs": "6d8039bae380d7669ba50ea99f9d4bca6367fc17aaa000adc900d9659fe59301"
+  },
+  "limitations": [
+    "No production or staging deployment",
+    "No hosted PostgreSQL or real OAuth/invitation delivery executed",
+    "No published video, customer reviews or human 60-second benchmark",
+    "Public early-access endpoint remains unconfigured; recording CTA is comment-based"
+  ]
+}
