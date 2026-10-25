@@ -41,3 +41,10 @@ Use an on-screen “Illustrative demo” caption throughout the synthetic scenar
 Run `npm run verify` and `npx playwright test tests/browser/first-value.spec.mjs` for targeted validation. For the complete discovered-control gate, run `npm run test:browser` followed by `node scripts/report-mvp-coverage.mjs`. The guide tests attach verified control outcomes only after assertions confirm the corresponding visible result and, for acceptance, the persisted load state. A passing targeted suite alone does not establish complete control coverage. The new browser scenarios cover creation through driver acceptance at 390 and 1440 pixels, revocation of acceptance on unassignment, tenant-scoped selection, failed refresh, and invitation setup with carrier MFA through driver acceptance. Browser timings are automated fixture timings, not human onboarding benchmarks. Tests use disposable SQLite and synthetic provider behavior; hosted PostgreSQL/OAuth and actual invitation delivery require separate execution.
 
 Automatic deployment is disabled for `work/first-value-demo-20261025`. Public site files, production services and existing authorization rules are unchanged.
+
+
+## Durable first-value regression
+
+`tests/browser/first-value-persistence.spec.mjs` creates and assigns a new illustrative load through the integrated application, signs in as its driver, accepts it, reloads the application, and checks acceptance from both driver and carrier accounts. It runs at 390 and 1440 pixels.
+
+The ordinary browser run uses disposable SQLite and labels that scope explicitly. The `durable-browser` CI job also runs this file with `IWAY_BROWSER_DURABLE_OPT_IN=true`, using the existing disposable PostgreSQL fixture. That variant restarts the actual fixture database and recreates the application before checking the unchanged accepted load version. No live database, OAuth provider or production deployment is involved. Review the CI result for the exact commit before calling this restart coverage passed.
