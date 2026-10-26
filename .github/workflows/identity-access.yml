@@ -62,6 +62,12 @@ jobs:
           IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
           IWAY_LOCAL_OPENSSL: /usr/bin/openssl
         run: node --test tests/local/uat-postgres.test.mjs
+      - name: Verify broker installer and managed role membership boundaries
+        env:
+          IWAY_B631_LOCAL_OPT_IN: 'true'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: node --test tests/b631-broker-remediation.postgres.mjs
       - name: Certify durable Operations transactions and restart recovery
         env:
           IWAY_DURABLE_LOCAL_OPT_IN: 'true'

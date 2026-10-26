@@ -12,6 +12,30 @@ test('B631 review-only broker remediation on disposable PostgreSQL',{timeout:120
  const admin=await fixture.admin.connect();let runtime;
  const apply=async()=>{try{await admin.query(remediation)}catch(e){await admin.query('ROLLBACK');throw e;}};
  try{
+ await t.test('managed bootstrap membership exception rejects every unsafe variant',async()=>{
+  // Execute the installer's actual predicate against synthetic catalog rows.
+  const predicate=remediation.match(/EXISTS\(SELECT 1 FROM pg_auth_members[^\n]+?\)\)\)/)[0];
+  const cases=[
+   ['managed bootstrap',false,'postgres',true,10,true,true,false,false,false],
+   ['outbound membership',true,'postgres',true,10,true,true,false,false,true],
+   ['other administrator',false,'other',true,10,true,true,false,false,true],
+   ['administrator cannot manage roles',false,'postgres',false,10,true,true,false,false,true],
+   ['other grantor',false,'postgres',true,11,true,true,false,false,true],
+   ['grantor not superuser',false,'postgres',true,10,false,true,false,false,true],
+   ['missing admin option',false,'postgres',true,10,true,false,false,false,true],
+   ['inherit option',false,'postgres',true,10,true,true,true,false,true],
+   ['set option',false,'postgres',true,10,true,true,false,true,true]
+  ];
+  for(const [name,outbound,administrator,canManage,grantor,superuser,adminOption,inheritOption,setOption,unsafe] of cases){
+   const result=await admin.query(`WITH pg_roles(oid,rolname,rolcreaterole,rolsuper) AS (
+    VALUES (100::oid,$1::text,$2::boolean,false),($3::oid,'grantor',false,$4::boolean),(200::oid,'runtime',false,false)
+   ), pg_auth_members(member,roleid,grantor,admin_option,inherit_option,set_option) AS (
+    VALUES ($5::oid,200::oid,$3::oid,$6::boolean,$7::boolean,$8::boolean)
+   ) SELECT ${predicate} AS unsafe FROM (VALUES(200::oid)) r(oid)`,
+   [administrator,canManage,grantor,superuser,outbound?200:100,adminOption,inheritOption,setOption]);
+   assert.equal(result.rows[0].unsafe,unsafe,name);
+  }
+ });
  await t.test('missing role fails closed and creates no schema',async()=>{
   await assert.rejects(apply(),/B631_BROKER_ROLE_MISSING/);
   assert.equal((await admin.query("SELECT to_regnamespace('iway_uat_private') AS schema")).rows[0].schema,null);

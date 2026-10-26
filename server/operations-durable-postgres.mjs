@@ -70,7 +70,7 @@ export class DurableOperationsPgEngine{
  }
  async health(){
   await this.identity.health();
-  const r=await this.pool.query("SELECT session_user,current_user,r.rolinherit,EXISTS(SELECT 1 FROM pg_auth_members m WHERE m.member=r.oid OR m.roleid=r.oid) AS membership,EXISTS(SELECT 1 FROM pg_namespace n WHERE n.nspname='operations_engine_private' AND n.nspowner=r.oid) OR EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_engine_private' AND c.relowner=r.oid) AS owner FROM pg_roles r WHERE r.rolname=current_user");
+  const r=await this.pool.query("SELECT session_user,current_user,r.rolinherit,EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles administrator ON administrator.oid=m.member JOIN pg_roles grantor ON grantor.oid=m.grantor WHERE m.member=r.oid OR (m.roleid=r.oid AND NOT (administrator.rolname='postgres' AND administrator.rolcreaterole AND grantor.oid=10 AND grantor.rolsuper AND m.admin_option AND NOT m.inherit_option AND NOT m.set_option))) AS membership,EXISTS(SELECT 1 FROM pg_namespace n WHERE n.nspname='operations_engine_private' AND n.nspowner=r.oid) OR EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_engine_private' AND c.relowner=r.oid) AS owner FROM pg_roles r WHERE r.rolname=current_user");
   const row=r.rows[0];if(!row||row.session_user!==this.config.expected.loginRole||row.current_user!==row.session_user||row.rolinherit||row.membership||row.owner)deny('RESTRICTED_ROLE');
   const tables=await this.pool.query("SELECT relname,relrowsecurity,relforcerowsecurity FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_engine_private' AND c.relkind='r'");
   if(tables.rows.length!==5||tables.rows.some(x=>!x.relrowsecurity||!x.relforcerowsecurity))deny('SCHEMA');
@@ -87,7 +87,7 @@ export class DurableOperationsPgEngine{
    client=await this.pool.connect();
    client.on('error',connectionFailed);
    await verifyOperationsPgClient(client,this.config);
-   const flags=(await client.query("SELECT session_user,current_user,rolinherit,EXISTS(SELECT 1 FROM pg_auth_members m WHERE m.member=r.oid OR m.roleid=r.oid) AS membership FROM pg_roles r WHERE rolname=current_user")).rows[0];
+   const flags=(await client.query("SELECT session_user,current_user,rolinherit,EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles administrator ON administrator.oid=m.member JOIN pg_roles grantor ON grantor.oid=m.grantor WHERE m.member=r.oid OR (m.roleid=r.oid AND NOT (administrator.rolname='postgres' AND administrator.rolcreaterole AND grantor.oid=10 AND grantor.rolsuper AND m.admin_option AND NOT m.inherit_option AND NOT m.set_option))) AS membership FROM pg_roles r WHERE rolname=current_user")).rows[0];
    if(!flags||flags.session_user!==this.config.expected.loginRole||flags.current_user!==flags.session_user||flags.rolinherit||flags.membership)deny('RESTRICTED_ROLE');
    await client.query('BEGIN');started=true;
    await client.query("SELECT set_config('iway.tenant_id',$1,true),set_config('iway.actor_id',$2,true),set_config('statement_timeout','15000',true),set_config('idle_in_transaction_session_timeout','15000',true),set_config('lock_timeout','5000',true)",[scope.tenantId,scope.actorId]);
