@@ -66,7 +66,7 @@ export class DurableOperationsPgEngine{
    if(['fleet','driver'].includes(entry.role)&&!store.get('fleet',entry.fleetId,entry.tenantId).active)return false;
    if(entry.role==='driver'){const d=store.get('driver',a.id,entry.tenantId);if(!d.active||d.fleetId!==entry.fleetId)return false;}
    return true;
-  });}catch{return false;}
+  },{readOnly:true});}catch{return false;}
  }
  async health(){
   await this.identity.health();
@@ -76,7 +76,7 @@ export class DurableOperationsPgEngine{
   if(tables.rows.length!==5||tables.rows.some(x=>!x.relrowsecurity||!x.relforcerowsecurity))deny('SCHEMA');
   return {storage:'postgresql',identityVerified:true,restrictedRole:true,rls:true,scope:'tenant'};
  }
- async transaction(scope,work){
+ async transaction(scope,work,{readOnly=false}={}){
   if(!uuid(scope?.tenantId)||!uuid(scope?.actorId)||typeof work!=='function')deny('CONTEXT');
   const current=this.context.getStore();
   if(current){if(current.scope.tenantId!==scope.tenantId||current.scope.actorId!==scope.actorId)deny('CONTEXT');return work(current.value);}
@@ -89,10 +89,10 @@ export class DurableOperationsPgEngine{
    await verifyOperationsPgClient(client,this.config);
    const flags=(await client.query("SELECT session_user,current_user,rolinherit,EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles administrator ON administrator.oid=m.member JOIN pg_roles grantor ON grantor.oid=m.grantor WHERE m.member=r.oid OR (m.roleid=r.oid AND NOT (administrator.rolname='postgres' AND administrator.rolcreaterole AND grantor.oid=10 AND grantor.rolsuper AND m.admin_option AND NOT m.inherit_option AND NOT m.set_option))) AS membership FROM pg_roles r WHERE rolname=current_user")).rows[0];
    if(!flags||flags.session_user!==this.config.expected.loginRole||flags.current_user!==flags.session_user||flags.rolinherit||flags.membership)deny('RESTRICTED_ROLE');
-   await client.query('BEGIN');started=true;
+   await client.query(readOnly?'BEGIN READ ONLY':'BEGIN');started=true;
    await client.query("SELECT set_config('iway.tenant_id',$1,true),set_config('iway.actor_id',$2,true),set_config('statement_timeout','15000',true),set_config('idle_in_transaction_session_timeout','15000',true),set_config('lock_timeout','5000',true)",[scope.tenantId,scope.actorId]);
-   await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))',[scope.tenantId]);
-   const state=await client.query('SELECT version,payload FROM operations_engine_private.state WHERE tenant_id=$1 FOR UPDATE',[scope.tenantId]);
+   if(!readOnly)await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))',[scope.tenantId]);
+   const state=await client.query('SELECT version,payload FROM operations_engine_private.state WHERE tenant_id=$1'+(readOnly?'':' FOR UPDATE'),[scope.tenantId]);
    if(state.rowCount!==1)deny('AUTHORIZATION');
    if(state.rows[0].payload?.tenantId!==scope.tenantId)deny('OWNERSHIP');
    const journal=await client.query('SELECT entry FROM operations_engine_private.audit WHERE tenant_id=$1 ORDER BY sequence',[scope.tenantId]);
@@ -105,6 +105,7 @@ export class DurableOperationsPgEngine{
    if(next.audit.length<before.length||before.some((entry,i)=>stable(entry)!==stable(next.audit[i])))deny('AUDIT_INTEGRITY');
    const oldAdmin=state.rows[0].payload.tables.organization_admin_audit??[],newAdmin=next.payload.tables.organization_admin_audit??[];
    if(newAdmin.length<oldAdmin.length||oldAdmin.some((entry,i)=>stable(entry)!==stable(newAdmin[i])))deny('AUDIT_INTEGRITY');
+   if(readOnly){await client.query('COMMIT');started=false;return result;}
    for(const entry of next.audit.slice(before.length))await client.query('INSERT INTO operations_engine_private.audit(tenant_id,sequence,entry) VALUES($1,$2,$3::jsonb)',[scope.tenantId,entry.sequence,JSON.stringify(entry)]);
    if(Buffer.byteLength(JSON.stringify(next.payload))>33554432)deny('STATE_LIMIT');
    const changed=await client.query('UPDATE operations_engine_private.state SET payload=$1::jsonb,version=version+1 WHERE tenant_id=$2 AND version=$3',[JSON.stringify(next.payload),scope.tenantId,state.rows[0].version]);

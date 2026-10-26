@@ -42,6 +42,13 @@ test('B662-B676 durable domain engine on restricted disposable PostgreSQL',{time
    const tables=(await pg.admin.query("SELECT relrowsecurity,relforcerowsecurity FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_engine_private' AND c.relkind='r'")).rows;
    assert.equal(tables.length,5);assert.ok(tables.every(row=>row.relrowsecurity&&row.relforcerowsecurity));
   });
+  await t.test('read-only relationship inspection leaves state version and payload unchanged',async()=>{
+   const before=await persisted();
+   const actor=await engine.transaction(a,({store})=>store.principal(a.actorId),{readOnly:true});
+   assert.equal(actor.id,a.actorId);assert.deepEqual(await persisted(),before);
+   await assert.rejects(engine.transaction({...a,actorId:b.actorId},()=>true,{readOnly:true}));
+   assert.deepEqual(await persisted(),before);
+  });
   await t.test('RLS denies absent context, forged actor, cross-tenant reads and writes',async()=>{
    for(const s of [null,{tenantId:a.tenantId,actorId:b.actorId}])await raw(s,async client=>{
     for(const table of ['state','audit','principals'])assert.equal((await client.query('SELECT * FROM operations_engine_private.'+table)).rowCount,0);

@@ -10,12 +10,14 @@ export function validateUatRoster(roster){
  if(!Array.isArray(roster)||roster.length!==4)throw Error('UAT_FOUR_APPROVED_BINDINGS_REQUIRED');
  for(const entry of roster){
   if(!uuid(entry.userId)||!uuid(entry.principalId)||!/^\S+@\S+\.\S+$/.test(entry.email)||entry.email!==email(entry.email)||
-   !['platform','carrier','fleet','driver'].includes(entry.role)||typeof entry.googleSubject!=='string'||!entry.googleSubject||
+   !['platform','carrier','fleet','driver'].includes(entry.role)||(entry.googleSubject!==null&&(typeof entry.googleSubject!=='string'||!entry.googleSubject.trim()))||
    !Array.isArray(entry.permissions)||entry.permissions.some(p=>!rolePermissions[entry.role].includes(p))||new Set(entry.permissions).size!==entry.permissions.length||
    (entry.role==='platform'?(entry.tenantId!==null||entry.fleetId!==null):!uuid(entry.tenantId))||
    (['fleet','driver'].includes(entry.role)&&!uuid(entry.fleetId)))throw Error('UAT_ROSTER_BINDING_INCOMPLETE');
  }
- for(const key of ['userId','email','googleSubject','principalId','role'])if(new Set(roster.map(e=>e[key])).size!==4)throw Error('UAT_ROSTER_BINDING_NOT_UNIQUE');
+ for(const key of ['userId','email','principalId','role'])if(new Set(roster.map(e=>e[key])).size!==4)throw Error('UAT_ROSTER_BINDING_NOT_UNIQUE');
+ const googleSubjects=roster.map(e=>e.googleSubject).filter(v=>v!==null);
+ if(new Set(googleSubjects).size!==googleSubjects.length)throw Error('UAT_ROSTER_BINDING_NOT_UNIQUE');
  return Object.freeze(roster.map(e=>Object.freeze({...e,permissions:Object.freeze([...e.permissions])})));
 }
 export function createUatWorkflow({roster,store,provider,sessions,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer,deliver,clock=()=>Date.now()}={}){
@@ -35,7 +37,7 @@ export function createUatWorkflow({roster,store,provider,sessions,lookupMembersh
   // inspect must verify JWT signature/issuer/audience/expiry AND fetch current provider user.
   const identity=await provider.inspect(accessToken),entry=byId.get(identity?.id);
   if(!entry||expectedId&&entry.userId!==expectedId||identity.emailConfirmed!==true||email(identity.email)!==entry.email||identity.anonymous||
-    method==='google'&&!identity.googleSubjects?.includes(entry.googleSubject))denied();
+    method==='google'&&(!entry.googleSubject||!identity.googleSubjects?.includes(entry.googleSubject)))denied();
   const state=await membership(entry);
   if(method==='password'&&!state.ready)denied();
   return {entry,state,identity};
