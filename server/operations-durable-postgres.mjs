@@ -56,9 +56,14 @@ export function materializeTenantState(payload,audit=[]){
  }catch(error){store.close();throw error;}
 }
 export class DurableOperationsPgEngine{
- constructor({pool,config,operationsOptions={}}={}){this.pool=pool;this.config=config;this.options=operationsOptions;this.identity=new AsyncOperationsPgStore(pool,{config});this.context=new AsyncLocalStorage();}
+ constructor({pool,config,operationsOptions={},verificationPool}={}){this.pool=pool;this.config=config;this.options=operationsOptions;this.identity=new AsyncOperationsPgStore(pool,{config});this.context=new AsyncLocalStorage();this.verificationEngine=verificationPool?new DurableOperationsPgEngine({pool:verificationPool,config,operationsOptions}):null;}
  async validatePlatformNamespace(id){if(!uuid(id))return false;await this.identity.health();const r=await this.pool.query('SELECT tenant_id FROM operations_engine_private.realms WHERE tenant_id=$1 AND governance AND active',[id]);return r.rowCount===1;}
  async verifyUatEntry(entry,platformNamespaceId){
+  // Owner requests can execute under a different principal/realm from the login.
+  // Revalidate that login through an isolated READ ONLY connection. Never change
+  // the active write transaction's RLS context or wait for its occupied pool.
+  const current=this.context.getStore(),tenantId=entry.role==='platform'?platformNamespaceId:entry.tenantId;
+  if(current&&(current.scope.tenantId!==tenantId||current.scope.actorId!==entry.principalId))return this.verificationEngine?this.verificationEngine.verifyUatEntry(entry,platformNamespaceId):false;
   try{return await this.transaction({tenantId:entry.role==='platform'?platformNamespaceId:entry.tenantId,actorId:entry.principalId},({store})=>{
    const a=store.principal(entry.principalId);
    if(!a?.active||a.identityOnly!==true||entry.ownerUserId&&a.ownerUserId!==entry.ownerUserId||a.role!==entry.role||JSON.stringify([...a.permissions].sort())!==JSON.stringify([...entry.permissions].sort())||(a.fleetId??null)!==(entry.fleetId??null))return false;

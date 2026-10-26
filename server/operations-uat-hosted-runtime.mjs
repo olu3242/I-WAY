@@ -13,10 +13,12 @@ export function resolveHostedOperationsConfig(env){
 export async function createHostedUatRuntime({env=process.env,PoolClass,fetchImpl=fetch,clock=()=>Date.now()}={}){
  const config=resolveHostedOperationsConfig(env),Pool=PoolClass??(await import('pg')).Pool;
  const pool=new Pool(config);pool.on('error',()=>{});
- let candidate;
+ let candidate,verificationPool;
  try{
-  const engine=new DurableOperationsPgEngine({pool,config});await engine.health();
-  const bindings=await loadHostedUatBindings({pool});if(!await engine.validatePlatformNamespace(bindings.platformNamespaceId))throw Error();
+  let engine=new DurableOperationsPgEngine({pool,config});await engine.health();
+  const bindings=await loadHostedUatBindings({pool});
+  if(bindings.ownerProfiles?.length){verificationPool=new Pool({...config,max:1});verificationPool.on('error',()=>{});engine=new DurableOperationsPgEngine({pool,config,verificationPool});}
+  if(!await engine.validatePlatformNamespace(bindings.platformNamespaceId))throw Error();
   for(const entry of bindings.roster)if(!await engine.verifyUatEntry(entry,bindings.platformNamespaceId))throw Error();
   for(const profile of bindings.ownerProfiles??[])if(!await engine.verifyUatEntry({...profile,tenantId:profile.role==='platform'?null:profile.tenantId},bindings.platformNamespaceId))throw Error();
   const verifier=await loadHostedUatVerifier({fetchImpl}),keysExpireAt=clock()+300000;
@@ -37,8 +39,8 @@ export async function createHostedUatRuntime({env=process.env,PoolClass,fetchImp
    // Revoking/changing the owner-approved manifest fences future requests immediately.
    if(JSON.stringify(await loadHostedUatBindings({pool}))!==expected)throw Error('UAT_DEPLOYMENT_BINDINGS_CHANGED');
    await candidate.maintain();return candidate.handler(req,res);
-  },close:()=>Promise.allSettled([candidate.close(),pool.end()])};
+  },close:()=>Promise.allSettled([candidate.close(),pool.end(),verificationPool?.end()])};
  }catch{
-  await Promise.allSettled([candidate?.close(),pool.end()]);throw Error('UAT_HOSTED_RUNTIME_UNAVAILABLE');
+  await Promise.allSettled([candidate?.close(),pool.end(),verificationPool?.end()]);throw Error('UAT_HOSTED_RUNTIME_UNAVAILABLE');
  }
 }
