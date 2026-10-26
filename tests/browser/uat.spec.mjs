@@ -1,10 +1,11 @@
+import AxeBuilder from '@axe-core/playwright';
 import {test,expect} from './workspace.mjs';
 import {trackControls,verifiedJourney} from './control-evidence.mjs';
 import {createServer} from 'node:http';
 import {uatFixture,syntheticRoster,syntheticPassword} from '../helpers/uat-fixture.mjs';
 import {createUatCandidateHttp} from '../../server/operations-uat-http.mjs';
 // HTTPS origin is intercepted into a loopback fixture; no provider/mail request leaves this process.
-for(const width of [390,1440])test('isolated UAT password setup, Google choice and MFA browser flow at '+width,async({browser})=>{
+for(const width of [320,390,768,1440])test('isolated UAT password setup, Google choice and MFA browser flow at '+width,async({browser})=>{
  const f=uatFixture(),origin='https://uat.illustrative.invalid',transactions=new Map();
  const handler=createUatCandidateHttp({origin,workflow:f.workflow,
   googleProvider:{authorizationUrl:()=>origin+'/auth/callback?code=synthetic',exchangeCode:async()=>f.tokens(syntheticRoster[3].userId)},
@@ -19,10 +20,18 @@ for(const width of [390,1440])test('isolated UAT password setup, Google choice a
   await trackControls(page);
   await f.workflow.issue({adminSession:'synthetic-approved-admin',userId:syntheticRoster[1].userId});
   await page.goto(origin+'/uat/setup#'+f.mail[0].token);await expect(page).toHaveURL(origin+'/uat/setup');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  expect(await page.locator('.layout').evaluate(el=>getComputedStyle(el).display)).toBe('grid');
+  await expect(page.getByRole('img',{name:'I-way',exact:true})).toBeVisible();
+  expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze()).violations).toEqual([]);
   await page.getByLabel('New password').fill(syntheticPassword);await page.getByRole('button',{name:'Set password',exact:true}).click();await expect(page.getByRole('status')).toContainText('Password set');
   await page.getByRole('link',{name:'Return to sign in'}).click();await expect(page.getByRole('button',{name:'Continue with Google'})).toBeVisible();
   await page.getByLabel('Email',{exact:true}).fill(syntheticRoster[1].email);await page.getByLabel('Password',{exact:true}).fill(syntheticPassword);
   await page.getByRole('button',{name:'Sign in',exact:true}).click();await expect(page.getByRole('status')).toContainText('authenticator code');
+  await expect(page.locator('#credentials')).toBeHidden();
+  await expect(page.getByLabel('Authenticator code')).toBeFocused();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze()).violations).toEqual([]);
   await page.getByLabel('Authenticator code').fill('123456');await page.getByRole('button',{name:'Verify',exact:true}).click();await expect(page.getByRole('status')).toHaveText('Signed in.');
   const identity=await page.evaluate(async()=>{const r=await fetch('/uat/session');return r.json();});expect(identity).toEqual({authenticated:true,role:'carrier'});
   expect(await page.evaluate(()=>document.cookie)).not.toContain('iway');expect(errors).toEqual([]);
