@@ -35,7 +35,7 @@ for(const role of ['platform','driver'])for(const width of [390,1440])test(`owne
   expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze()).violations).toEqual([]);
   const owner=f.roster.find(e=>e.role===role);
   for(const profile of f.profiles.filter(p=>p.ownerUserId===owner.userId)){
-   await page.getByLabel('Profile',{exact:true}).selectOption(profile.principalId);
+   await page.getByRole('combobox',{name:'Profile',exact:true}).selectOption(profile.principalId);
    await page.getByRole('button',{name:'Switch profile',exact:true}).click();
    await expect(page).toHaveURL(f.origin+(profile.role==='platform'?'/uat/control':'/app'));
    const identity=await page.evaluate(async()=>{const r=await fetch('/api/ops/session');return r.json();});expect(identity.actor.role).toBe(profile.role);expect(identity.actor.ownerUserId).toBe(owner.userId);
@@ -44,5 +44,5 @@ for(const role of ['platform','driver'])for(const width of [390,1440])test(`owne
    await page.getByRole('link',{name:'Switch profile',exact:true}).click();await expect(page.getByRole('button',{name:'Switch profile',exact:true})).toBeEnabled();
   }
   await page.getByRole('link',{name:'Return to workspace'}).click();await page.getByRole('button',{name:'Sign out',exact:true}).click();await expect(page).toHaveURL(f.origin+'/uat/login');expect(errors).toEqual([]);
- }finally{await context.close();server.closeAllConnections();await new Promise(r=>server.close(r));for(const fn of cleanup)await fn();}
+ }finally{server.closeAllConnections();await context.close();await new Promise(r=>server.close(r));for(const fn of cleanup)await fn();}
 });
