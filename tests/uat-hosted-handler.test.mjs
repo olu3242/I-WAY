@@ -44,3 +44,14 @@ test('stalled initialization times out all waiters, closes late runtime and perm
 test('startup deadline configuration rejects unbounded and invalid values',()=>{
  for(const initializationTimeoutMs of [0,-1,1.5,60001,Infinity,NaN,'1000'])assert.throws(()=>createHostedUatHandler({createRuntime:()=>{},initializationTimeoutMs}),/UAT_INITIALIZATION_TIMEOUT_INVALID/);
 });
+
+test('unavailable browser entrypoints render accessible retry UI while APIs stay JSON and fail closed',async()=>{
+ const handler=createHostedUatHandler({logSink:()=>{},createRuntime:()=>{throw Error('secret connection string');}});
+ for(const url of ['/','/login','/uat/login','/app','/portal','/admin']){
+  const res=response();await handler({method:'GET',url,headers:{accept:'text/html'}},res);
+  assert.equal(res.status,503);assert.match(res.headers['content-type'],/text\/html/);assert.equal(res.headers['cache-control'],'no-store');assert.equal(res.headers['retry-after'],'30');assert.match(res.body,/Try sign-in again/);assert.doesNotMatch(res.body,/secret connection|<input|<script/);
+ }
+ for(const req of [{method:'GET',url:'/api/ops/session',headers:{accept:'text/html'}},{method:'POST',url:'/uat/login',headers:{accept:'text/html'}}]){
+  const res=response();await handler(req,res);assert.equal(res.status,503);assert.equal(res.body,'{"error":"UAT_UNAVAILABLE"}');
+ }
+});
