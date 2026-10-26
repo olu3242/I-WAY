@@ -21,9 +21,21 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
  await new Promise((ok,no)=>{const s=createServer();s.once('error',()=>no(Error('LOCAL_FIXTURE_PORT_5433_UNAVAILABLE')));s.listen(5433,'127.0.0.1',()=>s.close(ok));});
  const base=realpathSync(tmpdir()),root=mkdtempSync(join(base,'iway-pg-fixture-')),data=join(root,'data'),password=randomBytes(32).toString('hex'),restrictedPassword=randomBytes(32).toString('hex');
  let started=false,admin;const pools=[];
+ // pg Pool.end() can resolve while clients removed after query errors are still
+ // closing. Drain those sockets before stopping the disposable server.
+ const closing=new WeakMap();
+ const fixturePool=options=>{
+  const pool=new Pool(options),connections=new Set();closing.set(pool,connections);
+  pool.on('connect',client=>{
+   const ended=new Promise(resolve=>client.once('end',resolve));
+   connections.add(ended);ended.then(()=>connections.delete(ended));
+  });
+  return pool;
+ };
+ const drain=async pool=>{if(!pool.ending)await pool.end();await Promise.all([...closing.get(pool)]);};
  const cleanup=async()=>{
-  await Promise.allSettled(pools.map(p=>p.end()));
-  if(admin)await admin.end();
+  await Promise.allSettled(pools.map(p=>drain(p)));
+  if(admin)await drain(admin);
   if(started||existsSync(join(data,'postmaster.pid'))){run(join(bin,'pg_ctl'),['-D',data,'-m','immediate','-w','stop']);started=false;}
   const target=resolve(root);
   if(!target.startsWith(base+sep)||!target.slice(base.length+1).startsWith('iway-pg-fixture-'))throw Error('UNSAFE_FIXTURE_CLEANUP');
@@ -55,10 +67,10 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   run(join(bin,'pg_ctl'),['-D',data,'-l',join(root,'server.log'),'-w','start']);started=true;
   const ssl={ca:readFileSync(join(root,'ca.crt'),'utf8'),rejectUnauthorized:true,minVersion:'TLSv1.2'};
   const common={host:'127.0.0.1',port:5433,ssl,connectionTimeoutMillis:5000,max:6};
-  admin=new Pool({...common,user:'iway_fixture_admin',password,database:'postgres'});
+  admin=fixturePool({...common,user:'iway_fixture_admin',password,database:'postgres'});
   stage='LOCAL_FIXTURE_SCHEMA';
   await admin.query('CREATE DATABASE iway_fixture');
-  await admin.end();admin=new Pool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
+  await drain(admin);admin=fixturePool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
   stage='LOCAL_FIXTURE_VERSION';
   const version=(await admin.query("SELECT current_setting('server_version') AS version,current_setting('server_version_num')::int AS number")).rows[0];
   if(expectedMajor!==undefined&&Math.floor(version.number/10000)!==Number(expectedMajor))throw Error('LOCAL_POSTGRES_MAJOR_MISMATCH');
@@ -73,13 +85,13 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   await admin.query('GRANT USAGE ON ALL SEQUENCES IN SCHEMA operations_private TO iway_operations_fixture');
   }
   const restricted={...common,user:'iway_operations_fixture',password:restrictedPassword,database:'iway_fixture'};
-  const pool=new Pool(restricted);pools.push(pool);
-  return {version,get admin(){return admin},pool,ssl,restricted,caPath:join(root,'ca.crt'),createPool(options={}){const p=new Pool({...restricted,...options});pools.push(p);return p},
+  const pool=fixturePool(restricted);pools.push(pool);
+  return {version,get admin(){return admin},pool,ssl,restricted,caPath:join(root,'ca.crt'),createPool(options={}){const p=fixturePool({...restricted,...options});pools.push(p);return p},
    async restartDatabase(){
     // Fixture-owned paths and process only. Callers close their borrowed pools first.
-    await Promise.allSettled(pools.map(p=>p.end()));await admin.end();admin=null;
+    await Promise.allSettled(pools.map(p=>drain(p)));await drain(admin);admin=null;
     run(join(bin,'pg_ctl'),['-D',data,'-m','fast','-w','restart']);
-    admin=new Pool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
+    admin=fixturePool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
    },cleanup};
  }catch(error){
   let diagnostic='';
