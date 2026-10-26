@@ -25,3 +25,5 @@ fieldset{min-inline-size:0;border:1px solid #DCE7F3;border-radius:12px;padding:1
 
 /* The guided path reports confirmed state without replacing operational controls. */
 .journey-steps{padding:0;list-style:none;display:grid;gap:12px}.journey-steps li{display:flex;align-items:center;gap:12px}.journey-steps .chip{min-width:78px;text-align:center}.first-load-guide{border-top:4px solid #1261F3}
+
+.owner-profile-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px 24px;background:#092448;color:white;font:14px/1.5 Inter,system-ui,sans-serif}.owner-profile-bar a{color:white;display:inline-flex;align-items:center;min-height:44px;text-decoration:underline}.owner-profile-bar a:focus-visible{outline:3px solid #FFB000;outline-offset:4px}

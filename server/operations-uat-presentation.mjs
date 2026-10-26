@@ -20,14 +20,14 @@ body{margin:0;background:#F5F8FC;color:#111827;font-family:Inter,system-ui,sans-
 h1{font-size:28px;line-height:1.2;letter-spacing:-.03em;color:#092448;margin:0 0 12px}
 .description,.help{color:#475569;font-size:14px;margin:0 0 28px}
 form{display:grid;gap:20px}label{display:grid;gap:8px;font-size:14px;font-weight:600;color:#092448}
-input{width:100%;min-width:0;min-height:48px;border:1px solid #94a3b8;border-radius:12px;background:white;padding:12px 14px;font:inherit;color:#111827}
+input,select{width:100%;min-width:0;min-height:48px;border:1px solid #94a3b8;border-radius:12px;background:white;padding:12px 14px;font:inherit;color:#111827}
 button{min-height:48px;border:1px solid transparent;border-radius:12px;padding:12px 16px;background:#FF681C;color:#092448;font:inherit;font-weight:700;cursor:pointer;width:100%}
 button:hover{filter:brightness(.96)}button:disabled{opacity:.65;cursor:wait}
 button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #1261F3;outline-offset:3px}
 .secondary{background:white;border-color:#94a3b8;color:#092448}
 .divider{display:flex;align-items:center;gap:12px;color:#475569;font-size:12px;margin:24px 0 16px}
 .divider:before,.divider:after{content:'';height:1px;flex:1;background:#dce4ef}
-.hint{color:#475569;font-size:12px;margin:8px 0 0}
+#enrollment-key{overflow-wrap:anywhere;font-size:14px;background:#F5F8FC;border:1px solid #94a3b8;padding:12px;border-radius:12px}.hint{color:#475569;font-size:12px;margin:8px 0 0}
 #status{font-size:14px;color:#092448;overflow-wrap:anywhere;margin:20px 0 0}#status:empty{display:none}
 .help{border-top:1px solid #dce4ef;margin:24px 0 0;padding-top:20px;font-size:12px}
 .back{display:inline-flex;align-items:center;min-height:44px;margin-top:12px;color:#1261F3;font-size:14px;font-weight:600}

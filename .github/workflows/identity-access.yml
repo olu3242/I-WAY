@@ -106,7 +106,7 @@ jobs:
           IWAY_BROWSER_DURABLE_OPT_IN: 'true'
           IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
           IWAY_LOCAL_OPENSSL: /usr/bin/openssl
-        run: npx playwright test tests/browser/uat-application.spec.mjs tests/browser/first-value-persistence.spec.mjs
+        run: npx playwright test tests/browser/uat-application.spec.mjs tests/browser/first-value-persistence.spec.mjs tests/browser/owner-profiles.spec.mjs
       - name: Retain synthetic browser evidence
         if: always()
         uses: actions/upload-artifact@v4

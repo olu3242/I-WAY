@@ -2,6 +2,7 @@
 import {createSupabaseLogin,createSupabasePkceCallback} from './operations-supabase-pkce-callback-flow.experimental.mjs';
 import {readAuthCookie,SESSION_COOKIE,sessionCookie,clearSessionCookie,clearPkceCookie} from './operations-supabase-pkce-session.experimental.mjs';
 import {uatPage,uatStyles,uatLogo,uatFont} from './operations-uat-presentation.mjs';
+const clearProfile='__Host-iway-profile=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict';
 const mfaCookie='__Host-iway-uat-mfa';
 const pendingCookie=value=>`${mfaCookie}=${value}; Path=/; Max-Age=300; HttpOnly; Secure; SameSite=Strict`;
 const clearPending=()=>`${mfaCookie}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict`;
@@ -26,7 +27,7 @@ document.querySelector('#credentials').addEventListener('submit',async event=>{
   const response=await fetch(setup?'/uat/setup':'/uat/password',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
   const data=await response.json();
   status.textContent=response.ok?(data.mfaRequired?'Enter your authenticator code.':setup?'Password set. Return to sign in.':'Signed in.'):'Sign-in or setup could not be completed.';
-  if(data.mfaRequired)showMfa();
+  if(data.mfaRequired){showMfa();if(typeof data.enrollmentSecret==='string'&&/^[A-Z2-7]{16,128}$/.test(data.enrollmentSecret)){const note=document.createElement('p');note.id='enrollment-key';note.textContent='Add a time-based account named I-WAY in your authenticator app using this setup key: '+data.enrollmentSecret;document.querySelector('#mfa').prepend(note);status.textContent='Save the setup key in your authenticator, then enter its six-digit code. Keep this key private.';}}
   if(setup&&response.ok)invitation='';
   if(response.ok&&['/app','/uat/control'].includes(data.next))location.assign(data.next);
  }catch{status.textContent='Unable to continue.';}
@@ -37,6 +38,7 @@ document.querySelector('#mfa').addEventListener('submit',async event=>{
  const code=new FormData(form).get('code');
  try{
   const response=await fetch('/uat/mfa',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code})});
+  document.querySelector('#enrollment-key')?.remove();
   status.textContent=response.ok?'Signed in.':'Authentication could not be completed.';
   const data=await response.json();if(response.ok&&['/app','/uat/control'].includes(data.next))location.assign(data.next);
  }catch{status.textContent='Unable to continue.';}
@@ -58,7 +60,7 @@ export function createUatCandidateHttp({origin,workflow,googleProvider,transacti
    if(req.aborted){if(result.id)await workflow.logout(result.id);if(result.pending)await workflow.cancelMfa(result.pending);return;}
    const next=applicationSession?(result.mfaRequired?'/uat/login#mfa':(await workflow.session(result.id))?.role==='platform'?'/uat/control':'/app'):null;
    const cookies=result.mfaRequired?[pendingCookie(result.pending),clearSessionCookie(),clearPkceCookie(),...(applicationSession?[applicationSession.clearCookie]:[])]:[sessionCookie({value:result.id}),clearPending(),clearPkceCookie(),...(applicationCookie?[applicationCookie]:[])];
-   return respond(redirect&&next?303:200,result.mfaRequired?{mfaRequired:true}:{ok:true,...(next?{next}:{})},{'set-cookie':cookies,...(redirect&&next?{location:next}:{})});
+   return respond(redirect&&next?303:200,result.mfaRequired?{mfaRequired:true,...(result.enrollmentSecret?{enrollmentSecret:result.enrollmentSecret}:{})}:{ok:true,...(next?{next}:{})},{'set-cookie':[...cookies,clearProfile],...(redirect&&next?{location:next}:{})});
   }
   try{
    if(typeof req.url!=='string'||req.url.length>4096||!req.url.startsWith('/')||req.url.startsWith('//')||req.url.includes('#'))return respond(404,{error:'NOT_FOUND'});
@@ -113,7 +115,7 @@ export function createUatCandidateHttp({origin,workflow,googleProvider,transacti
    }
    try{await workflow.cancelMfa(readAuthCookie(req.headers,mfaCookie));}
    finally{if(applicationSession)await applicationSession.logout(req);else await workflow.logout(id);}
-   return respond(200,{ok:true},{'set-cookie':[clearSessionCookie(),clearPending(),clearPkceCookie(),...(applicationSession?[applicationSession.clearCookie]:[])]});
+   return respond(200,{ok:true},{'set-cookie':[clearProfile,clearSessionCookie(),clearPending(),clearPkceCookie(),...(applicationSession?[applicationSession.clearCookie]:[])]});
   }catch{return respond(401,{error:'ACCESS_DENIED'});}
  };
 }

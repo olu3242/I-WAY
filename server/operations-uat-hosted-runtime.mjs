@@ -18,16 +18,17 @@ export async function createHostedUatRuntime({env=process.env,PoolClass,fetchImp
   const engine=new DurableOperationsPgEngine({pool,config});await engine.health();
   const bindings=await loadHostedUatBindings({pool});if(!await engine.validatePlatformNamespace(bindings.platformNamespaceId))throw Error();
   for(const entry of bindings.roster)if(!await engine.verifyUatEntry(entry,bindings.platformNamespaceId))throw Error();
+  for(const profile of bindings.ownerProfiles??[])if(!await engine.verifyUatEntry({...profile,tenantId:profile.role==='platform'?null:profile.tenantId},bindings.platformNamespaceId))throw Error();
   const verifier=await loadHostedUatVerifier({fetchImpl}),keysExpireAt=clock()+300000;
   const denyIssuance=async()=>{throw Error('UAT_HOSTED_ISSUANCE_NOT_AUTHORIZED');};
-  candidate=await createUatCandidateRuntime({env,PoolClass:Pool,fetchImpl,verifier,roster:bindings.roster,
+  candidate=await createUatCandidateRuntime({env,PoolClass:Pool,fetchImpl,verifier,roster:bindings.roster,ownerUserIds:[...new Set((bindings.ownerProfiles??[]).map(p=>p.ownerUserId))],
    authenticateAdministrator:denyIssuance,authorizeIssuance:async()=>false,issuer:{generateRecovery:denyIssuance},deliver:denyIssuance,
    verifyRelationships:entry=>engine.verifyUatEntry(entry,bindings.platformNamespaceId),
    controlPlaneMembership:async userId=>{
     const entry=bindings.roster.find(item=>item.role==='platform'&&item.userId===userId);
     return entry?{...entry,active:true,revoked:false,tenantActive:true}:null;
    },
-   application:async dependencies=>createDurableUatApplication({...dependencies.dependencies,providerSessions:dependencies.providerSessions,identityVerifier:dependencies.identityVerifier,engine,platformNamespaceId:bindings.platformNamespaceId})
+   application:async dependencies=>createDurableUatApplication({...dependencies.dependencies,providerSessions:dependencies.providerSessions,identityVerifier:dependencies.identityVerifier,engine,platformNamespaceId:bindings.platformNamespaceId,ownerProfiles:bindings.ownerProfiles})
   });
   const expected=JSON.stringify(bindings);
   return {expiresAt:keysExpireAt,async handler(req,res){

@@ -47,3 +47,12 @@ test('documented Google subject id/sub binding rejects crossed identities and da
  }
  f.user.identities=[{...identity,provider_id:identity.id}];assert.deepEqual((await f.provider.inspect(token)).googleSubjects,['synthetic-google']);
 });
+test('owner TOTP setup is explicit, verified-subject-only and never replaces an existing factor',async()=>{
+ const f=fixture(),requests=[],factor='90000000-0000-4000-8000-000000000085',challenge='90000000-0000-4000-8000-000000000086';
+ const provider=createUatSupabaseProvider({apiKey:'synthetic',verifier:f.verifier,clock:()=>f.now,fetchImpl:async(url,options)=>{requests.push({url,options});const data=url.endsWith('/user')?f.user:url.endsWith('/factors')?{id:factor,type:'totp',totp:{secret:'ABCDEFGHIJKLMNOP'}}:{id:challenge};return new Response(JSON.stringify(data),{headers:{'content-type':'application/json'}});}});
+ await assert.rejects(provider.challengeMfa(f.jwt()),/ENROLLMENT_REQUIRED/);assert.ok(!requests.some(r=>r.url.endsWith('/factors')));
+ const enrolled=await provider.challengeMfa(f.jwt(),{enroll:true});assert.equal(enrolled.enrollmentSecret,'ABCDEFGHIJKLMNOP');assert.equal(enrolled.factorId,factor);
+ assert.deepEqual(JSON.parse(requests.find(r=>r.url.endsWith('/factors')).options.body),{factor_type:'totp',issuer:'I-WAY'});
+ f.user.factors=[{id:factor,factor_type:'totp',status:'verified'}];requests.length=0;
+ assert.equal((await provider.challengeMfa(f.jwt(),{enroll:true})).enrollmentSecret,undefined);assert.ok(!requests.some(r=>r.url.endsWith('/factors')));
+});

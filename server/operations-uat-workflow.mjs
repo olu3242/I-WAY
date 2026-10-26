@@ -20,7 +20,7 @@ export function validateUatRoster(roster){
  if(new Set(googleSubjects).size!==googleSubjects.length)throw Error('UAT_ROSTER_BINDING_NOT_UNIQUE');
  return Object.freeze(roster.map(e=>Object.freeze({...e,permissions:Object.freeze([...e.permissions])})));
 }
-export function createUatWorkflow({roster,store,provider,sessions,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer,deliver,clock=()=>Date.now()}={}){
+export function createUatWorkflow({roster,store,provider,sessions,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer,deliver,ownerUserIds=[],clock=()=>Date.now()}={}){
  const entries=validateUatRoster(roster),byId=new Map(entries.map(e=>[e.userId,e])),byEmail=new Map(entries.map(e=>[e.email,e]));
  if(!store||![provider?.inspect,provider?.passwordLogin,provider?.verifySetup,provider?.setPassword,provider?.logout,provider?.refresh,provider?.challengeMfa,provider?.verifyMfa,sessions?.create,sessions?.get,sessions?.getForRefresh,sessions?.revoke,sessions?.refresh,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer?.generateRecovery,deliver].every(fn=>typeof fn==='function'))throw Error('UAT_SECURE_DEPENDENCIES_REQUIRED');
  async function limit(network,entry){
@@ -44,10 +44,10 @@ export function createUatWorkflow({roster,store,provider,sessions,lookupMembersh
  }
  async function createSession(tokens,method,expectedId){
   const admitted=await admit(tokens.accessToken,method,expectedId);
-  if(['platform','carrier'].includes(admitted.entry.role)&&admitted.identity.assurance!=='aal2'){
-   const challenge=await provider.challengeMfa(tokens.accessToken);
+  if((['platform','carrier'].includes(admitted.entry.role)||ownerUserIds.includes(admitted.entry.userId))&&admitted.identity.assurance!=='aal2'){
+   const challenge=await provider.challengeMfa(tokens.accessToken,{enroll:ownerUserIds.includes(admitted.entry.userId)&&method==='password'});
    const pending=randomBytes(32).toString('base64url');await store.saveMfa(pending,admitted.entry.userId,admitted.state.version,{...tokens,challenge,method});
-   return {mfaRequired:true,pending};
+   return {mfaRequired:true,pending,...(challenge.enrollmentSecret?{enrollmentSecret:challenge.enrollmentSecret}:{})};
   }
   const result=await sessions.create({userId:admitted.entry.userId,accessToken:tokens.accessToken,refreshToken:tokens.refreshToken,accessExpiresAt:tokens.accessExpiresAt});
   try{
@@ -134,7 +134,7 @@ export function createUatWorkflow({roster,store,provider,sessions,lookupMembersh
     if(!current)return null;
     if(binding.user_id!==current.user_id)denied();
     const {entry,state,identity}=await admit(current.access_token,binding.method,binding.user_id);
-    if(state.version!==binding.version||['platform','carrier'].includes(entry.role)&&identity.assurance!=='aal2')denied();
+    if(state.version!==binding.version||(['platform','carrier'].includes(entry.role)||ownerUserIds.includes(entry.userId))&&identity.assurance!=='aal2')denied();
     return {id:entry.principalId,active:true,userId:entry.userId,role:entry.role,tenantId:entry.tenantId,fleetId:entry.fleetId,principalId:entry.principalId,permissions:[...entry.permissions]};
    }catch{await sessions.revoke(id).catch(()=>{});return null;}
   },
@@ -149,7 +149,7 @@ export function createUatWorkflow({roster,store,provider,sessions,lookupMembersh
     const result=await sessions.refresh(id,async refreshToken=>{
      tokens=await provider.refresh(refreshToken);
      const admitted=await admit(tokens.accessToken,binding.method,binding.user_id);
-     if(admitted.state.version!==binding.version||['platform','carrier'].includes(entry.role)&&admitted.identity.assurance!=='aal2')denied();
+     if(admitted.state.version!==binding.version||(['platform','carrier'].includes(entry.role)||ownerUserIds.includes(entry.userId))&&admitted.identity.assurance!=='aal2')denied();
      return tokens;
     });
     // Losing the store's claim is not a failed provider exchange. In particular,

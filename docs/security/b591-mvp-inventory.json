@@ -28,20 +28,21 @@
     "apps/operations/admin.js": "37ae785572fd7ef180d3ec6b760c18bfa01205dfc056fefbe5d0ae168ea36669",
     "apps/operations/login.js": "07bebededc2f7ce2df237feb5739b0240c25b794f13585f7d6a90b2dc0d3e3dd",
     "server/operations-app.mjs": "700d34c70af63d6ba5c7177c428462a8ebab5e469ba7ff98f0994b220aeb7f31",
-    "server/operations-uat-http.mjs": "3efbf9556071b5c7c1238eefd3c9cc2fbf0e6e68841659c611f4d984e27faed6",
-    "server/operations-uat-presentation.mjs": "b4c751daac75ec827b4c2a5250026f1529d58e6512366df6df1eee5f24e35f6c",
-    "server/operations-uat-application.mjs": "6e627a5a93ff6d1083c94d9bf96952e70449bf9c3ec3ea7e375cfa83d3cde077",
-    "server/operations-durable-uat.mjs": "7c0b892337b61d5e51990460cbf44d842d7ddc84606b0687d9a5c28f371f0f50"
+    "server/operations-uat-http.mjs": "df68d0a18176d39b84351b4524e8124e98d67a2b1f69693f06284c660bd720f4",
+    "server/operations-uat-presentation.mjs": "955823550375a95f0b40de872acfdb392bd1f2180c3dcc35fe6205f9c6264da3",
+    "server/operations-owner-profiles.mjs": "bfb68d3e00c633206d1ae9808b4ea7dafd5c925d42b3db8fdc7780ba6ef96ce4",
+    "server/operations-uat-application.mjs": "135c60803d77a11f97ad409a13629bc7c883e7f0ea59d8b2ce4a0dc2dd5a23c1",
+    "server/operations-durable-uat.mjs": "4dffb92beb45892f3c34314c13a68c604cbbaeb829b9868ad4331e66cda50be7"
   },
   "counts": {
     "action": 59,
-    "button": 40,
+    "button": 41,
     "dialog": 15,
     "disclosure": 1,
-    "field": 103,
-    "form": 31,
+    "field": 104,
+    "form": 32,
     "navigation": 22,
-    "route": 58
+    "route": 63
   },
   "controls": [
     {
@@ -1342,6 +1343,19 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "button:Switch profile",
+      "type": "button",
+      "value": "Switch profile",
+      "label": "Switch profile",
+      "locations": [
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "button:Verify",
       "type": "button",
       "value": "Verify",
@@ -2621,6 +2635,19 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "field:profile",
+      "type": "field",
+      "value": "profile",
+      "label": "profile",
+      "locations": [
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "field:proofReference",
       "type": "field",
       "value": "proofReference",
@@ -3282,6 +3309,19 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "form:profile-switch",
+      "type": "form",
+      "value": "profile-switch",
+      "label": "profile-switch",
+      "locations": [
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "form:route-evaluate",
       "type": "form",
       "value": "route-evaluate",
@@ -3690,16 +3730,20 @@
           "line": 98
         },
         {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 40
+        },
+        {
           "path": "server/operations-uat-application.mjs",
           "line": 20
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 45
+          "line": 46
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3711,12 +3755,16 @@
       "label": "/api/ops/",
       "locations": [
         {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 40
+        },
+        {
           "path": "server/operations-uat-application.mjs",
           "line": 20
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3829,8 +3877,12 @@
           "line": 81
         },
         {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 97
+        },
+        {
           "path": "server/operations-durable-uat.mjs",
-          "line": 52
+          "line": 53
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4029,12 +4081,20 @@
           "line": 72
         },
         {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 63
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 83
+        },
+        {
           "path": "server/operations-uat-application.mjs",
           "line": 4
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 53
+          "line": 54
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4180,15 +4240,35 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 31
+          "line": 32
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 41
+          "line": 43
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 59
+          "line": 61
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 27
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 28
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 40
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 68
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 81
         },
         {
           "path": "server/operations-uat-application.mjs",
@@ -4196,11 +4276,11 @@
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 45
+          "line": 46
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4212,12 +4292,16 @@
       "label": "/assets/",
       "locations": [
         {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 40
+        },
+        {
           "path": "server/operations-uat-application.mjs",
           "line": 20
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4458,11 +4542,11 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 68
+          "line": 70
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 78
+          "line": 80
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4475,7 +4559,7 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 93
+          "line": 95
         },
         {
           "path": "server/operations-uat-presentation.mjs",
@@ -4496,7 +4580,7 @@
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 38
+          "line": 39
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4549,11 +4633,11 @@
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 45
+          "line": 46
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4577,12 +4661,16 @@
           "line": 96
         },
         {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 40
+        },
+        {
           "path": "server/operations-uat-application.mjs",
           "line": 20
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4595,11 +4683,15 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 75
+          "line": 77
         },
         {
           "path": "server/operations-uat-presentation.mjs",
           "line": 40
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 27
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4612,7 +4704,7 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 77
+          "line": 79
         },
         {
           "path": "server/operations-uat-presentation.mjs",
@@ -4629,15 +4721,31 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 31
+          "line": 32
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 41
+          "line": 43
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 59
+          "line": 61
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 28
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 40
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 68
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 81
         },
         {
           "path": "server/operations-uat-application.mjs",
@@ -4649,7 +4757,7 @@
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4661,6 +4769,10 @@
       "label": "/uat/control.js",
       "locations": [
         {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 40
+        },
+        {
           "path": "server/operations-uat-application.mjs",
           "line": 14
         },
@@ -4670,7 +4782,7 @@
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4683,7 +4795,7 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 76
+          "line": 78
         },
         {
           "path": "server/operations-uat-presentation.mjs",
@@ -4704,7 +4816,7 @@
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 73
+          "line": 75
         },
         {
           "path": "server/operations-uat-presentation.mjs",
@@ -4716,7 +4828,7 @@
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 45
+          "line": 46
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4729,7 +4841,7 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 98
+          "line": 100
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4742,15 +4854,15 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 39
+          "line": 40
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 98
+          "line": 100
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 107
+          "line": 109
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4763,15 +4875,100 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 26
+          "line": 27
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 98
+          "line": 100
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 105
+          "line": 107
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/profiles",
+      "type": "route",
+      "value": "/uat/profiles",
+      "label": "/uat/profiles",
+      "locations": [
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 35
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 38
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 66
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/profiles/",
+      "type": "route",
+      "value": "/uat/profiles/",
+      "label": "/uat/profiles/",
+      "locations": [
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 38
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/profiles/client.js",
+      "type": "route",
+      "value": "/uat/profiles/client.js",
+      "label": "/uat/profiles/client.js",
+      "locations": [
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 27
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 67
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/profiles/session",
+      "type": "route",
+      "value": "/uat/profiles/session",
+      "label": "/uat/profiles/session",
+      "locations": [
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 28
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 68
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/uat/profiles/switch",
+      "type": "route",
+      "value": "/uat/profiles/switch",
+      "label": "/uat/profiles/switch",
+      "locations": [
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 28
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 69
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4784,11 +4981,11 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 98
+          "line": 100
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 109
+          "line": 111
         },
         {
           "path": "server/operations-uat-application.mjs",
@@ -4800,11 +4997,11 @@
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 43
+          "line": 44
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4821,7 +5018,7 @@
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4834,7 +5031,7 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 88
+          "line": 90
         },
         {
           "path": "server/operations-uat-application.mjs",
@@ -4842,7 +5039,7 @@
         },
         {
           "path": "server/operations-durable-uat.mjs",
-          "line": 41
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4855,27 +5052,27 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 9
+          "line": 10
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 26
+          "line": 27
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 73
+          "line": 75
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 73
+          "line": 75
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 98
+          "line": 100
         },
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 106
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4888,11 +5085,15 @@
       "locations": [
         {
           "path": "server/operations-uat-http.mjs",
-          "line": 74
+          "line": 76
         },
         {
           "path": "server/operations-uat-presentation.mjs",
           "line": 39
+        },
+        {
+          "path": "server/operations-owner-profiles.mjs",
+          "line": 27
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"

@@ -22,7 +22,7 @@ export function resolveUatRuntimeConfig(env){
  if(!['postgres:','postgresql:'].includes(url.protocol)||(!direct&&!pooled)||user!==(direct?'iway_uat_runtime':'iway_uat_runtime.vnoxdinldneeczxibicp')||url.pathname!=='/postgres'||!url.password||url.search||url.hash||!['','5432'].includes(url.port))throw Error('UAT_DATABASE_TARGET_INVALID');
  return {auth,broker:{host:url.hostname,port:5432,database:'postgres',user,password:decodeURIComponent(url.password),ssl:postgresTlsOptions(url.hostname),max:4,connectionTimeoutMillis:2000,statement_timeout:3000,query_timeout:4000,application_name:'iway-uat-staging'}};
 }
-export async function createUatCandidateRuntime({env=process.env,roster,verifier,authenticateAdministrator,authorizeIssuance,issuer,deliver,controlPlaneMembership,verifyRelationships,PoolClass,fetchImpl=fetch,application}={}){
+export async function createUatCandidateRuntime({env=process.env,roster,verifier,authenticateAdministrator,authorizeIssuance,issuer,deliver,controlPlaneMembership,verifyRelationships,PoolClass,fetchImpl=fetch,application,ownerUserIds=[]}={}){
  const entries=validateUatRoster(roster);
  if(![authenticateAdministrator,authorizeIssuance,issuer?.generateRecovery,deliver,controlPlaneMembership,verifyRelationships].every(f=>typeof f==='function')||!verifier)throw Error('UAT_HOSTED_BINDINGS_REQUIRED');
  const config=resolveUatRuntimeConfig(env),cipher=createConfiguredSessionCipher(env),Pool=PoolClass??(await import('pg')).Pool;
@@ -45,7 +45,7 @@ export async function createUatCandidateRuntime({env=process.env,roster,verifier
     return {active:row.active,revoked:!!row.revoked_at,role:row.role,tenantId:row.tenant_id,fleetId:row.fleet_id,principalId:row.principal_id,permissions:row.permissions,tenantActive:row.tenant_active};
    }catch{await client.query('ROLLBACK').catch(()=>{});return null;}finally{client.release();}
   }
-  const workflow=createUatWorkflow({roster:entries,store,provider,sessions,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer,deliver});
+  const workflow=createUatWorkflow({ownerUserIds,roster:entries,store,provider,sessions,lookupMembership,authenticateAdministrator,authorizeIssuance,issuer,deliver});
   await workflow.maintain();await sessions.recoverStale();await transactions.expire();
   const dependencies={origin:config.auth.origin,workflow,googleProvider,transactions,authorizeResource:({actor,resourceId})=>authorize({userId:actor.userId,resourceId})};
   const assembled=typeof application==='function'?await application({dependencies,providerSessions:sessions,identityVerifier:verifier}):application?createIntegratedUatApplication({...dependencies,providerSessions:sessions,store:application.store,operations:application.operations,identityVerifier:verifier,platformNamespaceId:application.platformNamespaceId}):null;

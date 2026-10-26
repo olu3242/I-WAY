@@ -61,7 +61,7 @@ export class DurableOperationsPgEngine{
  async verifyUatEntry(entry,platformNamespaceId){
   try{return await this.transaction({tenantId:entry.role==='platform'?platformNamespaceId:entry.tenantId,actorId:entry.principalId},({store})=>{
    const a=store.principal(entry.principalId);
-   if(!a?.active||a.identityOnly!==true||a.role!==entry.role||JSON.stringify([...a.permissions].sort())!==JSON.stringify([...entry.permissions].sort())||(a.fleetId??null)!==(entry.fleetId??null))return false;
+   if(!a?.active||a.identityOnly!==true||entry.ownerUserId&&a.ownerUserId!==entry.ownerUserId||a.role!==entry.role||JSON.stringify([...a.permissions].sort())!==JSON.stringify([...entry.permissions].sort())||(a.fleetId??null)!==(entry.fleetId??null))return false;
    if(entry.role==='platform')return entry.tenantId===null&&entry.fleetId===null;
    if(['fleet','driver'].includes(entry.role)&&!store.get('fleet',entry.fleetId,entry.tenantId).active)return false;
    if(entry.role==='driver'){const d=store.get('driver',a.id,entry.tenantId);if(!d.active||d.fleetId!==entry.fleetId)return false;}
