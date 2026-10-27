@@ -53,6 +53,7 @@ export class Operations{
    return !this.store.db.prepare(sql).get(actor.tenantId,ignoreLoadId,resourceId);
   };
   const reasons=[];
+  if(this.store.list('onboarding',actor.tenantId).some(r=>[driverId,vehicleId,driver.fleetId].filter(Boolean).includes(r.subjectId)&&r.status!=='active'))reasons.push('Onboarding is not active.');
   if(!user?.active||!driver.active||!driver.available||!driver.approved||driver.compliance!=='valid'||!driver.expiresOn||driver.expiresOn<today)reasons.push('Driver is unavailable or not compliant and carrier-approved.');
   if(!vehicle.active||!vehicle.available||!vehicle.approved||vehicle.maintenance!=='ready')reasons.push('Vehicle is unavailable, needs maintenance, or lacks carrier approval.');
   if(vehicle.capacityLb<load.weightLb)reasons.push('Vehicle capacity is insufficient.');

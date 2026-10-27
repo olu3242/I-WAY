@@ -4,7 +4,29 @@ import {createServer,request} from 'node:http';
 import {uatApplicationFixture} from './helpers/uat-application-fixture.mjs';
 import {createHostedUatHandler} from '../server/operations-uat-hosted-handler.mjs';
 import {syntheticPassword} from './helpers/uat-fixture.mjs';
+import {createIntegratedUatApplication} from '../server/operations-uat-application.mjs';
+import {exportTenantState,materializeTenantState} from '../server/operations-durable-postgres.mjs';
+import {Operations} from '../domain/operations.mjs';
+import {addUser} from '../server/operations-auth.mjs';
 const addCookies=(jar,response)=>{for(const value of response.headers.getSetCookie()){const [name,valuePart]=value.split(';')[0].split('=');if(valuePart)jar.set(name,valuePart);else jar.delete(name);}return jar;};
+test('governance session bridge reconstructs from persisted approved case and configuration records',async t=>{
+ const f=await uatApplicationFixture(t);
+ for(const kind of ['platformcase','platformcaseevent','platformconfig','supportrequest'])f.store.insert(kind,f.governance,{illustrative:true});
+ const snapshot=exportTenantState(f.store,f.governance),restored=materializeTenantState(snapshot.payload,snapshot.audit);t.after(()=>restored.close());
+ const app=createIntegratedUatApplication({...f.dependencies,store:restored,operations:new Operations(restored)});
+ assert.equal(typeof app.bridge.read,'function');assert.equal(restored.list('platformconfig',f.governance).length,1);
+});
+test('governance session bridge still rejects operational and unknown resource kinds after reconstruction',async t=>{
+ for(const kind of ['load','assignment','driver','vehicle','unknown']){
+  const f=await uatApplicationFixture(t);f.store.insert(kind,f.governance,{illustrative:true});
+  assert.throws(()=>createIntegratedUatApplication(f.dependencies),/UAT_GOVERNANCE_NAMESPACE_INVALID/);
+ }
+});
+test('governance namespace never accepts a carrier principal even with approved governance record kinds',async t=>{
+ const f=await uatApplicationFixture(t);f.store.insert('platformconfig',f.governance,{key:'supportCaseDueHours',value:48});
+ addUser(f.store,{tenantId:f.governance,username:'ill-invalid-governance@illustrative.invalid',name:'Illustrative invalid namespace principal',role:'carrier',identityOnly:true});
+ assert.throws(()=>createIntegratedUatApplication(f.dependencies),/UAT_GOVERNANCE_NAMESPACE_INVALID/);
+});
 async function fixture(t,options){
  const f=await uatApplicationFixture(t,options);
  const handler=createHostedUatHandler({createRuntime:async()=>({...f.integrated,expiresAt:Date.now()+300000,close:async()=>{}})});

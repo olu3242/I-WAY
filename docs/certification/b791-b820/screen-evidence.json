@@ -1,0 +1,3735 @@
+{
+  "schemaVersion": 1,
+  "screenCount": 35,
+  "currentMappings": 27,
+  "unavailableMappings": 8,
+  "captureWidths": [
+    390,
+    768,
+    1440
+  ],
+  "mappedPngCount": 81,
+  "visualConformityPercentage": null,
+  "functionalityConformityPercentage": null,
+  "sourceDigest": "0ea7aaadba39b31e39f558966e9ea93ef82cafc39745bfc4f164da620ea9c025",
+  "screens": [
+    {
+      "id": "carrier:dashboard",
+      "persona": "carrier",
+      "screen": "dashboard",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "overview",
+        "analytics"
+      ],
+      "permissions": [
+        "load:view",
+        "analytics:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Persisted visible loads and measured operations totals",
+      "remaining": "Prototype finance/compliance KPI layout and complete fleet breakdown are not implemented",
+      "testFiles": [
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 88
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:dashboard",
+          "width": 390,
+          "route": "/app",
+          "navigation": "overview",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-dashboard-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-dashboard-390.png",
+          "sha256": "1b874347e5a88799e6c8e53688644ec7e43b866a627ec8d20fefbbd1ffcf9d13",
+          "height": 1359
+        },
+        {
+          "screen": "carrier:dashboard",
+          "width": 768,
+          "route": "/app",
+          "navigation": "overview",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-dashboard-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-dashboard-768.png",
+          "sha256": "b0279192a1a21e198064cca3924d37874fc7867e12402e2883463d432e36f1c3",
+          "height": 1177
+        },
+        {
+          "screen": "carrier:dashboard",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "overview",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-dashboard-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-dashboard-1440.png",
+          "sha256": "fb160e5db871c67a449493dfcd5f2af5e0f02137610fca9e91c90eeeacd1ee44",
+          "height": 986
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "carrier:load-manager",
+      "persona": "carrier",
+      "screen": "load-manager",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "loads",
+        "load-wizard"
+      ],
+      "permissions": [
+        "load:view",
+        "load:create",
+        "load:dispatch"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Four-step creation, durable drafts, review, confirmation, safe retry, dispatch and execution",
+      "remaining": "Specialized equipment types need an approved contract; live map/provider absent",
+      "testFiles": [
+        "tests/browser/b681-load-wizard.spec.mjs",
+        "tests/browser/load-wizard-recovery.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 89
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:load-manager",
+          "width": 390,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-load-manager-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-load-manager-390.png",
+          "sha256": "0637711ee2c449132936cf26a4408260df923ad1ffb9a24c3f51f7e033195d3c",
+          "height": 1066
+        },
+        {
+          "screen": "carrier:load-manager",
+          "width": 768,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-load-manager-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-load-manager-768.png",
+          "sha256": "15874ae2b86a20da0896587a87f12961c6c2950e515dc42e2513c035d6e0eccd",
+          "height": 900
+        },
+        {
+          "screen": "carrier:load-manager",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-load-manager-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-load-manager-1440.png",
+          "sha256": "9a01634667320626abedaee04a458539c627380c4111bda83f4c18915b94c5c8",
+          "height": 900
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "carrier:dispatchers",
+      "persona": "carrier",
+      "screen": "dispatchers",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "people"
+      ],
+      "permissions": [
+        "user:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Tenant-scoped accounts and bounded permission delegation",
+      "remaining": "Dispatcher pay/reporting and sensitive onboarding policy remain incomplete",
+      "testFiles": [
+        "tests/browser/administration.spec.mjs",
+        "tests/browser/onboarding.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 90
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:dispatchers",
+          "width": 390,
+          "route": "/app",
+          "navigation": "people",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-dispatchers-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-dispatchers-390.png",
+          "sha256": "d6b240aa80e9f60a0e5d974518535a77a67af09adc05956ed10805a23a65e53b",
+          "height": 1917
+        },
+        {
+          "screen": "carrier:dispatchers",
+          "width": 768,
+          "route": "/app",
+          "navigation": "people",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-dispatchers-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-dispatchers-768.png",
+          "sha256": "57a8aec5889ac3c5e184d6c8d48b3c3ab0acb646a5bc064206820ecaa673ea74",
+          "height": 1489
+        },
+        {
+          "screen": "carrier:dispatchers",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "people",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-dispatchers-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-dispatchers-1440.png",
+          "sha256": "1e2f0043cd2ae28551a598b69e5d1c0bbd6b75af80f66ed17d954344f23feb02",
+          "height": 1261
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "carrier:fleet-resources",
+      "persona": "carrier",
+      "screen": "fleet-resources",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "maintenance"
+      ],
+      "permissions": [
+        "asset:view",
+        "asset:manage",
+        "driver:approve",
+        "vehicle:approve"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Owned assets, employment and independent carrier eligibility holds",
+      "remaining": "Full truck detail, sensitive attachments and specialized equipment contract",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 91
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:fleet-resources",
+          "width": 390,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-fleet-resources-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-fleet-resources-390.png",
+          "sha256": "251f58730d991e04bcff75698b6ea7c930ffe6e820d8992bc613c421637302e7",
+          "height": 1837
+        },
+        {
+          "screen": "carrier:fleet-resources",
+          "width": 768,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-fleet-resources-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-fleet-resources-768.png",
+          "sha256": "f85386917bd8da4f7d5f362d0767d733655486cf1ae67a37c99abde7e76af959",
+          "height": 1383
+        },
+        {
+          "screen": "carrier:fleet-resources",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-fleet-resources-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-fleet-resources-1440.png",
+          "sha256": "74e3de0b4069aad1b1021da3229866e060f626ca906b8d5a0f120743032dd1ee",
+          "height": 1151
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "carrier:directory",
+      "persona": "carrier",
+      "screen": "directory",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "directories",
+        "customers"
+      ],
+      "permissions": [
+        "customer:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Persisted typed broker/customer/factor/facility records and relationships",
+      "remaining": "Approved external book of record and delivery remain blocked",
+      "testFiles": [
+        "tests/browser/directories.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 92
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:directory",
+          "width": 390,
+          "route": "/app",
+          "navigation": "directories",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-directory-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-directory-390.png",
+          "sha256": "d6050ca13a48fd944f67bddc656a248cb3d17e73d9109e74be928658faa2ed3a",
+          "height": 989
+        },
+        {
+          "screen": "carrier:directory",
+          "width": 768,
+          "route": "/app",
+          "navigation": "directories",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-directory-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-directory-768.png",
+          "sha256": "f936bac8b9529c7df35ece176ff5072af5a11834f41b9783a39e68e05a369467",
+          "height": 900
+        },
+        {
+          "screen": "carrier:directory",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "directories",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-directory-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-directory-1440.png",
+          "sha256": "8b3ef710dcf408300ac5dac7893698e07996046bb8e8dcfb6c4499a1fbac1de9",
+          "height": 900
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "carrier:onboarding",
+      "persona": "carrier",
+      "screen": "onboarding",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "onboarding",
+        "people"
+      ],
+      "permissions": [
+        "user:manage",
+        "driver:approve"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Typed local onboarding submissions, needs-information and activation gates",
+      "remaining": "No real identities or invitations; approved delivery and sensitive storage absent",
+      "testFiles": [
+        "tests/browser/onboarding.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 93
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:onboarding",
+          "width": 390,
+          "route": "/app",
+          "navigation": "onboarding",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-onboarding-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-onboarding-390.png",
+          "sha256": "7a4c1c8a26b41223861c4687de81d1414a00b3b115a9f82aea4000111aec6ff9",
+          "height": 1132
+        },
+        {
+          "screen": "carrier:onboarding",
+          "width": 768,
+          "route": "/app",
+          "navigation": "onboarding",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-onboarding-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-onboarding-768.png",
+          "sha256": "1e3c40b86197627f83242cc560da92fe48e9087a8569f4817bb6abc4a8278828",
+          "height": 900
+        },
+        {
+          "screen": "carrier:onboarding",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "onboarding",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-onboarding-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-onboarding-1440.png",
+          "sha256": "38deb5c43f50f0d45fd29993ca93fe4f0156a2b00eeae3f98cd5c154ce47f90b",
+          "height": 900
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "carrier:compliance",
+      "persona": "carrier",
+      "screen": "compliance",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "documents",
+        "onboarding"
+      ],
+      "permissions": [
+        "driver:approve",
+        "vehicle:approve",
+        "document:review"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Carrier holds, expiry eligibility, shipping-document review and onboarding status",
+      "remaining": "Complete identity/equipment document packages, reminders and storage policy",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs",
+        "tests/browser/onboarding.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 94
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:compliance",
+          "width": 390,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-compliance-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-compliance-390.png",
+          "sha256": "16893764a2563f54dfce6fccc0200cd9fb71e8380e1eb976c38f24606826ef4e",
+          "height": 1837
+        },
+        {
+          "screen": "carrier:compliance",
+          "width": 768,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-compliance-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-compliance-768.png",
+          "sha256": "f85386917bd8da4f7d5f362d0767d733655486cf1ae67a37c99abde7e76af959",
+          "height": 1383
+        },
+        {
+          "screen": "carrier:compliance",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-compliance-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-compliance-1440.png",
+          "sha256": "74e3de0b4069aad1b1021da3229866e060f626ca906b8d5a0f120743032dd1ee",
+          "height": 1151
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "carrier:accounting",
+      "persona": "carrier",
+      "screen": "accounting",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "settlements",
+        "billing",
+        "finance"
+      ],
+      "permissions": [
+        "settlement:manage",
+        "billing:manage",
+        "finance:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Integer-cent statements, invoice readiness, approved PDFs and receivable evidence",
+      "remaining": "Payment provider and approved delivery absent; approval never means transferred money",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs",
+        "tests/browser/b691-expenses.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 95
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:accounting",
+          "width": 390,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-accounting-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-accounting-390.png",
+          "sha256": "cad10d94ccd8ad6677b153e051423613e6343f91524af5dada9ea9dca028f053",
+          "height": 2000
+        },
+        {
+          "screen": "carrier:accounting",
+          "width": 768,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-accounting-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-accounting-768.png",
+          "sha256": "080457d2738d478c8d37678bbde8a99e72a8cafa27225c3a26d167f18f2cdc90",
+          "height": 1437
+        },
+        {
+          "screen": "carrier:accounting",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-accounting-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-accounting-1440.png",
+          "sha256": "cd4ac78d919ea3eda8ac6a4ea08abf5ab1d1e40bb96ab9aec1ba77acd393d199",
+          "height": 1385
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "carrier:reports",
+      "persona": "carrier",
+      "screen": "reports",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "analytics",
+        "settlements"
+      ],
+      "permissions": [
+        "analytics:view",
+        "settlement:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Measured operational summaries and governed statement PDFs",
+      "remaining": "Full accounting report catalog and exports incomplete",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 96
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:reports",
+          "width": 390,
+          "route": "/app",
+          "navigation": "analytics",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-reports-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-reports-390.png",
+          "sha256": "56c1b7df786f7cbc82d3c4dcd9e0df7934754149c48ce23c7e70e2f0692cf8b7",
+          "height": 2461
+        },
+        {
+          "screen": "carrier:reports",
+          "width": 768,
+          "route": "/app",
+          "navigation": "analytics",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-reports-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-reports-768.png",
+          "sha256": "4403d5677a8b71772b8dfa0147d036c6a2bfd71ef204c358f4abd1e9d4705c07",
+          "height": 1902
+        },
+        {
+          "screen": "carrier:reports",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "analytics",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-reports-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-reports-1440.png",
+          "sha256": "fce15c34dd140d6aa4bea3a01b7f329deb381ee5ca38f61232221acbab443cd0",
+          "height": 1472
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "carrier:settings",
+      "persona": "carrier",
+      "screen": "settings",
+      "status": "partial",
+      "route": "/admin",
+      "navigation": [],
+      "permissions": [
+        "governance:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Existing company settings and deny-only configuration at /admin",
+      "remaining": "Separate /admin route retained; no silent permission expansion",
+      "testFiles": [
+        "tests/browser/administration.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 97
+      },
+      "api": [
+        "GET /api/ops/admin/settings",
+        "POST /api/ops/admin/settings",
+        "GET /api/ops/admin/audit"
+      ],
+      "implementation": [
+        "apps/operations/admin.js",
+        "server/operations-admin.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "carrier:settings",
+          "width": 390,
+          "route": "/admin",
+          "navigation": null,
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-settings-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-settings-390.png",
+          "sha256": "8494fcbe240258af4337395be23f4b97d94f3cfd808d8cdf8b795d514fa52617",
+          "height": 1582
+        },
+        {
+          "screen": "carrier:settings",
+          "width": 768,
+          "route": "/admin",
+          "navigation": null,
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-settings-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-settings-768.png",
+          "sha256": "4f8ad51e7f56da5490d0df68baae03d99fb6ef2b4b239d68fe28f5928abe72a4",
+          "height": 1252
+        },
+        {
+          "screen": "carrier:settings",
+          "width": 1440,
+          "route": "/admin",
+          "navigation": null,
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "carrier-settings-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped carrier screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-settings-1440.png",
+          "sha256": "ca313b7fae6ff51e429e113d19933fdb92b7de96750b35e483fc69dec35a98c6",
+          "height": 1288
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "fleet:dashboard",
+      "persona": "fleet",
+      "screen": "dashboard",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "overview"
+      ],
+      "permissions": [
+        "load:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own loads/assets/approved statements projected by server",
+      "remaining": "Complete period/payment/maintenance dashboard incomplete",
+      "testFiles": [
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 73
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "fleet:dashboard",
+          "width": 390,
+          "route": "/app",
+          "navigation": "overview",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-dashboard-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-dashboard-390.png",
+          "sha256": "197d9ca78c42ac11124b30aa5e1cda5ad121e9b1907821530682b15ca30053fd",
+          "height": 1112
+        },
+        {
+          "screen": "fleet:dashboard",
+          "width": 768,
+          "route": "/app",
+          "navigation": "overview",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-dashboard-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-dashboard-768.png",
+          "sha256": "18cd861767130e541bd99286e685401c6c271a8f9e8df4b90a314f3bb16e5b8a",
+          "height": 959
+        },
+        {
+          "screen": "fleet:dashboard",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "overview",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-dashboard-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-dashboard-1440.png",
+          "sha256": "e55e2b11c71e23110cf19a5eb25a99444f33e589236a1e4a2f946e91c0455c1e",
+          "height": 900
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "fleet:drivers",
+      "persona": "fleet",
+      "screen": "drivers",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "people",
+        "onboarding"
+      ],
+      "permissions": [
+        "asset:view",
+        "employment:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own employment and local profile lifecycle; carrier approval independent",
+      "remaining": "Hosted accounts and full sensitive document package blocked",
+      "testFiles": [
+        "tests/browser/onboarding.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 74
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "fleet:drivers",
+          "width": 390,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-drivers-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-drivers-390.png",
+          "sha256": "0fce446088d5bbb9db239740649e239c19cd604855ef86527cbeab3e07f0f373",
+          "height": 1752
+        },
+        {
+          "screen": "fleet:drivers",
+          "width": 768,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-drivers-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-drivers-768.png",
+          "sha256": "915e06ee637499cf478611e6db4037933a4a877735cdc1af1afe49953e577123",
+          "height": 1298
+        },
+        {
+          "screen": "fleet:drivers",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-drivers-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-drivers-1440.png",
+          "sha256": "a408a85e3aa032ee04e869d26936c1553bf22a4ed812795b802e6ec567c59a5f",
+          "height": 1066
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "fleet:equipment",
+      "persona": "fleet",
+      "screen": "equipment",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "maintenance"
+      ],
+      "permissions": [
+        "asset:manage",
+        "asset:service"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Owned equipment edits/service history retain carrier holds",
+      "remaining": "Specialized trailer/type and removal policy incomplete",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 75
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "fleet:equipment",
+          "width": 390,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-equipment-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-equipment-390.png",
+          "sha256": "0fce446088d5bbb9db239740649e239c19cd604855ef86527cbeab3e07f0f373",
+          "height": 1752
+        },
+        {
+          "screen": "fleet:equipment",
+          "width": 768,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-equipment-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-equipment-768.png",
+          "sha256": "915e06ee637499cf478611e6db4037933a4a877735cdc1af1afe49953e577123",
+          "height": 1298
+        },
+        {
+          "screen": "fleet:equipment",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-equipment-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-equipment-1440.png",
+          "sha256": "a408a85e3aa032ee04e869d26936c1553bf22a4ed812795b802e6ec567c59a5f",
+          "height": 1066
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "fleet:loads",
+      "persona": "fleet",
+      "screen": "loads",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "loads"
+      ],
+      "permissions": [
+        "load:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own assigned loads; commercial rates and foreign assignments withheld",
+      "remaining": "Original visual comparison blocked; live tracking not connected",
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 76
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "fleet:loads",
+          "width": 390,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-loads-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-loads-390.png",
+          "sha256": "6ac465cd4395f14aada6847d8f94841460647deb31184b88cdccd07b732f0434",
+          "height": 1008
+        },
+        {
+          "screen": "fleet:loads",
+          "width": 768,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-loads-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-loads-768.png",
+          "sha256": "4c0847bc914ab823a148908ec24691e289eddfe98018210c10f40ecdd6f1d1ee",
+          "height": 900
+        },
+        {
+          "screen": "fleet:loads",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-loads-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-loads-1440.png",
+          "sha256": "de4470e8802abdb0a41b4ec050c3778dff4709328a272018434284b0f2479857",
+          "height": 900
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "fleet:maintenance",
+      "persona": "fleet",
+      "screen": "maintenance",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "maintenance"
+      ],
+      "permissions": [
+        "asset:service"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Owner service review, odometer reports, explicit intervals and due warnings",
+      "remaining": "Automatic distance/location and vendor/cost scheduling absent",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 77
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "fleet:maintenance",
+          "width": 390,
+          "route": "/app",
+          "navigation": "maintenance",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-maintenance-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-maintenance-390.png",
+          "sha256": "f81453e01cfde15b80422053ec8e58a420716b596fc4b1b13182f614a30d885e",
+          "height": 1442
+        },
+        {
+          "screen": "fleet:maintenance",
+          "width": 768,
+          "route": "/app",
+          "navigation": "maintenance",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-maintenance-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-maintenance-768.png",
+          "sha256": "550e809f24689613174d3f6122a9427181a1f176c7ad9e5a336ad801b7118859",
+          "height": 1129
+        },
+        {
+          "screen": "fleet:maintenance",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "maintenance",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-maintenance-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-maintenance-1440.png",
+          "sha256": "b1fe0f3f202f164375e46dbaa65ea2e0d58dda3af0bef89b5f04626c114b0de3",
+          "height": 1117
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "fleet:settlements",
+      "persona": "fleet",
+      "screen": "settlements",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "settlements"
+      ],
+      "permissions": [
+        "settlement:view",
+        "settlement:dispute"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own approved carrier statements, immutable disputes and PDF downloads",
+      "remaining": "Acknowledgment/dispute resolution and actual payment are incomplete",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 78
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "fleet:settlements",
+          "width": 390,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-settlements-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-settlements-390.png",
+          "sha256": "02c42ad06954f5981c5f37467956cda3079052a57bf6367b481cb1d672081e03",
+          "height": 900
+        },
+        {
+          "screen": "fleet:settlements",
+          "width": 768,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-settlements-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-settlements-768.png",
+          "sha256": "221207387b76fd3e96e86c3a513ffab126fb2e1ab3ef542647037dafb4f4fbf1",
+          "height": 900
+        },
+        {
+          "screen": "fleet:settlements",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-settlements-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-settlements-1440.png",
+          "sha256": "62c3093660dd61d5ea4983f16ab0f43b431987e0d8adc88adde6b9406dfa01e0",
+          "height": 900
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "fleet:driver-pay",
+      "persona": "fleet",
+      "screen": "driver-pay",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "driver-pay"
+      ],
+      "permissions": [
+        "payroll:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Explicit six-model terms, approval/revision, source budget and expense allocation",
+      "remaining": "No invented employment terms or payment execution",
+      "testFiles": [
+        "tests/browser/fleet-pay-models.spec.mjs",
+        "tests/browser/b691-expenses.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 79
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "fleet:driver-pay",
+          "width": 390,
+          "route": "/app",
+          "navigation": "driver-pay",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-driver-pay-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-driver-pay-390.png",
+          "sha256": "23bcfe230c3772b10150b3be6611abda01927ce86c18c7de24a2b09454cd0cc8",
+          "height": 1252
+        },
+        {
+          "screen": "fleet:driver-pay",
+          "width": 768,
+          "route": "/app",
+          "navigation": "driver-pay",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-driver-pay-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-driver-pay-768.png",
+          "sha256": "693bf0cb18f77c6466e4cc17a28518a8fd6ed2690373cc9c22d69281ca3bc78e",
+          "height": 907
+        },
+        {
+          "screen": "fleet:driver-pay",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "driver-pay",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-driver-pay-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-driver-pay-1440.png",
+          "sha256": "27c4ea6f8a7910d67cfa23c5807983b7823aa3d24f88244ed497e2c8769e0f0a",
+          "height": 943
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "fleet:escrow",
+      "persona": "fleet",
+      "screen": "escrow",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "settlements"
+      ],
+      "permissions": [
+        "settlement:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Read-only approved escrow contributions",
+      "remaining": "Full debit/refund/claim/opening/closing ledger requires approved contract",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 80
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "fleet:escrow",
+          "width": 390,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-escrow-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-escrow-390.png",
+          "sha256": "02c42ad06954f5981c5f37467956cda3079052a57bf6367b481cb1d672081e03",
+          "height": 900
+        },
+        {
+          "screen": "fleet:escrow",
+          "width": 768,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-escrow-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-escrow-768.png",
+          "sha256": "221207387b76fd3e96e86c3a513ffab126fb2e1ab3ef542647037dafb4f4fbf1",
+          "height": 900
+        },
+        {
+          "screen": "fleet:escrow",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-escrow-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-escrow-1440.png",
+          "sha256": "62c3093660dd61d5ea4983f16ab0f43b431987e0d8adc88adde6b9406dfa01e0",
+          "height": 900
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "fleet:compliance",
+      "persona": "fleet",
+      "screen": "compliance",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "onboarding"
+      ],
+      "permissions": [
+        "asset:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own eligibility/approval states; fleet cannot clear carrier holds",
+      "remaining": "Full compliance document packages/reminder contract not complete",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs",
+        "tests/browser/onboarding.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 81
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "fleet:compliance",
+          "width": 390,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-compliance-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-compliance-390.png",
+          "sha256": "2d89a3e426b38e82af561fc0d8df2ad54dd617d0ec745205139c1ce80194b875",
+          "height": 1752
+        },
+        {
+          "screen": "fleet:compliance",
+          "width": 768,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-compliance-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-compliance-768.png",
+          "sha256": "915e06ee637499cf478611e6db4037933a4a877735cdc1af1afe49953e577123",
+          "height": 1298
+        },
+        {
+          "screen": "fleet:compliance",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "fleet-compliance-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped fleet screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-compliance-1440.png",
+          "sha256": "a408a85e3aa032ee04e869d26936c1553bf22a4ed812795b802e6ec567c59a5f",
+          "height": 1066
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "driver:loads",
+      "persona": "driver",
+      "screen": "loads",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "loads"
+      ],
+      "permissions": [
+        "load:view",
+        "load:execute",
+        "pod:record"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own assignment acceptance/rejection, ordered stops, pickup/transit/delivery and bounded acknowledgments",
+      "remaining": "Arrival/geofence/maps and signed-image storage need approved contracts",
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/browser/driver-offline.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 227
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "driver:loads",
+          "width": 390,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-loads-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-loads-390.png",
+          "sha256": "a143fd9706f1eed2ad390a261980ac3bb84922eee0e5202be85bbcc0de3bf0b8",
+          "height": 1546
+        },
+        {
+          "screen": "driver:loads",
+          "width": 768,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-loads-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-loads-768.png",
+          "sha256": "02858e50f724a099ae707be1532aa0ebf9e51f23e7b870f34479d2bed8981a10",
+          "height": 1286
+        },
+        {
+          "screen": "driver:loads",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-loads-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-loads-1440.png",
+          "sha256": "6087d3db820efb57770cfe4c13de8864da1bd95f39a56129e327aea3af6be6d0",
+          "height": 1298
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "driver:truck",
+      "persona": "driver",
+      "screen": "truck",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "maintenance"
+      ],
+      "permissions": [
+        "asset:view",
+        "asset:service"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Assigned equipment and durable service reports",
+      "remaining": "Registration/insurance/lease storage and live odometer integration absent",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 228
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "driver:truck",
+          "width": 390,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-truck-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-truck-390.png",
+          "sha256": "dc216ae14a4c88c25dd532edb1514285c8f273314f2c482c472e65fb1b644e3e",
+          "height": 1541
+        },
+        {
+          "screen": "driver:truck",
+          "width": 768,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-truck-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-truck-768.png",
+          "sha256": "89de42c90bf6f6d079fcc5879ab9fd9fda5ae87727845d55577993ddc6131f05",
+          "height": 1274
+        },
+        {
+          "screen": "driver:truck",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "assets",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-truck-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-truck-1440.png",
+          "sha256": "d2534993adda9ec77f0eafa97e747e9d537e1f0042ec7a9f41b14411abd21dec",
+          "height": 1018
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "driver:documents",
+      "persona": "driver",
+      "screen": "documents",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "loads",
+        "onboarding"
+      ],
+      "permissions": [
+        "document:view",
+        "document:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Authorized reviewed shipping metadata/revisions, summaries and owned profile states",
+      "remaining": "No sensitive uploads, signature images or identity-document storage",
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/onboarding.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 229
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "driver:documents",
+          "width": 390,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-documents-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-documents-390.png",
+          "sha256": "a143fd9706f1eed2ad390a261980ac3bb84922eee0e5202be85bbcc0de3bf0b8",
+          "height": 1546
+        },
+        {
+          "screen": "driver:documents",
+          "width": 768,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-documents-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-documents-768.png",
+          "sha256": "02858e50f724a099ae707be1532aa0ebf9e51f23e7b870f34479d2bed8981a10",
+          "height": 1286
+        },
+        {
+          "screen": "driver:documents",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "loads",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-documents-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-documents-1440.png",
+          "sha256": "6087d3db820efb57770cfe4c13de8864da1bd95f39a56129e327aea3af6be6d0",
+          "height": 1298
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "driver:pay",
+      "persona": "driver",
+      "screen": "pay",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "settlements",
+        "expenses"
+      ],
+      "permissions": [
+        "settlement:view",
+        "payroll:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own approved earnings, period summaries/PDFs and governed expenses",
+      "remaining": "Full payment evidence/provider and policy-dependent ledger cases blocked",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs",
+        "tests/browser/expenses.spec.mjs",
+        "tests/browser/b691-expenses.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 230
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "driver:pay",
+          "width": 390,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-pay-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-pay-390.png",
+          "sha256": "87e258eee2e6c0c14e429d86f85040c755f03427414e577ba76c44403c91cb34",
+          "height": 1443
+        },
+        {
+          "screen": "driver:pay",
+          "width": 768,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-pay-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-pay-768.png",
+          "sha256": "565cbec0727a5e9f452b4388242455e688073a373d94c5f07d1bf4bb7c0c46b1",
+          "height": 1207
+        },
+        {
+          "screen": "driver:pay",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "settlements",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-pay-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-pay-1440.png",
+          "sha256": "048e834883d4a7a5546b9dde0ee1a9834993951faccb8702459a7428ead2361d",
+          "height": 1195
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "driver:chat",
+      "persona": "driver",
+      "screen": "chat",
+      "status": "design-only",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "No real dispatcher chat or call adapter",
+      "remaining": "Approved contact model, consent, delivery provider and authorization contract required",
+      "testFiles": [],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 231
+      },
+      "api": [],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "driver:chat",
+          "width": 390,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Approved contact model, consent, delivery provider and authorization contract required",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 390"
+        },
+        {
+          "screen": "driver:chat",
+          "width": 768,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Approved contact model, consent, delivery provider and authorization contract required",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 768"
+        },
+        {
+          "screen": "driver:chat",
+          "width": 1440,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Approved contact model, consent, delivery provider and authorization contract required",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 1440"
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "driver:profile",
+      "persona": "driver",
+      "screen": "profile",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "onboarding",
+        "notifications"
+      ],
+      "permissions": [
+        "notification:preferences"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Owned onboarding profile and persisted notification preferences",
+      "remaining": "PIN/biometrics/trusted-device contract and sensitive banking/storage absent",
+      "testFiles": [
+        "tests/browser/onboarding.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 232
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "driver:profile",
+          "width": 390,
+          "route": "/app",
+          "navigation": "onboarding",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-profile-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-profile-390.png",
+          "sha256": "a7c7c44ffa865b3b41733c2ded41cec63245f4bccd731b07a40e388c475eb94b",
+          "height": 900
+        },
+        {
+          "screen": "driver:profile",
+          "width": 768,
+          "route": "/app",
+          "navigation": "onboarding",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-profile-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-profile-768.png",
+          "sha256": "d829bcd95b15bf4190d681b2a2e217260686c25d9d97fc1c0454952db91984c7",
+          "height": 900
+        },
+        {
+          "screen": "driver:profile",
+          "width": 1440,
+          "route": "/app",
+          "navigation": "onboarding",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "driver-profile-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped driver screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-profile-1440.png",
+          "sha256": "4912843e8cc5053a4188863a8638890a7ff60b799fd22a76070a9839a49cce1f",
+          "height": 900
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:dashboard",
+      "persona": "platform",
+      "screen": "dashboard",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Governance-only workspace retained",
+      "remaining": "Prototype cross-tenant operational metrics cannot be reintroduced without scoped authority",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 78
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:dashboard",
+          "width": 390,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Prototype cross-tenant operational metrics cannot be reintroduced without scoped authority",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390"
+        },
+        {
+          "screen": "platform:dashboard",
+          "width": 768,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Prototype cross-tenant operational metrics cannot be reintroduced without scoped authority",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768"
+        },
+        {
+          "screen": "platform:dashboard",
+          "width": 1440,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Prototype cross-tenant operational metrics cannot be reintroduced without scoped authority",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440"
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:carriers",
+      "persona": "platform",
+      "screen": "carriers",
+      "status": "partial",
+      "route": null,
+      "navigation": [],
+      "permissions": [
+        "platform:invite"
+      ],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Canonical invitation contract and local management fixtures exist",
+      "remaining": "Carrier lifecycle and subscription management surface incomplete",
+      "testFiles": [
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 79
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:carriers",
+          "width": 390,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Carrier lifecycle and subscription management surface incomplete",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390"
+        },
+        {
+          "screen": "platform:carriers",
+          "width": 768,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Carrier lifecycle and subscription management surface incomplete",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768"
+        },
+        {
+          "screen": "platform:carriers",
+          "width": 1440,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Carrier lifecycle and subscription management surface incomplete",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440"
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:fleet-cos",
+      "persona": "platform",
+      "screen": "fleet-cos",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "No operational tenant reader granted",
+      "remaining": "Owner-approved scoped management reader, independent approval/reason/expiry required",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 80
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:fleet-cos",
+          "width": 390,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Owner-approved scoped management reader, independent approval/reason/expiry required",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390"
+        },
+        {
+          "screen": "platform:fleet-cos",
+          "width": 768,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Owner-approved scoped management reader, independent approval/reason/expiry required",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768"
+        },
+        {
+          "screen": "platform:fleet-cos",
+          "width": 1440,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Owner-approved scoped management reader, independent approval/reason/expiry required",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440"
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:drivers",
+      "persona": "platform",
+      "screen": "drivers",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "No global driver PII reader granted",
+      "remaining": "Owner-approved management scope and privacy policy required",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 81
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:drivers",
+          "width": 390,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Owner-approved management scope and privacy policy required",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390"
+        },
+        {
+          "screen": "platform:drivers",
+          "width": 768,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Owner-approved management scope and privacy policy required",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768"
+        },
+        {
+          "screen": "platform:drivers",
+          "width": 1440,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Owner-approved management scope and privacy policy required",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440"
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:loads",
+      "persona": "platform",
+      "screen": "loads",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Platform operational access explicitly denied",
+      "remaining": "Prototype global loads/impersonation must not bypass tenant isolation",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 82
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:loads",
+          "width": 390,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Prototype global loads/impersonation must not bypass tenant isolation",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390"
+        },
+        {
+          "screen": "platform:loads",
+          "width": 768,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Prototype global loads/impersonation must not bypass tenant isolation",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768"
+        },
+        {
+          "screen": "platform:loads",
+          "width": 1440,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Prototype global loads/impersonation must not bypass tenant isolation",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440"
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:payments",
+      "persona": "platform",
+      "screen": "payments",
+      "status": "design-only",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "No platform payment execution or monitoring claimed",
+      "remaining": "Approved isolated billing/provider contract absent",
+      "testFiles": [],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 83
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:payments",
+          "width": 390,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Approved isolated billing/provider contract absent",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390"
+        },
+        {
+          "screen": "platform:payments",
+          "width": 768,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Approved isolated billing/provider contract absent",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768"
+        },
+        {
+          "screen": "platform:payments",
+          "width": 1440,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Approved isolated billing/provider contract absent",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440"
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:cases",
+      "persona": "platform",
+      "screen": "cases",
+      "status": "partial",
+      "route": "/uat/control",
+      "navigation": [
+        "#platform-workspace"
+      ],
+      "permissions": [
+        "platform:cases"
+      ],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Persisted cases with owner, transitions, reasons, versions and replay-safe commands",
+      "remaining": "Hosted governance identities and real external support delivery blocked",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 84
+      },
+      "api": [
+        "POST /api/ops/platform",
+        "POST /api/ops/platform/workspace"
+      ],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:cases",
+          "width": 390,
+          "route": "/uat/control",
+          "navigation": "#platform-workspace",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "platform-cases-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--9d42d-and-bounded-overflow-at-390/platform-cases-390.png",
+          "sha256": "d5524add6a4f350cbca123e473cd2ac74b0e804b5453c82c8b81c56d5a1e3f31",
+          "height": 1817
+        },
+        {
+          "screen": "platform:cases",
+          "width": 768,
+          "route": "/uat/control",
+          "navigation": "#platform-workspace",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "platform-cases-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--dfa1c-and-bounded-overflow-at-768/platform-cases-768.png",
+          "sha256": "8294acaf607e46b34b618450038439c904674bf12c49a2d191e651a9e6f8a3d9",
+          "height": 1490
+        },
+        {
+          "screen": "platform:cases",
+          "width": 1440,
+          "route": "/uat/control",
+          "navigation": "#platform-workspace",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "platform-cases-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--70f43-nd-bounded-overflow-at-1440/platform-cases-1440.png",
+          "sha256": "ad7592020368a87bfaed3ed6186e390c15b99959e76267a43576ff38a0344776",
+          "height": 1502
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:compliance",
+      "persona": "platform",
+      "screen": "compliance",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Operational compliance remains with carrier owner",
+      "remaining": "Global compliance view requires explicitly scoped management contract",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 85
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:compliance",
+          "width": 390,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Global compliance view requires explicitly scoped management contract",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390"
+        },
+        {
+          "screen": "platform:compliance",
+          "width": 768,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Global compliance view requires explicitly scoped management contract",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768"
+        },
+        {
+          "screen": "platform:compliance",
+          "width": 1440,
+          "status": "BLOCKED_CONTRACT",
+          "capture": null,
+          "reason": "Global compliance view requires explicitly scoped management contract",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440"
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:config",
+      "persona": "platform",
+      "screen": "config",
+      "status": "partial",
+      "route": "/uat/control",
+      "navigation": [
+        "#platform-config"
+      ],
+      "permissions": [
+        "platform:configure"
+      ],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Governed case-response configuration with reason/audit",
+      "remaining": "Global override/delegation catalog absent",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 86
+      },
+      "api": [
+        "POST /api/ops/platform",
+        "POST /api/ops/platform/workspace"
+      ],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:config",
+          "width": 390,
+          "route": "/uat/control",
+          "navigation": "#platform-config",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "platform-config-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--9d42d-and-bounded-overflow-at-390/platform-config-390.png",
+          "sha256": "d5524add6a4f350cbca123e473cd2ac74b0e804b5453c82c8b81c56d5a1e3f31",
+          "height": 1817
+        },
+        {
+          "screen": "platform:config",
+          "width": 768,
+          "route": "/uat/control",
+          "navigation": "#platform-config",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "platform-config-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--dfa1c-and-bounded-overflow-at-768/platform-config-768.png",
+          "sha256": "8294acaf607e46b34b618450038439c904674bf12c49a2d191e651a9e6f8a3d9",
+          "height": 1490
+        },
+        {
+          "screen": "platform:config",
+          "width": 1440,
+          "route": "/uat/control",
+          "navigation": "#platform-config",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "platform-config-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--70f43-nd-bounded-overflow-at-1440/platform-config-1440.png",
+          "sha256": "ad7592020368a87bfaed3ed6186e390c15b99959e76267a43576ff38a0344776",
+          "height": 1502
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    },
+    {
+      "id": "platform:audit",
+      "persona": "platform",
+      "screen": "audit",
+      "status": "partial",
+      "route": "/uat/control",
+      "navigation": [
+        "#audit-action"
+      ],
+      "permissions": [
+        "platform:audit"
+      ],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Governance audit read and isolated activity viewer",
+      "remaining": "Cross-tenant operational audit needs explicit scoped grant",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 87
+      },
+      "api": [
+        "POST /api/ops/platform",
+        "POST /api/ops/platform/workspace"
+      ],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      },
+      "captures": [
+        {
+          "screen": "platform:audit",
+          "width": 390,
+          "route": "/uat/control",
+          "navigation": "#audit-action",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "platform-audit-390.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 390",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--9d42d-and-bounded-overflow-at-390/platform-audit-390.png",
+          "sha256": "d5524add6a4f350cbca123e473cd2ac74b0e804b5453c82c8b81c56d5a1e3f31",
+          "height": 1817
+        },
+        {
+          "screen": "platform:audit",
+          "width": 768,
+          "route": "/uat/control",
+          "navigation": "#audit-action",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "platform-audit-768.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 768",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--dfa1c-and-bounded-overflow-at-768/platform-audit-768.png",
+          "sha256": "8294acaf607e46b34b618450038439c904674bf12c49a2d191e651a9e6f8a3d9",
+          "height": 1490
+        },
+        {
+          "screen": "platform:audit",
+          "width": 1440,
+          "route": "/uat/control",
+          "navigation": "#audit-action",
+          "status": "CAPTURED_CURRENT_IMPLEMENTATION",
+          "capture": "platform-audit-1440.png",
+          "approvedVisual": "BLOCKED_REFERENCE",
+          "wholePrototypeConformity": "partial",
+          "test": "mapped platform screens, keyboard navigation and bounded overflow at 1440",
+          "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--70f43-nd-bounded-overflow-at-1440/platform-audit-1440.png",
+          "sha256": "ad7592020368a87bfaed3ed6186e390c15b99959e76267a43576ff38a0344776",
+          "height": 1502
+        }
+      ],
+      "approvedVisual": "BLOCKED_REFERENCE"
+    }
+  ],
+  "newStateImages": [
+    {
+      "path": "dist/b791-b820/browser-final/results/b681-load-wizard-four-step-8253d-dit-and-confirmation-at-768/load-created-768.png",
+      "sha256": "7782a20e5990445a80bcb6615487d36055aba58921d4fa043b92ff11a3bfe79f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b681-load-wizard-four-step-8253d-dit-and-confirmation-at-768/review-768.png",
+      "sha256": "2ae2764e77109b0946917e02f48545e4f3c6614d408514409a0e86d6752d42ea"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b681-load-wizard-four-step-84452-it-and-confirmation-at-1440/load-created-1440.png",
+      "sha256": "36491c554571c82ce52fa0df8b4c7de01d8f1075a224436b41ee7838aa746a4b"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b681-load-wizard-four-step-84452-it-and-confirmation-at-1440/review-1440.png",
+      "sha256": "7d362d07325e21653d46348420be4f32f5bf0276cb3692b5235f121fb7519cf0"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b681-load-wizard-four-step-ce7b5-dit-and-confirmation-at-320/load-created-320.png",
+      "sha256": "33867d09853597584a693087b606b8645fb263d8a91a3cb1a1da50e952d5f75c"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b681-load-wizard-four-step-ce7b5-dit-and-confirmation-at-320/review-320.png",
+      "sha256": "db39aa53d284ffe29d60f05d996e2ae706ae1843f4e05843e08f877774f5f953"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b681-load-wizard-four-step-fd77e-dit-and-confirmation-at-390/load-created-390.png",
+      "sha256": "68b081bb43d65bdd4713645a1de1491eadbc0c9239c174083d766c2fdac1f358"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b681-load-wizard-four-step-fd77e-dit-and-confirmation-at-390/review-390.png",
+      "sha256": "b9a54573ce8a4beff0c1a44dfe79b41bbf125c203d461c454b36dbc0fcf93abd"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b691-expenses-expense-draf-05a8f--linkage-and-history-at-390/expense-history-390.png",
+      "sha256": "a72d311ea41e61106d316ec79aed0209e86e2ba712af2dacfe95c046f5bc19b3"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b691-expenses-expense-draf-0a1b4-linkage-and-history-at-1440/expense-history-1440.png",
+      "sha256": "56713d828201ee1a15a6bc8fd9f446065096ca84fa8f5743b0bd586e14903b09"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-harmonized-carri-6ef55-ilters-and-bookmarks-at-768/dashboard-carrier-768.png",
+      "sha256": "4d6ed6ffc2aea99db2213afcad546f5fbb710d9f948c3ee8f37e4e65bbc495e7"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-harmonized-carri-c46e1-lters-and-bookmarks-at-1440/dashboard-carrier-1440.png",
+      "sha256": "48fb6853eb5f9a88f0d4980c27ed85b248ca27c9f7308fc216024b7ab2b0419b"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-harmonized-carri-c9b24-ilters-and-bookmarks-at-390/dashboard-carrier-390.png",
+      "sha256": "b02dfdba6730238a798e2a65350966c52a3a818818c1d65943c2d90e7c0ae282"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-harmonized-drive-10da0-ilters-and-bookmarks-at-768/dashboard-driver-768.png",
+      "sha256": "95dcc757d3f10399717ce77b032d07eaf3ad8324101c47ee748fbbb613f38485"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-harmonized-drive-20a4c-ilters-and-bookmarks-at-390/dashboard-driver-390.png",
+      "sha256": "2aeed62ac0d9bebeaf63485db8fd04d83014616dfe8ddcdcc49032fd6bb2c62d"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-harmonized-drive-35b6a-lters-and-bookmarks-at-1440/dashboard-driver-1440.png",
+      "sha256": "f6d7b1999610f59d654d2717a5a687d06a3af0351500f320717415cefbefe223"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-harmonized-fleet-5eb0a-lters-and-bookmarks-at-1440/dashboard-fleet-1440.png",
+      "sha256": "df0fc2c9ea3a53018245c8c453b420637810f6c4ffcd09dab9f23a6b1fa5002f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-harmonized-fleet-cb2c2-ilters-and-bookmarks-at-768/dashboard-fleet-768.png",
+      "sha256": "9568ab38c389228c2775b7e6a8e4e5a1deeb89f96f04a28c21b10fc02bc05b64"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-harmonized-fleet-f3968-ilters-and-bookmarks-at-390/dashboard-fleet-390.png",
+      "sha256": "46761de27d1da5b3bb87dfed554c1a52f45271261edaf6d8946bd8e02f9857d3"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-platform-governa-a7167--operational-denial-at-1440/platform-1440.png",
+      "sha256": "c4898cb5724ac8d294b04d8c733aa608f9a407d5414e63b3bda05711f1142e69"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-platform-governa-bcb29-e-operational-denial-at-768/platform-768.png",
+      "sha256": "a904b4ac9c02a37eea4ac4996d0c9e35a6829a3706eba387f2e55ef29d914e1a"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-platform-governa-febfe-e-operational-denial-at-390/platform-390.png",
+      "sha256": "a371fe2f7fe65c948b1e20d946b9f0efe3bbfef50cb00098110bb2dc7c4a3d8a"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-resource-search--9472e-s-and-approvals-for-carrier/resources-carrier-390.png",
+      "sha256": "b5a91a19feb72cd8c750af47ce01c576400234d49cb0cbfb10fc871e089d94ab"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b751-b770-resource-search--d6c24-rds-and-approvals-for-fleet/resources-fleet-390.png",
+      "sha256": "120da8400d51a0babe15a0e02e56104cad91300c3784a7f6adef106b09fe0098"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-accounting-768.png",
+      "sha256": "080457d2738d478c8d37678bbde8a99e72a8cafa27225c3a26d167f18f2cdc90"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-compliance-768.png",
+      "sha256": "f85386917bd8da4f7d5f362d0767d733655486cf1ae67a37c99abde7e76af959"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-dashboard-768.png",
+      "sha256": "b0279192a1a21e198064cca3924d37874fc7867e12402e2883463d432e36f1c3"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-directory-768.png",
+      "sha256": "f936bac8b9529c7df35ece176ff5072af5a11834f41b9783a39e68e05a369467"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-dispatchers-768.png",
+      "sha256": "57a8aec5889ac3c5e184d6c8d48b3c3ab0acb646a5bc064206820ecaa673ea74"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-fleet-resources-768.png",
+      "sha256": "f85386917bd8da4f7d5f362d0767d733655486cf1ae67a37c99abde7e76af959"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-load-manager-768.png",
+      "sha256": "15874ae2b86a20da0896587a87f12961c6c2950e515dc42e2513c035d6e0eccd"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-onboarding-768.png",
+      "sha256": "1e3c40b86197627f83242cc560da92fe48e9087a8569f4817bb6abc4a8278828"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-reports-768.png",
+      "sha256": "4403d5677a8b71772b8dfa0147d036c6a2bfd71ef204c358f4abd1e9d4705c07"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/carrier-settings-768.png",
+      "sha256": "4f8ad51e7f56da5490d0df68baae03d99fb6ef2b4b239d68fe28f5928abe72a4"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-22e4c-and-bounded-overflow-at-768/dashboard-carrier-768.png",
+      "sha256": "5af7ff62a8adc16a0326acbd44865b0c1bd76fa9eaf9b1efae3e1f99b73f0caf"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-accounting-390.png",
+      "sha256": "cad10d94ccd8ad6677b153e051423613e6343f91524af5dada9ea9dca028f053"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-compliance-390.png",
+      "sha256": "16893764a2563f54dfce6fccc0200cd9fb71e8380e1eb976c38f24606826ef4e"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-dashboard-390.png",
+      "sha256": "1b874347e5a88799e6c8e53688644ec7e43b866a627ec8d20fefbbd1ffcf9d13"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-directory-390.png",
+      "sha256": "d6050ca13a48fd944f67bddc656a248cb3d17e73d9109e74be928658faa2ed3a"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-dispatchers-390.png",
+      "sha256": "d6b240aa80e9f60a0e5d974518535a77a67af09adc05956ed10805a23a65e53b"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-fleet-resources-390.png",
+      "sha256": "251f58730d991e04bcff75698b6ea7c930ffe6e820d8992bc613c421637302e7"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-load-manager-390.png",
+      "sha256": "0637711ee2c449132936cf26a4408260df923ad1ffb9a24c3f51f7e033195d3c"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-onboarding-390.png",
+      "sha256": "7a4c1c8a26b41223861c4687de81d1414a00b3b115a9f82aea4000111aec6ff9"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-reports-390.png",
+      "sha256": "56c1b7df786f7cbc82d3c4dcd9e0df7934754149c48ce23c7e70e2f0692cf8b7"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/carrier-settings-390.png",
+      "sha256": "8494fcbe240258af4337395be23f4b97d94f3cfd808d8cdf8b795d514fa52617"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-4e6e0-and-bounded-overflow-at-390/dashboard-carrier-390.png",
+      "sha256": "6ce4354633738095ff3c0158a0dad98e398d86f20380c0b906b41e4e23c44225"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-accounting-1440.png",
+      "sha256": "cd4ac78d919ea3eda8ac6a4ea08abf5ab1d1e40bb96ab9aec1ba77acd393d199"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-compliance-1440.png",
+      "sha256": "74e3de0b4069aad1b1021da3229866e060f626ca906b8d5a0f120743032dd1ee"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-dashboard-1440.png",
+      "sha256": "fb160e5db871c67a449493dfcd5f2af5e0f02137610fca9e91c90eeeacd1ee44"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-directory-1440.png",
+      "sha256": "8b3ef710dcf408300ac5dac7893698e07996046bb8e8dcfb6c4499a1fbac1de9"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-dispatchers-1440.png",
+      "sha256": "1e2f0043cd2ae28551a598b69e5d1c0bbd6b75af80f66ed17d954344f23feb02"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-fleet-resources-1440.png",
+      "sha256": "74e3de0b4069aad1b1021da3229866e060f626ca906b8d5a0f120743032dd1ee"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-load-manager-1440.png",
+      "sha256": "9a01634667320626abedaee04a458539c627380c4111bda83f4c18915b94c5c8"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-onboarding-1440.png",
+      "sha256": "38deb5c43f50f0d45fd29993ca93fe4f0156a2b00eeae3f98cd5c154ce47f90b"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-reports-1440.png",
+      "sha256": "fce15c34dd140d6aa4bea3a01b7f329deb381ee5ca38f61232221acbab443cd0"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/carrier-settings-1440.png",
+      "sha256": "ca313b7fae6ff51e429e113d19933fdb92b7de96750b35e483fc69dec35a98c6"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-carrier-s-59e0d-nd-bounded-overflow-at-1440/dashboard-carrier-1440.png",
+      "sha256": "7f9d417a6174bc4ef5ac76f5e1147e04e16fed5afbf459338c28baa8cbdd4a72"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/dashboard-driver-390.png",
+      "sha256": "00f6df648d5dbf3d1c9dd81631f3188aaa1738ea2fec24c0ccb209ec1ad1377f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-documents-390.png",
+      "sha256": "a143fd9706f1eed2ad390a261980ac3bb84922eee0e5202be85bbcc0de3bf0b8"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-loads-390.png",
+      "sha256": "a143fd9706f1eed2ad390a261980ac3bb84922eee0e5202be85bbcc0de3bf0b8"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-pay-390.png",
+      "sha256": "87e258eee2e6c0c14e429d86f85040c755f03427414e577ba76c44403c91cb34"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-profile-390.png",
+      "sha256": "a7c7c44ffa865b3b41733c2ded41cec63245f4bccd731b07a40e388c475eb94b"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-9d8f2-and-bounded-overflow-at-390/driver-truck-390.png",
+      "sha256": "dc216ae14a4c88c25dd532edb1514285c8f273314f2c482c472e65fb1b644e3e"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/dashboard-driver-1440.png",
+      "sha256": "4415297ff4a9660741f7e3e08ec7bc20cbd545ee1f695209346247c718320fef"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-documents-1440.png",
+      "sha256": "6087d3db820efb57770cfe4c13de8864da1bd95f39a56129e327aea3af6be6d0"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-loads-1440.png",
+      "sha256": "6087d3db820efb57770cfe4c13de8864da1bd95f39a56129e327aea3af6be6d0"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-pay-1440.png",
+      "sha256": "048e834883d4a7a5546b9dde0ee1a9834993951faccb8702459a7428ead2361d"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-profile-1440.png",
+      "sha256": "4912843e8cc5053a4188863a8638890a7ff60b799fd22a76070a9839a49cce1f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-e7b6a-nd-bounded-overflow-at-1440/driver-truck-1440.png",
+      "sha256": "d2534993adda9ec77f0eafa97e747e9d537e1f0042ec7a9f41b14411abd21dec"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/dashboard-driver-768.png",
+      "sha256": "2135def7e98e55d9dcdc699b659ca5c8e8e6ade72aa7fb04d0ea1dd732077eb2"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-documents-768.png",
+      "sha256": "02858e50f724a099ae707be1532aa0ebf9e51f23e7b870f34479d2bed8981a10"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-loads-768.png",
+      "sha256": "02858e50f724a099ae707be1532aa0ebf9e51f23e7b870f34479d2bed8981a10"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-pay-768.png",
+      "sha256": "565cbec0727a5e9f452b4388242455e688073a373d94c5f07d1bf4bb7c0c46b1"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-profile-768.png",
+      "sha256": "d829bcd95b15bf4190d681b2a2e217260686c25d9d97fc1c0454952db91984c7"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-driver-sc-ed9a5-and-bounded-overflow-at-768/driver-truck-768.png",
+      "sha256": "89de42c90bf6f6d079fcc5879ab9fd9fda5ae87727845d55577993ddc6131f05"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/dashboard-fleet-1440.png",
+      "sha256": "372ba98df40b41ab32f0bbac13e669a6485d3a6b156ce1687ff7494e755293bf"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-compliance-1440.png",
+      "sha256": "a408a85e3aa032ee04e869d26936c1553bf22a4ed812795b802e6ec567c59a5f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-dashboard-1440.png",
+      "sha256": "e55e2b11c71e23110cf19a5eb25a99444f33e589236a1e4a2f946e91c0455c1e"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-driver-pay-1440.png",
+      "sha256": "27c4ea6f8a7910d67cfa23c5807983b7823aa3d24f88244ed497e2c8769e0f0a"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-drivers-1440.png",
+      "sha256": "a408a85e3aa032ee04e869d26936c1553bf22a4ed812795b802e6ec567c59a5f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-equipment-1440.png",
+      "sha256": "a408a85e3aa032ee04e869d26936c1553bf22a4ed812795b802e6ec567c59a5f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-escrow-1440.png",
+      "sha256": "62c3093660dd61d5ea4983f16ab0f43b431987e0d8adc88adde6b9406dfa01e0"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-loads-1440.png",
+      "sha256": "de4470e8802abdb0a41b4ec050c3778dff4709328a272018434284b0f2479857"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-maintenance-1440.png",
+      "sha256": "b1fe0f3f202f164375e46dbaa65ea2e0d58dda3af0bef89b5f04626c114b0de3"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-676b0-nd-bounded-overflow-at-1440/fleet-settlements-1440.png",
+      "sha256": "62c3093660dd61d5ea4983f16ab0f43b431987e0d8adc88adde6b9406dfa01e0"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/dashboard-fleet-390.png",
+      "sha256": "9d23fcbc8419f4c3abeab04652330594e142f29609c3abdb804cb4d1da819266"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-compliance-390.png",
+      "sha256": "2d89a3e426b38e82af561fc0d8df2ad54dd617d0ec745205139c1ce80194b875"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-dashboard-390.png",
+      "sha256": "197d9ca78c42ac11124b30aa5e1cda5ad121e9b1907821530682b15ca30053fd"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-driver-pay-390.png",
+      "sha256": "23bcfe230c3772b10150b3be6611abda01927ce86c18c7de24a2b09454cd0cc8"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-drivers-390.png",
+      "sha256": "0fce446088d5bbb9db239740649e239c19cd604855ef86527cbeab3e07f0f373"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-equipment-390.png",
+      "sha256": "0fce446088d5bbb9db239740649e239c19cd604855ef86527cbeab3e07f0f373"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-escrow-390.png",
+      "sha256": "02c42ad06954f5981c5f37467956cda3079052a57bf6367b481cb1d672081e03"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-loads-390.png",
+      "sha256": "6ac465cd4395f14aada6847d8f94841460647deb31184b88cdccd07b732f0434"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-maintenance-390.png",
+      "sha256": "f81453e01cfde15b80422053ec8e58a420716b596fc4b1b13182f614a30d885e"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-74e14-and-bounded-overflow-at-390/fleet-settlements-390.png",
+      "sha256": "02c42ad06954f5981c5f37467956cda3079052a57bf6367b481cb1d672081e03"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/dashboard-fleet-768.png",
+      "sha256": "a5e1a0435318f9e73d62f1bbeaf7e6fd5d0110cf1517f52701e34abee32bc3c5"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-compliance-768.png",
+      "sha256": "915e06ee637499cf478611e6db4037933a4a877735cdc1af1afe49953e577123"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-dashboard-768.png",
+      "sha256": "18cd861767130e541bd99286e685401c6c271a8f9e8df4b90a314f3bb16e5b8a"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-driver-pay-768.png",
+      "sha256": "693bf0cb18f77c6466e4cc17a28518a8fd6ed2690373cc9c22d69281ca3bc78e"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-drivers-768.png",
+      "sha256": "915e06ee637499cf478611e6db4037933a4a877735cdc1af1afe49953e577123"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-equipment-768.png",
+      "sha256": "915e06ee637499cf478611e6db4037933a4a877735cdc1af1afe49953e577123"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-escrow-768.png",
+      "sha256": "221207387b76fd3e96e86c3a513ffab126fb2e1ab3ef542647037dafb4f4fbf1"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-loads-768.png",
+      "sha256": "4c0847bc914ab823a148908ec24691e289eddfe98018210c10f40ecdd6f1d1ee"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-maintenance-768.png",
+      "sha256": "550e809f24689613174d3f6122a9427181a1f176c7ad9e5a336ad801b7118859"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-fleet-scr-bf6cc-and-bounded-overflow-at-768/fleet-settlements-768.png",
+      "sha256": "221207387b76fd3e96e86c3a513ffab126fb2e1ab3ef542647037dafb4f4fbf1"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--70f43-nd-bounded-overflow-at-1440/dashboard-platform-1440.png",
+      "sha256": "ad7592020368a87bfaed3ed6186e390c15b99959e76267a43576ff38a0344776"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--70f43-nd-bounded-overflow-at-1440/platform-audit-1440.png",
+      "sha256": "ad7592020368a87bfaed3ed6186e390c15b99959e76267a43576ff38a0344776"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--70f43-nd-bounded-overflow-at-1440/platform-cases-1440.png",
+      "sha256": "ad7592020368a87bfaed3ed6186e390c15b99959e76267a43576ff38a0344776"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--70f43-nd-bounded-overflow-at-1440/platform-config-1440.png",
+      "sha256": "ad7592020368a87bfaed3ed6186e390c15b99959e76267a43576ff38a0344776"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--9d42d-and-bounded-overflow-at-390/dashboard-platform-390.png",
+      "sha256": "d5524add6a4f350cbca123e473cd2ac74b0e804b5453c82c8b81c56d5a1e3f31"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--9d42d-and-bounded-overflow-at-390/platform-audit-390.png",
+      "sha256": "d5524add6a4f350cbca123e473cd2ac74b0e804b5453c82c8b81c56d5a1e3f31"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--9d42d-and-bounded-overflow-at-390/platform-cases-390.png",
+      "sha256": "d5524add6a4f350cbca123e473cd2ac74b0e804b5453c82c8b81c56d5a1e3f31"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--9d42d-and-bounded-overflow-at-390/platform-config-390.png",
+      "sha256": "d5524add6a4f350cbca123e473cd2ac74b0e804b5453c82c8b81c56d5a1e3f31"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--dfa1c-and-bounded-overflow-at-768/dashboard-platform-768.png",
+      "sha256": "8294acaf607e46b34b618450038439c904674bf12c49a2d191e651a9e6f8a3d9"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--dfa1c-and-bounded-overflow-at-768/platform-audit-768.png",
+      "sha256": "8294acaf607e46b34b618450038439c904674bf12c49a2d191e651a9e6f8a3d9"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--dfa1c-and-bounded-overflow-at-768/platform-cases-768.png",
+      "sha256": "8294acaf607e46b34b618450038439c904674bf12c49a2d191e651a9e6f8a3d9"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b771-b790-mapped-platform--dfa1c-and-bounded-overflow-at-768/platform-config-768.png",
+      "sha256": "8294acaf607e46b34b618450038439c904674bf12c49a2d191e651a9e6f8a3d9"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b791-platform-persistence--1d21f-e-success-before-a-new-save/pending-platform-write.png",
+      "sha256": "7e91ffe8b847da0cbbc6837ed472c914c678f7ffdb9b04817aec77545357c0a7"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/b791-platform-persistence--f0831-onstruction-and-fresh-login/confirmed-48-fresh-session.png",
+      "sha256": "59e4ff42282c31b35f6bb491ed672f85b99f9303c5063a3ec0176817f5198d5a"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/brand-tokens-approved-bran-33c7c-local-Inter-font-for-driver/brand-driver-390.png",
+      "sha256": "68cf044734b7b006bea40231dbae6194f5e65cefa94eb45abc0d29e50166dca9"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/brand-tokens-approved-bran-70842-ocal-Inter-font-for-carrier/brand-carrier-390.png",
+      "sha256": "9c9c3cf8859dc35ead4850c60dee456287b298596610d2faf39635188e88bd8d"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/brand-tokens-approved-bran-70d8e-cal-Inter-font-for-platform/brand-platform-390.png",
+      "sha256": "c8bb625695d8792d4bbe0a794558a1201ab3cb9426ca7e7895666536b9566986"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/brand-tokens-approved-bran-ceb8e--local-Inter-font-for-fleet/brand-fleet-390.png",
+      "sha256": "bd85d7a93e62a0ab5776e391413390a75530328fd3130de89828048d96b1f16f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/first-value-guided-creation-to-driver-acceptance-at-1440/accepted-1440.png",
+      "sha256": "fafe8833235cfe9b6d44caff38254f550c00af98510144ce025629705b7f1434"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/first-value-guided-creation-to-driver-acceptance-at-390/accepted-390.png",
+      "sha256": "bd30bae5c5c337a2eb3a63824b382f3e3ce1111607d04e20b490ceecd34e607f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/harmonized-functionality-h-188a8--contract-for-fleet-at-1440/fleet-1440.png",
+      "sha256": "ebdd653fa80b840628a9ee94ef59b09b11a4fb927b9bb9d354be94ad0ea95342"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/harmonized-functionality-h-2693e--contract-for-driver-at-390/driver-390.png",
+      "sha256": "3945a1c9cd8d71e726d6e6b42d23256b2a964a6b868dcbcbd64f50fa48c26123"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/harmonized-functionality-h-51932-contract-for-driver-at-1440/driver-1440.png",
+      "sha256": "00ad8c30879c4e4d7076f0680844ffcb2ee57a9e7c29fcee79f258f8cf14ecdb"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/harmonized-functionality-h-acf5a-t-contract-for-fleet-at-390/fleet-390.png",
+      "sha256": "c50eecaf3034b93b57ab5554ae0ba2d42fa98f6c70bff2c05bbbb0a923703a0f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/harmonized-functionality-h-af5ee-ntract-for-platform-at-1440/platform-1440.png",
+      "sha256": "ad7592020368a87bfaed3ed6186e390c15b99959e76267a43576ff38a0344776"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/harmonized-functionality-h-b2e5c-ontract-for-platform-at-390/platform-390.png",
+      "sha256": "d5524add6a4f350cbca123e473cd2ac74b0e804b5453c82c8b81c56d5a1e3f31"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/harmonized-functionality-h-e7f22-ontract-for-carrier-at-1440/carrier-1440.png",
+      "sha256": "5ca5b7f29d837c32a48f079f74c060cdf67404c1e178ac59354062df35f8e330"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/harmonized-functionality-h-f33bd-contract-for-carrier-at-390/carrier-390.png",
+      "sha256": "8eafa57c33ef917a2f55cac4004464dac31d3bd5246fa1ced81775d3eecf3dc8"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-carrier-has-an--cfb66--scoped-workspace-at-1440px/attachments/carrier-1440-221e1f864a4c96f4a7b0715d9e41bdff15bb5a39.png",
+      "sha256": "f6a0fad60cfb12a1d8c5bca94b7befab389a93b6ef12443bf396ff9f226e2346"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-carrier-has-an--cfb66--scoped-workspace-at-1440px/carrier-1440.png",
+      "sha256": "f6a0fad60cfb12a1d8c5bca94b7befab389a93b6ef12443bf396ff9f226e2346"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-customer-portal-881c4-d-protects-revision-history/attachments/customer-documents-390-6bee8997fd1bad312205e2928f22112f073d1da4.png",
+      "sha256": "3291c663207163dbcde4fdc9699a17cc953e195fa112c247bc2249c900104f82"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-customer-portal-881c4-d-protects-revision-history/customer-documents-390.png",
+      "sha256": "3291c663207163dbcde4fdc9699a17cc953e195fa112c247bc2249c900104f82"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-dispatcher-has--8074c--scoped-workspace-at-1440px/attachments/dispatcher-1440-21a7dc3deef71b2053d261dd03f2f45a0ad535fc.png",
+      "sha256": "4782e301747afbf994cb983ff20d3e752eed769b15f6bdbb0aed947c72d9595d"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-dispatcher-has--8074c--scoped-workspace-at-1440px/dispatcher-1440.png",
+      "sha256": "4782e301747afbf994cb983ff20d3e752eed769b15f6bdbb0aed947c72d9595d"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-driver-has-an-a-d608c-e-scoped-workspace-at-390px/attachments/driver-390-e252bb1412a6e5815b3b56513bc3e0539dbd7841.png",
+      "sha256": "18ee097485a572937bf467d8e91640c4e2954c3d1a143968bdeab0a985851a5a"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-driver-has-an-a-d608c-e-scoped-workspace-at-390px/driver-390.png",
+      "sha256": "18ee097485a572937bf467d8e91640c4e2954c3d1a143968bdeab0a985851a5a"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-fleet-has-an-ac-2f78e-e-scoped-workspace-at-390px/attachments/fleet-390-ae60404589e5e18a048827c962ac2c2c221e8678.png",
+      "sha256": "4811191a56e7b338bc7a46b08adc309acc05a85a22309409c5e289c1df692588"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-fleet-has-an-ac-2f78e-e-scoped-workspace-at-390px/fleet-390.png",
+      "sha256": "4811191a56e7b338bc7a46b08adc309acc05a85a22309409c5e289c1df692588"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-Wave-4-browser--22927-nd-bounded-runtime-recovery/attachments/control-tower-1440-f37108881e2d5cade58834ffbb4a907bbb56a8d3.png",
+      "sha256": "7a2e6ee83bab79bc7e82f1b506a2710b0ca567be58d7d7c06c169fd70f2df2dc"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/operations-Wave-4-browser--22927-nd-bounded-runtime-recovery/control-tower-1440.png",
+      "sha256": "7a2e6ee83bab79bc7e82f1b506a2710b0ca567be58d7d7c06c169fd70f2df2dc"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/platform-workspace-platfor-ccbce--without-operational-access/platform-cases-390.png",
+      "sha256": "7d7483334db1f1388f0bee338abf5a0b0e537b672fd741ec488b14afb0877ba6"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-11f3c-t-persisted-workflow-at-320/fleet-320.png",
+      "sha256": "6835b4e23492f34c36e1e99b503acd961952b146f39382436036be503057ba52"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-1ab49-r-persisted-workflow-at-768/carrier-768.png",
+      "sha256": "985914df313c24469800d92a14c0726e2d85fee4d9928d9d79700c352124ea22"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-2ba5c--persisted-workflow-at-1024/platform-1024.png",
+      "sha256": "d47259a5967f7acc7d45a82e8f607d41afb447b220adbdcc081b4f839b7a2f74"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-2cb74-r-persisted-workflow-at-320/carrier-320.png",
+      "sha256": "315e4329728ff1834c784d277ccd8f8216ebb889ef88c4ddf7687165ce460ae4"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-3a8fc-t-persisted-workflow-at-375/fleet-375.png",
+      "sha256": "6151a782e373a64c5e6576267ca99635a0aaa8fb3c0f79be267f1236c7ad2952"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-5b1bd--persisted-workflow-at-1024/carrier-1024.png",
+      "sha256": "a789635815a935996386de72fea16707fb86b1b362d6e85b738f9724a01b34d6"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-5d16f-r-persisted-workflow-at-768/driver-768.png",
+      "sha256": "95533cb83b8584588374ab56ca4f74dcff4481d0b17cbdb2e821ec90d931159e"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-5dbfd-m-persisted-workflow-at-320/platform-320.png",
+      "sha256": "0270401960f555951e8b906a45b59dd9132dd02734f842b10a9a3421f8bb0222"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-66a5c-t-persisted-workflow-at-390/fleet-390.png",
+      "sha256": "85da507a9a0f0e1f5d1c23af1d84119d0705689f1039d947a6b818e0e2749ec4"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-6d00b--persisted-workflow-at-1440/driver-1440.png",
+      "sha256": "e1018f371f7ddf53227024c14dc5a353d25dc07e65317c10f6b854b0485bec0c"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-6d332-m-persisted-workflow-at-390/platform-390.png",
+      "sha256": "6ede5d478ba6316152fb040bd81747ee53027acf28c92bb8227817d29ec44170"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-72cb4-r-persisted-workflow-at-375/driver-375.png",
+      "sha256": "032e4873d304f6ac9cb93c1318049a3194ed7f4d62f693018a40257eea36c994"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-845a2-m-persisted-workflow-at-768/platform-768.png",
+      "sha256": "0256455539eb1ddff822a8274cc0c84a8ae14b1b9eb828aa00f3ac5a42efae94"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-85d41--persisted-workflow-at-1440/fleet-1440.png",
+      "sha256": "f69b1017aa97baa8a1a3e0373047a49cd29a8b891ce5090b8011348458a8f359"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-ab5c5-m-persisted-workflow-at-375/platform-375.png",
+      "sha256": "526ac80a8bc0439b5c56a1f87052f18552ffa03354431afd1c9b6c52ed3d111f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-b2785-r-persisted-workflow-at-375/carrier-375.png",
+      "sha256": "193c90a55534c253f8f4b68b369ae146988c59c2cc33c9a2b744d085d9b2d674"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-ba96c-r-persisted-workflow-at-390/carrier-390.png",
+      "sha256": "28760f2a3386b386f01854fbc090602d1bde1f84cbcf99b49d8f2689b610b33d"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-ca030--persisted-workflow-at-1440/carrier-1440.png",
+      "sha256": "c8a8e3138e0c7e32d2a5de2fd1342df04e887c5d3fcd6ef9ef5cf565d5162b80"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-cb736-r-persisted-workflow-at-390/driver-390.png",
+      "sha256": "2fe9a597dc134f9a6dde543754c4124711a14fd4c1109ef3d64f5fbffde35b3a"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-cd5f5--persisted-workflow-at-1440/platform-1440.png",
+      "sha256": "1ca1f3968219d17ecf75d1f8d1735a2d11cb5de1385db33147744e3d83ad5ce8"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-d5946-t-persisted-workflow-at-768/fleet-768.png",
+      "sha256": "9155b2211ff56060603cded84acdcbd8d8f361f9d1d0215060b37683ddc6ca43"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-defb0--persisted-workflow-at-1024/fleet-1024.png",
+      "sha256": "d0a2afb17578f9a0aed1a49fd0370ee97374e47ab8adb46c9a28ada009d8c13c"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-edf2e-r-persisted-workflow-at-320/driver-320.png",
+      "sha256": "eac41ec4877aa0f2764e410ce102d3228672c78f208e6f5764fac43e3fa5b8be"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/responsive-personas-respon-f4b63--persisted-workflow-at-1024/driver-1024.png",
+      "sha256": "6259bce145f02e7b6b69755fe6339752883a319796e23d6cd5f1c89461100ece"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/settlements-carrier-settle-def5e-gs-have-persistent-outcomes/carrier-settlement-1440.png",
+      "sha256": "a348fed042e3c2f6a07911b23a73d14d64e7a81e6015e92324d71e62287acce9"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/results/settlements-carrier-settle-def5e-gs-have-persistent-outcomes/driver-earnings-390.png",
+      "sha256": "ae14d748df4c1f7b3e754b5b94332a2e1293801c125eeef7a92804265fbcdeb0"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "startingCommit": "c5998b3ada6121ff7de91f81f71a5cba886f2f5b",
+  "sourceDigest": "36c14e1ac73d4f43d443bc9b35ae2c558a4101f483d1b4fcf798510d1ec1006a",
+  "batches": [
+    {
+      "id": "B821",
+      "status": "PASS",
+      "scope": "local and baseline CI",
+      "evidence": "Prior 22 evidence hashes and six protected domains verified; c5998b3 PR Verify and Identity CI pass. New final-SHA CI is recorded post-commit."
+    },
+    {
+      "id": "B822",
+      "status": "BLOCKED",
+      "scope": "real-user authentication",
+      "evidence": "No approved exclusive staging database or target-specific canonical identities/MFA/relationships/delivery. Local synthetic provider/session tests pass; real account absence is not assumed."
+    },
+    {
+      "id": "B823",
+      "status": "PASS",
+      "scope": "implemented local screens",
+      "evidence": "Existing screens preserved; feedback opt-in, loading/error states, disabled native-login behavior, spacing and mobile touch targets corrected."
+    },
+    {
+      "id": "B824",
+      "status": "PASS",
+      "scope": "implemented local first-value journeys",
+      "evidence": "Carrier/Driver first-load guidance, Fleet onboarding/resources/pay and Platform governance/owner-profile regressions pass; real-user acceptance is unperformed."
+    },
+    {
+      "id": "B825",
+      "status": "PASS",
+      "scope": "local governed feedback",
+      "evidence": "New authenticated, durable, tenant/reporter-scoped feedback; structured diagnostics, ownership, audit, required retest evidence, closure, replay/rate/stale/rollback tests. Hosted opt-ins not granted."
+    },
+    {
+      "id": "B826",
+      "status": "PASS",
+      "scope": "current load contracts",
+      "evidence": "Four-step wizard, drafts, stops, eligibility, dispatch/reassignment/rejection, cancellation, completion, stale/concurrent/retry and rollback regressions pass. Specialized equipment remains an approved-contract gap."
+    },
+    {
+      "id": "B827",
+      "status": "PASS",
+      "scope": "current local assignment orchestration",
+      "evidence": "Carrier dispatch, Fleet ownership/employment and Driver acceptance/rejection preserve one owner, versions and idempotency. External notifications unavailable."
+    },
+    {
+      "id": "B828",
+      "status": "PASS",
+      "scope": "current offline execution",
+      "evidence": "Bounded ordered offline replay, current assignment fences, receipt recovery and PostgreSQL restart tests pass. Live GPS/geofencing and sensitive capture are not certified."
+    },
+    {
+      "id": "B829",
+      "status": "BLOCKED",
+      "scope": "full document/compliance lifecycle",
+      "evidence": "Current reviewed metadata, text documents, POD references, expiry eligibility and access-control tests pass. Sensitive uploads, identity packages, OCR/provider/storage/retention contracts remain blocked."
+    },
+    {
+      "id": "B830",
+      "status": "PASS",
+      "scope": "implemented local financial contracts",
+      "evidence": "Integer-cent settlements, six driver-pay models, expenses, adjustments, source integrity, immutable approval/version and retry tests pass. No payment transfer or provider certification claimed."
+    },
+    {
+      "id": "B831",
+      "status": "PASS",
+      "scope": "current authorized command center",
+      "evidence": "Persisted visible-load control-tower/approval/exception/resource metrics and role-filtered dashboard regressions pass. No global tenant totals added."
+    },
+    {
+      "id": "B832",
+      "status": "BLOCKED",
+      "scope": "requested seven named agents",
+      "evidence": "Five existing bounded registry roles and governed job/retry/lease/human-approval tests pass. MAX/PULSE/CLARA/GUARDIAN/FINN/SAGE/ATLAS lack approved mappings; no new authorities or providers invented."
+    },
+    {
+      "id": "B833",
+      "status": "PASS",
+      "scope": "existing evidence-based rules",
+      "evidence": "Scheduled missed milestones, current eligibility, open document/operational exceptions, advisory escalation and worker-health tests pass. Thresholds retained; no live GPS prediction or new autonomous resolution policy."
+    },
+    {
+      "id": "B834",
+      "status": "BLOCKED",
+      "scope": "external delivery",
+      "evidence": "Existing local event notifications, preferences, deduplication, suppression and failure/retry contracts pass. Approved delivery provider/sender and operational owner remain unidentified."
+    },
+    {
+      "id": "B835",
+      "status": "PASS",
+      "scope": "tested local security contracts",
+      "evidence": "MFA, signed identity, current membership/permission/ownership, RLS, CSRF, stale/revoked sessions, replay and tenant attacks pass. Candidate scan and dependency audit pass; hosted privileged-key policy unresolved."
+    },
+    {
+      "id": "B836",
+      "status": "PASS",
+      "scope": "local regression measurements only",
+      "evidence": "Four existing lab workload budgets pass unchanged; 128 authenticated loopback PostgreSQL reads measured. No hosted capacity, rendering-latency, SLA or representative production volume certification."
+    },
+    {
+      "id": "B837",
+      "status": "PASS",
+      "scope": "isolated local recovery",
+      "evidence": "Actual disposable PostgreSQL restart/write denial and stable-key retries pass; SQLite backup/restore rehearsal passes. Hosted backup owner, recovery target and restore objectives are blocked."
+    },
+    {
+      "id": "B838",
+      "status": "PASS",
+      "scope": "automated local accessibility",
+      "evidence": "Primary full-suite axe scans pass with zero violations; responsive and keyboard regression passes. 48 human scripts and three feedback tasks are NOT RUN; Chromium only, no WCAG conformance claim."
+    },
+    {
+      "id": "B839",
+      "status": "BLOCKED",
+      "scope": "hosted execution",
+      "evidence": "94 hosted cases blocked, 0 executed. Database/secret-policy/identity/delivery/protection prerequisites prevent deployment; candidate deployment ID/URL null."
+    },
+    {
+      "id": "B840",
+      "status": "PASS",
+      "scope": "reviewed local release package",
+      "evidence": "Consolidated source-bound evidence, risk/approval registers, exact changed-file manifest and local commit prepared. Final SHA/package/push/CI state is verified in the post-commit sidecar."
+    }
+  ]
+}

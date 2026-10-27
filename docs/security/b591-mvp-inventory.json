@@ -14,35 +14,43 @@
   ],
   "sourceHashEncoding": "sha256 over UTF-8 with LF line endings",
   "sourceHashes": {
+    "apps/operations/feedback.js": "b601c03235f9bd9daf6d0e3fadb7bcb5281320e325aa1a10edfacd076977367a",
+    "server/operations-feedback.mjs": "e79b38894b03e235edc37b5f68469b9a51dfa395880c545a83b5f9907e650361",
+    "apps/operations/load-wizard.js": "92d63aa6c4cc3aaaa87e230c5de3907d82ca5998d157f02da5e6e4ecedc23585",
+    "apps/operations/expenses.js": "3d9e1e447f2c8467f00289daa40509c4a8b704d1e7e41bec982d04d244960460",
+    "apps/operations/onboarding.js": "125bc603a4777088be7eb8d2aa0669dd6b628b0a8bf6af754c291a6db21f716c",
+    "apps/operations/platform-workspace.js": "0c594ef3852b3cf0ece2c0405a6d303013d2ed9071fc373b0755664a8da56482",
+    "server/operations-platform-workspace.mjs": "529bbdabc9adaec4792955d0894765bf7f368c1f32cfc5c4706f4233aab26985",
+    "server/operations-pdf.mjs": "924b74295b3796528b9c78728c8665b7e7274cd71496c997c45d507c04b7486e",
     "apps/operations/maintenance.js": "4e55da00c88c2c65a11bfd8f42f6e89eeb95e6f41370df5d1de8b57240338920",
-    "apps/operations/financial.js": "5c86bc2d973b77eca191522e51edd040a8e99537b851776765824c5f160f70d4",
+    "apps/operations/financial.js": "f8558842283e6f88b162466b96885d17fb117cd0984df7f2045dde64d3e8c665",
     "apps/operations/driver-offline.mjs": "a6e68c3c29ef7d80274ade08a293c056da9836af808f1d309f00d8c85cbbc7d0",
-    "apps/operations/offline.html": "b753561be6a9bc5101984da83b895e93e87cd9797c8c70b6656b4a5d3a03c7c2",
+    "apps/operations/offline.html": "0b8156e05948cb82068397baf270bfd4a284af42fa24d88f0f4f6bd1c425e64d",
     "server/operations-offline.mjs": "7179d8a610cc65a6500a4e1600530464c4de4e08bf8d472d6bff617b35852a8b",
-    "apps/operations/index.html": "905b8a3e9de7eea2000575e6280a6f1d93eb7ca890f00e44a72eac55cb948763",
-    "apps/operations/login.html": "b3031b34d639f17f5a9c8cdbeeb05d803c87d047005182d4bd3f72909030b44d",
-    "apps/operations/admin.html": "d7f7936f869351ee62b7573846eb8391d993f51fee9188d749d639668c3377c4",
-    "apps/operations/ops.js": "509953aea0c1d82dd161763b9a16f3037be3d7fc3db42fc19a17356641b7bae3",
-    "apps/operations/extended.js": "b783f9be9b40396adfa623df41d4d5f2b9407087ed67185a43792f97b4c2a2f6",
+    "apps/operations/index.html": "978035987ba98600321ff79768461c25ed77f12412e2782fea3d313c68d8212d",
+    "apps/operations/login.html": "7db8389d9f3d1438c3661f14374759dacda2d73092cf795acc891a0896876402",
+    "apps/operations/admin.html": "ce83e841d9cadcb8560bed3a8bc4ecb5ce484e155cee4126a2f74252d33de898",
+    "apps/operations/ops.js": "aa3eadcd143e8d2fc12bc899e0c894eda6600194b5de517394f06af2ad6cb9eb",
+    "apps/operations/extended.js": "7d1b295030466b790b18f94d6b961e29fcb15d7150163a1e10541ac1dd26d766",
     "apps/operations/intelligence.js": "d8ecf46ea1e3b42a8a7bea4872c576999f2103d98009d65c7d8f1b4cd51d7b1d",
     "apps/operations/admin.js": "37ae785572fd7ef180d3ec6b760c18bfa01205dfc056fefbe5d0ae168ea36669",
     "apps/operations/login.js": "07bebededc2f7ce2df237feb5739b0240c25b794f13585f7d6a90b2dc0d3e3dd",
-    "server/operations-app.mjs": "700d34c70af63d6ba5c7177c428462a8ebab5e469ba7ff98f0994b220aeb7f31",
+    "server/operations-app.mjs": "a32abac0fa4823d7447f99bdecccb21e3a0a03801f54374c62373f6292b172cb",
     "server/operations-uat-http.mjs": "df68d0a18176d39b84351b4524e8124e98d67a2b1f69693f06284c660bd720f4",
-    "server/operations-uat-presentation.mjs": "955823550375a95f0b40de872acfdb392bd1f2180c3dcc35fe6205f9c6264da3",
-    "server/operations-owner-profiles.mjs": "7aa2297ccbd050fcb8b69ff83cd799d6a1d2f29df6e9e6c3aacab9f68a282b12",
-    "server/operations-uat-application.mjs": "135c60803d77a11f97ad409a13629bc7c883e7f0ea59d8b2ce4a0dc2dd5a23c1",
+    "server/operations-uat-presentation.mjs": "50c8c5187b7278a6b0346a8521a59a3e5817d4cb61576eb563e9d2373374d165",
+    "server/operations-owner-profiles.mjs": "da541e8201672a7f376928b34aa8a2d81673d43ad972ad675129e28bc2a11cf3",
+    "server/operations-uat-application.mjs": "78311db65e1e66203c2f6d6f5c24e87773a6348a83a03b4d276496364fd67758",
     "server/operations-durable-uat.mjs": "4dffb92beb45892f3c34314c13a68c604cbbaeb829b9868ad4331e66cda50be7"
   },
   "counts": {
-    "action": 59,
-    "button": 41,
-    "dialog": 15,
-    "disclosure": 1,
-    "field": 104,
-    "form": 32,
-    "navigation": 22,
-    "route": 63
+    "action": 87,
+    "button": 64,
+    "dialog": 19,
+    "disclosure": 3,
+    "field": 155,
+    "form": 41,
+    "navigation": 26,
+    "route": 74
   },
   "controls": [
     {
@@ -53,7 +61,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 153
+          "line": 168
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -66,7 +74,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 153
+          "line": 168
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -78,16 +86,20 @@
       "label": "Back to loads",
       "locations": [
         {
-          "path": "apps/operations/ops.js",
-          "line": 80
+          "path": "apps/operations/load-wizard.js",
+          "line": 29
+        },
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 70
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 112
+          "line": 121
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 128
+          "line": 142
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -100,7 +112,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 70
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -113,7 +125,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 70
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -126,7 +138,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 70
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -210,6 +222,36 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "action:directory:create",
+      "type": "action",
+      "value": "directory:create",
+      "label": "Create directory entry",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:directory:deactivate",
+      "type": "action",
+      "value": "directory:deactivate",
+      "label": "Deactivate directory entry",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 74
+        },
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 49
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "action:document:reject",
       "type": "action",
       "value": "document:reject",
@@ -217,7 +259,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 15
+          "line": 18
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -230,7 +272,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 16
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -243,7 +285,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 15
+          "line": 18
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -269,7 +311,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 5
+          "line": 6
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -288,6 +330,19 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "action:driverpay:revise",
+      "type": "action",
+      "value": "driverpay:revise",
+      "label": "Revise driver pay",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "action:driverpay:unapprove",
       "type": "action",
       "value": "driverpay:unapprove",
@@ -295,7 +350,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 5
+          "line": 6
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -327,6 +382,136 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "action:expense:approve",
+      "type": "action",
+      "value": "expense:approve",
+      "label": "Approve expense",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:expense:draft",
+      "type": "action",
+      "value": "expense:draft",
+      "label": "Save expense draft",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:expense:edit",
+      "type": "action",
+      "value": "expense:edit",
+      "label": "Edit expense",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:expense:needs-information",
+      "type": "action",
+      "value": "expense:needs-information",
+      "label": "Request expense information",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:expense:reject",
+      "type": "action",
+      "value": "expense:reject",
+      "label": "Reject expense",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:expense:resubmit",
+      "type": "action",
+      "value": "expense:resubmit",
+      "label": "Submit corrected expense",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:expense:review",
+      "type": "action",
+      "value": "expense:review",
+      "label": "Review expense",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:expense:submit",
+      "type": "action",
+      "value": "expense:submit",
+      "label": "Submit expense",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:expense:update",
+      "type": "action",
+      "value": "expense:update",
+      "label": "Save expense correction",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:expense:withdraw",
+      "type": "action",
+      "value": "expense:withdraw",
+      "label": "Withdraw expense",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "action:finance:approve",
       "type": "action",
       "value": "finance:approve",
@@ -334,11 +519,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 158
+          "line": 173
         },
         {
           "path": "apps/operations/extended.js",
-          "line": 70
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -351,7 +536,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 158
+          "line": 173
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -364,7 +549,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 65
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -377,7 +562,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 65
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -390,7 +575,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 65
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -403,7 +588,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 75
+          "line": 94
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -416,7 +601,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 99
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -429,7 +614,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 95
+          "line": 104
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -442,7 +627,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 100
+          "line": 109
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -455,7 +640,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 93
+          "line": 102
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -468,7 +653,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 99
+          "line": 108
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -481,7 +666,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 101
+          "line": 110
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -494,7 +679,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 94
+          "line": 103
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -507,7 +692,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 96
+          "line": 105
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -520,7 +705,33 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 104
+          "line": 113
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:loaddraft:save",
+      "type": "action",
+      "value": "loaddraft:save",
+      "label": "Save load draft",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:loaddraft:submit",
+      "type": "action",
+      "value": "loaddraft:submit",
+      "label": "Submit reviewed load",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -585,11 +796,128 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 74
+          "line": 93
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 177
+          "line": 195
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:onboarding:activate",
+      "type": "action",
+      "value": "onboarding:activate",
+      "label": "Activate onboarding",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:onboarding:approved",
+      "type": "action",
+      "value": "onboarding:approved",
+      "label": "Approve profile",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:onboarding:needs_information",
+      "type": "action",
+      "value": "onboarding:needs_information",
+      "label": "Request information",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:onboarding:rejected",
+      "type": "action",
+      "value": "onboarding:rejected",
+      "label": "Reject onboarding",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:onboarding:review",
+      "type": "action",
+      "value": "onboarding:review",
+      "label": "Review onboarding",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:onboarding:save",
+      "type": "action",
+      "value": "onboarding:save",
+      "label": "Save onboarding",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:onboarding:start",
+      "type": "action",
+      "value": "onboarding:start",
+      "label": "Start onboarding",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:onboarding:submit",
+      "type": "action",
+      "value": "onboarding:submit",
+      "label": "Submit onboarding",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:onboarding:under_review",
+      "type": "action",
+      "value": "onboarding:under_review",
+      "label": "Start review",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -602,11 +930,15 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 46
+          "line": 51
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 54
         },
         {
           "path": "apps/operations/extended.js",
-          "line": 29
+          "line": 36
         },
         {
           "path": "apps/operations/intelligence.js",
@@ -655,6 +987,23 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "action:pay-edit",
+      "type": "action",
+      "value": "pay-edit",
+      "label": "pay-edit",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 30
+        },
+        {
+          "path": "apps/operations/financial.js",
+          "line": 6
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "action:payment:reconcile",
       "type": "action",
       "value": "payment:reconcile",
@@ -662,7 +1011,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 73
+          "line": 87
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -675,7 +1024,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 73
+          "line": 87
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -701,7 +1050,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 5
+          "line": 6
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -714,7 +1063,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 5
+          "line": 6
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -740,7 +1089,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 5
+          "line": 6
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -753,7 +1102,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 5
+          "line": 6
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -766,7 +1115,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 5
+          "line": 6
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -779,11 +1128,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 140
+          "line": 155
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 142
+          "line": 157
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -815,6 +1164,40 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "action:wizard:edit",
+      "type": "action",
+      "value": "wizard:edit",
+      "label": "wizard:edit",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 50
+        },
+        {
+          "path": "apps/operations/extended.js",
+          "line": 25
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:wizard:resume",
+      "type": "action",
+      "value": "wizard:resume",
+      "label": "Resume draft",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 23
+        },
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 50
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "action:workflow:advance",
       "type": "action",
       "value": "workflow:advance",
@@ -822,7 +1205,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 151
+          "line": 166
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -835,7 +1218,41 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 152
+          "line": 167
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "action:workspace:retry",
+      "type": "action",
+      "value": "workspace:retry",
+      "label": "Retry workspace",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 32
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 196
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 204
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Add broker inline",
+      "type": "button",
+      "value": "Add broker inline",
+      "label": "Add broker inline",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 25
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -848,7 +1265,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -861,7 +1278,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -874,7 +1291,37 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 137
+          "line": 152
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Cancel editing",
+      "type": "button",
+      "value": "Cancel editing",
+      "label": "Cancel editing",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 29
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Cancel expense correction",
+      "type": "button",
+      "value": "Cancel expense correction",
+      "label": "Cancel expense correction",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 9
+        },
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -900,7 +1347,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 102
+          "line": 111
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -926,7 +1373,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -939,20 +1386,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 32
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "button:Create draft load",
-      "type": "button",
-      "value": "Create draft load",
-      "label": "Create draft load",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 87
+          "line": 39
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -965,7 +1399,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 140
+          "line": 155
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -978,11 +1412,24 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 74
+          "line": 93
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 177
+          "line": 195
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Create support case",
+      "type": "button",
+      "value": "Create support case",
+      "label": "Create support case",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1014,6 +1461,32 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "button:Filter expenses",
+      "type": "button",
+      "value": "Filter expenses",
+      "label": "Filter expenses",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Filter resources",
+      "type": "button",
+      "value": "Filter resources",
+      "label": "Filter resources",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 149
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "button:Follow this load",
       "type": "button",
       "value": "Follow this load",
@@ -1021,7 +1494,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 69
+          "line": 88
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1034,7 +1507,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 16
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1047,7 +1520,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 8
+          "line": 9
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1060,7 +1533,20 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Previous step",
+      "type": "button",
+      "value": "Previous step",
+      "label": "Previous step",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 29
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1086,7 +1572,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 19
+          "line": 22
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1125,7 +1611,20 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 72
+          "line": 86
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Record feedback retest",
+      "type": "button",
+      "value": "Record feedback retest",
+      "label": "Record feedback retest",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 23
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1151,7 +1650,50 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 119
+          "line": 130
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Refresh expenses",
+      "type": "button",
+      "value": "Refresh expenses",
+      "label": "Refresh expenses",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Refresh invitation statuses",
+      "type": "button",
+      "value": "Refresh invitation statuses",
+      "label": "Refresh invitation statuses",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Refresh UAT feedback",
+      "type": "button",
+      "value": "Refresh UAT feedback",
+      "label": "Refresh UAT feedback",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 20
+        },
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 29
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1164,7 +1706,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 2
+          "line": 3
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1177,7 +1719,33 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 119
+          "line": 130
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Reset expense filters",
+      "type": "button",
+      "value": "Reset expense filters",
+      "label": "Reset expense filters",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Retry governance records",
+      "type": "button",
+      "value": "Retry governance records",
+      "label": "Retry governance records",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 25
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1216,7 +1784,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 110
+          "line": 119
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1229,7 +1797,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 131
+          "line": 145
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1261,6 +1829,71 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "button:Save directory entry",
+      "type": "button",
+      "value": "Save directory entry",
+      "label": "Save directory entry",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 73
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save draft and leave",
+      "type": "button",
+      "value": "Save draft and leave",
+      "label": "Save draft and leave",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 29
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save expense draft",
+      "type": "button",
+      "value": "Save expense draft",
+      "label": "Save expense draft",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save feedback triage",
+      "type": "button",
+      "value": "Save feedback triage",
+      "label": "Save feedback triage",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 22
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Save onboarding profile",
+      "type": "button",
+      "value": "Save onboarding profile",
+      "label": "Save onboarding profile",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "button:Save preferences",
       "type": "button",
       "value": "Save preferences",
@@ -1268,7 +1901,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 30
+          "line": 37
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1287,6 +1920,19 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "button:Save support setting",
+      "type": "button",
+      "value": "Save support setting",
+      "label": "Save support setting",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "button:Search loads",
       "type": "button",
       "value": "Search loads",
@@ -1294,7 +1940,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 48
+          "line": 53
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1308,6 +1954,19 @@
         {
           "path": "server/operations-uat-http.mjs",
           "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Show earnings period",
+      "type": "button",
+      "value": "Show earnings period",
+      "label": "Show earnings period",
+      "locations": [
+        {
+          "path": "apps/operations/financial.js",
+          "line": 12
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1343,6 +2002,45 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "button:Start guided load",
+      "type": "button",
+      "value": "Start guided load",
+      "label": "Start guided load",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 23
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Start onboarding",
+      "type": "button",
+      "value": "Start onboarding",
+      "label": "Start onboarding",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Submit UAT feedback",
+      "type": "button",
+      "value": "Submit UAT feedback",
+      "label": "Submit UAT feedback",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "button:Switch profile",
       "type": "button",
       "value": "Switch profile",
@@ -1351,6 +2049,19 @@
         {
           "path": "server/operations-owner-profiles.mjs",
           "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "button:Update support case",
+      "type": "button",
+      "value": "Update support case",
+      "label": "Update support case",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1389,7 +2100,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 23
+          "line": 25
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1415,7 +2126,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 43
+          "line": 53
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1428,7 +2139,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 205
+          "line": 225
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1441,7 +2152,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 211
+          "line": 231
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1454,7 +2165,20 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 204
+          "line": 224
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for deactivation",
+      "type": "dialog",
+      "value": "Reason for deactivation",
+      "label": "Reason for deactivation",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 49
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1467,7 +2191,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 209
+          "line": 229
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1480,7 +2204,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 207
+          "line": 227
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1519,7 +2243,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 210
+          "line": 230
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1532,7 +2256,20 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 45
+          "line": 55
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for this expense decision",
+      "type": "dialog",
+      "value": "Reason for this expense decision",
+      "label": "Reason for this expense decision",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 34
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1545,7 +2282,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 43
+          "line": 53
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1558,7 +2295,20 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 23
+          "line": 25
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reason for this onboarding decision",
+      "type": "dialog",
+      "value": "Reason for this onboarding decision",
+      "label": "Reason for this onboarding decision",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 3
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1572,6 +2322,45 @@
         {
           "path": "apps/operations/intelligence.js",
           "line": 44
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "dialog:Reference for independent verification through the approved process",
+      "type": "dialog",
+      "value": "Reference for independent verification through the approved process",
+      "label": "Reference for independent verification through the approved process",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 3
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "disclosure:Expense activity history · '+esc(r.evidenceReference)+'",
+      "type": "disclosure",
+      "value": "Expense activity history · '+esc(r.evidenceReference)+'",
+      "label": "Expense activity history · '+esc(r.evidenceReference)+'",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 18
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "disclosure:Feedback history",
+      "type": "disclosure",
+      "value": "Feedback history",
+      "label": "Feedback history",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 24
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1597,7 +2386,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 129
+          "line": 143
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1636,7 +2425,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1649,11 +2438,37 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 72
+          "line": 86
         },
         {
           "path": "apps/operations/intelligence.js",
           "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:assetSearch",
+      "type": "field",
+      "value": "assetSearch",
+      "label": "assetSearch",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 149
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:assetStatus",
+      "type": "field",
+      "value": "assetStatus",
+      "label": "assetStatus",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 149
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1666,7 +2481,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 110
+          "line": 119
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1679,7 +2494,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 129
+          "line": 143
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1744,7 +2559,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 136
+          "line": 151
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1756,34 +2571,12 @@
       "label": "category",
       "locations": [
         {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
+        },
+        {
           "path": "apps/operations/intelligence.js",
           "line": 20
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:chargeCents",
-      "type": "field",
-      "value": "chargeCents",
-      "label": "chargeCents",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 85
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:chargeLabel",
-      "type": "field",
-      "value": "chargeLabel",
-      "label": "chargeLabel",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 85
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1802,19 +2595,6 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
-      "key": "field:commodity",
-      "type": "field",
-      "value": "commodity",
-      "label": "commodity",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 84
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
       "key": "field:compliance",
       "type": "field",
       "value": "compliance",
@@ -1822,7 +2602,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 130
+          "line": 144
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1841,19 +2621,6 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
-      "key": "field:customer",
-      "type": "field",
-      "value": "customer",
-      "label": "customer",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 81
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
       "key": "field:customerId",
       "type": "field",
       "value": "customerId",
@@ -1861,11 +2628,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 82
-        },
-        {
-          "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1891,7 +2654,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 2
+          "line": 3
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1904,33 +2667,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 2
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:delivery",
-      "type": "field",
-      "value": "delivery",
-      "label": "delivery",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 85
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:deliveryAt",
-      "type": "field",
-      "value": "deliveryAt",
-      "label": "deliveryAt",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 85
+          "line": 3
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -1949,6 +2686,58 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "field:directoryAddress",
+      "type": "field",
+      "value": "directoryAddress",
+      "label": "directoryAddress",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 73
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:directoryName",
+      "type": "field",
+      "value": "directoryName",
+      "label": "directoryName",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 73
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:directoryTimezone",
+      "type": "field",
+      "value": "directoryTimezone",
+      "label": "directoryTimezone",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 73
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:directoryType",
+      "type": "field",
+      "value": "directoryType",
+      "label": "directoryType",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 73
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "field:disabledTools",
       "type": "field",
       "value": "disabledTools",
@@ -1957,19 +2746,6 @@
         {
           "path": "apps/operations/intelligence.js",
           "line": 19
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:dispatcherId",
-      "type": "field",
-      "value": "dispatcherId",
-      "label": "dispatcherId",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 83
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2021,7 +2797,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 16
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2034,7 +2810,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 16
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2060,7 +2836,20 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 108
+          "line": 117
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:earningsPeriod",
+      "type": "field",
+      "value": "earningsPeriod",
+      "label": "earningsPeriod",
+      "locations": [
+        {
+          "path": "apps/operations/financial.js",
+          "line": 12
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2086,7 +2875,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 30
+          "line": 37
         },
         {
           "path": "apps/operations/intelligence.js",
@@ -2103,7 +2892,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2116,7 +2905,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2128,8 +2917,185 @@
       "label": "evidenceReference",
       "locations": [
         {
+          "path": "apps/operations/feedback.js",
+          "line": 22
+        },
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 23
+        },
+        {
           "path": "apps/operations/extended.js",
-          "line": 19
+          "line": 22
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseAmount",
+      "type": "field",
+      "value": "expenseAmount",
+      "label": "expenseAmount",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseAt",
+      "type": "field",
+      "value": "expenseAt",
+      "label": "expenseAt",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseCategory",
+      "type": "field",
+      "value": "expenseCategory",
+      "label": "expenseCategory",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseCorrection",
+      "type": "field",
+      "value": "expenseCorrection",
+      "label": "expenseCorrection",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseEvidence",
+      "type": "field",
+      "value": "expenseEvidence",
+      "label": "expenseEvidence",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseFilterCategory",
+      "type": "field",
+      "value": "expenseFilterCategory",
+      "label": "expenseFilterCategory",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseFilterLoad",
+      "type": "field",
+      "value": "expenseFilterLoad",
+      "label": "expenseFilterLoad",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseFrom",
+      "type": "field",
+      "value": "expenseFrom",
+      "label": "expenseFrom",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseLoad",
+      "type": "field",
+      "value": "expenseLoad",
+      "label": "expenseLoad",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseNote",
+      "type": "field",
+      "value": "expenseNote",
+      "label": "expenseNote",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseReimbursement",
+      "type": "field",
+      "value": "expenseReimbursement",
+      "label": "expenseReimbursement",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseStatus",
+      "type": "field",
+      "value": "expenseStatus",
+      "label": "expenseStatus",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:expenseTo",
+      "type": "field",
+      "value": "expenseTo",
+      "label": "expenseTo",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2142,33 +3108,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 130
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:factored",
-      "type": "field",
-      "value": "factored",
-      "label": "factored",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 86
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:factorName",
-      "type": "field",
-      "value": "factorName",
-      "label": "factorName",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 87
+          "line": 144
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2181,11 +3121,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 137
+          "line": 152
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2198,7 +3138,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2224,7 +3164,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 71
+          "line": 85
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2237,7 +3177,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 72
+          "line": 86
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2250,7 +3190,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 69
+          "line": 88
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2289,7 +3229,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 30
+          "line": 37
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2302,7 +3242,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 48
+          "line": 53
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2332,7 +3272,20 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 48
+          "line": 53
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:loadStage",
+      "type": "field",
+      "value": "loadStage",
+      "label": "loadStage",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 53
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2345,7 +3298,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 119
+          "line": 130
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2358,7 +3311,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 130
+          "line": 144
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2384,7 +3337,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 16
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2397,19 +3350,19 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 136
+          "line": 151
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 140
+          "line": 155
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         },
         {
           "path": "apps/operations/extended.js",
-          "line": 32
+          "line": 39
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2422,7 +3375,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 119
+          "line": 130
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2441,6 +3394,75 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "field:onboardStartReason",
+      "type": "field",
+      "value": "onboardStartReason",
+      "label": "onboardStartReason",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:onboardSubject",
+      "type": "field",
+      "value": "onboardSubject",
+      "label": "onboardSubject",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:ownerId",
+      "type": "field",
+      "value": "ownerId",
+      "label": "ownerId",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 22
+        },
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:paidMiles_",
+      "type": "field",
+      "value": "paidMiles_",
+      "label": "paidMiles_",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:passed",
+      "type": "field",
+      "value": "passed",
+      "label": "passed",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 23
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "field:password",
       "type": "field",
       "value": "password",
@@ -2452,15 +3474,41 @@
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 140
+          "line": 155
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         },
         {
           "path": "server/operations-uat-presentation.mjs",
           "line": 43
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:payCustomAmount",
+      "type": "field",
+      "value": "payCustomAmount",
+      "label": "payCustomAmount",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:payCustomCode",
+      "type": "field",
+      "value": "payCustomCode",
+      "label": "payCustomCode",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 39
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2473,7 +3521,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 8
+          "line": 9
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2486,7 +3534,46 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:payMileageRef",
+      "type": "field",
+      "value": "payMileageRef",
+      "label": "payMileageRef",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:payMileRate",
+      "type": "field",
+      "value": "payMileRate",
+      "label": "payMileRate",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:payModel",
+      "type": "field",
+      "value": "payModel",
+      "label": "payModel",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 39
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2499,7 +3586,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 8
+          "line": 9
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2512,7 +3599,33 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 8
+          "line": 9
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:payShare",
+      "type": "field",
+      "value": "payShare",
+      "label": "payShare",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 39
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:payWeekly",
+      "type": "field",
+      "value": "payWeekly",
+      "label": "payWeekly",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 39
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2524,34 +3637,8 @@
       "label": "perLoadCents",
       "locations": [
         {
-          "path": "apps/operations/financial.js",
-          "line": 8
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:pickup",
-      "type": "field",
-      "value": "pickup",
-      "label": "pickup",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 85
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:pickupAt",
-      "type": "field",
-      "value": "pickupAt",
-      "label": "pickupAt",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 85
+          "path": "apps/operations/expenses.js",
+          "line": 39
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2629,7 +3716,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 16
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2648,6 +3735,45 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "field:profileAgreement",
+      "type": "field",
+      "value": "profileAgreement",
+      "label": "profileAgreement",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:profileName",
+      "type": "field",
+      "value": "profileName",
+      "label": "profileName",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:profileTimezone",
+      "type": "field",
+      "value": "profileTimezone",
+      "label": "profileTimezone",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "field:proofReference",
       "type": "field",
       "value": "proofReference",
@@ -2655,7 +3781,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 102
+          "line": 111
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2668,20 +3794,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 72
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
-      "key": "field:rateCents",
-      "type": "field",
-      "value": "rateCents",
-      "label": "rateCents",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 85
+          "line": 86
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2693,12 +3806,24 @@
       "label": "reason",
       "locations": [
         {
-          "path": "apps/operations/ops.js",
-          "line": 119
+          "path": "apps/operations/feedback.js",
+          "line": 22
+        },
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
+        },
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 131
+          "line": 130
+        },
+        {
+          "path": "apps/operations/ops.js",
+          "line": 145
         },
         {
           "path": "apps/operations/intelligence.js",
@@ -2715,7 +3840,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 72
+          "line": 86
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2728,7 +3853,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 19
+          "line": 22
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2753,16 +3878,25 @@
       "label": "reference",
       "locations": [
         {
-          "path": "apps/operations/ops.js",
-          "line": 81
-        },
-        {
           "path": "apps/operations/extended.js",
-          "line": 72
+          "line": 86
         },
         {
           "path": "apps/operations/intelligence.js",
           "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:reproducibility",
+      "type": "field",
+      "value": "reproducibility",
+      "label": "reproducibility",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2775,7 +3909,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2788,7 +3922,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2866,7 +4000,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2879,7 +4013,20 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:severity",
+      "type": "field",
+      "value": "severity",
+      "label": "severity",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2892,7 +4039,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2904,8 +4051,29 @@
       "label": "source",
       "locations": [
         {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
+        },
+        {
           "path": "apps/operations/intelligence.js",
           "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:status",
+      "type": "field",
+      "value": "status",
+      "label": "status",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 22
+        },
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2918,7 +4086,33 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
+          "line": 22
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:symptom",
+      "type": "field",
+      "value": "symptom",
+      "label": "symptom",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
           "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:tenantReference",
+      "type": "field",
+      "value": "tenantReference",
+      "label": "tenantReference",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2937,6 +4131,19 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "field:title",
+      "type": "field",
+      "value": "title",
+      "label": "title",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "field:type",
       "type": "field",
       "value": "type",
@@ -2944,7 +4151,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 119
+          "line": 130
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2961,11 +4168,24 @@
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 140
+          "line": 155
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:value",
+      "type": "field",
+      "value": "value",
+      "label": "value",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2978,7 +4198,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 109
+          "line": 118
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -2997,14 +4217,274 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
-      "key": "field:weightLb",
+      "key": "field:wAt",
       "type": "field",
-      "value": "weightLb",
-      "label": "weightLb",
+      "value": "wAt",
+      "label": "wAt",
       "locations": [
         {
-          "path": "apps/operations/ops.js",
-          "line": 84
+          "path": "apps/operations/load-wizard.js",
+          "line": 26
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wBillTo",
+      "type": "field",
+      "value": "wBillTo",
+      "label": "wBillTo",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wBroker",
+      "type": "field",
+      "value": "wBroker",
+      "label": "wBroker",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 25
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wChargeCents",
+      "type": "field",
+      "value": "wChargeCents",
+      "label": "wChargeCents",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wChargeLabel",
+      "type": "field",
+      "value": "wChargeLabel",
+      "label": "wChargeLabel",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wCommodity",
+      "type": "field",
+      "value": "wCommodity",
+      "label": "wCommodity",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 25
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wConfirm",
+      "type": "field",
+      "value": "wConfirm",
+      "label": "wConfirm",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wCustomer",
+      "type": "field",
+      "value": "wCustomer",
+      "label": "wCustomer",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 25
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wCustomerId",
+      "type": "field",
+      "value": "wCustomerId",
+      "label": "wCustomerId",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 25
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wDispatcher",
+      "type": "field",
+      "value": "wDispatcher",
+      "label": "wDispatcher",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 25
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wEditReason",
+      "type": "field",
+      "value": "wEditReason",
+      "label": "wEditReason",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 20
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wFacility",
+      "type": "field",
+      "value": "wFacility",
+      "label": "wFacility",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 26
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wFactor",
+      "type": "field",
+      "value": "wFactor",
+      "label": "wFactor",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wFactored",
+      "type": "field",
+      "value": "wFactored",
+      "label": "wFactored",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wLocation",
+      "type": "field",
+      "value": "wLocation",
+      "label": "wLocation",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 26
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:workflow",
+      "type": "field",
+      "value": "workflow",
+      "label": "workflow",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 19
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wRate",
+      "type": "field",
+      "value": "wRate",
+      "label": "wRate",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wReference",
+      "type": "field",
+      "value": "wReference",
+      "label": "wReference",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 25
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wTerms",
+      "type": "field",
+      "value": "wTerms",
+      "label": "wTerms",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 27
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wType",
+      "type": "field",
+      "value": "wType",
+      "label": "wType",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 26
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "field:wWeight",
+      "type": "field",
+      "value": "wWeight",
+      "label": "wWeight",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 25
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3017,7 +4497,20 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 129
+          "line": 143
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:asset-search",
+      "type": "form",
+      "value": "asset-search",
+      "label": "asset-search",
+      "locations": [
+        {
+          "path": "apps/operations/ops.js",
+          "line": 149
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3030,7 +4523,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 107
+          "line": 116
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3062,19 +4555,6 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
-      "key": "form:create-load",
-      "type": "form",
-      "value": "create-load",
-      "label": "create-load",
-      "locations": [
-        {
-          "path": "apps/operations/ops.js",
-          "line": 81
-        }
-      ],
-      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
-    },
-    {
       "key": "form:credentials",
       "type": "form",
       "value": "credentials",
@@ -3095,7 +4575,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 32
+          "line": 39
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3108,7 +4588,20 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 102
+          "line": 111
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:directory-create",
+      "type": "form",
+      "value": "directory-create",
+      "label": "directory-create",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 73
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3134,7 +4627,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 16
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3147,7 +4640,20 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 8
+          "line": 9
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:earnings-period",
+      "type": "form",
+      "value": "earnings-period",
+      "label": "earnings-period",
+      "locations": [
+        {
+          "path": "apps/operations/financial.js",
+          "line": 12
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3173,7 +4679,33 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 119
+          "line": 130
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:expense-filter",
+      "type": "form",
+      "value": "expense-filter",
+      "label": "expense-filter",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 15
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:expense-submit",
+      "type": "form",
+      "value": "expense-submit",
+      "label": "expense-submit",
+      "locations": [
+        {
+          "path": "apps/operations/expenses.js",
+          "line": 11
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3186,7 +4718,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3199,7 +4731,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 140
+          "line": 155
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3225,7 +4757,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 69
+          "line": 88
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3238,7 +4770,20 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 48
+          "line": 53
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:load-wizard",
+      "type": "form",
+      "value": "load-wizard",
+      "label": "load-wizard",
+      "locations": [
+        {
+          "path": "apps/operations/load-wizard.js",
+          "line": 29
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3277,7 +4822,20 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 30
+          "line": 37
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:onboarding-start",
+      "type": "form",
+      "value": "onboarding-start",
+      "label": "onboarding-start",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 1
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3290,7 +4848,33 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 71
+          "line": 85
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:platform-case",
+      "type": "form",
+      "value": "platform-case",
+      "label": "platform-case",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:platform-config",
+      "type": "form",
+      "value": "platform-config",
+      "label": "platform-config",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 5
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3303,7 +4887,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 19
+          "line": 22
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3381,7 +4965,7 @@
       "locations": [
         {
           "path": "apps/operations/financial.js",
-          "line": 12
+          "line": 14
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3394,7 +4978,20 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 119
+          "line": 130
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "form:uat-feedback-create",
+      "type": "form",
+      "value": "uat-feedback-create",
+      "label": "uat-feedback-create",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 19
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3407,7 +5004,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 143
+          "line": 158
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3420,7 +5017,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 136
+          "line": 151
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3433,7 +5030,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 6
+          "line": 9
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3446,7 +5043,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 169
+          "line": 184
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3459,7 +5056,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 174
+          "line": 189
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3472,7 +5069,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 4
+          "line": 7
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3498,7 +5095,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 9
+          "line": 12
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3511,7 +5108,20 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 7
+          "line": 10
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:directories",
+      "type": "navigation",
+      "value": "directories",
+      "label": "Directories",
+      "locations": [
+        {
+          "path": "apps/operations/financial.js",
+          "expression": true
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3524,7 +5134,7 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 5
+          "line": 8
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3543,6 +5153,19 @@
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
     },
     {
+      "key": "navigation:expenses",
+      "type": "navigation",
+      "value": "expenses",
+      "label": "Expenses",
+      "locations": [
+        {
+          "path": "apps/operations/financial.js",
+          "expression": true
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
       "key": "navigation:finance",
       "type": "navigation",
       "value": "finance",
@@ -3550,7 +5173,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 172
+          "line": 187
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3563,7 +5186,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 168
+          "line": 183
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3590,6 +5213,19 @@
         {
           "path": "apps/operations/intelligence.js",
           "line": 5
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:load-wizard",
+      "type": "navigation",
+      "value": "load-wizard",
+      "label": "Load drafts",
+      "locations": [
+        {
+          "path": "apps/operations/financial.js",
+          "expression": true
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3628,7 +5264,20 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 8
+          "line": 11
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "navigation:onboarding",
+      "type": "navigation",
+      "value": "onboarding",
+      "label": "Onboarding",
+      "locations": [
+        {
+          "path": "apps/operations/financial.js",
+          "expression": true
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3641,7 +5290,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 167
+          "line": 182
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3654,7 +5303,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 173
+          "line": 188
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3706,7 +5355,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 171
+          "line": 186
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3719,15 +5368,15 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 97
+          "line": 103
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 98
+          "line": 104
         },
         {
           "path": "server/operations-owner-profiles.mjs",
@@ -3781,7 +5430,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 89
+          "line": 94
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3798,7 +5447,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 79
+          "line": 84
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3815,11 +5464,11 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 78
+          "line": 83
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 90
+          "line": 95
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3853,11 +5502,11 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 77
+          "line": 82
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 88
+          "line": 93
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3870,11 +5519,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 41
+          "line": 46
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 81
+          "line": 86
         },
         {
           "path": "server/operations-owner-profiles.mjs",
@@ -3895,15 +5544,32 @@
       "locations": [
         {
           "path": "apps/operations/extended.js",
-          "line": 15
+          "line": 18
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 92
+          "line": 98
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 92
+          "line": 98
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/feedback",
+      "type": "route",
+      "value": "/api/ops/feedback",
+      "label": "/api/ops/feedback",
+      "locations": [
+        {
+          "path": "apps/operations/feedback.js",
+          "line": 11
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 69
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3916,7 +5582,7 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 91
+          "line": 96
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3929,15 +5595,15 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 36
+          "line": 38
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 40
+          "line": 42
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 46
+          "line": 48
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3950,11 +5616,11 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 36
+          "line": 38
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 40
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3967,7 +5633,7 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 68
+          "line": 73
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3980,7 +5646,24 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 71
+          "line": 76
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/invitations/list",
+      "type": "route",
+      "value": "/api/ops/invitations/list",
+      "label": "/api/ops/invitations/list",
+      "locations": [
+        {
+          "path": "apps/operations/onboarding.js",
+          "line": 3
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 72
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3993,11 +5676,11 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 36
+          "line": 38
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 40
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4010,11 +5693,11 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 36
+          "line": 38
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 40
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4027,7 +5710,7 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 70
+          "line": 75
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4040,7 +5723,7 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 69
+          "line": 74
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4057,11 +5740,11 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 36
+          "line": 38
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 54
+          "line": 56
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4074,11 +5757,11 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 182
+          "line": 201
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 72
+          "line": 77
         },
         {
           "path": "server/operations-owner-profiles.mjs",
@@ -4111,7 +5794,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 80
+          "line": 85
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4128,7 +5811,50 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 86
+          "line": 91
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/pdfs/",
+      "type": "route",
+      "value": "/api/ops/pdfs/",
+      "label": "/api/ops/pdfs/",
+      "locations": [
+        {
+          "path": "apps/operations/financial.js",
+          "line": 6
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 97
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/pdfs/earnings/",
+      "type": "route",
+      "value": "/api/ops/pdfs/earnings/",
+      "label": "/api/ops/pdfs/earnings/",
+      "locations": [
+        {
+          "path": "apps/operations/financial.js",
+          "line": 12
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/pdfs/shipping/",
+      "type": "route",
+      "value": "/api/ops/pdfs/shipping/",
+      "label": "/api/ops/pdfs/shipping/",
+      "locations": [
+        {
+          "path": "apps/operations/extended.js",
+          "line": 18
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4141,11 +5867,28 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 67
+          "line": 71
         },
         {
           "path": "server/operations-uat-application.mjs",
           "line": 4
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/api/ops/platform/workspace",
+      "type": "route",
+      "value": "/api/ops/platform/workspace",
+      "label": "/api/ops/platform/workspace",
+      "locations": [
+        {
+          "path": "apps/operations/platform-workspace.js",
+          "line": 4
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 70
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4157,8 +5900,12 @@
       "label": "/api/ops/session",
       "locations": [
         {
+          "path": "apps/operations/feedback.js",
+          "line": 8
+        },
+        {
           "path": "apps/operations/ops.js",
-          "line": 18
+          "line": 19
         },
         {
           "path": "apps/operations/admin.js",
@@ -4166,7 +5913,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 87
+          "line": 92
         },
         {
           "path": "server/operations-uat-application.mjs",
@@ -4183,7 +5930,7 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 28
+          "line": 31
         },
         {
           "path": "apps/operations/admin.js",
@@ -4191,7 +5938,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 93
+          "line": 99
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4224,19 +5971,19 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 94
+          "line": 100
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 96
+          "line": 102
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 99
+          "line": 105
         },
         {
           "path": "server/operations-uat-http.mjs",
@@ -4318,7 +6065,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4339,7 +6086,24 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/expenses.js",
+      "type": "route",
+      "value": "/assets/expenses.js",
+      "label": "/assets/expenses.js",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 16
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4356,7 +6120,28 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/feedback.js",
+      "type": "route",
+      "value": "/assets/feedback.js",
+      "label": "/assets/feedback.js",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 16
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 18
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4373,7 +6158,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4398,7 +6183,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         },
         {
           "path": "server/operations-uat-application.mjs",
@@ -4419,7 +6204,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4432,7 +6217,7 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4445,7 +6230,24 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/load-wizard.js",
+      "type": "route",
+      "value": "/assets/load-wizard.js",
+      "label": "/assets/load-wizard.js",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 16
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4462,7 +6264,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4479,7 +6281,24 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/onboarding.js",
+      "type": "route",
+      "value": "/assets/onboarding.js",
+      "label": "/assets/onboarding.js",
+      "locations": [
+        {
+          "path": "apps/operations/index.html",
+          "line": 1
+        },
+        {
+          "path": "server/operations-app.mjs",
+          "line": 16
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4508,7 +6327,7 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         },
         {
           "path": "server/operations-uat-application.mjs",
@@ -4529,7 +6348,24 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
+        }
+      ],
+      "verification": "NOT_CERTIFIED_BY_DISCOVERY"
+    },
+    {
+      "key": "route:/assets/platform-workspace.js",
+      "type": "route",
+      "value": "/assets/platform-workspace.js",
+      "label": "/assets/platform-workspace.js",
+      "locations": [
+        {
+          "path": "server/operations-app.mjs",
+          "line": 16
+        },
+        {
+          "path": "server/operations-uat-application.mjs",
+          "line": 18
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -4576,7 +6412,7 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 85
+          "line": 90
         },
         {
           "path": "server/operations-durable-uat.mjs",
@@ -4593,15 +6429,15 @@
       "locations": [
         {
           "path": "apps/operations/ops.js",
-          "line": 19
+          "line": 20
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 25
+          "line": 26
         },
         {
           "path": "apps/operations/ops.js",
-          "line": 182
+          "line": 201
         },
         {
           "path": "apps/operations/admin.js",
@@ -4609,23 +6445,23 @@
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 37
+          "line": 39
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 94
+          "line": 100
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 97
+          "line": 103
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 99
+          "line": 105
         },
         {
           "path": "server/operations-uat-application.mjs",
@@ -4650,15 +6486,15 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 14
+          "line": 16
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 95
+          "line": 101
         },
         {
           "path": "server/operations-app.mjs",
-          "line": 96
+          "line": 102
         },
         {
           "path": "server/operations-owner-profiles.mjs",
@@ -4812,7 +6648,7 @@
       "locations": [
         {
           "path": "server/operations-app.mjs",
-          "line": 37
+          "line": 39
         },
         {
           "path": "server/operations-uat-http.mjs",

@@ -1,3 +1,4 @@
+import {expenseIntegritySQL} from '../domain/operations-expenses.mjs';
 import {settlementIntegritySQL} from '../domain/operations-settlements.mjs';
 import {invitationSQL} from './operations-invitations.mjs';
 import {aiPolicyIntegritySQL} from '../domain/operations-ai-policy.mjs';
@@ -40,7 +41,7 @@ export class OperationsStore{
    CREATE TRIGGER IF NOT EXISTS audit_no_update BEFORE UPDATE ON audit BEGIN SELECT RAISE(ABORT,'Audit is append only'); END;
    CREATE TRIGGER IF NOT EXISTS audit_no_delete BEFORE DELETE ON audit BEGIN SELECT RAISE(ABORT,'Audit is append only'); END;
   `);
-  this.db.exec(settlementIntegritySQL);
+  this.db.exec(settlementIntegritySQL);this.db.exec(expenseIntegritySQL);
   this.db.exec(documentIntegritySQL);
   this.db.exec(intelligenceIntegritySQL);
   this.db.exec(runtimeIntegritySQL);

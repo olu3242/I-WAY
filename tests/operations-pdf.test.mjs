@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {randomUUID} from 'node:crypto';
+import {settlementFixture} from './helpers/settlement-fixture.mjs';
+import {authorizedPdf,renderTextPdf} from '../server/operations-pdf.mjs';
+import {makeOperationsApp} from '../server/operations-app.mjs';
+import {password} from './helpers/operations-fixture.mjs';
+test('PDF statements are authorized, source-approved, deterministic and omit driver commercial/private data',async t=>{
+ const f=await settlementFixture(t);const load=f.complete({privateNotes:'ILL-private-commercial-note'});let pay=f.prepare();assert.throws(()=>authorizedPdf(f.ops,f.driver,{type:'statement',id:pay.id}));pay=f.command(f.manager,'settlement:approve',pay,{reason:'Illustrative PDF approval'});const a=authorizedPdf(f.ops,f.driver,{type:'statement',id:pay.id}),b=authorizedPdf(f.ops,f.driver,{type:'statement',id:pay.id});assert.equal(a.sha256,b.sha256);assert.ok(a.bytes.toString().startsWith('%PDF-1.4'));assert.ok(!a.bytes.includes(Buffer.from('grossRevenue')));assert.throws(()=>authorizedPdf(f.ops,f.outsider,{type:'statement',id:pay.id}));assert.throws(()=>authorizedPdf(f.ops,f.fleetUser,{type:'statement',id:pay.id}));const summary=authorizedPdf(f.ops,f.driver,{type:'shipping',id:load.id});assert.ok(!summary.bytes.includes(Buffer.from('ILL-private-commercial-note')));
+ const reopened=f.command(f.manager,'settlement:unapprove',pay,{reason:'Illustrative correction'});assert.equal(reopened.status,'draft');assert.throws(()=>authorizedPdf(f.ops,f.driver,{type:'statement',id:pay.id}));
+ const rows=f.store.db.prepare("SELECT detail FROM audit WHERE action='pdf:download'").all();assert.equal(rows.length,3);assert.ok(!JSON.stringify(rows).includes('12150'));
+});
+test('PDF HTTP downloads reject unauthenticated access and hostile paths; responses are private attachments',async t=>{
+ const f=await settlementFixture(t),load=f.complete(),app=makeOperationsApp({store:f.store,operations:f.ops});await new Promise(r=>app.listen(0,'127.0.0.1',r));t.after(()=>{app.closeAllConnections();return new Promise(r=>app.close(r));});const origin='http://127.0.0.1:'+app.address().port,url=origin+'/api/ops/pdfs/shipping/'+load.id;
+ assert.equal((await fetch(url)).status,401);const login=await fetch(origin+'/api/ops/login',{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify({username:f.driver.username,password})});const headers={cookie:login.headers.get('set-cookie').split(';')[0]};const res=await fetch(url,{headers});assert.equal(res.status,200);assert.equal(res.headers.get('content-type'),'application/pdf');assert.equal(res.headers.get('cache-control'),'no-store');assert.match(res.headers.get('content-disposition'),/^attachment; filename="shipping-[a-f0-9-]+\.pdf"$/);assert.ok((await res.text()).endsWith('%%EOF\n'));for(const suffix of ['../../etc/passwd','bad%0d%0aHeader','%2e%2e%2f'+randomUUID()])assert.notEqual((await fetch(origin+'/api/ops/pdfs/shipping/'+suffix,{headers})).status,200);
+});
+test('text PDF pagination wraps hostile long text and generates valid xref offsets',()=>{const bytes=renderTextPdf('Illustrative pagination',Array.from({length:100},(_,i)=>i+' '+')\\ test '.repeat(30))),text=bytes.toString();assert.ok(Number(/\/Count (\d+)/.exec(text)[1])>1);const offset=Number(/startxref\n(\d+)/.exec(text)[1]);assert.equal(bytes.subarray(offset,offset+4).toString(),'xref');assert.ok(!text.includes('/JavaScript'));});
+test('issued invoice PDF follows document and financial approval gates and denies drivers',async t=>{
+ const f=await settlementFixture(t),load=f.complete();let invoice=f.command(f.manager,'billing:generate',load,{});assert.throws(()=>authorizedPdf(f.ops,f.manager,{type:'invoice',id:invoice.id}));invoice=f.command(f.manager,'finance:approve',invoice,{reason:'Illustrative reviewed invoice'});invoice=f.command(f.manager,'billing:issue',invoice,{dueOn:'2026-12-01',reason:'Illustrative issued invoice'});const pdf=authorizedPdf(f.ops,f.manager,{type:'invoice',id:invoice.id});assert.ok(pdf.bytes.length>1000);assert.throws(()=>authorizedPdf(f.ops,f.driver,{type:'invoice',id:invoice.id}));
+});
+
+test('Unicode PDF preserves supported characters and rejects missing glyphs explicitly',()=>{const pdf=renderTextPdf('Unicode verification',['Montréal — Łódź — München — Αθήνα — Київ']);assert.ok(pdf.length>1000);assert.throws(()=>renderTextPdf('Unsupported glyph',['🧪']),e=>e.code==='PDF_GLYPH');});

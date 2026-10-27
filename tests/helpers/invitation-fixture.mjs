@@ -4,8 +4,8 @@ import {authenticate,addUser} from '../../server/operations-auth.mjs';
 import {createIdentityVerifier,authenticateIdentity} from '../../server/operations-identity.mjs';
 import {createInvitationService,createMockInvitationTransport} from '../../server/operations-invitations.mjs';
 import {createHash} from 'node:crypto';
-export async function invitationFixture(t){
- const f=await fixture(t);let time=Date.now();
+export async function invitationFixture(t,options={}){
+ const f=await fixture(t,options);let time=Date.now();
  const issuer='https://enrollment.illustrative.invalid',audience='iway-fixture';
  const {publicKey,privateKey}=generateKeyPairSync('ec',{namedCurve:'prime256v1'});
  const verifier=createIdentityVerifier({issuer,audience,requireMfa:false,keys:[{kid:'fixture',algorithm:'ES256',publicKey}]});

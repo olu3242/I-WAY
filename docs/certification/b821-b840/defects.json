@@ -1,0 +1,115 @@
+{
+  "unresolvedCriticalLocalDefects": 0,
+  "defects": [
+    {
+      "id": "D821-01",
+      "kind": "test/design correction",
+      "severity": "major",
+      "issue": "Canonical login gate rejected unregistered feedback permission names.",
+      "fix": "Use separate stored opt-in plus existing base authority; preserve the canonical permission catalog and identity binding gates.",
+      "status": "RESOLVED_LOCAL",
+      "evidence": [
+        "tests/operations-feedback.test.mjs",
+        "tests/browser/b821-feedback.spec.mjs",
+        "tests/browser/b821-feedback-disabled.spec.mjs",
+        "tests/uat-staging-package.test.mjs"
+      ]
+    },
+    {
+      "id": "D821-02",
+      "kind": "product",
+      "severity": "major",
+      "issue": "Disabled feedback checked privileged MFA before its opt-in and exposed an unwanted unavailable/live region to native users.",
+      "fix": "Return no feedback records/owners when disabled; require verified privileged MFA for enabled access. Dedicated native-login regression added.",
+      "status": "RESOLVED_LOCAL",
+      "evidence": [
+        "tests/operations-feedback.test.mjs",
+        "tests/browser/b821-feedback.spec.mjs",
+        "tests/browser/b821-feedback-disabled.spec.mjs",
+        "tests/uat-staging-package.test.mjs"
+      ]
+    },
+    {
+      "id": "D821-03",
+      "kind": "product accessibility",
+      "severity": "serious",
+      "issue": "Mobile feedback-history disclosure measured 19px and failed axe target-size.",
+      "fix": "Scoped 44px disclosure target, shared spacing and responsive form layout; final axe scans pass.",
+      "status": "RESOLVED_LOCAL",
+      "evidence": [
+        "tests/operations-feedback.test.mjs",
+        "tests/browser/b821-feedback.spec.mjs",
+        "tests/browser/b821-feedback-disabled.spec.mjs",
+        "tests/uat-staging-package.test.mjs"
+      ]
+    },
+    {
+      "id": "D821-04",
+      "kind": "test correction",
+      "severity": "major",
+      "issue": "New fixture navigation could race logout location assignment and abort page.goto.",
+      "fix": "Assert the confirmed logout redirect before beginning the next login; no sleeps or weakened authentication assertions.",
+      "status": "RESOLVED_LOCAL",
+      "evidence": [
+        "tests/operations-feedback.test.mjs",
+        "tests/browser/b821-feedback.spec.mjs",
+        "tests/browser/b821-feedback-disabled.spec.mjs",
+        "tests/uat-staging-package.test.mjs"
+      ]
+    },
+    {
+      "id": "D821-05",
+      "kind": "test correction",
+      "severity": "major",
+      "issue": "Packaging fixture omitted the new allowlisted asset; five package assertions failed.",
+      "fix": "Include feedback.js in the synthetic complete closure. Existing immutable-commit/private-boundary checks retained; eight package cases pass.",
+      "status": "RESOLVED_LOCAL",
+      "evidence": [
+        "tests/operations-feedback.test.mjs",
+        "tests/browser/b821-feedback.spec.mjs",
+        "tests/browser/b821-feedback-disabled.spec.mjs",
+        "tests/uat-staging-package.test.mjs"
+      ]
+    },
+    {
+      "id": "D821-06",
+      "kind": "test correction",
+      "severity": "minor",
+      "issue": "New negative test expected HTTP400 for unknown fields; existing contract returns422.",
+      "fix": "Assert actual422 schema denial without changing backend validation.",
+      "status": "RESOLVED_LOCAL",
+      "evidence": [
+        "tests/operations-feedback.test.mjs",
+        "tests/browser/b821-feedback.spec.mjs",
+        "tests/browser/b821-feedback-disabled.spec.mjs",
+        "tests/uat-staging-package.test.mjs"
+      ]
+    }
+  ],
+  "diagnosticsPreserved": [
+    {
+      "path": "dist/b821-b840/feedback-targeted.log",
+      "result": "6 failed; unregistered test grants"
+    },
+    {
+      "path": "dist/b821-b840/feedback-targeted-2.log",
+      "result": "2 pass / 4 fail; expected400 versus422"
+    },
+    {
+      "path": "dist/b821-b840/verify.log",
+      "result": "983 pass / 5 fail; package fixture incomplete"
+    },
+    {
+      "path": "dist/b821-b840/browser.log",
+      "result": "157 pass / 28 fail; disabled-feedback regression, touch target and test redirect race"
+    },
+    {
+      "path": "dist/b821-b840/feedback-final.log",
+      "result": "6 pass / 1 fail; touch target"
+    },
+    {
+      "path": "dist/b821-b840/feedback-final-2.log",
+      "result": "7 pass; corrected target and redirect synchronization"
+    }
+  ]
+}

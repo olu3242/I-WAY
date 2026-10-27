@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "startingWorktreeCommit": "87e87a2b36009a6bf8454d83c2d87a0f91f241a1",
+  "startingCommit": "cf052ee430d98d5578ebb4c58fadb32a6e685f51",
+  "branch": "work/b751-b770-harmonization-20261026",
+  "pullRequest": "https://github.com/olu3242/I-WAY/pull/21",
+  "endingCommit": "Exact value in Git and ignored dist/b791-b820/post-commit-verification.json; avoids circular self-hash",
+  "sourceDigest": "0ea7aaadba39b31e39f558966e9ea93ef82cafc39745bfc4f164da620ea9c025",
+  "results": {
+    "repository": {
+      "passed": 981,
+      "failed": 0,
+      "skipped": 0
+    },
+    "generalBrowser": {
+      "total": 179,
+      "passed": 179,
+      "failed": 0,
+      "skipped": 0
+    },
+    "postgresBrowser": {
+      "total": 68,
+      "passed": 68,
+      "failed": 0,
+      "skipped": 0
+    },
+    "postgresContracts": {
+      "leafScenarios": 108,
+      "suites": 10,
+      "nodeChecksIncludingParents": 118,
+      "failed": 0,
+      "skipped": 0,
+      "version": "17.11"
+    },
+    "postgresHttpRestart": {
+      "passed": 1,
+      "failed": 0
+    },
+    "axe": {
+      "fullSuiteScans": 412,
+      "pendingStateScans": 1,
+      "total": 413,
+      "violations": 0
+    },
+    "performance": "PASS",
+    "recovery": {
+      "status": "PASS",
+      "rtoMs": 312.80330000000004,
+      "rpoMs": 674
+    },
+    "authenticatedHttp": {
+      "status": "MEASURED_LOCAL_ONLY",
+      "samples": 128,
+      "backend": "disposable PostgreSQL",
+      "failures": 0,
+      "hostedCertified": false
+    },
+    "controls": {
+      "action": {
+        "inventoried": 87,
+        "observed": 71,
+        "interacted": 71,
+        "verifiedOutcome": 87
+      },
+      "button": {
+        "inventoried": 60,
+        "observed": 60,
+        "interacted": 60,
+        "verifiedOutcome": 60
+      },
+      "dialog": {
+        "inventoried": 19,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      },
+      "disclosure": {
+        "inventoried": 2,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 1
+      },
+      "field": {
+        "inventoried": 150,
+        "observed": 138,
+        "interacted": 113,
+        "verifiedOutcome": 0
+      },
+      "form": {
+        "inventoried": 40,
+        "observed": 40,
+        "interacted": 40,
+        "verifiedOutcome": 40
+      },
+      "navigation": {
+        "inventoried": 26,
+        "observed": 26,
+        "interacted": 26,
+        "verifiedOutcome": 26
+      },
+      "route": {
+        "inventoried": 72,
+        "observed": 8,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      }
+    },
+    "artifactSecurityTests": {
+      "passed": 16,
+      "failed": 0
+    },
+    "ciAdditionalTests": {
+      "passed": 4,
+      "failed": 0
+    },
+    "dependencyVulnerabilities": 0,
+    "hosted": {
+      "executed": 0,
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 88
+    },
+    "humanAccessibility": {
+      "executed": 0,
+      "NOT_RUN": 48
+    },
+    "screens": {
+      "accounted": 35,
+      "mappedCaptures": 81,
+      "implementedMappings": 27,
+      "noApprovedRoute": 8,
+      "visualConformityPercentage": null,
+      "functionalityConformityPercentage": null
+    }
+  },
+  "decisions": {
+    "implementedLocalContracts": "GO",
+    "fullProductJourney": "PARTIAL",
+    "security": "LOCAL_PASS_HOSTED_BLOCKED",
+    "uat": "NO_GO",
+    "production": "NO_GO"
+  },
+  "artifacts": [
+    {
+      "path": "dist/b791-b820/verify-final.log",
+      "sha256": "a9d54e20ca60a8cd6696bed74b590ac88706ef373a2f482883738526bd7c4130"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/browser-evidence.json",
+      "sha256": "74f4a03c3ca5b81aa3ac9309d107f96cb2ba72ba04a2565a427405657ca12a6f"
+    },
+    {
+      "path": "dist/b791-b820/browser-final/mvp-coverage.json",
+      "sha256": "b71076bb55fd8fb4fc7b64085091c9726571646823a48da61f7ef1795db2ad88"
+    },
+    {
+      "path": "dist/b791-b820/postgres-browser-final/browser-evidence.json",
+      "sha256": "67833f3897f59beab8415529196d85b2f5aaab63165773370b54cbaf6ba633e1"
+    },
+    {
+      "path": "dist/b791-b820/postgres-final/postgres17-compatibility.json",
+      "sha256": "0347905a52c785e2ebb2153e5a1a09d13cf54048d37efeeb60c4914e1dd92036"
+    },
+    {
+      "path": "dist/b791-b820/postgres-logistics-final.log",
+      "sha256": "d3bb9da61bf77146449d467189f702ae650f370ce52798f174042491b6acb5f2"
+    },
+    {
+      "path": "dist/b791-b820/pending-accessibility/browser-evidence.json",
+      "sha256": "3c0711a5ffd6682ca3542fe898c266b861d5c24d1238c01a2b4f4a7b25edbd9d"
+    },
+    {
+      "path": "dist/b791-b820/governance-contracts-final.log",
+      "sha256": "a6f8da2bbe83ed3c8b66ddebb81bf84183dcb9d104c803ea09ee713ed780e8c1"
+    },
+    {
+      "path": "dist/b791-b820/governance-pg-targeted/browser-evidence.json",
+      "sha256": "d8aefde20b4ce47a85dea963d16bac1f684de3d025dbd3bf80c1d668165e19e3"
+    },
+    {
+      "path": "dist/b791-b820/baseline-confirmed/browser-evidence.json",
+      "sha256": "7068615d9c082067a7084e32ce09f0ddd6c58909a4608caeec2381b14a39a204"
+    },
+    {
+      "path": "dist/b791-b820/governance-baseline-unit.log",
+      "sha256": "0ceabd1e7169f4058b6e8c1c2066a3ae6ddd95de685b41d445c9f4abd79f6659"
+    },
+    {
+      "path": "dist/b791-b820/platform-ci-requests.json",
+      "sha256": "b8214a92efd23f2f9bc1948447bd0e4c26a9793a9f4b3cd5aa96b841ad2dd702"
+    },
+    {
+      "path": "dist/b791-b820/performance-final.json",
+      "sha256": "c3c26220ad7e7ab720c37ffd0d9bc239d5060cdfee0ca4f112dd0a90416e39a5"
+    },
+    {
+      "path": "dist/b791-b820/recovery-final.json",
+      "sha256": "ee2460968d068833c69df1b70ac0f47ab1b37c24077048fc9925f13310c6b9fe"
+    },
+    {
+      "path": "dist/b791-b820/local-postgres-http-latency.json",
+      "sha256": "23af752fa12f9fe059f8ed6ecf044d107f8266ed18e46739756e583e2b799eb6"
+    },
+    {
+      "path": "dist/b791-b820/environment-contract.json",
+      "sha256": "73b8dac8a67a6faa80049ac4c4452882390f9302c8ac189643d915a95380f780"
+    },
+    {
+      "path": "dist/b791-b820/project-env-metadata.json",
+      "sha256": "038bee8182bcde51811c563ac69bc57f2f5b86ffef20038dd1c9f2c703577001"
+    },
+    {
+      "path": "dist/b791-b820/supplementary-environment-checks.json",
+      "sha256": "c190252becc2ccf720bb18487926a012c966489e4e98aa665aa66c12e301bd04"
+    },
+    {
+      "path": "dist/b791-b820/npm-audit.json",
+      "sha256": "352c05d2e69b568aeef394e8f0b42d609fcc4c763cbd15e4cd0cf30238b813ce"
+    },
+    {
+      "path": "dist/b791-b820/artifact-security-checks.log",
+      "sha256": "02a0506d94e9d223ca36e0884a9be65bb59d3c9cbe1be707b71ca95d114a47ec"
+    },
+    {
+      "path": "dist/b791-b820/ci-additional-checks.log",
+      "sha256": "bc6f003e0c579e8c55ac2256af213e1c62bf4ffa966b225b7c725efa583c8278"
+    },
+    {
+      "path": "dist/b791-b820/source-check-final.log",
+      "sha256": "22c5b1d45965eb8860a31d05be44305b24f100a8df6931db50eb796a16297138"
+    }
+  ],
+  "nextAction": "Approve publication of the exact local commit to existing feature branch/PR #21 to execute remote CI. Separately designate exclusive staging database, management and delivery owners before any hosted activation.",
+  "originalWorktree": {
+    "commit": "b1e39bb6c1ada7e91f6fa1d5e35807842238aa85",
+    "preservedFiles": 136,
+    "byteUnchanged": true
+  },
+  "preservedAcceptedDomains": [
+    {
+      "file": "domain/authorization.mjs",
+      "sha256": "b7ed518f04c2a5b88a0bbf4f1f7662e4ff42484733346df18ca03180652eb4a0"
+    },
+    {
+      "file": "domain/operations-expenses.mjs",
+      "sha256": "a711144e316a9c98b71be54f32fabddacea2b4958d2fe147c40f57645304bca9"
+    },
+    {
+      "file": "domain/operations-settlements.mjs",
+      "sha256": "b0f73d87341d1a1c777d23c5443dc29302615e0a130a494e50fbd0198f46fa37"
+    },
+    {
+      "file": "domain/operations-load-wizard.mjs",
+      "sha256": "eae828ccc61679be9169739f4d9f0823a8a772dc0ad93dd30b0b99b3dd6eefb0"
+    },
+    {
+      "file": "domain/operations-driver-pay.mjs",
+      "sha256": "0343171788fcc42dbe0f159684ed1bc2804bb030790838280c92e8c7ad85d761"
+    },
+    {
+      "file": "domain/driver-offline-replay.mjs",
+      "sha256": "d3153e17cbd2aef98f2f50da259d8ec10d7b09835345d97333b9f89a90fc3296"
+    }
+  ],
+  "secretReview": {
+    "path": "dist/b791-b820/secret-review-final.json",
+    "sha256": "7da15acca5c50868cff5e4b76f5e7746357267a75e650a581c711753cf56356d",
+    "status": "PASS"
+  },
+  "remoteCI": {
+    "status": "BLOCKED_PUSH_APPROVAL_REQUIRED",
+    "lastRemoteCommit": "cf052ee430d98d5578ebb4c58fadb32a6e685f51",
+    "lastRemoteVerify": "failure",
+    "lastRemoteIdentityCertification": "failure",
+    "finalCandidateRunExists": false,
+    "reason": "Automatic approval review rejected combined commit/push under standing no-push restriction; local-only commit proceeds separately"
+  }
+}

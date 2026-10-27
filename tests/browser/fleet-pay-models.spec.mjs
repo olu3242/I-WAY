@@ -1,0 +1,12 @@
+import {verifiedJourney} from './control-evidence.mjs';
+import {test,expect,signIn,basicAccessibility} from './workspace.mjs';
+import {configureSettlementFixture} from '../helpers/settlement-fixture.mjs';
+test('fleet can revise a draft through all six explicit pay models before independent approval',async({page,workspace})=>{
+ const f=configureSettlementFixture(workspace,{fleet:true}),load=f.complete();let source=f.prepare();source=f.command(f.manager,'settlement:approve',source,{reason:'Illustrative approved source'});await signIn(page,f,f.fleetUser);await page.getByRole('button',{name:'Driver pay',exact:true}).click();
+ for(const [i,model]of ['per_load','percentage','per_mile','flat_weekly','salary','custom'].entries()){
+  if(i)await page.getByRole('button',{name:'Revise driver pay',exact:true}).click();await page.getByLabel('Agreed pay model').selectOption(model);await page.getByLabel('Fleet driver',{exact:true}).selectOption(f.driver.id);await page.getByLabel('Approved fleet settlement').selectOption(source.id);
+  if(model==='per_load')await page.getByLabel('Pay per completed load (cents)').fill('10000');if(model==='percentage')await page.getByLabel('Share (basis points)').fill('1000');if(model==='per_mile'){await page.getByLabel('Cents per reviewed mile').fill('50');await page.getByLabel('Mileage verification reference').fill('Illustrative verified mileage');await page.getByLabel('Paid miles · '+load.reference).fill('200');}if(['flat_weekly','salary'].includes(model))await page.getByLabel('Agreed weekly amount (cents)').fill('10000');if(model==='custom'){await page.getByLabel('Agreed custom line code').fill('agreed');await page.getByLabel('Agreed custom line amount (cents)').fill('10000');}await page.getByLabel('Reason for pay terms').fill('Illustrative agreed '+model+' terms');await page.getByRole('button',{name:'Prepare driver pay',exact:true}).click();await expect(page.getByRole('status')).toContainText('Draft prepared');expect(f.store.list('driverpay',f.manager.tenantId)[0].model).toBe(model);
+ }
+ expect(f.store.list('driverpay',f.manager.tenantId)).toHaveLength(1);await basicAccessibility(page);page.once('dialog',d=>d.accept('Illustrative final review'));await page.getByRole('button',{name:'Approve driver pay',exact:true}).click();await expect(page.getByRole('button',{name:'Un-approve driver pay',exact:true})).toBeVisible();
+ await verifiedJourney(["action:pay-edit","action:driverpay:revise"],async()=>{});
+});

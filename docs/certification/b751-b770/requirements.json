@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "issue": 20,
+  "scope": "Implemented/current-contract local scope; PASS_LOCAL_SCOPE never means whole PRD/Figma conformity",
+  "batches": [
+    {
+      "batch": "B751",
+      "status": "PASS",
+      "scope": "Dedicated worktree based on PR #19, including PR #18; local wizard/expense commits applied and five conflicts reviewed; all 136 original candidate files preserved"
+    },
+    {
+      "batch": "B752",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Carrier KPIs from authorized state, grouped navigation, workflow shortcuts and visible loading/stale/retry states"
+    },
+    {
+      "batch": "B753",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Four-step wizard remains the only creation UI; first-load guide now shares its confirmed submission and stable retry contracts"
+    },
+    {
+      "batch": "B754",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Dispatch stage/exception filters, assignment indicators, recorded-stage strip and existing server-checked assignment controls"
+    },
+    {
+      "batch": "B755",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Scoped driver/resource search, availability and approval/service attention filters; onboarding and carrier eligibility preserved"
+    },
+    {
+      "batch": "B756",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Shared load/status presentation retains controlled document revisions, PDF links, bounded acknowledgments and manual tracking; no unsupported upload or live-map success"
+    },
+    {
+      "batch": "B757",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Settlements/driver pay retain existing calculations and audit; financial cards explicitly distinguish approved amounts owed from unverified transfers"
+    },
+    {
+      "batch": "B758",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Fleet-specific counts of visible active loads, available drivers, ready vehicles and approved statements; responsive grouped navigation"
+    },
+    {
+      "batch": "B759",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Fleet-owned resources, maintenance, onboarding and pay preserved; fleet cannot assume carrier dispatch authority"
+    },
+    {
+      "batch": "B760",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Full repository, browser, PostgreSQL and responsive runs; before/after captures at 390/1440, current 768 captures; exact Figma comparison blocked"
+    },
+    {
+      "batch": "B761",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Driver assignment cards, pickup/delivery appointments, large Open target, scoped mobile navigation and role-specific metrics"
+    },
+    {
+      "batch": "B762",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "PR #19 sign-in/enrollment and local onboarding preserved; no credential issuance or security gate changes"
+    },
+    {
+      "batch": "B763",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Server-confirmed lifecycle strip plus existing accept/reject/pickup/transit/delivery/acknowledgment commands"
+    },
+    {
+      "batch": "B764",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "PR #18 offline shell/replay and original bounded queue preserved, with pending/unconfirmed/conflict states; actual restart/failure-injection test"
+    },
+    {
+      "batch": "B765",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Supported manual status/document/evidence controls preserved; signatures/images/GPS/provider-dependent functionality remains blocked by existing contracts"
+    },
+    {
+      "batch": "B766",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "390/768/1440 task checks, keyboard/focus, loading/retry, semantic navigation and axe; human assistive-technology review not run"
+    },
+    {
+      "batch": "B767",
+      "status": "PARTIAL",
+      "scope": "Governance-only case/staff/support summaries and anchor navigation implemented; global carrier/fleet management and carrier provisioning are unsupported, not granted by this UI"
+    },
+    {
+      "batch": "B768",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "PR #19 server-selected owner profiles preserved with MFA/membership/owner attribution; SQLite and restricted PostgreSQL browser scenarios included; no real grants created"
+    },
+    {
+      "batch": "B769",
+      "status": "PARTIAL",
+      "scope": "Existing platform governance and bounded advisory surfaces preserved; five registry summaries found. MAX/PULSE/CLARA/GUARDIAN/FINN/SAGE/ATLAS alias ownership is unverified; no seven-agent capability invented"
+    },
+    {
+      "batch": "B770",
+      "status": "PASS_LOCAL_SCOPE",
+      "scope": "Four-persona integration, persistent guided dispatch, owner switching, negative tenant/session/authority checks and actual PostgreSQL restart; hosted authentication not run"
+    }
+  ],
+  "blockedContracts": [
+    "Platform creation/authorization of carrier tenants lacks a supported management contract; fixture seeding is not this product feature",
+    "Fleet load dispatch is not authorized by current ownership rules; carrier assigns eligible resources",
+    "Sensitive capture, signatures, upload/storage/retention and live location/provider contracts",
+    "Original approved Figma version/exports; no pixel conformity percentage",
+    "Seven named-agent aliases to approved owners/actual tools",
+    "Hosted owner access, credentials, actual identity/MFA and delivery certification"
+  ],
+  "localEvidence": {
+    "repository": {
+      "passed": 978,
+      "failed": 0,
+      "skipped": 0
+    },
+    "general": {
+      "total": 162,
+      "passed": 162,
+      "failed": 0,
+      "skipped": 0
+    },
+    "postgresBrowser": {
+      "total": 64,
+      "passed": 64,
+      "failed": 0,
+      "skipped": 0
+    },
+    "sourceCoverage": {
+      "action": {
+        "inventoried": 87,
+        "observed": 71,
+        "interacted": 71,
+        "verifiedOutcome": 87
+      },
+      "button": {
+        "inventoried": 59,
+        "observed": 59,
+        "interacted": 59,
+        "verifiedOutcome": 59
+      },
+      "dialog": {
+        "inventoried": 19,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      },
+      "disclosure": {
+        "inventoried": 2,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 1
+      },
+      "field": {
+        "inventoried": 150,
+        "observed": 138,
+        "interacted": 113,
+        "verifiedOutcome": 0
+      },
+      "form": {
+        "inventoried": 40,
+        "observed": 40,
+        "interacted": 40,
+        "verifiedOutcome": 40
+      },
+      "navigation": {
+        "inventoried": 26,
+        "observed": 26,
+        "interacted": 26,
+        "verifiedOutcome": 26
+      },
+      "route": {
+        "inventoried": 72,
+        "observed": 8,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      }
+    },
+    "axes": {
+      "capturedScans": 342,
+      "violations": 0
+    },
+    "wholeOriginalFigma": "BLOCKED_REFERENCE",
+    "humanAccessibility": "NOT_RUN",
+    "hosted": "BLOCKED"
+  }
+}

@@ -63,6 +63,7 @@ export function createInvitationService(store,{verifier,transport,now=()=>Date.n
   requireValue(['SENT','OPENED','VERIFIED'].includes(r.state),'INVITATION','Invitation unavailable.',409);return r;
  };
  return Object.freeze({
+  list(auth){const actor=actorFor(auth);requireValue(actor.role==='platform'?actor.permissions.includes('platform:invite'):actor.role==='carrier'?actor.permissions.includes('user:manage'):actor.role==='fleet'&&actor.permissions.includes('employment:manage'),'FORBIDDEN','Invitation management authority required.',403);return transaction(()=>store.db.prepare('SELECT * FROM invitations WHERE tenant_id=? AND creator_id=? ORDER BY created_at DESC LIMIT 100').all(actor.tenantId,actor.id).map(row=>({...view(expire(row)),name:JSON.parse(row.assignment).name,role:JSON.parse(row.assignment).role})));},
   create(auth,input){
    fields(input,['recipient','name','role','permissions','fleetId','issuer','subject']);
    const actor=actorFor(auth),recipient=text(input.recipient,254).toLowerCase();

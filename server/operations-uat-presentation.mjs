@@ -37,7 +37,7 @@ footer{color:#475569;font-size:12px;margin-top:20px;text-align:center}
 `;
 export function uatPage(setup){return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${setup?'Set your password':'Sign in'} | I-WAY UAT</title><link rel="stylesheet" href="/uat/styles.css"></head>
-<body><div class="shell"><header class="brand"><img src="/uat/brand.svg" alt="I-way" width="160"><span class="badge">UAT WORKSPACE</span></header>
+<body><div class="shell"><header class="brand"><img src="/uat/brand.svg" alt="Iway" width="160"><span class="badge">UAT WORKSPACE</span></header>
 <main class="layout"><section class="intro" aria-labelledby="welcome"><div class="accent" aria-hidden="true"></div><p class="eyebrow">Logistics made simpler</p><h2 id="welcome">Move Smarter.<br>Go Further.</h2><p>Your I-WAY testing workspace. Sign in with your assigned account to get started.</p></section>
 <section class="panel" aria-labelledby="title"><h1 id="title">${setup?'Set your I-WAY password':'Welcome to I-WAY'}</h1><p class="description">${setup?'Create a password with at least 15 characters.':'Enter your email and password to access your workspace.'}</p>
 <form id="credentials">${setup?'':'<label for="email">Email<input id="email" name="email" type="email" autocomplete="username" required></label>'}<label for="password">${setup?'New password':'Password'}<input id="password" name="password" type="password" autocomplete="${setup?'new-password':'current-password'}" ${setup?'minlength="15"':''} maxlength="128" required></label><button>${setup?'Set password':'Sign in'}</button></form>
