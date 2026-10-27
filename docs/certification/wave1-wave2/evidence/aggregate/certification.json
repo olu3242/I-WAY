@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-12T17:26:44.324Z",
+  "sourceHash": "2133dfba6b3b1ba1a3a554d765cbca105860d8789edcc9ec672dddd655925bc1",
+  "baseCommit": "dad608e4184deefc4e4c5508b62b7ac7aa9451a0",
+  "scope": "isolated local operational fixtures",
+  "localDecision": "NO-GO",
+  "localExecutableGate": "FAIL",
+  "hostedDecision": "NO-GO",
+  "evidence": {
+    "verify": {
+      "command": "npm run verify",
+      "exitCode": 0,
+      "logFile": "verify.log",
+      "logSha256": "8282360be22b2a1b7905f85922b9b25155cc642a9f2d13897b316059490a3610",
+      "counts": {
+        "passed": 399,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "browser": {
+      "command": "npm run test:browser",
+      "exitCode": 1,
+      "logFile": "browser.log",
+      "logSha256": "2d248761122d09d4c448a917b412cf139dc26b27effd953f39e381cfd30b100d",
+      "counts": {
+        "passed": 11,
+        "failed": 1,
+        "skipped": 0
+      },
+      "artifact": {
+        "file": "browser-evidence.json",
+        "sha256": "83d52a43cf122df2f1e0cad0974a7a8d16b29c39f2000451cfe0ac1d61f33ff6"
+      }
+    },
+    "performance": {
+      "command": "node scripts/operations-repeat-local-benchmark.mjs docs/certification/wave1-wave2/evidence/final-series",
+      "exitCode": 1,
+      "logFile": "performance.log",
+      "logSha256": "2d80d50972e426c6ab7ed7e0c9d7d11bcab5836debe7df3f41c8d4ee06401786",
+      "artifact": {
+        "file": "performance.json",
+        "sha256": "2d6ff2d678dae805524abc74a2bc921dcafbf11efcb4eee2cc710f3bc0ccd509"
+      }
+    },
+    "recovery": {
+      "command": "node scripts/operations-recovery-rehearsal.mjs docs/certification/wave1-wave2/evidence/recovery-final.json",
+      "exitCode": 0,
+      "logFile": "recovery.log",
+      "logSha256": "c7193a16b8db793a63f0426be1d09a26182947ce2e9724387232ea85d7b98ff1",
+      "artifact": {
+        "file": "recovery.json",
+        "sha256": "ced92766e99e706b4dd0a48f8e30ec061a697d66fb86a08301ee477ffc20ec0d"
+      }
+    },
+    "evaluation": {
+      "command": "npm run ops:evaluate",
+      "exitCode": 0,
+      "logFile": "evaluation.log",
+      "logSha256": "2dc5046e4f0d52c49b2b95afb3859848552ea14577e9d08bedbbf201031ff56a",
+      "artifact": {
+        "file": "evaluation.json",
+        "sha256": "05b06c35a7b847aff6855f36aee91d92c5e2afa7df0171d0b13d2b6c2e722309"
+      }
+    },
+    "publicTarget": {
+      "command": "npm run verify:public-target",
+      "exitCode": 0,
+      "logFile": "publicTarget.log",
+      "logSha256": "22fd076e9b9f129364b767090ec9cac60a5dd448a51f52a9f9be9cc041773026"
+    }
+  },
+  "hostedGates": {
+    "restrictedPostgresAuthentication": "BLOCKED",
+    "approvedConsent": "BLOCKED",
+    "exposedCredentialRotation": "BLOCKED",
+    "hostedIdentityAndPersistence": "BLOCKED",
+    "approvedAIProvider": "BLOCKED",
+    "deploymentAuthorization": "BLOCKED"
+  },
+  "manualGates": {
+    "wcag22AAManual": "PENDING",
+    "independentModelEvaluation": "BLOCKED",
+    "causalROIBaseline": "UNAVAILABLE"
+  },
+  "limitations": [
+    "Local tests do not certify hosted identity, PostgreSQL RLS, live providers or production release.",
+    "Accessibility automation does not replace manual assistive-technology assessment."
+  ],
+  "evidenceOrigin": "Assembled from the preserved actual commands; no gate rerun or estimated result. Performance artifact is the failed first run; all five remain in final-series."
+}

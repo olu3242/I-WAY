@@ -10,3 +10,7 @@ h1,td,.inline-record,.detail-line,.topbar,.card,.stat{overflow-wrap:anywhere}
 .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px}
 .summary-grid dt{font-weight:650;color:#34465f}.summary-grid dd{margin:6px 0 16px}
 @media(max-width:400px){.stats{grid-template-columns:1fr}.topbar{height:auto;min-height:58px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}.detail-line{flex-wrap:wrap}.detail-line>div{min-width:0}.sidebar nav{padding:4px}.sidebar-bottom{gap:10px}.local-label{white-space:nowrap}}
+
+nav > a[href$="app"] {
+    color: #ffffff;
+}

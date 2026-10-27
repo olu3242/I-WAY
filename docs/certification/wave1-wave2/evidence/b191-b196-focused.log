@@ -1,0 +1,14 @@
+✔ canonical lifecycle persists Ready and Closed with atomic shipment mirror and mandatory BOL/POD (1649.7124ms)
+✔ assignment cancellation releases assets, retries are idempotent and reassignment remains authorized (1498.5417ms)
+✔ tracking records event time, deduplicates identifiers and retains out-of-order evidence without status regression (1449.907ms)
+✔ all operational exception categories use durable human review and block progress until resolution (1587.8822ms)
+✔ document corruption fails retrieval and closure readiness even if storage triggers are bypassed by fixture administrator (1593.0042ms)
+✔ opted-in lifecycle notifications are local-only, authorized, versioned and duplicate-safe (1533.5415ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10216.4236

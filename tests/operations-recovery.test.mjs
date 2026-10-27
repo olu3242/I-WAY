@@ -11,7 +11,7 @@ import {rehearseRecovery} from '../scripts/operations-recovery-rehearsal.mjs';
 
 test('measured local recovery preserves audit history, revokes sessions and resumes persisted checkpoints',async()=>{
  const report=await rehearseRecovery();
- assert.equal(report.status,'PASS');assert.ok(Object.values(report.checks).every(Boolean));
+ assert.equal(report.status,'PASS',JSON.stringify(report));assert.ok(Object.values(report.checks).every(Boolean));
  assert.ok(report.observedRpoMs>=20);assert.ok(report.observedRtoMs>0);assert.ok(report.restoreDurationMs>0);assert.equal(report.lostAuditEvents,2);
  assert.equal(report.hostedCertified,false);assert.equal(report.recoveredAuditSequence,report.sourceAuditSequenceAtFailure-2);
 });

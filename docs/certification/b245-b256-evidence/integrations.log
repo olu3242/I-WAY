@@ -1,0 +1,17 @@
+✔ B54 signed inbox verifies local tenant binding, redacts signatures and deduplicates without operational writes (1326.5736ms)
+✔ B54 rejects tampering, expired signatures, unknown providers, cross-tenant binding and altered replay (334.4473ms)
+✔ B54 durable local outbox completes once, rejects stale completion and never reports external delivery (359.1312ms)
+✔ B54 retry backoff reaches dead letter and circuit cooldown admits only one recovery probe (323.5035ms)
+✔ B54 local adapter timeout and fabricated external success fail closed (466.2565ms)
+✔ B54 authority changes while provider runs and stale leases cannot commit results (408.3636ms)
+✔ B54 current document grants protect queued evidence and inbox replay (463.2134ms)
+✔ B54 competing processes claim one durable message, with current tenant authority and fencing (760.8675ms)
+✔ carrier governance revocation fences queued and running integration work; timeout aborts fixture adapter (427.5539ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5232.8347

@@ -1,0 +1,15 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {transitionAIPolicy} from '../lib/intelligence/policy-lifecycle.mjs';
+const owner={id:'carrier-one',tenantId:'t1',role:'carrier',active:true,permissions:['governance:manage']};
+const approver={...owner,id:'carrier-two'};
+const base={tenantId:'t1',enabled:true,allowedActions:['review_tracking'],autonomyLevel:4,minimumConfidence:0.9,maximumCost:0};
+test('batch 02: unknown payload fields never persist',()=>{const p={...base,approvedBy:'attacker',proposedBy:'attacker',lifecycle:'APPROVED',version:999,revokedBy:'attacker',credentials:'secret'};const r=transitionAIPolicy(null,{action:'propose',policy:p},owner);assert.equal(r.accepted,true);for(const k of ['credentials','revokedBy'])assert.equal(Object.hasOwn(r.policy,k),false);assert.equal(r.policy.proposedBy,owner.id);assert.equal(r.policy.enabled,false);});
+test('batch 03: duplicate actions rejected',()=>{const r=transitionAIPolicy(null,{action:'propose',policy:{...base,allowedActions:['review_tracking','review_tracking']}},owner);assert.equal(r.accepted,false);});
+test('batch 04: negative costs rejected',()=>{assert.equal(transitionAIPolicy(null,{action:'propose',policy:{...base,maximumCost:-1}},owner).accepted,false);});
+test('batch 05: nonfinite confidence rejected',()=>{for(const v of [NaN,Infinity,-Infinity])assert.equal(transitionAIPolicy(null,{action:'propose',policy:{...base,minimumConfidence:v}},owner).accepted,false);});
+test('batch 06: unknown roles cannot propose',()=>{for(const role of ['dispatcher','driver','automation'])assert.equal(transitionAIPolicy(null,{action:'propose',policy:base},{...owner,role}).accepted,false);});
+test('batch 07: proposer cannot approve with same principal',()=>{const p=transitionAIPolicy(null,{action:'propose',policy:base},owner).policy;assert.equal(transitionAIPolicy(p,{action:'approve',expectedVersion:p.version},owner).reason,'SEPARATION_OF_DUTIES');});
+test('batch 08: stale revocation cannot disable newer policy',()=>{const p=transitionAIPolicy(null,{action:'propose',policy:base},owner).policy;const a=transitionAIPolicy(p,{action:'approve',expectedVersion:p.version},approver).policy;assert.equal(transitionAIPolicy(a,{action:'revoke',expectedVersion:p.version},owner).reason,'STALE_POLICY');});
+test('batch 09: cross tenant approver rejected',()=>{const p=transitionAIPolicy(null,{action:'propose',policy:base},owner).policy;assert.equal(transitionAIPolicy(p,{action:'approve',expectedVersion:p.version},{...approver,tenantId:'t2'}).accepted,false);});
+test('batch 10: revoked policy cannot be reapproved',()=>{const p=transitionAIPolicy(null,{action:'propose',policy:base},owner).policy;const a=transitionAIPolicy(p,{action:'approve',expectedVersion:p.version},approver).policy;const r=transitionAIPolicy(a,{action:'revoke',expectedVersion:a.version},owner).policy;assert.equal(transitionAIPolicy(r,{action:'approve',expectedVersion:r.version},approver).accepted,false);});

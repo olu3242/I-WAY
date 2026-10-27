@@ -134,3 +134,34 @@ test('offline migration contains explicit forced RLS per table, tenant USING and
  assert.match(statements,/REVOKE ALL ON SCHEMA operations_private FROM PUBLIC/);
  assert.doesNotMatch(statements,/\bCREATE POLICY[^;]+FOR DELETE/i);
 });
+
+test('tenant serialization precedes principal verification and protected work',async()=>{
+ const h=harness(),context=scope();await h.store.transaction(context,tx=>tx.list('load'));
+ const lock=h.calls.findIndex(c=>c.sql.includes('pg_advisory_xact_lock'));
+ const principal=h.calls.findIndex(c=>c.sql.startsWith('SELECT id FROM operations_private.users'));
+ assert.ok(lock>0&&lock<principal);assert.deepEqual(h.calls[lock].values,[context.tenantId]);
+});
+
+test('typed async authorization and replay errors survive adapter rollback without driver details',async()=>{
+ const {AsyncCommandError}=await import('../domain/operations-async-command.mjs');
+ for(const code of ['FORBIDDEN','IDEMPOTENCY_CONFLICT','INVALID_DISPATCHER']){
+  const h=harness();await assert.rejects(h.store.transaction(scope(),()=>{throw new AsyncCommandError(code)}),{code});
+  assert.equal(h.calls.at(-1).sql,'ROLLBACK');
+ }
+});
+
+test('actor evidence policies bind commands, audit insert and sessions to authenticated actor',()=>{
+ const sql=readFileSync(new URL('../supabase/migrations/20261011220000_operations_actor_evidence.sql',import.meta.url),'utf8');
+ for(const policy of ['commands_actor','audit_actor_insert','sessions_actor'])assert.match(sql,new RegExp('CREATE POLICY '+policy+'[^;]+AS RESTRICTIVE[^;]+WITH CHECK'));
+ assert.doesNotMatch(sql,/SECURITY DEFINER|GRANT|DROP POLICY/i);
+});
+
+test('dispatcher lookup uses only the tenant-scoped minimal directory projection',async()=>{
+ const h=harness(),context=scope(),id=randomUUID();await h.store.transaction(context,tx=>tx.user(id));
+ const call=h.calls.find(c=>c.sql.includes('FROM operations_private.dispatcher_directory'));
+ assert.deepEqual(call.values,[context.tenantId,id]);assert.doesNotMatch(call.sql,/password|username/);
+ const sql=readFileSync(new URL('../supabase/migrations/20261011221000_operations_dispatcher_directory.sql',import.meta.url),'utf8');
+ assert.match(sql,/FORCE ROW LEVEL SECURITY/);assert.match(sql,/SECURITY INVOKER/);
+ assert.match(sql,/data->>'role'='carrier'/);assert.match(sql,/data->'permissions' \? 'load:create'/);
+ assert.doesNotMatch(sql,/SECURITY DEFINER|DROP POLICY|GRANT /i);
+});

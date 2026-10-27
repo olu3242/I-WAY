@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "scope": "non-production-offline-only",
+  "sourceHash": "9d42b324a77ce068b6c495243cf197aa76ed8eb4f83796e27dd7add2bab79fd5",
+  "operator": "sandbox-owner",
+  "consentVersion": "2026-10-13.1",
+  "requirements": {
+    "approvedConsent": false,
+    "restrictedIdentity": false,
+    "credentialRotation": false,
+    "rollback": false,
+    "fixtures": false,
+    "authorization": false
+  },
+  "missing": [
+    "approvedConsent",
+    "restrictedIdentity",
+    "credentialRotation",
+    "rollback",
+    "fixtures",
+    "authorization"
+  ],
+  "fixtures": [
+    {
+      "id": "identity",
+      "syntheticTenant": "sandbox-tenant-01",
+      "syntheticCaseId": "1c77b7d414466c7d7ead",
+      "status": "PREPARED_NOT_EXECUTED"
+    },
+    {
+      "id": "registration",
+      "syntheticTenant": "sandbox-tenant-02",
+      "syntheticCaseId": "a8dccbcaa14d8bce7470",
+      "status": "PREPARED_NOT_EXECUTED"
+    },
+    {
+      "id": "persistence",
+      "syntheticTenant": "sandbox-tenant-03",
+      "syntheticCaseId": "cc936a79d7d4d45f7b7f",
+      "status": "PREPARED_NOT_EXECUTED"
+    },
+    {
+      "id": "isolation",
+      "syntheticTenant": "sandbox-tenant-04",
+      "syntheticCaseId": "df6aadc6ef7aea30a10c",
+      "status": "PREPARED_NOT_EXECUTED"
+    },
+    {
+      "id": "workflow",
+      "syntheticTenant": "sandbox-tenant-05",
+      "syntheticCaseId": "c7ca3aa61ed24b783822",
+      "status": "PREPARED_NOT_EXECUTED"
+    },
+    {
+      "id": "integrations",
+      "syntheticTenant": "sandbox-tenant-06",
+      "syntheticCaseId": "0b84472abe3818b84f51",
+      "status": "PREPARED_NOT_EXECUTED"
+    },
+    {
+      "id": "rollback",
+      "syntheticTenant": "sandbox-tenant-07",
+      "syntheticCaseId": "71aff63d3235a351dba2",
+      "status": "PREPARED_NOT_EXECUTED"
+    }
+  ],
+  "networkCalls": 0,
+  "hostedExecuted": false,
+  "executionAuthorized": false,
+  "productionWrites": 0,
+  "customerNotifications": 0,
+  "decision": "NO-GO"
+}

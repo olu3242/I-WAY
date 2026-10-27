@@ -1,0 +1,5 @@
+
+> iway-platform@0.1.0 verify:public-target
+> node scripts/verify-public-release.mjs
+
+{"status":"PASS","scope":"canonical entry file only","referenceUrl":"http://localhost:4174/early-access.html","entry":"early-access.html","sha256":"a97b681a1c8938f91a7b391d38254d2bdab9194b2e5f822f0db16b8b2940b5a3","deploymentExecuted":false}

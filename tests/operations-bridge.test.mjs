@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { evaluateOperationalAdvice } from '../lib/intelligence/operations-bridge.mjs';
+const principal={tenantId:'t1',active:true,permissions:['intelligence:analyze']};
+const resource={id:'l1',tenantId:'t1'};
+const event={id:'e1',loadId:'l1',tenantId:'t1'};
+const proposal={tenantId:'t1',eventId:'e1',action:'update_eta',confidence:0.98,evidence:['tracking:1'],estimatedCost:0};
+const policy={tenantId:'t1',enabled:true,allowedActions:['update_eta'],autonomyLevel:3,minimumConfidence:0.9,maximumCost:10,version:'v1'};
+const run=(changes={})=>evaluateOperationalAdvice({event,proposal,policy,principal,resource,...changes});
+test('eligible proposal is advisory only',()=>assert.deepEqual([run().status,run().requiresWorkflowAuthorization],['ADVISORY_READY',true]));
+test('tenant spoofing blocked',()=>assert.equal(run({event:{...event,tenantId:'t2'}}).status,'BLOCKED'));
+test('shipment mismatch blocked',()=>assert.equal(run({event:{...event,loadId:'other'}}).status,'BLOCKED'));
+test('inactive principal blocked',()=>assert.equal(run({principal:{...principal,active:false}}).status,'BLOCKED'));
+test('missing permission blocked',()=>assert.equal(run({principal:{...principal,permissions:[]}}).status,'BLOCKED'));
+test('human governed proposal requires approval',()=>assert.equal(run({policy:{...policy,autonomyLevel:4}}).status,'APPROVAL_REQUIRED'));
+test('invalid policy fails closed',()=>assert.equal(run({policy:{...policy,enabled:false}}).status,'BLOCKED'));
