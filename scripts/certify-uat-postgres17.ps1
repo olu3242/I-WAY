@@ -39,7 +39,10 @@ END $$;
 '@
   $checks | docker exec -i $container psql -X -v ON_ERROR_STOP=1 -U postgres -d iway_cert -f -
   if ($LASTEXITCODE -ne 0) { throw 'PostgreSQL authorization smoke check failed' }
-  Write-Host 'POSTGRESQL MIGRATION + AUTHORIZATION SMOKE PASS'
+  $behavior = Join-Path $root 'scripts/uat-postgres17-behavior.sql'
+  Get-Content -Raw $behavior | docker exec -i $container psql -X -v ON_ERROR_STOP=1 -U postgres -d iway_cert -f -
+  if ($LASTEXITCODE -ne 0) { throw 'PostgreSQL behavioral authorization checks failed' }
+  Write-Host 'POSTGRESQL MIGRATION + AUTHORIZATION + BEHAVIORAL SMOKE PASS'
 } finally {
   try { docker rm -f $container 2>$null | Out-Null } catch { Write-Warning 'Disposable container cleanup failed; inspect docker ps -a' }
 }
