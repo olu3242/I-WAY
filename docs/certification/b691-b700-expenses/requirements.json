@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "scope": "Expense batch delta; does not recertify all four applications",
+  "baselineRegister": "docs/certification/next-gap-closure/requirements.json",
+  "baselineCountsUnchanged": {
+    "IMPLEMENTED_LOCAL": 8,
+    "PARTIAL": 58,
+    "MISSING": 4,
+    "BLOCKED_DECISION": 2
+  },
+  "requirements": [
+    {
+      "id": "FR-DRV-012",
+      "baselineStatus": "PARTIAL",
+      "requirement": "Documents: view, upload, replace, submit CDL, medical certificate, MVR where applicable, agreements; load documents (BOL, POD, lumper, scale ticket, fuel/expense receipt). A **Renew** action replaces expired documents. Drivers cannot approve their own documents.",
+      "status": "PARTIAL",
+      "batchEvidence": "receipt.json",
+      "remaining": "Driver identity-document upload/renewal and sensitive storage OQ-08"
+    },
+    {
+      "id": "FR-DRV-020",
+      "baselineStatus": "IMPLEMENTED_LOCAL",
+      "requirement": "Submit expenses against a load.",
+      "status": "IMPLEMENTED_LOCAL",
+      "batchEvidence": "receipt.json",
+      "remaining": "Sensitive receipt attachment storage remains disabled; real hosted workflow certification remains blocked.",
+      "implementedThisBatch": "Draft, correction, needs-information, filtering, scoped audit, immutable approved records, versioned reimbursement allocation and durable recovery"
+    },
+    {
+      "id": "FR-CAR-022",
+      "baselineStatus": "PARTIAL",
+      "requirement": "Settlement calculation follows \u00a712.4 and the vehicle's financial settings; end to end from load creation through driver completion to settlement.",
+      "status": "PARTIAL",
+      "batchEvidence": "receipt.json",
+      "remaining": "Vehicle-sourced terms, ownership variants OQ-02 and full v1 parallel reconciliation are incomplete."
+    },
+    {
+      "id": "FR-CAR-025",
+      "baselineStatus": "PARTIAL",
+      "requirement": "Reports (\u00a712.4 list) and dashboard KPIs for accounting.",
+      "status": "PARTIAL",
+      "batchEvidence": "receipt.json",
+      "remaining": "Full accounting reports, AR aging and gross revenue exports remain incomplete."
+    },
+    {
+      "id": "FR-FLT-007",
+      "baselineStatus": "IMPLEMENTED_LOCAL",
+      "requirement": "Driver pay models: percentage of load, per mile, per load, flat weekly, salary, custom; the carrier does not control how the fleet divides its net settlement unless the agreement says so.",
+      "status": "IMPLEMENTED_LOCAL",
+      "batchEvidence": "receipt.json",
+      "remaining": "Terms and mileage require explicit owner review before actual use; no proration, legal wage or money-transfer certification."
+    },
+    {
+      "id": "FR-X-004",
+      "baselineStatus": "PARTIAL",
+      "requirement": "**Audit** events for BR-012 actions with actor, time, before/after and reason.",
+      "status": "PARTIAL",
+      "batchEvidence": "receipt.json",
+      "remaining": "Full BR-012 coverage cannot be certified for unimplemented actions"
+    },
+    {
+      "id": "FR-X-006",
+      "baselineStatus": "PARTIAL",
+      "requirement": "File names sanitized; special characters never break downloads (known v1 defect).",
+      "status": "PARTIAL",
+      "batchEvidence": "receipt.json",
+      "remaining": "Original file uploads and storage retention/legal policy remain unresolved; PDF/UA and human assistive-technology review are not certified."
+    }
+  ],
+  "figmaConformity": {
+    "status": "BLOCKED_REFERENCE",
+    "percentage": null,
+    "reason": "Original canonical Figma/version and complete screen exports remain unavailable"
+  },
+  "remainingMissingOrDecisionBlocked": [
+    {
+      "id": "FR-DRV-007",
+      "status": "MISSING",
+      "remaining": "Approved location/native contract plus manual-arrival UI and event transitions"
+    },
+    {
+      "id": "FR-DRV-008",
+      "status": "MISSING",
+      "remaining": "Approved map/tracking provider, location consent and native/background decision"
+    },
+    {
+      "id": "FR-DRV-010",
+      "status": "BLOCKED_DECISION",
+      "remaining": "Signed BOL/POD image storage, retention and signature evidence review (OQ-08/ADR-002); approved broker delivery"
+    },
+    {
+      "id": "FR-DRV-014",
+      "status": "MISSING",
+      "remaining": "Dispatcher contact consent, contact model and approved communications adapter"
+    },
+    {
+      "id": "FR-ADM-004",
+      "status": "MISSING",
+      "remaining": "Approved billing/payment providers and isolated aggregate monitoring contracts"
+    },
+    {
+      "id": "FR-X-005",
+      "status": "BLOCKED_DECISION",
+      "remaining": "Owner-approved encryption, access logging, retention/deletion and legal/security policy OQ-08"
+    }
+  ]
+}

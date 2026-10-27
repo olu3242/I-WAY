@@ -1,0 +1,4704 @@
+{
+  "schemaVersion": 1,
+  "git": {
+    "startingCommit": "4d75051002f190b2178c6c88fea0272cfca507f5",
+    "branch": "work/b561-b580-external-uat",
+    "baselineClean": true,
+    "endingCommitLocation": "dist/next-gap-closure/post-commit-verification.json"
+  },
+  "changedFiles": [
+    "apps/operations/InterVariable.ttf",
+    "apps/operations/expenses.js",
+    "apps/operations/extended.js",
+    "apps/operations/financial.js",
+    "apps/operations/index.html",
+    "apps/operations/load-wizard.js",
+    "apps/operations/onboarding.js",
+    "apps/operations/platform-workspace.js",
+    "docs/certification/next-gap-closure/certification-report.md",
+    "docs/certification/next-gap-closure/control-assertions.json",
+    "docs/certification/next-gap-closure/font-provenance.json",
+    "docs/certification/next-gap-closure/gap-register.md",
+    "docs/certification/next-gap-closure/implementation-contracts.md",
+    "docs/certification/next-gap-closure/receipt.json",
+    "docs/certification/next-gap-closure/requirements.json",
+    "docs/security/b591-mvp-inventory.json",
+    "domain/authorization.mjs",
+    "domain/operations-driver-pay.mjs",
+    "domain/operations-earnings.mjs",
+    "domain/operations-expenses.mjs",
+    "domain/operations-features.mjs",
+    "domain/operations-load-contract.mjs",
+    "domain/operations-load-wizard.mjs",
+    "domain/operations-onboarding.mjs",
+    "domain/operations-platform-contract.mjs",
+    "domain/operations-projection.mjs",
+    "domain/operations-settlements.mjs",
+    "domain/operations.mjs",
+    "package-lock.json",
+    "package.json",
+    "scripts/certify-postgres17.mjs",
+    "scripts/inventory-mvp-controls.mjs",
+    "scripts/package-uat-staging.mjs",
+    "scripts/report-mvp-coverage.mjs",
+    "scripts/report-next-gap-closure.mjs",
+    "server/operations-app.mjs",
+    "server/operations-invitations.mjs",
+    "server/operations-pdf.mjs",
+    "server/operations-platform-workspace.mjs",
+    "server/operations-store.mjs",
+    "server/operations-uat-application.mjs",
+    "tests/browser/completion-controls.spec.mjs",
+    "tests/browser/directories.spec.mjs",
+    "tests/browser/evidence-reporter.mjs",
+    "tests/browser/expenses.spec.mjs",
+    "tests/browser/fleet-pay-models.spec.mjs",
+    "tests/browser/integrated-workspace.mjs",
+    "tests/browser/load-wizard-recovery.spec.mjs",
+    "tests/browser/load-wizard.spec.mjs",
+    "tests/browser/onboarding.spec.mjs",
+    "tests/browser/pdf-downloads.spec.mjs",
+    "tests/browser/platform-workspace.spec.mjs",
+    "tests/helpers/invitation-fixture.mjs",
+    "tests/helpers/uat-application-fixture.mjs",
+    "tests/local/next-gap-closure.postgres.mjs",
+    "tests/operations-earnings.test.mjs",
+    "tests/operations-expenses-pay-models.test.mjs",
+    "tests/operations-load-wizard.test.mjs",
+    "tests/operations-onboarding.test.mjs",
+    "tests/operations-pdf.test.mjs",
+    "tests/operations-platform-workspace.test.mjs",
+    "tests/uat-staging-package.test.mjs"
+  ],
+  "sourceFiles": [
+    {
+      "path": "apps/operations/InterVariable.ttf",
+      "sha256LF": "4989b125924991b90d05b2d16e0e388c48f7d5bb8b30539bbf9c755278d0ccaf"
+    },
+    {
+      "path": "apps/operations/expenses.js",
+      "sha256LF": "7aa10ee9cc4a2ad7d41a4618d4beba97fe4b96468c3da15aa01d9ebdc11d0bab"
+    },
+    {
+      "path": "apps/operations/extended.js",
+      "sha256LF": "7d1b295030466b790b18f94d6b961e29fcb15d7150163a1e10541ac1dd26d766"
+    },
+    {
+      "path": "apps/operations/financial.js",
+      "sha256LF": "4fcf86757437b52ead0cca83bd1e87288d07e3dd2ab73b90f13cec021e0f1059"
+    },
+    {
+      "path": "apps/operations/index.html",
+      "sha256LF": "cccf88f04f1231e9a13b157a8bf5119727614ba6ee073fb22b77207d0c3f95de"
+    },
+    {
+      "path": "apps/operations/load-wizard.js",
+      "sha256LF": "bf995deb8b55ea11c000d78e73b554dfbc43b5efdd34e0a6474a7f444152572c"
+    },
+    {
+      "path": "apps/operations/onboarding.js",
+      "sha256LF": "125bc603a4777088be7eb8d2aa0669dd6b628b0a8bf6af754c291a6db21f716c"
+    },
+    {
+      "path": "apps/operations/platform-workspace.js",
+      "sha256LF": "d82790314e4dcbd48f9ef3f8ee39e9f59ba9480dc6a9f09a9978921bf092e860"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/certification-report.md",
+      "sha256LF": "a6efc14426deac8d378851f123117665990c4c76d8c21ba5fdb09a679e0ad310"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/control-assertions.json",
+      "sha256LF": "dc218815883447ac67dc668f543539045daf6d41a5fb06713b951be551d6dfb0"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/font-provenance.json",
+      "sha256LF": "af6bda7253f93955dd95ad57c6871e427923c84a119c66c1ae151251d15b9f11"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/gap-register.md",
+      "sha256LF": "52234ec1cffdb0ac899c1e5357c893657590e6ff6a0d2c4499dfa76f3642f4a9"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/implementation-contracts.md",
+      "sha256LF": "9c1d306b27a0ae94caaa4d0996ee5514dd22c2e4fd4030bd0967c53c880b38f4"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/requirements.json",
+      "sha256LF": "31e2c18343d898f476308e938621303a9d2169e95fe053fee67cee3aaaac7faa"
+    },
+    {
+      "path": "docs/security/b591-mvp-inventory.json",
+      "sha256LF": "e71b2deb0b25154b00c614dabcab9062b7bf3c63773ac6107d0536e8d35e99fd"
+    },
+    {
+      "path": "domain/authorization.mjs",
+      "sha256LF": "b7ed518f04c2a5b88a0bbf4f1f7662e4ff42484733346df18ca03180652eb4a0"
+    },
+    {
+      "path": "domain/operations-driver-pay.mjs",
+      "sha256LF": "0343171788fcc42dbe0f159684ed1bc2804bb030790838280c92e8c7ad85d761"
+    },
+    {
+      "path": "domain/operations-earnings.mjs",
+      "sha256LF": "fbec21dd95f165ef24830b2463bbd19f6827f51fda3b0bd6c43cc01fd4934c51"
+    },
+    {
+      "path": "domain/operations-expenses.mjs",
+      "sha256LF": "61af6f451f4ff2fbeb9fda4fe0e63a3162f841548a38d93a622d6a3b3b434935"
+    },
+    {
+      "path": "domain/operations-features.mjs",
+      "sha256LF": "bbf10eb2c753272350d8e80c41f0970392a91ab7644af76f2c168ff4c8e26d00"
+    },
+    {
+      "path": "domain/operations-load-contract.mjs",
+      "sha256LF": "031b31ab59ecbc97a1e9ab9627521194cf0bddd520371c988ce6faceb3bcb62f"
+    },
+    {
+      "path": "domain/operations-load-wizard.mjs",
+      "sha256LF": "3d1fab93cd5ec4ee6d3878bf17961bca89286a633da7db17cc3afcba5a60d39a"
+    },
+    {
+      "path": "domain/operations-onboarding.mjs",
+      "sha256LF": "f1bba3a0f53ef0aec7ab78083f476d576818e626eff6796403ff038d92cc2fc9"
+    },
+    {
+      "path": "domain/operations-platform-contract.mjs",
+      "sha256LF": "58aba9fa5cf82a9e4e5dc5c9a18e12b8455c46606ed728690ab106118f79dfa8"
+    },
+    {
+      "path": "domain/operations-projection.mjs",
+      "sha256LF": "e380c70b31cd0ad0869becb65b898ff61c05735b8bec4710b245072cf04ad1db"
+    },
+    {
+      "path": "domain/operations-settlements.mjs",
+      "sha256LF": "5ba5b6ce73a27587052edcbb46b7dc730699e783a6d897114378367810bf47c8"
+    },
+    {
+      "path": "domain/operations.mjs",
+      "sha256LF": "d9878d6248e488870e9c61fb1064b1b4330fe45f7bdddc598cfa36c3d1dea9d0"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256LF": "8126450f0d542cc8bfdc292823b102752445c445908677475933b84969955b73"
+    },
+    {
+      "path": "package.json",
+      "sha256LF": "051331787650cc2a6435a18a7c2097e5b514928186b58f136af1c74381f98ab7"
+    },
+    {
+      "path": "scripts/certify-postgres17.mjs",
+      "sha256LF": "177c9ab1a860571b34b180df284dc77cc3dd8cfeadbbbbaa4bb78e14e49f55eb"
+    },
+    {
+      "path": "scripts/inventory-mvp-controls.mjs",
+      "sha256LF": "1c2350eb4d68a6aae5aa359feadc3cfc6949d09085f1519ebfbbbf4c8f5522f4"
+    },
+    {
+      "path": "scripts/package-uat-staging.mjs",
+      "sha256LF": "d5512170562cf2c998cba7d834b960e2e52613335d571544681ed6a47ba3a9d3"
+    },
+    {
+      "path": "scripts/report-mvp-coverage.mjs",
+      "sha256LF": "a30b05d95bf744560c46aa891dc2c4e1eddb540bbe0f3f288c22d6910946b60f"
+    },
+    {
+      "path": "scripts/report-next-gap-closure.mjs",
+      "sha256LF": "1b8805375c76de86fe5f2911a4e9c743624bdba95965b54c2abf70727e1aaf39"
+    },
+    {
+      "path": "server/operations-app.mjs",
+      "sha256LF": "96ae6f02d169c35dd7e24d5c9643aab18e1dfdbdbfc81ca1405c6af322904319"
+    },
+    {
+      "path": "server/operations-invitations.mjs",
+      "sha256LF": "80d658df01352c168af3d86959d8355bbad1e06aea2f573bf32374972eca0cda"
+    },
+    {
+      "path": "server/operations-pdf.mjs",
+      "sha256LF": "924b74295b3796528b9c78728c8665b7e7274cd71496c997c45d507c04b7486e"
+    },
+    {
+      "path": "server/operations-platform-workspace.mjs",
+      "sha256LF": "529bbdabc9adaec4792955d0894765bf7f368c1f32cfc5c4706f4233aab26985"
+    },
+    {
+      "path": "server/operations-store.mjs",
+      "sha256LF": "db2b1670bd6dd61ce79602f95f17b0e4d97aade19faba52efb3b991c1eaef09d"
+    },
+    {
+      "path": "server/operations-uat-application.mjs",
+      "sha256LF": "643095408ff87a5560b3b1e94f704d3bb364913c65385dba26f11abb6f339598"
+    },
+    {
+      "path": "tests/browser/completion-controls.spec.mjs",
+      "sha256LF": "e40c001902876facaa2c19936b198938d29a4349b2a36d569adc2da24d3d31a2"
+    },
+    {
+      "path": "tests/browser/directories.spec.mjs",
+      "sha256LF": "6eb5e0796f2c5c2acb080e95a34fa32239e461b8b5a2bf52df8343df7aa206d1"
+    },
+    {
+      "path": "tests/browser/evidence-reporter.mjs",
+      "sha256LF": "2ceca1ee4f84891b18718f0393ee621adcff06eae4225c6697036aa978806b97"
+    },
+    {
+      "path": "tests/browser/expenses.spec.mjs",
+      "sha256LF": "407518bce276ec4953633cb3ecfae3325d276c8d65f18bfc9cbae4abf76024bc"
+    },
+    {
+      "path": "tests/browser/fleet-pay-models.spec.mjs",
+      "sha256LF": "515ead2c91fbf6b103df91099d44a6f73f1b67f1809274ba8b158cadefe32af4"
+    },
+    {
+      "path": "tests/browser/integrated-workspace.mjs",
+      "sha256LF": "e58694314b8772cf5fef7563925fb49b5695f5d21cf79b74f567931d8b9d497d"
+    },
+    {
+      "path": "tests/browser/load-wizard-recovery.spec.mjs",
+      "sha256LF": "fca87458286cd88ec1ba375b89fe0cd072006292ad6142d747f979b78d06d29f"
+    },
+    {
+      "path": "tests/browser/load-wizard.spec.mjs",
+      "sha256LF": "001dafc403e509107e19ca3142807ecd5f5e7fe826b5419cb32cf663d0fc5ab8"
+    },
+    {
+      "path": "tests/browser/onboarding.spec.mjs",
+      "sha256LF": "473b5a0d408f559b688142d72e0c5ad3a0aa4eb814c2fe1c6e3ee8a5c8834497"
+    },
+    {
+      "path": "tests/browser/pdf-downloads.spec.mjs",
+      "sha256LF": "372858060998b568be99f51b107ab17dd11e76ca382754f8f0051db7527c1fe5"
+    },
+    {
+      "path": "tests/browser/platform-workspace.spec.mjs",
+      "sha256LF": "71165f692ab8058614c504832c420e361c643749b2b7ea1f58a147f1fc296f9c"
+    },
+    {
+      "path": "tests/helpers/invitation-fixture.mjs",
+      "sha256LF": "102047ee6090b47237568801659fbfbd35ffb8589cb257bf80d1ef17e7780a23"
+    },
+    {
+      "path": "tests/helpers/uat-application-fixture.mjs",
+      "sha256LF": "9a0526a5367918918d4e8b6352ae1eaff468b784219b34356926db232b387ae3"
+    },
+    {
+      "path": "tests/local/next-gap-closure.postgres.mjs",
+      "sha256LF": "45173d666a80933d9fa6148ac384456563c01e8f0c62ba430d8f055d9c60136e"
+    },
+    {
+      "path": "tests/operations-earnings.test.mjs",
+      "sha256LF": "3a06ef93038d5b090fbfbf5ac0c7e1d26ef667f5127832ba81032cd787b25fc3"
+    },
+    {
+      "path": "tests/operations-expenses-pay-models.test.mjs",
+      "sha256LF": "c7a17e72185f3b01db7e46d3cf1f3844d8167e8a95ab559b45ffb490b945a964"
+    },
+    {
+      "path": "tests/operations-load-wizard.test.mjs",
+      "sha256LF": "231abfa8dddf8bd19787964cb2349bb850719a78949a2f4cd372b179e838100a"
+    },
+    {
+      "path": "tests/operations-onboarding.test.mjs",
+      "sha256LF": "6e7d839173c2ece34884f64e3215fef6a38b7b1e25d1f28671e1d695317f389a"
+    },
+    {
+      "path": "tests/operations-pdf.test.mjs",
+      "sha256LF": "370b2789a2e2bd95e43d6d163d3453ec59c499f4368c50d56566958e961ab6c5"
+    },
+    {
+      "path": "tests/operations-platform-workspace.test.mjs",
+      "sha256LF": "2c1556b57105fdeb230595af1166f13c5836d6e87eecab3e5c0ec7b015c843ed"
+    },
+    {
+      "path": "tests/uat-staging-package.test.mjs",
+      "sha256LF": "979023ffac7c12f5493c0da8473fef1716b5ebeffd7d7742d4b4d35090a55584"
+    }
+  ],
+  "repository": {
+    "tests": 914,
+    "pass": 914,
+    "fail": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "counts": {
+      "total": 106,
+      "passed": 106,
+      "failed": 0,
+      "skipped": 0
+    },
+    "axe": {
+      "tags": [
+        "wcag2a",
+        "wcag2aa",
+        "wcag21a",
+        "wcag21aa",
+        "wcag22aa"
+      ],
+      "scanCount": 203,
+      "violationCount": 0,
+      "incompleteRuleIds": [
+        "color-contrast"
+      ],
+      "conformance": "manual_review_required",
+      "manualChecks": [
+        "Screen-reader task flows and live announcements",
+        "Meaningful reading/focus order across complex content",
+        "400% browser zoom and user text-spacing adjustments",
+        "Touch and speech input",
+        "Native approval dialogs with assistive technology",
+        "Usability with disabled users"
+      ],
+      "scans": [
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 26
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 27
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 27
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 21
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 26
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 21
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 21
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 21
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 28
+        },
+        {
+          "test": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "sign-in failure is announced and focused and recovers with keyboard input",
+          "label": "login-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "sign-in failure is announced and focused and recovers with keyboard input",
+          "label": "login-error",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "fleet completes employment and equipment work and server errors remain recoverable",
+          "label": "fleet-stale-error",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "fleet completes employment and equipment work and server errors remain recoverable",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "carrier administration settings persist at 1440px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "carrier administration settings persist at 390px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "approved brand tokens and local Inter font for platform",
+          "label": "brand-platform",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "approved brand tokens and local Inter font for carrier",
+          "label": "brand-carrier",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "approved brand tokens and local Inter font for fleet",
+          "label": "brand-fleet",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "approved brand tokens and local Inter font for driver",
+          "label": "brand-driver",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 26
+        },
+        {
+          "test": "load form numeric boundaries block invalid submissions and duplicate valid submits persist once",
+          "label": "boundary-load-created",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "keyboard-triggered native cancellation restores control focus and records no void",
+          "label": "keyboard-native-cancel",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "expense withdrawal and rejection plus onboarding information and rejection paths have recoverable outcomes",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "typed directories create and deactivate master records without deletion",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "driver offline pickup survives reload, replays once and purges on sign-out",
+          "label": "offline-reconnected",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "driver expense submits, employer reviews and driver sees the persisted decision",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 27
+        },
+        {
+          "test": "driver expense submits, employer reviews and driver sees the persisted decision",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "fleet can revise a draft through all six explicit pay models before independent approval",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 26
+        },
+        {
+          "test": "driver can cancel a rejection prompt or reject with reason; carrier sees released assignment",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 21
+        },
+        {
+          "test": "load search and active/completed filters return only matching tenant records",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "wizard validates stages, inline broker and stop controls; failed save recovers without duplicating a draft",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "guided load draft survives reload and completes multi-stop review and correction",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 26
+        },
+        {
+          "test": "guided load draft survives reload and completes multi-stop review and correction",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "service interval, driver report and carrier review produce persisted due warnings",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "service interval, driver report and carrier review produce persisted due warnings",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "blocked orchestration and connector reviews can be retried and cancelled with audit evidence",
+          "label": "runtime-cancelled",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "administration edits, configuration versions, type switch, cancellation and deactivation at 390",
+          "label": "administration-edited",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 26
+        },
+        {
+          "test": "administration edits, configuration versions, type switch, cancellation and deactivation at 1440",
+          "label": "administration-edited",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 26
+        },
+        {
+          "test": "administration failed APIs preserve input, announce errors and recover",
+          "label": "administration-api-error",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-overview",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-loads",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 26
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-assets",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-load-wizard",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-directories",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-expenses",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-onboarding",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-maintenance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-settlements",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-tower",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-runtime",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-integrations",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-governance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-costs",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-billing",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-documents",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-analytics",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-customers",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-notifications",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-workflows",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-finance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-people",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 27
+        },
+        {
+          "test": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "manager-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-overview",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-loads",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-assets",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-expenses",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-onboarding",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-maintenance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-settlements",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-driver-pay",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-notifications",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "fleetUser-people",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "driver navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "driver-overview",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "driver navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "driver-loads",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 27
+        },
+        {
+          "test": "driver navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "driver-assets",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 21
+        },
+        {
+          "test": "driver navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "driver-expenses",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 27
+        },
+        {
+          "test": "driver navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "driver-onboarding",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 21
+        },
+        {
+          "test": "driver navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "driver-maintenance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "driver navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "driver-settlements",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "driver navigation, notification preferences, missing routes and cross-tenant denial",
+          "label": "driver-notifications",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "onboarding profile submission and carrier activation persist without creating accounts",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "carrier has an accessible role-scoped workspace at 1440px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "carrier has an accessible role-scoped workspace at 1440px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 26
+        },
+        {
+          "test": "dispatcher has an accessible role-scoped workspace at 1440px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "dispatcher has an accessible role-scoped workspace at 1440px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 26
+        },
+        {
+          "test": "driver has an accessible role-scoped workspace at 390px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 22
+        },
+        {
+          "test": "driver has an accessible role-scoped workspace at 390px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 26
+        },
+        {
+          "test": "fleet has an accessible role-scoped workspace at 390px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 21
+        },
+        {
+          "test": "fleet has an accessible role-scoped workspace at 390px",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 27
+        },
+        {
+          "test": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "customer portal exposes only its latest reviewed BOL and protects revision history",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 21
+        },
+        {
+          "test": "Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "dispatcher can mark ready and cancel an assignment without duplicate active claims",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "approved pay PDF download is private, audited and available to its driver",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 27
+        },
+        {
+          "test": "platform case and configuration UI use MFA-backed governance sessions without operational access",
+          "label": "platform-case-configuration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive platform persisted workflow at 320",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 320",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive carrier persisted workflow at 320",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 320",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive driver persisted workflow at 320",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive platform persisted workflow at 375",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 375",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive carrier persisted workflow at 375",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 375",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive driver persisted workflow at 375",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive platform persisted workflow at 390",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 390",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive carrier persisted workflow at 390",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 390",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive driver persisted workflow at 390",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive platform persisted workflow at 768",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 768",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive carrier persisted workflow at 768",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 768",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive driver persisted workflow at 768",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive platform persisted workflow at 1024",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 1024",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive carrier persisted workflow at 1024",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 1024",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive driver persisted workflow at 1024",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive platform persisted workflow at 1440",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 1440",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive carrier persisted workflow at 1440",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 1440",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive driver persisted workflow at 1440",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "carrier settlement review, adjustment, escrow and driver earnings have persistent outcomes",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "carrier settlement review, adjustment, escrow and driver earnings have persistent outcomes",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 28
+        },
+        {
+          "test": "carrier settlement review, adjustment, escrow and driver earnings have persistent outcomes",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 28
+        },
+        {
+          "test": "fleet controls driver pay and disputes; driver sees only their approved pay",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 26
+        },
+        {
+          "test": "fleet controls driver pay and disputes; driver sees only their approved pay",
+          "label": "accessibility",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 27
+        },
+        {
+          "test": "integrated google platform application lifecycle at 390",
+          "label": "platform-governance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "integrated google carrier application lifecycle at 390",
+          "label": "carrier-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "integrated google fleet application lifecycle at 390",
+          "label": "fleet-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "integrated google driver application lifecycle at 390",
+          "label": "driver-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "integrated google platform application lifecycle at 1440",
+          "label": "platform-governance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "integrated google carrier application lifecycle at 1440",
+          "label": "carrier-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "integrated google fleet application lifecycle at 1440",
+          "label": "fleet-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "integrated google driver application lifecycle at 1440",
+          "label": "driver-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "integrated password platform application lifecycle at 390",
+          "label": "platform-governance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "integrated password carrier application lifecycle at 390",
+          "label": "carrier-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "integrated password fleet application lifecycle at 390",
+          "label": "fleet-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "integrated password driver application lifecycle at 390",
+          "label": "driver-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "integrated password platform application lifecycle at 1440",
+          "label": "platform-governance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "integrated password carrier application lifecycle at 1440",
+          "label": "carrier-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "integrated password fleet application lifecycle at 1440",
+          "label": "fleet-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "integrated password driver application lifecycle at 1440",
+          "label": "driver-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "managed invitation platform activation and recovery at 390",
+          "label": "platform-managed-password-setup",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation platform activation and recovery at 390",
+          "label": "platform-managed-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "managed invitation carrier activation and recovery at 390",
+          "label": "carrier-managed-password-setup",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation carrier activation and recovery at 390",
+          "label": "carrier-managed-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "managed invitation fleet activation and recovery at 390",
+          "label": "fleet-managed-password-setup",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation fleet activation and recovery at 390",
+          "label": "fleet-managed-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "managed invitation driver activation and recovery at 390",
+          "label": "driver-managed-password-setup",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation driver activation and recovery at 390",
+          "label": "driver-managed-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "managed invitation platform activation and recovery at 1440",
+          "label": "platform-managed-password-setup",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation platform activation and recovery at 1440",
+          "label": "platform-managed-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "managed invitation carrier activation and recovery at 1440",
+          "label": "carrier-managed-password-setup",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation carrier activation and recovery at 1440",
+          "label": "carrier-managed-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation fleet activation and recovery at 1440",
+          "label": "fleet-managed-password-setup",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation fleet activation and recovery at 1440",
+          "label": "fleet-managed-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation driver activation and recovery at 1440",
+          "label": "driver-managed-password-setup",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "managed invitation driver activation and recovery at 1440",
+          "label": "driver-managed-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        }
+      ]
+    }
+  },
+  "postgresBrowser": {
+    "counts": {
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0
+    },
+    "axe": {
+      "tags": [
+        "wcag2a",
+        "wcag2aa",
+        "wcag21a",
+        "wcag21aa",
+        "wcag22aa"
+      ],
+      "scanCount": 46,
+      "violationCount": 0,
+      "incompleteRuleIds": [
+        "color-contrast"
+      ],
+      "conformance": "manual_review_required",
+      "manualChecks": [
+        "Screen-reader task flows and live announcements",
+        "Meaningful reading/focus order across complex content",
+        "400% browser zoom and user text-spacing adjustments",
+        "Touch and speech input",
+        "Native approval dialogs with assistive technology",
+        "Usability with disabled users"
+      ],
+      "scans": [
+        {
+          "test": "responsive platform persisted workflow at 320",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 320",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive carrier persisted workflow at 320",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 320",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive driver persisted workflow at 320",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 320,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive platform persisted workflow at 375",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 375",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive carrier persisted workflow at 375",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 375",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive driver persisted workflow at 375",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 375,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive platform persisted workflow at 390",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 390",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive carrier persisted workflow at 390",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 390",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive driver persisted workflow at 390",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive platform persisted workflow at 768",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 768",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive carrier persisted workflow at 768",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 768",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive driver persisted workflow at 768",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 768,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive platform persisted workflow at 1024",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 1024",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive carrier persisted workflow at 1024",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 1024",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive driver persisted workflow at 1024",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1024,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "responsive platform persisted workflow at 1440",
+          "label": "responsive-platform-audit",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "responsive carrier persisted workflow at 1440",
+          "label": "responsive-carrier-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive carrier persisted workflow at 1440",
+          "label": "responsive-administration",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 25
+        },
+        {
+          "test": "responsive fleet persisted workflow at 1440",
+          "label": "responsive-fleet-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 23
+        },
+        {
+          "test": "responsive driver persisted workflow at 1440",
+          "label": "responsive-driver-form",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "integrated google platform application lifecycle at 390",
+          "label": "platform-governance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "integrated google carrier application lifecycle at 390",
+          "label": "carrier-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "integrated google fleet application lifecycle at 390",
+          "label": "fleet-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "integrated google driver application lifecycle at 390",
+          "label": "driver-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "integrated google platform application lifecycle at 1440",
+          "label": "platform-governance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "integrated google carrier application lifecycle at 1440",
+          "label": "carrier-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "integrated google fleet application lifecycle at 1440",
+          "label": "fleet-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "integrated google driver application lifecycle at 1440",
+          "label": "driver-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "integrated password platform application lifecycle at 390",
+          "label": "platform-governance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "integrated password carrier application lifecycle at 390",
+          "label": "carrier-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 23
+        },
+        {
+          "test": "integrated password fleet application lifecycle at 390",
+          "label": "fleet-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "integrated password driver application lifecycle at 390",
+          "label": "driver-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 390,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [
+            "color-contrast"
+          ],
+          "passedRules": 25
+        },
+        {
+          "test": "integrated password platform application lifecycle at 1440",
+          "label": "platform-governance",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 20
+        },
+        {
+          "test": "integrated password carrier application lifecycle at 1440",
+          "label": "carrier-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 22
+        },
+        {
+          "test": "integrated password fleet application lifecycle at 1440",
+          "label": "fleet-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        },
+        {
+          "test": "integrated password driver application lifecycle at 1440",
+          "label": "driver-integrated-workspace",
+          "engine": {
+            "name": "axe-core",
+            "version": "4.13.0"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "violations": 0,
+          "incompleteRules": [],
+          "passedRules": 24
+        }
+      ]
+    }
+  },
+  "postgres": {
+    "status": "PASS",
+    "leafScenarios": 94,
+    "nodeChecks": 103,
+    "serverVersion": {
+      "version": "17.11",
+      "number": 170011
+    }
+  },
+  "coverage": {
+    "action": {
+      "inventoried": 77,
+      "observed": 63,
+      "interacted": 63,
+      "verifiedOutcome": 77
+    },
+    "button": {
+      "inventoried": 56,
+      "observed": 56,
+      "interacted": 56,
+      "verifiedOutcome": 56
+    },
+    "dialog": {
+      "inventoried": 19,
+      "observed": 0,
+      "interacted": 0,
+      "verifiedOutcome": 0
+    },
+    "disclosure": {
+      "inventoried": 1,
+      "observed": 0,
+      "interacted": 0,
+      "verifiedOutcome": 1
+    },
+    "field": {
+      "inventoried": 149,
+      "observed": 136,
+      "interacted": 109,
+      "verifiedOutcome": 0
+    },
+    "form": {
+      "inventoried": 37,
+      "observed": 37,
+      "interacted": 37,
+      "verifiedOutcome": 37
+    },
+    "navigation": {
+      "inventoried": 25,
+      "observed": 25,
+      "interacted": 25,
+      "verifiedOutcome": 25
+    },
+    "route": {
+      "inventoried": 64,
+      "observed": 7,
+      "interacted": 0,
+      "verifiedOutcome": 0
+    }
+  },
+  "requirements": {
+    "IMPLEMENTED_LOCAL": 8,
+    "PARTIAL": 58,
+    "MISSING": 4,
+    "BLOCKED_DECISION": 2
+  },
+  "decisions": {
+    "localCoveredWorkflows": "GO",
+    "fullFourApplicationConformity": "NO_GO_INCOMPLETE",
+    "hosted": "NO_GO",
+    "production": "NO_GO"
+  },
+  "hostedExecuted": 0,
+  "evidenceFiles": [
+    {
+      "path": "dist/next-gap-closure/screenshots.json",
+      "sha256": "b2cd2b294a4657ecdacae2b703f5f0d49d013cb2e4f23a02880552bccc935d2a"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/brand-tokens-approved-bran-33c7c-local-Inter-font-for-driver/brand-driver-390.png",
+      "sha256": "7cc0cb3ffc9ac5da83f5190c6bc40e355bbb6d654b1d4ac36403f27596ce8001"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/brand-tokens-approved-bran-70842-ocal-Inter-font-for-carrier/brand-carrier-390.png",
+      "sha256": "9ce423085bfbdd415464a73e2eb1e2728cf3aae212990f00bab099d8f07d4198"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/brand-tokens-approved-bran-70d8e-cal-Inter-font-for-platform/brand-platform-390.png",
+      "sha256": "aee4265a1850863df024b41adef301deb9593d324234abbe0443b3d5fa568f4f"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/brand-tokens-approved-bran-ceb8e--local-Inter-font-for-fleet/brand-fleet-390.png",
+      "sha256": "364ede19a9864bdce8e204f753c6bd6e7acf554e079c3fe60f11cbe90f0eb755"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-carrier-has-an--cfb66--scoped-workspace-at-1440px/attachments/carrier-1440-f4c17f29c44337ef9b77f1b36be6059023280e22.png",
+      "sha256": "a9944377efd1e0348ac435398e53bc33948119d25cb598528436100a458cc490"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-carrier-has-an--cfb66--scoped-workspace-at-1440px/carrier-1440.png",
+      "sha256": "a9944377efd1e0348ac435398e53bc33948119d25cb598528436100a458cc490"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-customer-portal-881c4-d-protects-revision-history/attachments/customer-documents-390-50e5f074668f432816b61bf727b2d456c83cfdcc.png",
+      "sha256": "2e4ece4ecbedae12b1c05c1d172bf569b60fb2d03f73e08e6baa7f893ef12737"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-customer-portal-881c4-d-protects-revision-history/customer-documents-390.png",
+      "sha256": "2e4ece4ecbedae12b1c05c1d172bf569b60fb2d03f73e08e6baa7f893ef12737"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-dispatcher-has--8074c--scoped-workspace-at-1440px/attachments/dispatcher-1440-7429ebf424eff5f1861796c4dcb147b0680c0346.png",
+      "sha256": "658a95195c3c80b7762037a05b5c913608e136be302fc05978cb67decdf88114"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-dispatcher-has--8074c--scoped-workspace-at-1440px/dispatcher-1440.png",
+      "sha256": "658a95195c3c80b7762037a05b5c913608e136be302fc05978cb67decdf88114"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-driver-has-an-a-d608c-e-scoped-workspace-at-390px/attachments/driver-390-e6bef8f2aff906e3391089a6610f7e5849c91d07.png",
+      "sha256": "f0d3dac1b4468be8d3b51cc3d3a1f0787fb295cb427ce8b8c502986f1dd7d596"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-driver-has-an-a-d608c-e-scoped-workspace-at-390px/driver-390.png",
+      "sha256": "f0d3dac1b4468be8d3b51cc3d3a1f0787fb295cb427ce8b8c502986f1dd7d596"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-fleet-has-an-ac-2f78e-e-scoped-workspace-at-390px/attachments/fleet-390-76cb22cfefa8ad7888cdadc88c68336bf1fd71e0.png",
+      "sha256": "e65887346478c3095ed5a1e673bcb6a03f62f317c640571c2b5b05a76c505644"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-fleet-has-an-ac-2f78e-e-scoped-workspace-at-390px/fleet-390.png",
+      "sha256": "e65887346478c3095ed5a1e673bcb6a03f62f317c640571c2b5b05a76c505644"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-Wave-4-browser--22927-nd-bounded-runtime-recovery/attachments/control-tower-1440-4d0ef0c2948e7cd6df10a527ea1aff4ae31dbe5e.png",
+      "sha256": "48286b79e418d60cf72f9ab91ea6dffa5ade11272463118b4d9d63334309796e"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/operations-Wave-4-browser--22927-nd-bounded-runtime-recovery/control-tower-1440.png",
+      "sha256": "48286b79e418d60cf72f9ab91ea6dffa5ade11272463118b4d9d63334309796e"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/platform-workspace-platfor-ccbce--without-operational-access/platform-cases-390.png",
+      "sha256": "f61e7e6bf6ec3070718d9e61fdefd65bf7d305ee68c8ed30c94838a5b3be6dbe"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-11f3c-t-persisted-workflow-at-320/fleet-320.png",
+      "sha256": "e14d1be9be708ea8205912090ff568cd81d2b8f4f71a4cbb3197d4bae03c2ac1"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-1ab49-r-persisted-workflow-at-768/carrier-768.png",
+      "sha256": "0002a24e6551952e25c4482c15167617e474a529f085a4e9f40a1c02a2729a14"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-2ba5c--persisted-workflow-at-1024/platform-1024.png",
+      "sha256": "5186bae3c997677f5920e8d20e144b8ed799b8be543320d0510a8ec06668a344"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-2cb74-r-persisted-workflow-at-320/carrier-320.png",
+      "sha256": "e6b3d8228639ab1491d75d61a4d27f1a4d93a0e23d33a03d9baa2c84caf57463"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-3a8fc-t-persisted-workflow-at-375/fleet-375.png",
+      "sha256": "5d4f02aadc13c8b6447deadd0c9871cff07d2d103042ccf77281f19e3a081123"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-5b1bd--persisted-workflow-at-1024/carrier-1024.png",
+      "sha256": "75dcae8a8e0c738cb136cb56e0f837d2a54042ddfeadf40f143c943597a53767"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-5d16f-r-persisted-workflow-at-768/driver-768.png",
+      "sha256": "327778ce0f968f4eb200077948cc8f8ac0186d93ca8512a9a529feb5448bc8a1"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-5dbfd-m-persisted-workflow-at-320/platform-320.png",
+      "sha256": "92155e74658ac7a69f5900d352dd6e376e792b2d2907af10cd9705a6436096ed"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-66a5c-t-persisted-workflow-at-390/fleet-390.png",
+      "sha256": "d079877343882faafc542ea647388e57a9b1c6c78e3c3555e203cdf5fc6fabaa"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-6d00b--persisted-workflow-at-1440/driver-1440.png",
+      "sha256": "17f3bc48ee4dc328c7b794c59078090b693c031c33bc43d3c1941248a2eaede9"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-6d332-m-persisted-workflow-at-390/platform-390.png",
+      "sha256": "50069ebb1f9befec14de28f7455c15be7820070e676e1d3705b3c9fcbba0f6cb"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-72cb4-r-persisted-workflow-at-375/driver-375.png",
+      "sha256": "013b1e80057e13ef5368d94800373f622396dafe1d566917b319ce357aa42ca6"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-845a2-m-persisted-workflow-at-768/platform-768.png",
+      "sha256": "16ee5848611cdf55f125635b23491520763f32cd956cba8d03220773d537fa2b"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-85d41--persisted-workflow-at-1440/fleet-1440.png",
+      "sha256": "a47f483e83e2ef9e50a4060f63c7e7ebca8822207e41aa9a401dfa20009961d2"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-ab5c5-m-persisted-workflow-at-375/platform-375.png",
+      "sha256": "42e0d7378810e220eedb49c2caffc07b5eef347edd47fd90eefa01dd046cf337"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-b2785-r-persisted-workflow-at-375/carrier-375.png",
+      "sha256": "b56f872ec4fcb7a297087ba01f6ad96f79a30ab49de12529b4bc2166a62cdad6"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-ba96c-r-persisted-workflow-at-390/carrier-390.png",
+      "sha256": "d9d402444f75e8d9bd31914da3c545b13c3d76a9a6cc6fb7f246def27021528e"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-ca030--persisted-workflow-at-1440/carrier-1440.png",
+      "sha256": "5777e6892c39342dd23a1d89ddc8df13b4c8bda42448dd03d89a9bac153291d9"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-cb736-r-persisted-workflow-at-390/driver-390.png",
+      "sha256": "a65a2b525d5de4dc2af71a27a48fcac94b8e2f3018dd7e3162be627e651a228e"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-cd5f5--persisted-workflow-at-1440/platform-1440.png",
+      "sha256": "3aa1a17c375d24eb130f8158fa6cb4677e7d62dd52943f25ec02486946297753"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-d5946-t-persisted-workflow-at-768/fleet-768.png",
+      "sha256": "fdad2265b99a927a831831d03a4294c2528067c514203312234850111d38a1c9"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-defb0--persisted-workflow-at-1024/fleet-1024.png",
+      "sha256": "695b7bbd9f16fc3a98e396802bcbc9a13c1646de40b1cffef69d568d9d86f1ef"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-edf2e-r-persisted-workflow-at-320/driver-320.png",
+      "sha256": "67f347be1b2d84bd8ded2fc114e98a3468b82d765317ea49cec02acfece1fb64"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/responsive-personas-respon-f4b63--persisted-workflow-at-1024/driver-1024.png",
+      "sha256": "2ffd9a23d88be32732bd6c48660f4da1afbf0d7dc97cdda41b3a190e171b3b99"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/settlements-carrier-settle-def5e-gs-have-persistent-outcomes/carrier-settlement-1440.png",
+      "sha256": "5d8337fc893bbf35a459043f043faef6b4609c4c7798ccd21b9d9bf2f9de3db6"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/results/settlements-carrier-settle-def5e-gs-have-persistent-outcomes/driver-earnings-390.png",
+      "sha256": "175ccf4315d9877306b41364f6d09cb1e7c8eb77b43f6ec8d145b377c311df5a"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-11f3c-t-persisted-workflow-at-320/fleet-320.png",
+      "sha256": "437968b7ad9bded4aac0be88fb936ce39b64b94f4cc9d135866636720d23106d"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-1ab49-r-persisted-workflow-at-768/carrier-768.png",
+      "sha256": "27f5d921d9a40df291429281cab9d966f1a5dabe3f828d5a046c36f165df84c6"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-2ba5c--persisted-workflow-at-1024/platform-1024.png",
+      "sha256": "9b11f08828dc3e4badd3f7f01a5299b36351219421d23079598ada7dc981d761"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-2cb74-r-persisted-workflow-at-320/carrier-320.png",
+      "sha256": "cbc2d75a84b958e02bf95780d6d9b823f7464b952d0eb337cf7961bfa52eac60"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-3a8fc-t-persisted-workflow-at-375/fleet-375.png",
+      "sha256": "27138eddc00f54d841f92ff96b9cfded5e63c5a8bdd94cf36b9bc59cf559af50"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-5b1bd--persisted-workflow-at-1024/carrier-1024.png",
+      "sha256": "512dee56357c8c14a47b2823f58f429411457a8727ca30778ed99cd0a8182378"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-5d16f-r-persisted-workflow-at-768/driver-768.png",
+      "sha256": "7f3bf507f0929d5b68ba744f02b2f64d9b77ffd75ac38cf7c12fd3920dc9cc8a"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-5dbfd-m-persisted-workflow-at-320/platform-320.png",
+      "sha256": "f1dc681b73f80e408cad17a7b0e781c00044884e80eccb4d83cf99f1b70d01dc"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-66a5c-t-persisted-workflow-at-390/fleet-390.png",
+      "sha256": "493b2a4b27fdefb7601a5e8a4adcedc0e3ef2e22531598a7b81b39a6766d4db8"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-6d00b--persisted-workflow-at-1440/driver-1440.png",
+      "sha256": "65b558f4b83e89564279251fa7db2aa2d7eae558d38dc9c827418ee0e1f79a4e"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-6d332-m-persisted-workflow-at-390/platform-390.png",
+      "sha256": "ef71fc620a9fb5cc1908183eefc4b0a47a1165837829e8bf63d2485fb5aa673a"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-72cb4-r-persisted-workflow-at-375/driver-375.png",
+      "sha256": "7217e7dfbfcf1ec66019ff016ea54399fd9112a179ea830f822496a477f571cb"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-845a2-m-persisted-workflow-at-768/platform-768.png",
+      "sha256": "6284b2efabe2965a986d09c197e010f377b77c511e412d544bdb370bf8ea8a66"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-85d41--persisted-workflow-at-1440/fleet-1440.png",
+      "sha256": "743c22620599e9a3ae2e424c8fd6ff0c3bc6e622323f912a58f4b64c50669935"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-ab5c5-m-persisted-workflow-at-375/platform-375.png",
+      "sha256": "ee3e1ca9d62050df18b21a9ee2ad6aed7eed441239d8281751c2782410a4abbf"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-b2785-r-persisted-workflow-at-375/carrier-375.png",
+      "sha256": "23951823ec188f6bd36ba77e60bb17827383a43cd8451297dd7c97db5b979b79"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-ba96c-r-persisted-workflow-at-390/carrier-390.png",
+      "sha256": "e891553efb049cef0c8622442d9e94883bb35c55d6ca8162620afe57b89060a5"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-ca030--persisted-workflow-at-1440/carrier-1440.png",
+      "sha256": "784ef51f0423eca3633132c3b3fd5cebc6b458abf841151ca65dcac601583f8b"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-cb736-r-persisted-workflow-at-390/driver-390.png",
+      "sha256": "c554af79a211962dd1cfbb4825da47e03a8abd1953a86ffe36180284b2eabb13"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-cd5f5--persisted-workflow-at-1440/platform-1440.png",
+      "sha256": "6fcf9bdb572480d12455bee813322aff37a4f7ef1ad69e8209d96e1e09914cc5"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-d5946-t-persisted-workflow-at-768/fleet-768.png",
+      "sha256": "af43b3ebbd9692f4400a95a4a442f616e84ba41908a1347958f5914165014380"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-defb0--persisted-workflow-at-1024/fleet-1024.png",
+      "sha256": "49879c32f795cf26c38e0df9681f90e4b5f42850883649f4977cd31f02034b22"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-edf2e-r-persisted-workflow-at-320/driver-320.png",
+      "sha256": "1d73a8fb352f71c1e22603d675777b3f972513f5ba1d16b79db1734af9eabff1"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/results/responsive-personas-respon-f4b63--persisted-workflow-at-1024/driver-1024.png",
+      "sha256": "2ae88cfb9097491bd898c28727a5b61922ba09a59c59ac8cd74380c80575bbb4"
+    },
+    {
+      "path": "dist/next-gap-closure/pdf/pagination-1.png",
+      "sha256": "48fb0d173b3e7c25c9e1dfbcbb77b31b278e8392558f830984d350d5d507d5a7"
+    },
+    {
+      "path": "dist/next-gap-closure/pdf/pagination-2.png",
+      "sha256": "507f11f9a387fb9028e5820e34ae098d986a32768607389c74788f53c751573c"
+    },
+    {
+      "path": "dist/next-gap-closure/pdf/pagination-3.png",
+      "sha256": "05522dc883fefdf91c93dbc145c89b7c5d5bcc34ba15b48bbc426b19491168ea"
+    },
+    {
+      "path": "dist/next-gap-closure/pdf/pagination.pdf",
+      "sha256": "5fe53b6650af16c7a86fc1f48717ad5f25708d5039011ca5aac1dcd2510b2968"
+    },
+    {
+      "path": "dist/next-gap-closure/pdf/statement-1.png",
+      "sha256": "3247bac1094402143bf0fb5abe84f0167f9c176381819f174aac55a661ccbbe7"
+    },
+    {
+      "path": "dist/next-gap-closure/pdf/statement.pdf",
+      "sha256": "e6654fc6853a2432bde2c0dc9d8f5fd27593829f50ecb57e8cb204ccdd5d322f"
+    },
+    {
+      "path": "dist/next-gap-closure/pdf/unicode-1.png",
+      "sha256": "22d3a507a19f90628e908a7afae51ff5104c0bf278524dc7810766e4eecf0899"
+    },
+    {
+      "path": "dist/next-gap-closure/pdf/unicode.pdf",
+      "sha256": "31dd974b6ef36cb6820e98ec500268c0071ba2a4cc96a9afc75777d5dd10739d"
+    },
+    {
+      "path": "dist/next-gap-closure/api-contract-evidence.json",
+      "sha256": "891ef49fb21494c47d86d3ccadf5a5beca4c04ff4b3d1b0fe22e6406b2f4b971"
+    },
+    {
+      "path": "dist/next-gap-closure/repository.log",
+      "sha256": "a1f9fa7f370454f514bb8df1ec7a3521b71272f95082fe75c21e3327374fda08"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/browser-evidence.json",
+      "sha256": "b460c1b7f54f5c237c8884932d752e052b789003485ffb10d1f31c6b23eb6347"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/mvp-control-evidence.json",
+      "sha256": "82be46b57f3a1b90167647f389fc97e505a932e5eadf374b27b5170bc4092c17"
+    },
+    {
+      "path": "dist/next-gap-closure/release-browser/mvp-coverage.json",
+      "sha256": "2d8d243ebdcc607b8169147ea094b2e0bb057da0561f36abc83ed74f758fb67b"
+    },
+    {
+      "path": "dist/next-gap-closure/release-durable-browser/browser-evidence.json",
+      "sha256": "fdab29338fc31f54e59e669a623e26df26b27b42318b3fc8d8ae0763d53372f9"
+    },
+    {
+      "path": "dist/next-gap-closure/release-postgres/postgres17-compatibility.json",
+      "sha256": "30955e53eeafaf20e4bd81c198cf3691602129bcbe534d4eae0c092e5e4b0055"
+    },
+    {
+      "path": "dist/next-gap-closure/secret-review.json",
+      "sha256": "acdec372b7e0556a3cfe4eaa094312eb0a33381fcc72fa0011796d1a4e5103d5"
+    },
+    {
+      "path": "dist/next-gap-closure/performance.json",
+      "sha256": "7dfeaa01ed25858ccb2d6d7a9d00569251681d845257b3e829b66c496b62c062"
+    },
+    {
+      "path": "dist/next-gap-closure/recovery.json",
+      "sha256": "305ceeab676a2bfde6ceb432af0cbd1e2326dc94b52b0f2c89714fe4572e92b4"
+    },
+    {
+      "path": "dist/next-gap-closure/dependency-audit.json",
+      "sha256": "352c05d2e69b568aeef394e8f0b42d609fcc4c763cbd15e4cd0cf30238b813ce"
+    },
+    {
+      "path": "dist/next-gap-closure/pdf/verification.json",
+      "sha256": "2a531b54c6ce8311dfbdab97defa48c54ae2b426bc51aa64e0717e2a68ebbf8f"
+    },
+    {
+      "path": "dist/next-gap-closure/hosted-uat-matrix.json",
+      "sha256": "fda6e3965fe4f244e8739625ada236ddd26d62514ec3f28eda28adda809d209e"
+    },
+    {
+      "path": "dist/next-gap-closure/manual-accessibility.json",
+      "sha256": "f89e2aa8ae2183fd88500f423d04e6c02e5178ab4737f821b8217af49c9af584"
+    }
+  ],
+  "security": {
+    "privateValuesPrinted": false,
+    "hostedMutations": false,
+    "secretScan": "PASS",
+    "dependencyAuditKnownVulnerabilities": 0
+  }
+}

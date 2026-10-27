@@ -1,0 +1,1420 @@
+{
+  "schemaVersion": 1,
+  "sourceMatrixSha256": "6769e833d3a3949ab31629c2c8743ec35f5376d4bcdd0031f87ed957befbeafe",
+  "caseIdsPreserved": 48,
+  "executed": 0,
+  "humanResults": "NOT_RUN",
+  "scripts": [
+    {
+      "case": "AT-001",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "google",
+      "area": "authentication",
+      "steps": "Complete approved sign-in including privileged MFA; verify focus and announcements",
+      "prerequisite": "Approved tester access and resolved identity; record OS/browser/AT/version",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use the assigned login method with only the approved tester; keep credentials and MFA QR/seed off recordings.",
+        "Navigate each field/button with Tab/Shift+Tab and submit with Enter; inspect labels, status and invalid-input announcements.",
+        "For platform/carrier, verify missing/invalid TOTP denies access and approved verified factor completes sign-in."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-002",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "password",
+      "area": "authentication",
+      "steps": "Complete approved sign-in including privileged MFA; verify focus and announcements",
+      "prerequisite": "Approved tester access and resolved identity; record OS/browser/AT/version",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use the assigned login method with only the approved tester; keep credentials and MFA QR/seed off recordings.",
+        "Navigate each field/button with Tab/Shift+Tab and submit with Enter; inspect labels, status and invalid-input announcements.",
+        "For platform/carrier, verify missing/invalid TOTP denies access and approved verified factor completes sign-in."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-003",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "screen_reader_entry",
+      "steps": "Read title heading landmarks labels and current persona without credential values",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Record OS/browser/screen-reader versions; enable NVDA+Firefox/Chrome or VoiceOver+Safari.",
+        "Read page title, landmarks, heading hierarchy and sign-in/workspace instructions without visual cues.",
+        "Navigate controls by accessible name; confirm current persona and meaningful live announcements."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-004",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "keyboard_skip_navigation",
+      "steps": "Tab from entry; activate skip link; confirm main focus and visible focus order",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Start with keyboard only and focus at page entry.",
+        "Tab to the skip link, activate it and verify focus reaches main content.",
+        "Traverse forward/backward; confirm visible focus, logical order and no trap."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-005",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "role_navigation",
+      "steps": "Visit every permitted navigation entry; announce heading/current page; no unauthorized menu",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Sign in as the assigned persona and inspect only its permitted navigation.",
+        "Activate each available destination with keyboard; verify heading focus/current-page indication.",
+        "Attempt forbidden administration and another tenant/fleet resource; confirm denial without disclosing content."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-006",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "form_validation",
+      "steps": "Submit required boundary malformed and corrected input; verify labels alert speech focus and preserved values",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Enter a boundary/invalid value without recording personal information; submit via keyboard.",
+        "Verify field error association, summary/live announcement and focus placement.",
+        "Correct the input and resubmit once; verify retained safe input, recovery and one meaningful result."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-007",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "native_decisions",
+      "steps": "Where a native decision exists verify spoken prompt accept/cancel and restored focus; no mutation on cancel",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Open each applicable native confirmation with keyboard while AT is running.",
+        "Verify prompt wording, action context and initial focus; cancel with Escape or Cancel.",
+        "Confirm no mutation occurred and focus returns to initiating control; verify approved action in a separate synthetic case."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-008",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "async_error_recovery",
+      "steps": "Induce approved isolated API failure; announce focused error and retry without duplicate writes",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use an owner-approved isolated fault or mocked local failure; never disrupt hosted database/services for this manual case.",
+        "Confirm pending/failed feedback is announced and does not rely on color.",
+        "Recover once; confirm focus/input retention and no duplicate mutation; if no safe hosted fault is available record BLOCKED."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-009",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "zoom_spacing",
+      "steps": "Test 400 percent zoom and user text spacing; no clipped controls or lost reading order",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "At 400% browser zoom and 320 CSS-pixel width, traverse main workflows.",
+        "Apply WCAG text-spacing adjustments; verify labels, errors and controls remain readable and operable.",
+        "Check no clipped critical content or two-dimensional scrolling except genuinely required tables."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-010",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "mobile_input",
+      "steps": "At 390px portrait/landscape verify touch targets virtual keyboard and reflow on a physical device",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Record real mobile OS/browser and AT versions; use VoiceOver or TalkBack.",
+        "Traverse landmarks, forms and actions by touch/AT gestures, including orientation changes.",
+        "Confirm target operability, visible/on-screen errors and no loss of meaningful content; desktop emulation alone is insufficient."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-011",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "session_transition",
+      "steps": "Refresh then mutate; logout/timeout; announce transition and deny replay without stale protected content",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "With AT active, perform approved refresh, expiry/recovery and sign-out paths.",
+        "Verify status/error announcements, destination title and predictable focus after transitions.",
+        "Confirm back/replay cannot restore unauthorized workspace; do not record session handles or token values."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-012",
+      "persona": "platform",
+      "tester": "oadeyemo306@gmail.com",
+      "method": "both",
+      "area": "persona_workflow",
+      "steps": "Complete approved role task with screen reader and keyboard; verify outcome and deny another role/tenant",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Choose one meaningful permitted workflow for this persona using approved illustrative data.",
+        "Complete it using keyboard and screen reader; verify understandable outcome and focus restoration.",
+        "Attempt one forbidden role/relationship action; confirm accessible denial without data leakage."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required",
+      "currentAddon": "Also verify pending governance writes disable adjacent fields, clear stale success, announce confirmed completion, retain errors, and preserve 48 after fresh login."
+    },
+    {
+      "case": "AT-013",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "google",
+      "area": "authentication",
+      "steps": "Complete approved sign-in including privileged MFA; verify focus and announcements",
+      "prerequisite": "Approved tester access and resolved identity; record OS/browser/AT/version",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use the assigned login method with only the approved tester; keep credentials and MFA QR/seed off recordings.",
+        "Navigate each field/button with Tab/Shift+Tab and submit with Enter; inspect labels, status and invalid-input announcements.",
+        "For platform/carrier, verify missing/invalid TOTP denies access and approved verified factor completes sign-in."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-014",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "password",
+      "area": "authentication",
+      "steps": "Complete approved sign-in including privileged MFA; verify focus and announcements",
+      "prerequisite": "Approved tester access and resolved identity; record OS/browser/AT/version",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use the assigned login method with only the approved tester; keep credentials and MFA QR/seed off recordings.",
+        "Navigate each field/button with Tab/Shift+Tab and submit with Enter; inspect labels, status and invalid-input announcements.",
+        "For platform/carrier, verify missing/invalid TOTP denies access and approved verified factor completes sign-in."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-015",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "screen_reader_entry",
+      "steps": "Read title heading landmarks labels and current persona without credential values",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Record OS/browser/screen-reader versions; enable NVDA+Firefox/Chrome or VoiceOver+Safari.",
+        "Read page title, landmarks, heading hierarchy and sign-in/workspace instructions without visual cues.",
+        "Navigate controls by accessible name; confirm current persona and meaningful live announcements."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-016",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "keyboard_skip_navigation",
+      "steps": "Tab from entry; activate skip link; confirm main focus and visible focus order",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Start with keyboard only and focus at page entry.",
+        "Tab to the skip link, activate it and verify focus reaches main content.",
+        "Traverse forward/backward; confirm visible focus, logical order and no trap."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-017",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "role_navigation",
+      "steps": "Visit every permitted navigation entry; announce heading/current page; no unauthorized menu",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Sign in as the assigned persona and inspect only its permitted navigation.",
+        "Activate each available destination with keyboard; verify heading focus/current-page indication.",
+        "Attempt forbidden administration and another tenant/fleet resource; confirm denial without disclosing content."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-018",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "form_validation",
+      "steps": "Submit required boundary malformed and corrected input; verify labels alert speech focus and preserved values",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Enter a boundary/invalid value without recording personal information; submit via keyboard.",
+        "Verify field error association, summary/live announcement and focus placement.",
+        "Correct the input and resubmit once; verify retained safe input, recovery and one meaningful result."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-019",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "native_decisions",
+      "steps": "Where a native decision exists verify spoken prompt accept/cancel and restored focus; no mutation on cancel",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Open each applicable native confirmation with keyboard while AT is running.",
+        "Verify prompt wording, action context and initial focus; cancel with Escape or Cancel.",
+        "Confirm no mutation occurred and focus returns to initiating control; verify approved action in a separate synthetic case."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-020",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "async_error_recovery",
+      "steps": "Induce approved isolated API failure; announce focused error and retry without duplicate writes",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use an owner-approved isolated fault or mocked local failure; never disrupt hosted database/services for this manual case.",
+        "Confirm pending/failed feedback is announced and does not rely on color.",
+        "Recover once; confirm focus/input retention and no duplicate mutation; if no safe hosted fault is available record BLOCKED."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-021",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "zoom_spacing",
+      "steps": "Test 400 percent zoom and user text spacing; no clipped controls or lost reading order",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "At 400% browser zoom and 320 CSS-pixel width, traverse main workflows.",
+        "Apply WCAG text-spacing adjustments; verify labels, errors and controls remain readable and operable.",
+        "Check no clipped critical content or two-dimensional scrolling except genuinely required tables."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-022",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "mobile_input",
+      "steps": "At 390px portrait/landscape verify touch targets virtual keyboard and reflow on a physical device",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Record real mobile OS/browser and AT versions; use VoiceOver or TalkBack.",
+        "Traverse landmarks, forms and actions by touch/AT gestures, including orientation changes.",
+        "Confirm target operability, visible/on-screen errors and no loss of meaningful content; desktop emulation alone is insufficient."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-023",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "session_transition",
+      "steps": "Refresh then mutate; logout/timeout; announce transition and deny replay without stale protected content",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "With AT active, perform approved refresh, expiry/recovery and sign-out paths.",
+        "Verify status/error announcements, destination title and predictable focus after transitions.",
+        "Confirm back/replay cannot restore unauthorized workspace; do not record session handles or token values."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-024",
+      "persona": "carrier",
+      "tester": "martin@tm88investments.com",
+      "method": "both",
+      "area": "persona_workflow",
+      "steps": "Complete approved role task with screen reader and keyboard; verify outcome and deny another role/tenant",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Choose one meaningful permitted workflow for this persona using approved illustrative data.",
+        "Complete it using keyboard and screen reader; verify understandable outcome and focus restoration.",
+        "Attempt one forbidden role/relationship action; confirm accessible denial without data leakage."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-025",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "google",
+      "area": "authentication",
+      "steps": "Complete approved sign-in including privileged MFA; verify focus and announcements",
+      "prerequisite": "Approved tester access and resolved identity; record OS/browser/AT/version",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use the assigned login method with only the approved tester; keep credentials and MFA QR/seed off recordings.",
+        "Navigate each field/button with Tab/Shift+Tab and submit with Enter; inspect labels, status and invalid-input announcements.",
+        "For platform/carrier, verify missing/invalid TOTP denies access and approved verified factor completes sign-in."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-026",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "password",
+      "area": "authentication",
+      "steps": "Complete approved sign-in including privileged MFA; verify focus and announcements",
+      "prerequisite": "Approved tester access and resolved identity; record OS/browser/AT/version",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use the assigned login method with only the approved tester; keep credentials and MFA QR/seed off recordings.",
+        "Navigate each field/button with Tab/Shift+Tab and submit with Enter; inspect labels, status and invalid-input announcements.",
+        "For platform/carrier, verify missing/invalid TOTP denies access and approved verified factor completes sign-in."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-027",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "screen_reader_entry",
+      "steps": "Read title heading landmarks labels and current persona without credential values",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Record OS/browser/screen-reader versions; enable NVDA+Firefox/Chrome or VoiceOver+Safari.",
+        "Read page title, landmarks, heading hierarchy and sign-in/workspace instructions without visual cues.",
+        "Navigate controls by accessible name; confirm current persona and meaningful live announcements."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-028",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "keyboard_skip_navigation",
+      "steps": "Tab from entry; activate skip link; confirm main focus and visible focus order",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Start with keyboard only and focus at page entry.",
+        "Tab to the skip link, activate it and verify focus reaches main content.",
+        "Traverse forward/backward; confirm visible focus, logical order and no trap."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-029",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "role_navigation",
+      "steps": "Visit every permitted navigation entry; announce heading/current page; no unauthorized menu",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Sign in as the assigned persona and inspect only its permitted navigation.",
+        "Activate each available destination with keyboard; verify heading focus/current-page indication.",
+        "Attempt forbidden administration and another tenant/fleet resource; confirm denial without disclosing content."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-030",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "form_validation",
+      "steps": "Submit required boundary malformed and corrected input; verify labels alert speech focus and preserved values",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Enter a boundary/invalid value without recording personal information; submit via keyboard.",
+        "Verify field error association, summary/live announcement and focus placement.",
+        "Correct the input and resubmit once; verify retained safe input, recovery and one meaningful result."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-031",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "native_decisions",
+      "steps": "Where a native decision exists verify spoken prompt accept/cancel and restored focus; no mutation on cancel",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Open each applicable native confirmation with keyboard while AT is running.",
+        "Verify prompt wording, action context and initial focus; cancel with Escape or Cancel.",
+        "Confirm no mutation occurred and focus returns to initiating control; verify approved action in a separate synthetic case."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-032",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "async_error_recovery",
+      "steps": "Induce approved isolated API failure; announce focused error and retry without duplicate writes",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use an owner-approved isolated fault or mocked local failure; never disrupt hosted database/services for this manual case.",
+        "Confirm pending/failed feedback is announced and does not rely on color.",
+        "Recover once; confirm focus/input retention and no duplicate mutation; if no safe hosted fault is available record BLOCKED."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-033",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "zoom_spacing",
+      "steps": "Test 400 percent zoom and user text spacing; no clipped controls or lost reading order",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "At 400% browser zoom and 320 CSS-pixel width, traverse main workflows.",
+        "Apply WCAG text-spacing adjustments; verify labels, errors and controls remain readable and operable.",
+        "Check no clipped critical content or two-dimensional scrolling except genuinely required tables."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-034",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "mobile_input",
+      "steps": "At 390px portrait/landscape verify touch targets virtual keyboard and reflow on a physical device",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Record real mobile OS/browser and AT versions; use VoiceOver or TalkBack.",
+        "Traverse landmarks, forms and actions by touch/AT gestures, including orientation changes.",
+        "Confirm target operability, visible/on-screen errors and no loss of meaningful content; desktop emulation alone is insufficient."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-035",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "session_transition",
+      "steps": "Refresh then mutate; logout/timeout; announce transition and deny replay without stale protected content",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "With AT active, perform approved refresh, expiry/recovery and sign-out paths.",
+        "Verify status/error announcements, destination title and predictable focus after transitions.",
+        "Confirm back/replay cannot restore unauthorized workspace; do not record session handles or token values."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-036",
+      "persona": "fleet",
+      "tester": "info@tm88investments.com",
+      "method": "both",
+      "area": "persona_workflow",
+      "steps": "Complete approved role task with screen reader and keyboard; verify outcome and deny another role/tenant",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Choose one meaningful permitted workflow for this persona using approved illustrative data.",
+        "Complete it using keyboard and screen reader; verify understandable outcome and focus restoration.",
+        "Attempt one forbidden role/relationship action; confirm accessible denial without data leakage."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-037",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "google",
+      "area": "authentication",
+      "steps": "Complete approved sign-in including privileged MFA; verify focus and announcements",
+      "prerequisite": "Approved tester access and resolved identity; record OS/browser/AT/version",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use the assigned login method with only the approved tester; keep credentials and MFA QR/seed off recordings.",
+        "Navigate each field/button with Tab/Shift+Tab and submit with Enter; inspect labels, status and invalid-input announcements.",
+        "For platform/carrier, verify missing/invalid TOTP denies access and approved verified factor completes sign-in."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-038",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "password",
+      "area": "authentication",
+      "steps": "Complete approved sign-in including privileged MFA; verify focus and announcements",
+      "prerequisite": "Approved tester access and resolved identity; record OS/browser/AT/version",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use the assigned login method with only the approved tester; keep credentials and MFA QR/seed off recordings.",
+        "Navigate each field/button with Tab/Shift+Tab and submit with Enter; inspect labels, status and invalid-input announcements.",
+        "For platform/carrier, verify missing/invalid TOTP denies access and approved verified factor completes sign-in."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-039",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "screen_reader_entry",
+      "steps": "Read title heading landmarks labels and current persona without credential values",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Record OS/browser/screen-reader versions; enable NVDA+Firefox/Chrome or VoiceOver+Safari.",
+        "Read page title, landmarks, heading hierarchy and sign-in/workspace instructions without visual cues.",
+        "Navigate controls by accessible name; confirm current persona and meaningful live announcements."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-040",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "keyboard_skip_navigation",
+      "steps": "Tab from entry; activate skip link; confirm main focus and visible focus order",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Start with keyboard only and focus at page entry.",
+        "Tab to the skip link, activate it and verify focus reaches main content.",
+        "Traverse forward/backward; confirm visible focus, logical order and no trap."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-041",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "role_navigation",
+      "steps": "Visit every permitted navigation entry; announce heading/current page; no unauthorized menu",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Sign in as the assigned persona and inspect only its permitted navigation.",
+        "Activate each available destination with keyboard; verify heading focus/current-page indication.",
+        "Attempt forbidden administration and another tenant/fleet resource; confirm denial without disclosing content."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-042",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "form_validation",
+      "steps": "Submit required boundary malformed and corrected input; verify labels alert speech focus and preserved values",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Enter a boundary/invalid value without recording personal information; submit via keyboard.",
+        "Verify field error association, summary/live announcement and focus placement.",
+        "Correct the input and resubmit once; verify retained safe input, recovery and one meaningful result."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-043",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "native_decisions",
+      "steps": "Where a native decision exists verify spoken prompt accept/cancel and restored focus; no mutation on cancel",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Open each applicable native confirmation with keyboard while AT is running.",
+        "Verify prompt wording, action context and initial focus; cancel with Escape or Cancel.",
+        "Confirm no mutation occurred and focus returns to initiating control; verify approved action in a separate synthetic case."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-044",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "async_error_recovery",
+      "steps": "Induce approved isolated API failure; announce focused error and retry without duplicate writes",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Use an owner-approved isolated fault or mocked local failure; never disrupt hosted database/services for this manual case.",
+        "Confirm pending/failed feedback is announced and does not rely on color.",
+        "Recover once; confirm focus/input retention and no duplicate mutation; if no safe hosted fault is available record BLOCKED."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-045",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "zoom_spacing",
+      "steps": "Test 400 percent zoom and user text spacing; no clipped controls or lost reading order",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "At 400% browser zoom and 320 CSS-pixel width, traverse main workflows.",
+        "Apply WCAG text-spacing adjustments; verify labels, errors and controls remain readable and operable.",
+        "Check no clipped critical content or two-dimensional scrolling except genuinely required tables."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-046",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "mobile_input",
+      "steps": "At 390px portrait/landscape verify touch targets virtual keyboard and reflow on a physical device",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Record real mobile OS/browser and AT versions; use VoiceOver or TalkBack.",
+        "Traverse landmarks, forms and actions by touch/AT gestures, including orientation changes.",
+        "Confirm target operability, visible/on-screen errors and no loss of meaningful content; desktop emulation alone is insufficient."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-047",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "session_transition",
+      "steps": "Refresh then mutate; logout/timeout; announce transition and deny replay without stale protected content",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "With AT active, perform approved refresh, expiry/recovery and sign-out paths.",
+        "Verify status/error announcements, destination title and predictable focus after transitions.",
+        "Confirm back/replay cannot restore unauthorized workspace; do not record session handles or token values."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    },
+    {
+      "case": "AT-048",
+      "persona": "driver",
+      "tester": "cassiomey@gmail.com",
+      "method": "both",
+      "area": "persona_workflow",
+      "steps": "Complete approved role task with screen reader and keyboard; verify outcome and deny another role/tenant",
+      "prerequisite": "Human reviewer; isolated approved data; do not enable extra privileges",
+      "status": "NOT RUN",
+      "reviewer": null,
+      "evidence_or_defect": null,
+      "environmentToRecord": [
+        "OS/version",
+        "Browser/version",
+        "Screen reader/version",
+        "Input method",
+        "Viewport/zoom",
+        "Approved commit/origin"
+      ],
+      "script": [
+        "Choose one meaningful permitted workflow for this persona using approved illustrative data.",
+        "Complete it using keyboard and screen reader; verify understandable outcome and focus restoration.",
+        "Attempt one forbidden role/relationship action; confirm accessible denial without data leakage."
+      ],
+      "passCriteria": "Task completes with correct accessible names, focus, announcements and authorization; record sanitized observations.",
+      "failCriteria": "Record a reproducible defect for trap, unnamed control, lost critical content, missing announcement or unauthorized access.",
+      "evidenceRules": "No passwords, TOTP seeds/codes, invitation/session handles or personal data in screenshots, traces or notes.",
+      "executionGate": "Approved target, provisioned real persona, controlled entry and human reviewer required"
+    }
+  ],
+  "additionalFeedbackTasks": [
+    "Keyboard-only submit, refresh, owner selection and retest without losing input",
+    "Confirm pending, error and confirmed-success announcements with a human screen reader",
+    "Operate feedback history and 44px touch targets at 390px and 400% zoom"
+  ],
+  "additionalFeedbackTasksStatus": "NOT_RUN",
+  "humanAcceptance": false
+}

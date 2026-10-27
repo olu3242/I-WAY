@@ -1,6 +1,6 @@
 # I-WAY unified activation — current approval register
 
-Starting SHA: `887eeddb33f381733092569fb5d0f2f393b02920`. A01–A12 below retain their exact historical identifiers, targets, dependencies and review procedures from B781–B800. None has an approved exact hosted change or has executed in this cycle. Staging configuration and synthetic provisioning are authorized in principle only.
+Starting SHA: `887eeddb33f381733092569fb5d0f2f393b02920`. A01–A12 below retain their exact historical identifiers, targets, dependencies and review procedures from B781–B800. B821–B840 adds explicit owner approval for reviewed feature-branch pushes to PR #21 solely for CI. That publication does not authorize hosted configuration, identity, migration, deployment or access changes. Historical dispositions below the preserved-record boundary remain unchanged.
 
 ## Superseding owner finding
 
@@ -12,24 +12,24 @@ The code currently pins the excluded project in database endpoint validators, is
 
 | Action | Current exact authorization | Remaining owner decision |
 |---|---|---|
-| A01 | BLOCKED; optional push not approved | Repository maintainer approves final SHA after fresh two-project trigger inspection. |
+| A01 | APPROVED — reviewed B791–B840 feature-branch pushes for CI only | Exact branch `work/b751-b770-harmonization-20261026`, PR #21; no force push, merge or automatic deployment. `c5998b3` published after trigger inspection. Final reviewed SHA and CI recorded in B821 receipt/sidecar. |
 | A02 | BLOCKED; optional repair not approved | No current staging Git repair is needed; public mutations are excluded by the latest request. Any new change needs exact owner review. |
 | A03 | BLOCKED; old database target is excluded | Project owner designates exclusive staging project, database/version, administrator and private restricted-credential handoff. Review role/grant differences for the actual target. |
 | A04 | BLOCKED; no migration execution approved | Database owner reviews broker checksums and rollback against the designated target after A03. |
 | A05 | BLOCKED; no migration execution approved | Database owner reviews four ordered Operations migrations plus B662 and per-file transaction recovery against that target. |
-| A06 | BLOCKED; 0/13 Preview keys configured | Vercel owner approves exact project/Preview scope, dedicated DB values, origin and server-only secret channels after consistent target pin remediation. No Production target override. |
+| A06 | BLOCKED; 13/13 Preview names observed, values and restricted login not certified; privileged application secret policy unresolved | Vercel owner approves exact project/Preview scope, dedicated DB values, origin and server-only secret channels after consistent target pin remediation. No Production target override. |
 | A07 | BLOCKED; no provider change approved | Google/Supabase owner reviews exact client, new provider callback, exact Preview redirect allowlist and password/MFA policy. No wildcard redirects or email-only linking. |
 | A08 | BLOCKED; roster approval is not account/privilege approval | Identity/database owners approve actual UUIDs, native principals, permissions, governance namespace, carrier/fleet/employment hierarchy. Two privileged testers enroll their own factors through an approved route. |
 | A09 | BLOCKED; delivery service and management process unidentified | Management owner supplies isolated process/connection, metadata schema approval and provider/sender contract. Review one exact approved existing-user issuance/delivery without emitting proofs. |
-| A10 | BLOCKED; no push or deployment approved | Release owner reviews final SHA/archive checksum and genuine protected Preview/project gate after A03–A09 verification. Current code still targets an excluded DB. |
+| A10 | BLOCKED; CI publication approved under A01, deployment prerequisites unsatisfied | Release owner reviews final SHA/archive checksum and genuine protected Preview/project gate after A03–A09 verification. Current code still targets an excluded DB. |
 | A11 | BLOCKED; no external invitation or access grant approved | Vercel owner approves exact tester email, commit-specific Preview and expiry/revocation; Hobby permits one active collaborator, so use serial grants. No team membership or bearer links. |
 | A12 | BLOCKED; optional public hygiene outside current scope | Separate public-project owner review required in a separately authorized task; no public or Production mutation here. |
 
 Every hosted request must bind the eventual exact database/project, intended diff, prerequisites, owner, risks, validation evidence, rollback, approved candidate SHA and expiry. No partially specified target is ready for approval. The minimum next action is owner designation of the database, authenticated management owner/connection and confidential invitation provider/sender—not blanket approval of all twelve actions.
 
-Current targets: Vercel `prj_7uof3CdmN1QvzKxETkXvHjlrLjVm`, team `team_zNHlJbJHa4YZFwN4p9lcHzEH`, genuine Preview only. Public `prj_0vutnbiNCYaxhdrbLfktrsHAvxty` excluded. Current metadata: staging Git builds disabled, SSO all; public Git builds enabled, main Production branch. Local branch suppression is committed but no push is approved.
+Current targets: Vercel `prj_7uof3CdmN1QvzKxETkXvHjlrLjVm`, team `team_zNHlJbJHa4YZFwN4p9lcHzEH`, genuine Preview only. Public `prj_0vutnbiNCYaxhdrbLfktrsHAvxty` excluded. Current metadata: staging Git builds disabled, SSO all; public Git builds enabled, main Production branch. Local branch suppression is committed. A01 now permits reviewed pushes for CI only; staging Git deployment creation remains disabled.
 
-[Individually controlled external collaboration](https://vercel.com/docs/deployments/sharing-deployments) requires each external tester to authenticate to their own Vercel account. Hobby currently allows one active collaborator. A paid upgrade would require a separate billing decision and is not requested or performed.
+[Individually controlled external collaboration](https://vercel.com/docs/deployments/sharing-deployments) requires each external tester to authenticate to their own Vercel account. B821 read-only team metadata confirms Hobby, and the current documentation limits it to one active external collaborator. Prepare serial individual grants only after explicit owner approval. A paid upgrade or concurrent-four plan decision requires a separate owner review and is not performed. No cost quote or commercial-plan eligibility certification is implied.
 
 [Google configuration](https://supabase.com/docs/guides/auth/social-sign-in/auth-google) must bind the actual selected Supabase project callback and exact approved app origin. [TOTP enrollment](https://supabase.com/docs/guides/auth/auth-mfa/totp) requires the human tester to enroll and verify a factor; the current application only challenges existing verified factors. An approved human enrollment route remains a dependency.
 
@@ -47,7 +47,7 @@ Starting candidate: `6f322e5315dd6846d9d09b6c86efc4f276aeb366`. Source: docs/sec
 - **LOCAL_EVIDENCE**: Secret-safe packages, scans, artifacts and exact-SHA verification.
 - **LOCAL_COMMIT**: Reviewed feature-branch commit only; no push/merge/deploy.
 
-These local/read-only permissions do not authorize any A01–A12 mutation. Observation of a hosted resource is separate from permission to change it. No generic implementation request is an owner decision.
+The B821 A01 publication addendum above supersedes the historical no-push disposition for the named feature branch only. Other local/read-only permissions do not authorize A02–A12 mutations. Observation of a hosted resource is separate from permission to change it. No generic implementation request is an owner decision.
 
 ## Dependency graph
 

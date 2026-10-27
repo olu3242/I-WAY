@@ -42,6 +42,28 @@ test('B662-B676 durable domain engine on restricted disposable PostgreSQL',{time
    const tables=(await pg.admin.query("SELECT relrowsecurity,relforcerowsecurity FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='operations_engine_private' AND c.relkind='r'")).rows;
    assert.equal(tables.length,5);assert.ok(tables.every(row=>row.relrowsecurity&&row.relforcerowsecurity));
   });
+  await t.test('read-only relationship inspection leaves state version and payload unchanged',async()=>{
+   const before=await persisted();
+   const actor=await engine.transaction(a,({store})=>store.principal(a.actorId),{readOnly:true});
+   assert.equal(actor.id,a.actorId);assert.deepEqual(await persisted(),before);
+   await assert.rejects(engine.transaction({...a,actorId:b.actorId},()=>true,{readOnly:true}));
+   assert.deepEqual(await persisted(),before);
+  });
+  await t.test('owner login rechecks use an independent read-only realm without widening write scope',async()=>{
+   const verificationPool=new Pool({...config,max:1}),scopedEngine=new DurableOperationsPgEngine({pool,config,verificationPool});verificationPool.on('error',()=>{});
+   const original=await engine.transaction(b,({store})=>{const actor=store.principal(b.actorId);store.db.prepare('UPDATE users SET data=? WHERE id=?').run(JSON.stringify({...actor,identityOnly:true}),actor.id);return actor;});
+   const entry={principalId:original.id,role:original.role,tenantId:original.tenantId,fleetId:original.fleetId??null,permissions:original.permissions};
+   const snapshot=async()=>(await pg.admin.query('SELECT version,payload FROM operations_engine_private.state WHERE tenant_id=$1',[b.tenantId])).rows[0];
+   const before=await snapshot();
+   try{
+    await scopedEngine.transaction(a,async()=>{
+     assert.equal(await scopedEngine.verifyUatEntry(entry),true);
+     await assert.rejects(scopedEngine.transaction(b,()=>true),e=>e.code==='CONTEXT');
+     assert.equal(await scopedEngine.verifyUatEntry({...entry,principalId:a.actorId}),false);
+    });
+    assert.deepEqual(await snapshot(),before);
+   }finally{await verificationPool.end();await engine.transaction(b,({store})=>store.db.prepare('UPDATE users SET data=? WHERE id=?').run(JSON.stringify(original),original.id));}
+  });
   await t.test('RLS denies absent context, forged actor, cross-tenant reads and writes',async()=>{
    for(const s of [null,{tenantId:a.tenantId,actorId:b.actorId}])await raw(s,async client=>{
     for(const table of ['state','audit','principals'])assert.equal((await client.query('SELECT * FROM operations_engine_private.'+table)).rowCount,0);

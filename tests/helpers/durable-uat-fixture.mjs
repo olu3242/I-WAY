@@ -1,4 +1,5 @@
 // Explicit disposable fixture only. All identifiers come from synthetic native fixtures.
+import {createUatWorkflow} from '../../server/operations-uat-workflow.mjs';
 import {Pool} from 'pg';
 import {readFile} from 'node:fs/promises';
 import {isolatedPostgres} from '../../scripts/lib/isolated-postgres.mjs';
@@ -14,8 +15,9 @@ export async function durablePostgresFixture(){
   await pg.admin.query(sql);
   const config=buildLocalOperationsPgConfig({optIn:true,connection:pg.restricted,ca:pg.ssl.ca});
   const connect=()=>{const pool=new Pool(config);pool.on('error',()=>{});return pool;};
-  let pool=connect();
-  return {pg,config,get pool(){return pool},restartDatabase:async()=>{await pool.end();await pg.restartDatabase();pool=connect();},close:async()=>{await pool.end();await pg.cleanup();}};
+  const connectVerification=()=>{const pool=new Pool({...config,max:1});pool.on('error',()=>{});return pool;};
+  let pool=connect(),verificationPool=connectVerification();
+  return {pg,config,get pool(){return pool},get verificationPool(){return verificationPool},restartDatabase:async()=>{await Promise.all([pool.end(),verificationPool.end()]);await pg.restartDatabase();pool=connect();verificationPool=connectVerification();},close:async()=>{await Promise.all([pool.end(),verificationPool.end()]);await pg.cleanup();}};
  }catch(error){await pg.cleanup();throw error;}
 }
 export async function durableUatFixture(f,postgres){
@@ -28,8 +30,9 @@ export async function durableUatFixture(f,postgres){
   for(const entry of state.audit)await pg.admin.query('INSERT INTO operations_engine_private.audit(tenant_id,sequence,entry) VALUES($1,$2,$3::jsonb)',[tenant.id,entry.sequence,JSON.stringify(entry)]);
  }
  const make=async()=>{
-  const engine=new DurableOperationsPgEngine({pool:postgres.pool,config});
-  return {engine,...await createDurableUatApplication({...f.dependencies,engine,platformNamespaceId:f.governance})};
+  const engine=new DurableOperationsPgEngine({pool:postgres.pool,config,verificationPool:postgres.verificationPool});
+  const workflow=f.dependencies.ownerProfiles?createUatWorkflow({...f.uat.dependencies,ownerUserIds:[...new Set(f.dependencies.ownerProfiles.map(p=>p.ownerUserId))],lookupMembership:async userId=>{const entry=f.roster.find(e=>e.userId===userId);return entry&&await engine.verifyUatEntry(entry,f.governance)?f.uat.memberships.get(userId):null;}}):f.dependencies.workflow;
+  return {engine,...await createDurableUatApplication({...f.dependencies,workflow,engine,platformNamespaceId:f.governance})};
  };
  return {...await make(),restart:make};
 }

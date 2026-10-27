@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-25T03:54:20.774Z",
+  "git": {
+    "startingCommit": "5871dc168ff6f26bf1244a027f63d4fa0d19d92b",
+    "requestedBaseline": "4d75051002f190b2178c6c88fea0272cfca507f5",
+    "requestedBaselineIsAncestor": true,
+    "branch": "work/b561-b580-external-uat",
+    "baselineClean": true,
+    "endingCommitLocation": "dist/b681-b690/post-commit-verification.json"
+  },
+  "changedFiles": [
+    "apps/operations/load-wizard.js",
+    "apps/operations/ops.css",
+    "apps/operations/ops.js",
+    "docs/certification/b681-b690-load-wizard/certification-report.md",
+    "docs/certification/b681-b690-load-wizard/receipt.json",
+    "docs/security/b591-mvp-inventory.json",
+    "domain/operations-load-wizard.mjs",
+    "tests/browser/b681-load-wizard.spec.mjs",
+    "tests/browser/certification-permutations.spec.mjs",
+    "tests/browser/load-wizard-recovery.spec.mjs",
+    "tests/browser/load-wizard.spec.mjs",
+    "tests/browser/mvp-actions.spec.mjs",
+    "tests/browser/operations.spec.mjs",
+    "tests/local/load-wizard-browser-postgres.mjs",
+    "tests/local/next-gap-closure.postgres.mjs",
+    "tests/operations-client.test.mjs",
+    "tests/operations-load-wizard.test.mjs"
+  ],
+  "sourceFiles": [
+    {
+      "path": "apps/operations/load-wizard.js",
+      "sha256LF": "00ba881728a95a5159775c882ad0061e0ce1d485edbb5c5b2fa9811f2d559c6c"
+    },
+    {
+      "path": "apps/operations/ops.css",
+      "sha256LF": "b2b4b63c6890f45d3436cc96fe6bec5ea0a7679c57e031caeb68a97390e31fd9"
+    },
+    {
+      "path": "apps/operations/ops.js",
+      "sha256LF": "3728b5393ff9f788869080379fc56b2c06feb57a684b26b9bb4d961c557e95a6"
+    },
+    {
+      "path": "docs/certification/b681-b690-load-wizard/certification-report.md",
+      "sha256LF": "5c49bd5b2742d7d5f8d613e9d28fd1002a1acb95ce42dcf778885d0a0b85b424"
+    },
+    {
+      "path": "docs/security/b591-mvp-inventory.json",
+      "sha256LF": "0e9d43e0bbe5e626e8193422f43d12d74f143f317fcc70b0cc10fb478635dc12"
+    },
+    {
+      "path": "domain/operations-load-wizard.mjs",
+      "sha256LF": "eae828ccc61679be9169739f4d9f0823a8a772dc0ad93dd30b0b99b3dd6eefb0"
+    },
+    {
+      "path": "tests/browser/b681-load-wizard.spec.mjs",
+      "sha256LF": "53b83a955b8d07ab58874a9da8cc907d319ebf2ab644024986fdd704e8e4177d"
+    },
+    {
+      "path": "tests/browser/certification-permutations.spec.mjs",
+      "sha256LF": "21041b91b54bdfe3261053b881c6a89e02bdb3662eac01ccf56c6047aa77f93e"
+    },
+    {
+      "path": "tests/browser/load-wizard-recovery.spec.mjs",
+      "sha256LF": "3a256c2579b4ed8001d8183619e8fe8f4a434051490ad655b5717982c58aeb49"
+    },
+    {
+      "path": "tests/browser/load-wizard.spec.mjs",
+      "sha256LF": "ec236b14a217e54f780828b64d425e342f604ca58cf65a7905f74dea8881b25f"
+    },
+    {
+      "path": "tests/browser/mvp-actions.spec.mjs",
+      "sha256LF": "322db970b8407c9a650d08e8920edce308e48f351d5fcd1664e4c62c216b06f7"
+    },
+    {
+      "path": "tests/browser/operations.spec.mjs",
+      "sha256LF": "7dd8d1109f9d18c740fdb478625731deb17679aeb40e056fa251125bac0bfd28"
+    },
+    {
+      "path": "tests/local/load-wizard-browser-postgres.mjs",
+      "sha256LF": "66e51e796bbd37efa10240ae1696da0f77f2917203913d83528fa01f898c7618"
+    },
+    {
+      "path": "tests/local/next-gap-closure.postgres.mjs",
+      "sha256LF": "b4d6b0962833cb7ec6aa94c1c83f6bed527acd6a7479ef620e79d798aa4311a9"
+    },
+    {
+      "path": "tests/operations-client.test.mjs",
+      "sha256LF": "66b2b36429ca211b39e27ac7aff5443fe34bb9fbd68f49a9818bc1d07fddba88"
+    },
+    {
+      "path": "tests/operations-load-wizard.test.mjs",
+      "sha256LF": "e0ebac2cb2a47d44226282f0627b15c91d6040fa4cbcc57c2d90bbc638ff780b"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "dist/b681-b690/repository-final.log",
+      "sha256": "fb1196c16d6336f205f3dde02daf2526ae83950e929b4238c3c5db44bc18cbcc"
+    },
+    {
+      "path": "dist/b681-b690/affected-unit.log",
+      "sha256": "a0b7b696a5b1d559bddaa3019929c193d9d08b06ee640ef9688e8fe29b26ef4a"
+    },
+    {
+      "path": "dist/b681-b690/release-browser.log",
+      "sha256": "c692dfb26c9ada8885ea1a6386dcea126d50c0e104c790292090deccb7413913"
+    },
+    {
+      "path": "dist/b681-b690/release-durable-browser.log",
+      "sha256": "eafc8795eb840d7e7b7f2a5ffb7ef6cf35ee0f5a2233e03791a6ce294b5da67e"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/browser-evidence.json",
+      "sha256": "0a2dae3bebea4e539f83b90842786d7c6b101ea4daf0c6746817126cb4930f0c"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/mvp-control-evidence.json",
+      "sha256": "32ab0b2e6637d910784ba3216d1540edb29297d8a86ed92dd531c309195dc8af"
+    },
+    {
+      "path": "dist/b681-b690/release-durable-browser/browser-evidence.json",
+      "sha256": "d53e6b4cc82dd51d8eed7073afa9a51c99435eb8ae440cc111ba4c26e48e50c9"
+    },
+    {
+      "path": "dist/b681-b690/release-durable-browser/mvp-control-evidence.json",
+      "sha256": "def948b5ff4e15c9fb839e4ff97858571fb65f2e53bb53c4e635ee2d671cdc77"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres17-compatibility.json",
+      "sha256": "a65b8c6af64f309ef317e2f0cd98a62ef3d768f7ec9e53dd0cb73c35639f1fd2"
+    },
+    {
+      "path": "dist/b681-b690/postgres-browser-wizard.log",
+      "sha256": "6f3a169eb48df395499ab4dc8ba3c982e618299123f8ade35114e09aa4233d8e"
+    },
+    {
+      "path": "dist/b681-b690/postgres-browser-wizard/evidence.json",
+      "sha256": "9031d3c5d158aca4e1ff9b10253f9e6798c0daf1284ad2b72a878e4a1277ce59"
+    },
+    {
+      "path": "dist/b681-b690/postgres-browser-wizard/persisted-load.png",
+      "sha256": "976cf58fb36f5b92bc2b69eeed533e9a94fa1ab9226ee3f0bc78e0ceb61a8abe"
+    },
+    {
+      "path": "dist/b681-b690/final-browser.log",
+      "sha256": "45abc2c03276097c7b14034c270b41a688bdf98741013faa8d856d3bd8bc5279"
+    },
+    {
+      "path": "dist/b681-b690/final-browser/browser-evidence.json",
+      "sha256": "12f5c530469a002964579706a13c6eae15302305968040ca3264f0e577817100"
+    },
+    {
+      "path": "dist/b681-b690/corrected-negative.log",
+      "sha256": "9a26069341a325e1383edd124f5618cd9028beaec7d268ce6231ecf4c70609f1"
+    },
+    {
+      "path": "dist/b681-b690/corrected-negative/browser-evidence.json",
+      "sha256": "217585c3ec1dc6520385469e0b1011f4a1f1d8ae2876e8d3b1968c98c845c2c2"
+    },
+    {
+      "path": "dist/b681-b690/secret-review.json",
+      "sha256": "5f2e8382ee05782747372e7303917328f38992a6fd0cbd6d159e7285b6b6a292"
+    },
+    {
+      "path": "dist/b681-b690/verify-commit.mjs",
+      "sha256": "e8ab9aa5b1f050d83f346374f693f2bca8f94e913d12aa13b9215bc449a96ec9"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres-next-gap-closure.log",
+      "sha256": "94883864992cbb43206c34be8cdd8e5d0afd04ee0937cd9b18db6774ecb81375"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres-figma-finance-offline.log",
+      "sha256": "5822f436d4e9023004c666228a9f9e09196c804c21ef9879f17e0bd7c5f441ac"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres-auth.log",
+      "sha256": "423982436fce119b207591b1c5c664a714ea29fe2e479ebf46c18c260ff137b6"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres-broker.log",
+      "sha256": "3264934a17eed84b760eec32ab92ee46694c611c3501369446a595dd46e9700c"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres-operations-contract.log",
+      "sha256": "733a8e49d60427a6809be69e0da80402233a9421600d07339c5885a00ea6a6e6"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres-durable-engine.log",
+      "sha256": "fa462a6d83709977f76f4acea591f97addfbf83f12454bdc7cf7c9a2fded8340"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres-broker-remediation.log",
+      "sha256": "c454b823448220d4db662fe6a3fde271ee9abb1ca5115eb9d72ac74ac6a35ef7"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres-management.log",
+      "sha256": "d10231058e0a49dc366d9dc1656a7f0db202d1ee322fa3249e737edd28dabf5f"
+    },
+    {
+      "path": "dist/b681-b690/postgres/postgres-staging-schema.log",
+      "sha256": "7706dd24cdd38bb5f5b73c2df4c15136967ceb4b24251569fe3b309698ec8aaf"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/results/b681-load-wizard-four-step-8253d-dit-and-confirmation-at-768/load-created-768.png",
+      "sha256": "bf3a09ce539179344a2c2d070940e1873bfede3e343a8af0b8463188f71b2c80"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/results/b681-load-wizard-four-step-8253d-dit-and-confirmation-at-768/review-768.png",
+      "sha256": "5d816c3f5200f409cefb6510df93032b8b624c66b5e8234f47330526297cd89f"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/results/b681-load-wizard-four-step-84452-it-and-confirmation-at-1440/load-created-1440.png",
+      "sha256": "770138f99b52f8fe6c4d1ed396247b32d1b3c412e6c4bf211f859428b5c2dc06"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/results/b681-load-wizard-four-step-84452-it-and-confirmation-at-1440/review-1440.png",
+      "sha256": "320e505d0130568b15fab6b5b4124bdf1be14e82afb7f1f5a6e4d3fbc7a8768a"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/results/b681-load-wizard-four-step-ce7b5-dit-and-confirmation-at-320/load-created-320.png",
+      "sha256": "5277c56fb8e31ed14a33df4a094708cc3a15ecd3dfb73004ff34094aaa6af1bd"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/results/b681-load-wizard-four-step-ce7b5-dit-and-confirmation-at-320/review-320.png",
+      "sha256": "113e1b2e91ae8c02cea3a3e619d2dab87ff0eaca4f1f99f91386e4ddfa05e1f4"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/results/b681-load-wizard-four-step-fd77e-dit-and-confirmation-at-390/load-created-390.png",
+      "sha256": "ed8ce659165eb48e9a4c1c204970c48b32d25b54468c8a3871e2e2c6febd34e9"
+    },
+    {
+      "path": "dist/b681-b690/release-browser/results/b681-load-wizard-four-step-fd77e-dit-and-confirmation-at-390/review-390.png",
+      "sha256": "e0955d1c0220bb06d180bc4735db12af18e3b785756cf9b61851744fc51be26a"
+    },
+    {
+      "path": "dist/b681-b690/final-browser/results/b681-load-wizard-four-step-fd77e-dit-and-confirmation-at-390/review-390.png",
+      "sha256": "e0955d1c0220bb06d180bc4735db12af18e3b785756cf9b61851744fc51be26a"
+    },
+    {
+      "path": "dist/b681-b690/final-browser/results/b681-load-wizard-four-step-84452-it-and-confirmation-at-1440/review-1440.png",
+      "sha256": "320e505d0130568b15fab6b5b4124bdf1be14e82afb7f1f5a6e4d3fbc7a8768a"
+    }
+  ],
+  "results": {
+    "repository": {
+      "pass": 917,
+      "fail": 0,
+      "skipped": 0,
+      "command": "npm run verify"
+    },
+    "generalBrowser": {
+      "total": 115,
+      "passed": 115,
+      "failed": 0,
+      "skipped": 0,
+      "sourceUnchanged": true,
+      "axeScans": 216,
+      "axeViolations": 0
+    },
+    "postgresBrowserVariants": {
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "sourceUnchanged": true,
+      "axeScans": 46,
+      "axeViolations": 0,
+      "overlapsGeneralBrowser": true
+    },
+    "postgres": {
+      "version": {
+        "version": "17.11",
+        "number": 170011
+      },
+      "leafScenarios": 96,
+      "nodeChecks": 105,
+      "orchestrationParents": 9,
+      "fail": 0
+    },
+    "postgresWizardJourney": {
+      "leafScenarios": 5,
+      "nodeChecks": 6,
+      "axeScans": 4,
+      "axeViolations": 0,
+      "fail": 0,
+      "syntheticOAuth": true
+    },
+    "initialBrowserAttempt": {
+      "total": 115,
+      "passed": 114,
+      "failed": 1,
+      "skipped": 0,
+      "certificationEligible": false,
+      "reason": "Incorrect test expectation for a carrier authorized in its own tenant; corrected and rerun"
+    },
+    "hosted": {
+      "status": "BLOCKED",
+      "executed": 0
+    },
+    "humanAssistiveTechnology": {
+      "status": "NOT RUN"
+    },
+    "specializedEquipmentTypes": {
+      "status": "BLOCKED_CONTRACT",
+      "reason": "No field or vehicle type compatibility contract exists; weight capacity and dimensions remain supported"
+    }
+  },
+  "decisions": {
+    "localSupportedLoadContract": "GO",
+    "fullSpecializedEquipmentScope": "BLOCKED_CONTRACT",
+    "hosted": "NO_GO",
+    "production": "NO_GO",
+    "b691Started": false
+  },
+  "controls": {
+    "push": false,
+    "deploy": false,
+    "merge": false,
+    "hostedMigrations": false,
+    "realIdentitiesProvisioned": false,
+    "productionModified": false,
+    "privateValuesPrinted": false
+  },
+  "secretReview": {
+    "status": "PASS",
+    "candidateRegularFilesScanned": 888,
+    "unchangedGitlinksExcluded": [
+      ".worktrees/b245-b256",
+      ".worktrees/hosted-registration",
+      ".worktrees/sop-b16"
+    ],
+    "archivesScanned": 0,
+    "configuredPrivateCredentialMatches": 0,
+    "matches": [],
+    "envPathIgnored": true,
+    "envPathTracked": false,
+    "privateValuesPrinted": false,
+    "scope": "Configured private values and decoded DB password exact-match scan, selected private-secret formats; not a universal or historical secret-scanning guarantee"
+  }
+}

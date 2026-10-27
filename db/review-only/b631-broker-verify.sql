@@ -5,7 +5,7 @@ BEGIN
  SELECT * INTO r FROM pg_roles WHERE rolname='iway_uat_runtime';
  IF NOT FOUND THEN RAISE EXCEPTION 'B631_BROKER_ROLE_MISSING'; END IF;
  IF NOT r.rolcanlogin OR r.rolsuper OR r.rolbypassrls OR r.rolcreatedb OR r.rolcreaterole OR r.rolinherit OR r.rolreplication
- OR EXISTS(SELECT 1 FROM pg_auth_members WHERE member=r.oid OR roleid=r.oid)
+ OR EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles administrator ON administrator.oid=m.member JOIN pg_roles grantor ON grantor.oid=m.grantor WHERE m.member=r.oid OR (m.roleid=r.oid AND NOT (administrator.rolname='postgres' AND administrator.rolcreaterole AND grantor.oid=10 AND grantor.rolsuper AND m.admin_option AND NOT m.inherit_option AND NOT m.set_option)))
  OR has_database_privilege(r.oid,current_database(),'CREATE')
  OR EXISTS(SELECT 1 FROM pg_namespace WHERE nspname !~ '^pg_' AND nspname<>'information_schema' AND (nspowner=r.oid OR has_schema_privilege(r.oid,oid,'CREATE')))
  OR EXISTS(SELECT 1 FROM pg_class WHERE relowner=r.oid) THEN RAISE EXCEPTION 'B631_BROKER_ROLE_UNSAFE'; END IF;

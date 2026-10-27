@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "rosterApproval": "Previously approved emails and intended roles only; does not authorize provisioning or privileges",
+  "realAccountsCreated": 0,
+  "accountsInspectedOnApprovedTarget": 0,
+  "actualAccountAbsenceAssumed": false,
+  "testers": [
+    {
+      "email": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "identitySubject": null,
+      "authUserId": null,
+      "nativePrincipalId": null,
+      "tenantId": null,
+      "fleetId": null,
+      "employmentId": null,
+      "feedbackOptInApproved": false,
+      "realAuthentication": "BLOCKED_NOT_VERIFIED",
+      "humanAcceptance": "NOT_RUN",
+      "reviewer": null,
+      "evidence": null
+    },
+    {
+      "email": "martin@tm88investments.com",
+      "persona": "carrier",
+      "identitySubject": null,
+      "authUserId": null,
+      "nativePrincipalId": null,
+      "tenantId": null,
+      "fleetId": null,
+      "employmentId": null,
+      "feedbackOptInApproved": false,
+      "realAuthentication": "BLOCKED_NOT_VERIFIED",
+      "humanAcceptance": "NOT_RUN",
+      "reviewer": null,
+      "evidence": null
+    },
+    {
+      "email": "info@tm88investments.com",
+      "persona": "fleet",
+      "identitySubject": null,
+      "authUserId": null,
+      "nativePrincipalId": null,
+      "tenantId": null,
+      "fleetId": null,
+      "employmentId": null,
+      "feedbackOptInApproved": false,
+      "realAuthentication": "BLOCKED_NOT_VERIFIED",
+      "humanAcceptance": "NOT_RUN",
+      "reviewer": null,
+      "evidence": null
+    },
+    {
+      "email": "cassiomey@gmail.com",
+      "persona": "driver",
+      "identitySubject": null,
+      "authUserId": null,
+      "nativePrincipalId": null,
+      "tenantId": null,
+      "fleetId": null,
+      "employmentId": null,
+      "feedbackOptInApproved": false,
+      "realAuthentication": "BLOCKED_NOT_VERIFIED",
+      "humanAcceptance": "NOT_RUN",
+      "reviewer": null,
+      "evidence": null
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "issue": 20,
+  "startingIntegrationCommit": "893f7f56d39d3e1a46c8bddadb71265216b30ae1",
+  "startingBatchCommit": "4d35fc6b7d005483bd39b657c812adf4a604185f",
+  "scope": "Verified implemented local scope; partial and blocked requirements are not complete",
+  "batches": [
+    {
+      "id": "B771",
+      "status": "PASS_LOCAL",
+      "evidence": "Dedicated branch reconciles draft PR #18/#19 with preserved local wizard/expense work; original 136 files unchanged"
+    },
+    {
+      "id": "B772",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "Approved existing assets/tokens, Inter, semantic cards/buttons/status colors retained; no prototype theme restoration"
+    },
+    {
+      "id": "B773",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "All permission-filtered tabs retained; grouped navigation, safe bookmarks, governance anchors and authorized profile picker verified"
+    },
+    {
+      "id": "B774",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "390/768/1440 capture/reflow and bounded desktop navigation; additional 320/375/1024 scenarios; compact common-phone totals"
+    },
+    {
+      "id": "B775",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "Existing wizard, amount/date boundaries, retained input, native confirmation/cancellation and server rejection/recovery suites pass; not every field permutation"
+    },
+    {
+      "id": "B776",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "Confirmed empty/loading/stale/retry/offline/success behavior retained; new governance loading/absence/retry states use real API outcomes"
+    },
+    {
+      "id": "B777",
+      "status": "PASS_LOCAL_DISCOVERED_CONTROLS",
+      "evidence": "87/87 actions, 40/40 forms, 60/60 button labels and 26/26 navigation entries have explicit outcome evidence"
+    },
+    {
+      "id": "B778",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "Synthetic OAuth/password/MFA/AAL2, fresh membership, CSRF/profile-cookie rotation, original-owner audit and tenant denials; actual local restricted PostgreSQL"
+    },
+    {
+      "id": "B779",
+      "status": "PARTIAL_BLOCKED_MAPPING",
+      "evidence": "Notifications, controlled document actions and five bounded advisory summaries preserved; seven named-agent aliases lack canonical approved mapping"
+    },
+    {
+      "id": "B780",
+      "status": "PASS_LOCAL",
+      "evidence": "Repository/browser/PostgreSQL/axe/performance/recovery/artifact gates complete; source bindings and initial failure/rerun retained"
+    },
+    {
+      "id": "B781",
+      "status": "BLOCKED_REFERENCE",
+      "evidence": "Canonical approved Figma file/version and original exported images unavailable for all 35 screens; current captures are not approved baselines"
+    },
+    {
+      "id": "B782",
+      "status": "PASS_CURRENT_IMPLEMENTATION",
+      "evidence": "81 mapped captures across 27 current surfaces and three widths; eight unsupported screen mappings explicitly blocked; 12 current before/after pairs"
+    },
+    {
+      "id": "B783",
+      "status": "PARTIAL_BLOCKED_REFERENCE",
+      "evidence": "Corrected viewport-length navigation and phone metric layout; current responsive evidence updated; original-reference pixel comparison blocked"
+    },
+    {
+      "id": "B784",
+      "status": "PASS_AUTOMATED_HUMAN_NOT_RUN",
+      "evidence": "410 captured scans in primary/composite evidence, zero violations; keyboard/reflow tests pass; human screen-reader/native-dialog/zoom checks NOT RUN"
+    },
+    {
+      "id": "B785",
+      "status": "PASS_LOCAL_HOSTED_BLOCKED",
+      "evidence": "Platform governance, local onboarding/invitation provider mocks, password setup/MFA and authorized owner profiles pass; no real issuance/enrollment"
+    },
+    {
+      "id": "B786",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "Carrier wizard/dispatch/manual tracking/controlled documents/settlements pass; provider-dependent upload/map/storage and payment execution not certified"
+    },
+    {
+      "id": "B787",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "Fleet equipment/maintenance/compliance/own resources/driver pay persist; carrier retains dispatch authority; no invented fleet assignment privilege"
+    },
+    {
+      "id": "B788",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "Driver acceptance/pickup/bounded offline queue/replay/online delivery/POD-reference/recovery pass; sensitive capture/signatures require separate contracts"
+    },
+    {
+      "id": "B789",
+      "status": "PASS_LOCAL_HOSTED_BLOCKED",
+      "evidence": "PostgreSQL 17.11 contracts, 64 composite PG browser scenarios and HTTP failed-write/restart/tenant-denial scenario pass; hosted execution blocked"
+    },
+    {
+      "id": "B790",
+      "status": "PASS_REPORT_RELEASE_NO_GO",
+      "evidence": "Report, receipt, screen evidence, full changed-file manifest and draft publication prepared; release requires unresolved approval/reference gates"
+    }
+  ]
+}

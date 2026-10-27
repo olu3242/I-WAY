@@ -4,7 +4,7 @@ BEGIN;
 SELECT pg_advisory_xact_lock(hashtextextended('I-WAY durable engine v1',0));
 DO $role$ BEGIN
  IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='iway_operations_runtime' AND rolcanlogin AND NOT rolsuper AND NOT rolbypassrls AND NOT rolcreatedb AND NOT rolcreaterole AND NOT rolreplication AND NOT rolinherit)
- OR EXISTS(SELECT 1 FROM pg_auth_members WHERE member=(SELECT oid FROM pg_roles WHERE rolname='iway_operations_runtime')) THEN RAISE EXCEPTION 'OPERATIONS_RESTRICTED_LOGIN_REQUIRED'; END IF;
+ OR EXISTS(SELECT 1 FROM pg_roles r WHERE r.rolname='iway_operations_runtime' AND EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles administrator ON administrator.oid=m.member JOIN pg_roles grantor ON grantor.oid=m.grantor WHERE m.member=r.oid OR (m.roleid=r.oid AND NOT (administrator.rolname='postgres' AND administrator.rolcreaterole AND grantor.oid=10 AND grantor.rolsuper AND m.admin_option AND NOT m.inherit_option AND NOT m.set_option)))) THEN RAISE EXCEPTION 'OPERATIONS_RESTRICTED_LOGIN_REQUIRED'; END IF;
 END $role$;
 CREATE SCHEMA IF NOT EXISTS operations_engine_private;
 REVOKE ALL ON SCHEMA operations_engine_private FROM PUBLIC;

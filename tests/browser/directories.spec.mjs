@@ -1,0 +1,6 @@
+import {verifiedJourney} from './control-evidence.mjs';
+import {test,expect,signIn,basicAccessibility} from './workspace.mjs';
+test('typed directories create and deactivate master records without deletion',async({page,workspace:f})=>{
+ await signIn(page,f,f.manager);await page.getByRole('button',{name:'Directories',exact:true}).click();await page.getByLabel('Directory type').selectOption('facility');await page.getByLabel('Directory name').fill('Illustrative facility');await page.getByLabel('Directory address').fill('Illustrative warehouse address');await page.getByRole('button',{name:'Save directory entry'}).click();await expect(page.getByRole('status')).toContainText('Directory entry saved');page.once('dialog',d=>d.accept('Illustrative deactivation'));await page.getByRole('button',{name:'Deactivate directory entry'}).click();await expect(page.getByRole('status')).toContainText('deactivated');await page.reload();await page.getByRole('button',{name:'Directories',exact:true}).click();await expect(page.locator('#view')).toContainText('Inactive');expect(f.store.list('directoryentry',f.manager.tenantId)).toHaveLength(1);await basicAccessibility(page);
+ await verifiedJourney(["navigation:directories","form:directory-create","action:directory:deactivate","button:Save directory entry","button:Deactivate directory entry"],async()=>{});
+});

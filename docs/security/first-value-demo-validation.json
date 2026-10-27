@@ -1,0 +1,920 @@
+{
+  "scope": "Local synthetic validation only; not hosted certification",
+  "baseCommit": "a2090b9d8ad70329eb2412a1af4befbac241b918",
+  "branch": "work/first-value-demo-20261025",
+  "node": "24.22.1",
+  "verify": {
+    "command": "npm run verify",
+    "result": "PASS",
+    "repositoryTests": 910,
+    "failed": 0,
+    "sourceCheck": "PASS",
+    "publicContentScan": "PASS",
+    "siteContract": "PASS",
+    "verifiedApplicationCommit": "c6748dd05d45ccdbe68a2b69ebbf1ab8fcb10686",
+    "followupScope": "Prior passing verification retained: follow-up changes only browser tests, recording instructions and validation evidence; application files unchanged."
+  },
+  "browser": {
+    "status": "passed",
+    "counts": {
+      "total": 102,
+      "passed": 102,
+      "failed": 0,
+      "skipped": 0
+    },
+    "sourceUnchanged": true,
+    "backend": "disposable SQLite",
+    "startedAt": "2026-10-25T21:17:28.745Z",
+    "completedAt": "2026-10-25T21:21:00.802Z",
+    "tests": [
+      {
+        "title": "WCAG2.2AA carrier views reflow and keep keyboard navigation and forms usable",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 17632,
+        "retry": 0
+      },
+      {
+        "title": "sign-in failure is announced and focused and recovers with keyboard input",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1060,
+        "retry": 0
+      },
+      {
+        "title": "fleet completes employment and equipment work and server errors remain recoverable",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2165,
+        "retry": 0
+      },
+      {
+        "title": "carrier administration settings persist at 1440px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1026,
+        "retry": 0
+      },
+      {
+        "title": "carrier administration settings persist at 390px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1030,
+        "retry": 0
+      },
+      {
+        "title": "noncarrier cannot open administration page or read its APIs",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 576,
+        "retry": 0
+      },
+      {
+        "title": "anonymous administration redirects to sign in",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 364,
+        "retry": 0
+      },
+      {
+        "title": "approved brand tokens and local Inter font for platform",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 915,
+        "retry": 0
+      },
+      {
+        "title": "approved brand tokens and local Inter font for carrier",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1226,
+        "retry": 0
+      },
+      {
+        "title": "approved brand tokens and local Inter font for fleet",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1157,
+        "retry": 0
+      },
+      {
+        "title": "approved brand tokens and local Inter font for driver",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1280,
+        "retry": 0
+      },
+      {
+        "title": "load form numeric boundaries block invalid submissions and duplicate valid submits persist once",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1569,
+        "retry": 0
+      },
+      {
+        "title": "invalid chronology and whitespace preserve input and recover into a valid shipment",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1123,
+        "retry": 0
+      },
+      {
+        "title": "administration rejects malformed inputs and suppresses concurrent duplicate saves",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1188,
+        "retry": 0
+      },
+      {
+        "title": "keyboard-triggered native cancellation restores control focus and records no void",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1217,
+        "retry": 0
+      },
+      {
+        "title": "driver offline pickup survives reload, replays once and purges on sign-out",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1714,
+        "retry": 0
+      },
+      {
+        "title": "lost receipt preserves original key and retry confirms one server effect",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1118,
+        "retry": 0
+      },
+      {
+        "title": "queued action cancellation is keyboard accessible and never executes",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 880,
+        "retry": 0
+      },
+      {
+        "title": "public preview is keyboard operable without sending data at 390px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1176,
+        "retry": 0
+      },
+      {
+        "title": "public preview is keyboard operable without sending data at 1440px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 738,
+        "retry": 0
+      },
+      {
+        "title": "guided creation to driver acceptance at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 4014,
+        "retry": 0
+      },
+      {
+        "title": "guided creation to driver acceptance at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3929,
+        "retry": 0
+      },
+      {
+        "title": "guide scopes loads, rejects empty selection, and reports refresh failure",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 784,
+        "retry": 0
+      },
+      {
+        "title": "invitation setup through first driver acceptance preserves MFA",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2646,
+        "retry": 0
+      },
+      {
+        "title": "unconfirmed acceptance does not complete the first-value guide",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 893,
+        "retry": 0
+      },
+      {
+        "title": "driver can cancel a rejection prompt or reject with reason; carrier sees released assignment",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1588,
+        "retry": 0
+      },
+      {
+        "title": "load search and active/completed filters return only matching tenant records",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1271,
+        "retry": 0
+      },
+      {
+        "title": "service interval, driver report and carrier review produce persisted due warnings",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3096,
+        "retry": 0
+      },
+      {
+        "title": "carrier account, fleet and customer forms persist and account deactivation retains identity",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1059,
+        "retry": 0
+      },
+      {
+        "title": "carrier manages driver and equipment, reverses approvals and persists vehicle creation",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1231,
+        "retry": 0
+      },
+      {
+        "title": "draft navigation, void cancellation, document rejection and missing-document scan have outcomes",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1210,
+        "retry": 0
+      },
+      {
+        "title": "capacity rejection and recovery approval rejection leave shipment authority intact",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 872,
+        "retry": 0
+      },
+      {
+        "title": "blocked orchestration and connector reviews can be retried and cancelled with audit evidence",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1327,
+        "retry": 0
+      },
+      {
+        "title": "verified invoice generation, payment rejection, invoice void and delivery close persist",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1326,
+        "retry": 0
+      },
+      {
+        "title": "administration edits, configuration versions, type switch, cancellation and deactivation at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3615,
+        "retry": 0
+      },
+      {
+        "title": "administration edits, configuration versions, type switch, cancellation and deactivation at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3719,
+        "retry": 0
+      },
+      {
+        "title": "administration failed APIs preserve input, announce errors and recover",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1246,
+        "retry": 0
+      },
+      {
+        "title": "manager navigation, notification preferences, missing routes and cross-tenant denial",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 8727,
+        "retry": 0
+      },
+      {
+        "title": "fleetUser navigation, notification preferences, missing routes and cross-tenant denial",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3408,
+        "retry": 0
+      },
+      {
+        "title": "driver navigation, notification preferences, missing routes and cross-tenant denial",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3202,
+        "retry": 0
+      },
+      {
+        "title": "carrier has an accessible role-scoped workspace at 1440px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1711,
+        "retry": 0
+      },
+      {
+        "title": "dispatcher has an accessible role-scoped workspace at 1440px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1658,
+        "retry": 0
+      },
+      {
+        "title": "driver has an accessible role-scoped workspace at 390px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1453,
+        "retry": 0
+      },
+      {
+        "title": "fleet has an accessible role-scoped workspace at 390px",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1581,
+        "retry": 0
+      },
+      {
+        "title": "browser journey creates, dispatches, executes and approves an invoice with real persistence",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 7906,
+        "retry": 0
+      },
+      {
+        "title": "browser rejects unauthorized sessions and preserves tenant isolation",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 861,
+        "retry": 0
+      },
+      {
+        "title": "customer portal exposes only its latest reviewed BOL and protects revision history",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2287,
+        "retry": 0
+      },
+      {
+        "title": "Wave 4 browser joins advisory analysis, human assignment approval and bounded runtime recovery",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 6132,
+        "retry": 0
+      },
+      {
+        "title": "dispatcher can mark ready and cancel an assignment without duplicate active claims",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1505,
+        "retry": 0
+      },
+      {
+        "title": "responsive platform persisted workflow at 320",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1017,
+        "retry": 0
+      },
+      {
+        "title": "responsive carrier persisted workflow at 320",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3415,
+        "retry": 0
+      },
+      {
+        "title": "responsive fleet persisted workflow at 320",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1896,
+        "retry": 0
+      },
+      {
+        "title": "responsive driver persisted workflow at 320",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2242,
+        "retry": 0
+      },
+      {
+        "title": "responsive platform persisted workflow at 375",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 907,
+        "retry": 0
+      },
+      {
+        "title": "responsive carrier persisted workflow at 375",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3195,
+        "retry": 0
+      },
+      {
+        "title": "responsive fleet persisted workflow at 375",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1829,
+        "retry": 0
+      },
+      {
+        "title": "responsive driver persisted workflow at 375",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2278,
+        "retry": 0
+      },
+      {
+        "title": "responsive platform persisted workflow at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 984,
+        "retry": 0
+      },
+      {
+        "title": "responsive carrier persisted workflow at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3282,
+        "retry": 0
+      },
+      {
+        "title": "responsive fleet persisted workflow at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1821,
+        "retry": 0
+      },
+      {
+        "title": "responsive driver persisted workflow at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2235,
+        "retry": 0
+      },
+      {
+        "title": "responsive platform persisted workflow at 768",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 969,
+        "retry": 0
+      },
+      {
+        "title": "responsive carrier persisted workflow at 768",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3366,
+        "retry": 0
+      },
+      {
+        "title": "responsive fleet persisted workflow at 768",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2006,
+        "retry": 0
+      },
+      {
+        "title": "responsive driver persisted workflow at 768",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2571,
+        "retry": 0
+      },
+      {
+        "title": "responsive platform persisted workflow at 1024",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1005,
+        "retry": 0
+      },
+      {
+        "title": "responsive carrier persisted workflow at 1024",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3519,
+        "retry": 0
+      },
+      {
+        "title": "responsive fleet persisted workflow at 1024",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2059,
+        "retry": 0
+      },
+      {
+        "title": "responsive driver persisted workflow at 1024",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2390,
+        "retry": 0
+      },
+      {
+        "title": "responsive platform persisted workflow at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 961,
+        "retry": 0
+      },
+      {
+        "title": "responsive carrier persisted workflow at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3465,
+        "retry": 0
+      },
+      {
+        "title": "responsive fleet persisted workflow at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1799,
+        "retry": 0
+      },
+      {
+        "title": "responsive driver persisted workflow at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2169,
+        "retry": 0
+      },
+      {
+        "title": "keyboard sign-out remains usable when initial workspace state is unavailable",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 804,
+        "retry": 0
+      },
+      {
+        "title": "carrier settlement review, adjustment, escrow and driver earnings have persistent outcomes",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 3306,
+        "retry": 0
+      },
+      {
+        "title": "fleet controls driver pay and disputes; driver sees only their approved pay",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2045,
+        "retry": 0
+      },
+      {
+        "title": "integrated google platform application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1032,
+        "retry": 0
+      },
+      {
+        "title": "integrated google carrier application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2146,
+        "retry": 0
+      },
+      {
+        "title": "integrated google fleet application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1490,
+        "retry": 0
+      },
+      {
+        "title": "integrated google driver application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1307,
+        "retry": 0
+      },
+      {
+        "title": "integrated google platform application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1110,
+        "retry": 0
+      },
+      {
+        "title": "integrated google carrier application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2370,
+        "retry": 0
+      },
+      {
+        "title": "integrated google fleet application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1304,
+        "retry": 0
+      },
+      {
+        "title": "integrated google driver application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1389,
+        "retry": 0
+      },
+      {
+        "title": "integrated password platform application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1264,
+        "retry": 0
+      },
+      {
+        "title": "integrated password carrier application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2328,
+        "retry": 0
+      },
+      {
+        "title": "integrated password fleet application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1519,
+        "retry": 0
+      },
+      {
+        "title": "integrated password driver application lifecycle at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1417,
+        "retry": 0
+      },
+      {
+        "title": "integrated password platform application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1224,
+        "retry": 0
+      },
+      {
+        "title": "integrated password carrier application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 2469,
+        "retry": 0
+      },
+      {
+        "title": "integrated password fleet application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1571,
+        "retry": 0
+      },
+      {
+        "title": "integrated password driver application lifecycle at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1445,
+        "retry": 0
+      },
+      {
+        "title": "managed invitation platform activation and recovery at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1419,
+        "retry": 0
+      },
+      {
+        "title": "managed invitation carrier activation and recovery at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1687,
+        "retry": 0
+      },
+      {
+        "title": "managed invitation fleet activation and recovery at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1724,
+        "retry": 0
+      },
+      {
+        "title": "managed invitation driver activation and recovery at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1600,
+        "retry": 0
+      },
+      {
+        "title": "managed invitation platform activation and recovery at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1501,
+        "retry": 0
+      },
+      {
+        "title": "managed invitation carrier activation and recovery at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1923,
+        "retry": 0
+      },
+      {
+        "title": "managed invitation fleet activation and recovery at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1598,
+        "retry": 0
+      },
+      {
+        "title": "managed invitation driver activation and recovery at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 1522,
+        "retry": 0
+      },
+      {
+        "title": "isolated UAT password setup, Google choice and MFA browser flow at 390",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 450,
+        "retry": 0
+      },
+      {
+        "title": "isolated UAT password setup, Google choice and MFA browser flow at 1440",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 475,
+        "retry": 0
+      }
+    ]
+  },
+  "accessibility": {
+    "scans": 187,
+    "violations": 0,
+    "manualReviewRequired": true
+  },
+  "browserRuntime": {
+    "playwright": "1.64.0",
+    "chromium": "153.0.8010.0",
+    "source": "temporary @sparticuz/chromium npm package; standard CDN download unavailable",
+    "flags": [
+      "--no-sandbox",
+      "--no-zygote",
+      "--disable-dev-shm-usage",
+      "--disable-gpu"
+    ],
+    "productDependenciesChanged": false
+  },
+  "sourceHashes": {
+    "apps/operations/ops.js": "6667cc18c46f81bbed2438887ba7b41076fc589e3a7bd68598e0c0d826bbd5a6",
+    "apps/operations/ops.css": "2b3d8ba386120db3de51babe4332f3662ed4a9f29c25119a9d2d21f90ff1d9ed",
+    "tests/browser/first-value.spec.mjs": "a1fd7b67fd2d2e210a9faa8cb2e235de93612efa6e329944bafce93573f9b881",
+    "tests/browser/load-search-rejection.spec.mjs": "a914c08e618463ecf11b66106ca73f3180d859f88066fbfb942ca9aee08e03f6"
+  },
+  "limitations": [
+    "No production or staging deployment",
+    "No hosted PostgreSQL or real OAuth/invitation delivery executed",
+    "No published video, customer reviews or human 60-second benchmark",
+    "Public early-access endpoint remains unconfigured; recording CTA is comment-based"
+  ],
+  "controlCoverage": {
+    "coverageDecision": "GO_LOCAL_DISCOVERED_CONTROLS",
+    "categories": {
+      "action": {
+        "inventoried": 59,
+        "observed": 52,
+        "interacted": 54,
+        "verifiedOutcome": 59
+      },
+      "button": {
+        "inventoried": 40,
+        "observed": 40,
+        "interacted": 40,
+        "verifiedOutcome": 40
+      },
+      "dialog": {
+        "inventoried": 15,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      },
+      "disclosure": {
+        "inventoried": 1,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 1
+      },
+      "field": {
+        "inventoried": 103,
+        "observed": 101,
+        "interacted": 79,
+        "verifiedOutcome": 0
+      },
+      "form": {
+        "inventoried": 31,
+        "observed": 31,
+        "interacted": 31,
+        "verifiedOutcome": 31
+      },
+      "navigation": {
+        "inventoried": 22,
+        "observed": 22,
+        "interacted": 22,
+        "verifiedOutcome": 22
+      },
+      "route": {
+        "inventoried": 55,
+        "observed": 7,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      }
+    },
+    "unverifiedExecutableControls": [],
+    "guideControls": [
+      {
+        "key": "action:journey-create",
+        "status": "VERIFIED_LOCAL_OUTCOME",
+        "verifiedIn": [
+          "guided creation to driver acceptance at 390",
+          "guided creation to driver acceptance at 1440"
+        ]
+      },
+      {
+        "key": "action:journey-open",
+        "status": "VERIFIED_LOCAL_OUTCOME",
+        "verifiedIn": [
+          "guided creation to driver acceptance at 390",
+          "guided creation to driver acceptance at 1440"
+        ]
+      },
+      {
+        "key": "action:journey-refresh",
+        "status": "VERIFIED_LOCAL_OUTCOME",
+        "verifiedIn": [
+          "guided creation to driver acceptance at 390",
+          "guided creation to driver acceptance at 1440"
+        ]
+      },
+      {
+        "key": "action:journey-start",
+        "status": "VERIFIED_LOCAL_OUTCOME",
+        "verifiedIn": [
+          "guided creation to driver acceptance at 390",
+          "guided creation to driver acceptance at 1440"
+        ]
+      },
+      {
+        "key": "button:Follow this load",
+        "status": "VERIFIED_LOCAL_OUTCOME",
+        "verifiedIn": [
+          "guided creation to driver acceptance at 390",
+          "guided creation to driver acceptance at 1440",
+          "invitation setup through first driver acceptance preserves MFA",
+          "unconfirmed acceptance does not complete the first-value guide"
+        ]
+      },
+      {
+        "key": "form:journey-select",
+        "status": "VERIFIED_LOCAL_OUTCOME",
+        "verifiedIn": [
+          "guided creation to driver acceptance at 390",
+          "guided creation to driver acceptance at 1440",
+          "invitation setup through first driver acceptance preserves MFA",
+          "unconfirmed acceptance does not complete the first-value guide"
+        ]
+      },
+      {
+        "key": "navigation:first-load",
+        "status": "VERIFIED_LOCAL_OUTCOME",
+        "verifiedIn": [
+          "guided creation to driver acceptance at 390",
+          "guided creation to driver acceptance at 1440",
+          "invitation setup through first driver acceptance preserves MFA",
+          "unconfirmed acceptance does not complete the first-value guide",
+          "manager navigation, notification preferences, missing routes and cross-tenant denial",
+          "driver navigation, notification preferences, missing routes and cross-tenant denial",
+          "integrated google carrier application lifecycle at 390",
+          "integrated google driver application lifecycle at 390",
+          "integrated google carrier application lifecycle at 1440",
+          "integrated google driver application lifecycle at 1440",
+          "integrated password carrier application lifecycle at 390",
+          "integrated password driver application lifecycle at 390",
+          "integrated password carrier application lifecycle at 1440",
+          "integrated password driver application lifecycle at 1440"
+        ]
+      }
+    ]
+  },
+  "parentCommitCi": {
+    "commit": "c6748dd05d45ccdbe68a2b69ebbf1ab8fcb10686",
+    "verifyRun": 40234262542,
+    "verify": "success",
+    "disposablePostgresJob": 121292336520,
+    "postgresSuites": [
+      16,
+      19,
+      7,
+      16,
+      10,
+      1
+    ],
+    "postgresTests": 69,
+    "postgresFailures": 0,
+    "browserFailure": "Asynchronous load-rejection assertion read assigned state before command completion. Follow-up waits for persisted validated status and verifies resource release and carrier view."
+  }
+}

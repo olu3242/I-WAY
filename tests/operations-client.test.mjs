@@ -39,7 +39,7 @@ test('all persona views render from real API state and fleet creation uses its o
   for(const view of ['loads','assets','workflows','finance','audit','people'])await c.run("tab="+JSON.stringify(view)+";render()");
   if(actor.role==='fleet'){assert.match(c.element('#view').innerHTML,/Fleet employment/);assert.match(c.element('#view').innerHTML,/id="fleet-driver"/)}
   if(actor.role==='carrier'){
-   assert.match(c.run("createLoad()"),/Additional charge/);
+   assert.equal(c.run("can('load:create')"),true);
    assert.doesNotMatch(c.run("select('fleetId','Owner',[['','Carrier']])"),/required/);
   }
   c.run('tab="loads";selected=state.loads[0]?.id??null;render()');

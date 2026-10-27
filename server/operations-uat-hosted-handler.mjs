@@ -1,4 +1,5 @@
 import {randomUUID} from 'node:crypto';
+import {stagingUnavailablePage} from './operations-staging-unavailable.mjs';
 
 // One pool generation per serverless instance. Retired generations drain before
 // closing so key rotation or one failed request cannot interrupt another request.
@@ -41,6 +42,11 @@ export function createHostedUatHandler({createRuntime,clock=Date.now,initializat
    if(res.destroyed||req.aborted)return;
    const requestId=randomUUID();
    try{logSink({event:'uat_runtime_unavailable',requestId,status:503});}catch{}
+   const browserPage=req.method==='GET'&&/^\/(?:app|portal|admin|login|uat\/(?:login|setup|control))?$/.test((req.url??'').split('?')[0])&&req.headers?.accept?.includes('text/html');
+   if(browserPage){
+    res.writeHead(503,{'content-type':'text/html; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-request-id':requestId,'retry-after':'30','content-security-policy':"default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",'referrer-policy':'no-referrer'});
+    return res.end(stagingUnavailablePage(requestId));
+   }
    res.writeHead(503,{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-request-id':requestId});
    res.end('{"error":"UAT_UNAVAILABLE"}');
   }finally{if(lease){lease.state.active--;if(lease.state.retired)retire(lease.state);}}

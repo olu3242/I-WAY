@@ -25,7 +25,35 @@ export const uatEnvironmentContract=Object.freeze([
 ].map(([name,purpose,validation])=>Object.freeze({name,purpose,validation,project:'prj_7uof3CdmN1QvzKxETkXvHjlrLjVm',scope:'preview',publicProjectAllowed:false})));
 // Pure, offline validation. Only fixed codes and variable names leave this boundary.
 // Runtime resolvers remain authoritative; this never opens a pool or contacts a provider.
+export function databaseConnectionDiagnostics(env={}){
+ const project='vnoxdinldneeczxibicp';
+ return ['AUTH','UAT','OPERATIONS'].map(kind=>{
+  const name='IWAY_'+kind+'_DATABASE_URL',role='iway_'+kind.toLowerCase()+'_runtime',value=env[name];
+  const issues=[];
+  if(typeof value!=='string'||!value.trim())issues.push('MISSING_CONNECTION_STRING');
+  else{
+   try{
+    const url=new URL(value);
+    if(['https:','http:'].includes(url.protocol))issues.push('API_URL_INSTEAD_OF_POSTGRES_CONNECTION');
+    else if(!['postgres:','postgresql:'].includes(url.protocol))issues.push('POSTGRES_PROTOCOL_REQUIRED');
+    else{
+     const direct=url.hostname==='db.'+project+'.supabase.co';
+     const pooler=/^aws-[a-z0-9-]+\.pooler\.supabase\.com$/.test(url.hostname);
+     if(!direct&&!pooler)issues.push('PINNED_DATABASE_HOST_REQUIRED');
+     if(decodeURIComponent(url.username)!==(direct?role:role+'.'+project))issues.push('RESTRICTED_ROLE_REQUIRED');
+     if(!url.password)issues.push('ROLE_PASSWORD_REQUIRED');
+     else if(kind==='OPERATIONS'&&decodeURIComponent(url.password).length<12)issues.push('OPERATIONS_PASSWORD_TOO_SHORT');
+     if(url.port!=='5432'&&(kind==='OPERATIONS'||url.port!==''))issues.push('SESSION_PORT_5432_REQUIRED');
+     if(url.pathname!=='/postgres')issues.push('POSTGRES_DATABASE_REQUIRED');
+     if(url.search||url.hash)issues.push('QUERY_AND_FRAGMENT_NOT_ALLOWED');
+    }
+   }catch{issues.push('MALFORMED_CONNECTION_STRING');}
+  }
+  return {name,expectedRole:role,issues,status:issues.length?'BLOCKED':'FORMAT_VALID_ONLY'};
+ });
+}
 export function validateUatEnvironment(env={}){
+ const databaseConnections=databaseConnectionDiagnostics(env);
  const missing=requiredUatNames.filter(name=>typeof env[name]!=='string'||!env[name].trim()),issues=[];
  const check=(code,fn)=>{try{if(fn()===false)throw Error();}catch{issues.push(code);}};
  check('AUTH_RUNTIME_CONTRACT_INVALID',()=>resolveAuthRuntimeConfig(env));
@@ -40,7 +68,7 @@ export function validateUatEnvironment(env={}){
   const claims=JSON.parse(Buffer.from(key.split('.')[1],'base64url'));
   return claims.role==='anon'&&claims.ref==='vnoxdinldneeczxibicp';
  });
- return {status:missing.length||issues.length?'BLOCKED':'PASS_OFFLINE_CONFIGURATION_ONLY',missing,issues,networkRequests:0,hostedCertified:false};
+ return {status:missing.length||issues.length?'BLOCKED':'PASS_OFFLINE_CONFIGURATION_ONLY',missing,issues,databaseConnections,networkRequests:0,hostedCertified:false};
 }
 export function handoffPreflight({env={},manifest,previewNames=[]}={}){
  const blockers=[];

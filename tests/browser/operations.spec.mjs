@@ -55,16 +55,23 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await carrier.getByRole('button',{name:'Loads',exact:true}).click();
   await carrier.getByRole('button',{name:'Create load',exact:true}).click();
   await carrier.getByLabel('Load reference',{exact:true}).fill('ILL-BROWSER-JOURNEY');
-  await carrier.getByLabel('Customer / broker',{exact:true}).fill('Illustrative browser customer');
-  await carrier.getByLabel('Customer portal access',{exact:true}).selectOption(customer.id);
+  await carrier.getByLabel('Customer / broker name',{exact:true}).fill('Illustrative browser customer');
+  await carrier.getByLabel('Customer portal',{exact:true}).selectOption(customer.id);
   await carrier.getByLabel('Responsible dispatcher',{exact:true}).selectOption(workspace.dispatcher.id);
   await carrier.getByLabel('Commodity',{exact:true}).fill('Illustrative packaged goods');
   await carrier.getByLabel('Weight (lb)',{exact:true}).fill('1000');
+  await carrier.getByRole('button',{name:'Next step',exact:true}).click();
+  await carrier.getByLabel('Stop 1 location',{exact:true}).fill('Illustrative Chicago origin');
+  await carrier.getByLabel('Stop 2 location',{exact:true}).fill('Illustrative Madison destination');
+  await carrier.getByLabel('Stop 1 appointment (UTC)',{exact:true}).fill('2026-11-02T10:00');
+  await carrier.getByLabel('Stop 2 appointment (UTC)',{exact:true}).fill('2026-11-03T10:00');
+  await carrier.getByRole('button',{name:'Next step',exact:true}).click();
   await carrier.getByLabel('Base charge (cents, USD)',{exact:true}).fill('250000');
-  await carrier.getByLabel('Pickup location',{exact:true}).fill('Illustrative Chicago origin');
-  await carrier.getByLabel('Delivery location',{exact:true}).fill('Illustrative Madison destination');
+  await carrier.getByLabel('Agreed payment terms').fill('Illustrative agreed terms');
+  await carrier.getByRole('button',{name:'Next step',exact:true}).click();
   await basicAccessibility(carrier);
-  await carrier.getByRole('button',{name:'Create draft load',exact:true}).click();
+  await carrier.getByRole('checkbox').check();
+  await carrier.getByRole('button',{name:'Submit reviewed load',exact:true}).click();
   await expect(carrier.getByRole('heading',{name:'ILL-BROWSER-JOURNEY',exact:true})).toBeVisible();
   await carrier.getByLabel('Document text',{exact:true}).fill(JSON.stringify({loadReference:'ILL-BROWSER-JOURNEY',shipper:'Illustrative shipper',consignee:'Illustrative consignee',commodity:'Illustrative packaged goods',weightLb:1000,pickupLocation:'Illustrative Chicago origin',deliveryLocation:'Illustrative Madison destination'}));
   await carrier.getByRole('button',{name:'Ingest document',exact:true}).click();
@@ -179,7 +186,7 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await expect(carrier.locator('#view')).toContainText('ROI and savings are unavailable');
   await expect(carrier.locator('#view')).toContainText('Based on 1 records.');
   await basicAccessibility(carrier);
-  await verifiedJourney(['form:create-load','form:document-ingest','form:assign','form:deliver','form:tracking','form:exception','form:pod-record','form:payment-record','form:distance-evidence','action:new-load','action:open','action:document:validate','action:load:validate','action:load:accept','action:load:pickup','action:load:transit','action:workflow:advance','action:approval:approve','action:finance:prepare','action:finance:approve','action:billing:issue','action:payment:reconcile'],async()=>{expect(errors).toEqual([]);expect(workspace.store.get('invoice',invoice.id,workspace.manager.tenantId).status).toBe('paid');});
+  await verifiedJourney(['form:load-wizard','form:document-ingest','form:assign','form:deliver','form:tracking','form:exception','form:pod-record','form:payment-record','form:distance-evidence','action:new-load','action:open','action:document:validate','action:load:validate','action:load:accept','action:load:pickup','action:load:transit','action:workflow:advance','action:approval:approve','action:finance:prepare','action:finance:approve','action:billing:issue','action:payment:reconcile'],async()=>{expect(errors).toEqual([]);expect(workspace.store.get('invoice',invoice.id,workspace.manager.tenantId).status).toBe('paid');});
  }finally{for(const context of contexts)await context.close();}
 });
 

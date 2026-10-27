@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "scope": "Reviewed explicit assertions in passing browser tests; source and executed test title bound; no discovery-only PASS",
+  "mappings": [
+    {
+      "keys": [
+        "action:expense:edit"
+      ],
+      "test": "expense draft, information return, correction, approved linkage and history at 390",
+      "source": "tests/browser/b691-expenses.spec.mjs",
+      "assertion": "await expect(page.getByLabel('Expense amount (cents, USD)')).toBeFocused();",
+      "sha256": "a4d542bad85c4eb9c5935fa5176ab7d30669a5bf35bea7619194a5c311c759c0"
+    },
+    {
+      "keys": [
+        "button:Cancel expense correction"
+      ],
+      "test": "expense draft, information return, correction, approved linkage and history at 390",
+      "source": "tests/browser/b691-expenses.spec.mjs",
+      "assertion": "expect(f.store.get('expense',id,f.manager.tenantId).amountCents).toBe(2500);",
+      "sha256": "a4d542bad85c4eb9c5935fa5176ab7d30669a5bf35bea7619194a5c311c759c0"
+    },
+    {
+      "keys": [
+        "button:Refresh expenses"
+      ],
+      "test": "expense validation, filters, cancellation, duplicate events and ambiguous response recovery preserve input",
+      "source": "tests/browser/b691-expenses.spec.mjs",
+      "assertion": "await expect(page.getByRole('status')).toContainText('Expenses refreshed');",
+      "sha256": "a4d542bad85c4eb9c5935fa5176ab7d30669a5bf35bea7619194a5c311c759c0"
+    },
+    {
+      "keys": [
+        "button:Show earnings period",
+        "form:earnings-period"
+      ],
+      "test": "approved pay PDF download is private, audited and available to its driver",
+      "source": "tests/browser/pdf-downloads.spec.mjs",
+      "assertion": "await expect(page.getByRole('status')).toContainText('Earnings period updated');",
+      "sha256": "372858060998b568be99f51b107ab17dd11e76ca382754f8f0051db7527c1fe5"
+    }
+  ]
+}

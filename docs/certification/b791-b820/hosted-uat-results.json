@@ -1,0 +1,1771 @@
+{
+  "schemaVersion": 1,
+  "scope": "Hosted execution plan and actual results; local synthetic runs never count as hosted PASS",
+  "historicalMatrix": {
+    "source": "B761-B780 84-case matrix",
+    "sha256": "6769e833d3a3949ab31629c2c8743ec35f5376d4bcdd0031f87ed957befbeafe",
+    "idsPreserved": 84
+  },
+  "currentScopeBoundary": "Platform governance only; carrier dispatch; fleet resources/employment/pay; driver owned tasks. Unsupported global tenant management, sensitive uploads, external providers and actual payment execution are not certified by these scripts.",
+  "hostedExecuted": 0,
+  "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "BLOCKED": 88,
+    "NOT_RUN": 0
+  },
+  "scenarios": [
+    {
+      "case": "HOST-001",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "entry_and_login",
+      "route_or_control": "/uat/login",
+      "steps": "Use Continue with Google; validate provider callback and PKCE state; complete required MFA",
+      "expected": "Only approved canonical user reaches /uat/control",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-002",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "identity_mapping",
+      "route_or_control": "/api/ops/session",
+      "steps": "Inspect sanitized session actor reference and server identity binding; compare both methods",
+      "expected": "Same approved canonical UUID and native principal; no email-only linking or enrollment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-003",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "workspace_scope",
+      "route_or_control": "/uat/control",
+      "steps": "Verify persona navigation permissions and visible resource ownership",
+      "expected": "Only approved role permissions tenant/fleet relationship and ownership; platform has no carrier state",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-004",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "refresh_and_mutation",
+      "route_or_control": "/uat/refresh",
+      "steps": "Record handle fingerprints only; refresh; perform permitted mutation; inspect cookie flags and CSRF rotation",
+      "expected": "Fresh native session/CSRF works; stale handles denied; Secure HttpOnly cookies; no token response to browser",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-005",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "logout_and_replay",
+      "route_or_control": "/api/ops/logout",
+      "steps": "Sign out; replay saved test handles privately without logging their values",
+      "expected": "Both application/provider-linked sessions and refresh denied after logout",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-006",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "tenant_resource_denial",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Submit approved negative fixture IDs for another tenant/fleet/owner; also test read boundaries",
+      "expected": "403/404 denial without data leak or state change; platform denied carrier resources",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-007",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "mvp_workflow",
+      "route_or_control": "/uat/control",
+      "steps": "View administration activity; induce one approved failure and retry; verify governance audit only",
+      "expected": "Meaningful persisted outcome with expected audit and no duplicate side effect",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-008",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "privileged_mfa",
+      "route_or_control": "/auth/callback or /uat/mfa",
+      "steps": "For Google assert callback enters MFA step; deny application session until valid TOTP; test invalid and expired challenge",
+      "expected": "No privileged native session at aal1; aal2 required; invalid/expired/replayed challenge denied",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-009",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "entry_and_login",
+      "route_or_control": "/uat/login",
+      "steps": "Use approved password setup then Email + Password; complete required MFA",
+      "expected": "Only approved canonical user reaches /uat/control",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-010",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "identity_mapping",
+      "route_or_control": "/api/ops/session",
+      "steps": "Inspect sanitized session actor reference and server identity binding; compare both methods",
+      "expected": "Same approved canonical UUID and native principal; no email-only linking or enrollment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-011",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "workspace_scope",
+      "route_or_control": "/uat/control",
+      "steps": "Verify persona navigation permissions and visible resource ownership",
+      "expected": "Only approved role permissions tenant/fleet relationship and ownership; platform has no carrier state",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-012",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "refresh_and_mutation",
+      "route_or_control": "/uat/refresh",
+      "steps": "Record handle fingerprints only; refresh; perform permitted mutation; inspect cookie flags and CSRF rotation",
+      "expected": "Fresh native session/CSRF works; stale handles denied; Secure HttpOnly cookies; no token response to browser",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-013",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "logout_and_replay",
+      "route_or_control": "/api/ops/logout",
+      "steps": "Sign out; replay saved test handles privately without logging their values",
+      "expected": "Both application/provider-linked sessions and refresh denied after logout",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-014",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "tenant_resource_denial",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Submit approved negative fixture IDs for another tenant/fleet/owner; also test read boundaries",
+      "expected": "403/404 denial without data leak or state change; platform denied carrier resources",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-015",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "mvp_workflow",
+      "route_or_control": "/uat/control",
+      "steps": "View administration activity; induce one approved failure and retry; verify governance audit only",
+      "expected": "Meaningful persisted outcome with expected audit and no duplicate side effect",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-016",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "privileged_mfa",
+      "route_or_control": "/auth/callback or /uat/mfa",
+      "steps": "For Google assert callback enters MFA step; deny application session until valid TOTP; test invalid and expired challenge",
+      "expected": "No privileged native session at aal1; aal2 required; invalid/expired/replayed challenge denied",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-017",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "entry_and_login",
+      "route_or_control": "/uat/login",
+      "steps": "Use Continue with Google; validate provider callback and PKCE state; complete required MFA",
+      "expected": "Only approved canonical user reaches /app",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-018",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "identity_mapping",
+      "route_or_control": "/api/ops/session",
+      "steps": "Inspect sanitized session actor reference and server identity binding; compare both methods",
+      "expected": "Same approved canonical UUID and native principal; no email-only linking or enrollment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-019",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "workspace_scope",
+      "route_or_control": "/api/ops/state",
+      "steps": "Verify persona navigation permissions and visible resource ownership",
+      "expected": "Only approved role permissions tenant/fleet relationship and ownership; platform has no carrier state",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-020",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "refresh_and_mutation",
+      "route_or_control": "/uat/refresh",
+      "steps": "Record handle fingerprints only; refresh; perform permitted mutation; inspect cookie flags and CSRF rotation",
+      "expected": "Fresh native session/CSRF works; stale handles denied; Secure HttpOnly cookies; no token response to browser",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-021",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "logout_and_replay",
+      "route_or_control": "/api/ops/logout",
+      "steps": "Sign out; replay saved test handles privately without logging their values",
+      "expected": "Both application/provider-linked sessions and refresh denied after logout",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-022",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "tenant_resource_denial",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Submit approved negative fixture IDs for another tenant/fleet/owner; also test read boundaries",
+      "expected": "403/404 denial without data leak or state change; platform denied carrier resources",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-023",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "mvp_workflow",
+      "route_or_control": "/app",
+      "steps": "Save company settings; create/edit/deactivate test metadata; complete approved load dispatch document billing review with separation of duties",
+      "expected": "Meaningful persisted outcome with expected audit and no duplicate side effect",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-024",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "privileged_mfa",
+      "route_or_control": "/auth/callback or /uat/mfa",
+      "steps": "For Google assert callback enters MFA step; deny application session until valid TOTP; test invalid and expired challenge",
+      "expected": "No privileged native session at aal1; aal2 required; invalid/expired/replayed challenge denied",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-025",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "entry_and_login",
+      "route_or_control": "/uat/login",
+      "steps": "Use approved password setup then Email + Password; complete required MFA",
+      "expected": "Only approved canonical user reaches /app",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-026",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "identity_mapping",
+      "route_or_control": "/api/ops/session",
+      "steps": "Inspect sanitized session actor reference and server identity binding; compare both methods",
+      "expected": "Same approved canonical UUID and native principal; no email-only linking or enrollment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-027",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "workspace_scope",
+      "route_or_control": "/api/ops/state",
+      "steps": "Verify persona navigation permissions and visible resource ownership",
+      "expected": "Only approved role permissions tenant/fleet relationship and ownership; platform has no carrier state",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-028",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "refresh_and_mutation",
+      "route_or_control": "/uat/refresh",
+      "steps": "Record handle fingerprints only; refresh; perform permitted mutation; inspect cookie flags and CSRF rotation",
+      "expected": "Fresh native session/CSRF works; stale handles denied; Secure HttpOnly cookies; no token response to browser",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-029",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "logout_and_replay",
+      "route_or_control": "/api/ops/logout",
+      "steps": "Sign out; replay saved test handles privately without logging their values",
+      "expected": "Both application/provider-linked sessions and refresh denied after logout",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-030",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "tenant_resource_denial",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Submit approved negative fixture IDs for another tenant/fleet/owner; also test read boundaries",
+      "expected": "403/404 denial without data leak or state change; platform denied carrier resources",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-031",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "mvp_workflow",
+      "route_or_control": "/app",
+      "steps": "Save company settings; create/edit/deactivate test metadata; complete approved load dispatch document billing review with separation of duties",
+      "expected": "Meaningful persisted outcome with expected audit and no duplicate side effect",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-032",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "privileged_mfa",
+      "route_or_control": "/auth/callback or /uat/mfa",
+      "steps": "For Google assert callback enters MFA step; deny application session until valid TOTP; test invalid and expired challenge",
+      "expected": "No privileged native session at aal1; aal2 required; invalid/expired/replayed challenge denied",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-033",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "entry_and_login",
+      "route_or_control": "/uat/login",
+      "steps": "Use Continue with Google; validate provider callback and PKCE state; complete required MFA",
+      "expected": "Only approved canonical user reaches /app",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-034",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "identity_mapping",
+      "route_or_control": "/api/ops/session",
+      "steps": "Inspect sanitized session actor reference and server identity binding; compare both methods",
+      "expected": "Same approved canonical UUID and native principal; no email-only linking or enrollment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-035",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "workspace_scope",
+      "route_or_control": "/api/ops/state",
+      "steps": "Verify persona navigation permissions and visible resource ownership",
+      "expected": "Only approved role permissions tenant/fleet relationship and ownership; platform has no carrier state",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-036",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "refresh_and_mutation",
+      "route_or_control": "/uat/refresh",
+      "steps": "Record handle fingerprints only; refresh; perform permitted mutation; inspect cookie flags and CSRF rotation",
+      "expected": "Fresh native session/CSRF works; stale handles denied; Secure HttpOnly cookies; no token response to browser",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-037",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "logout_and_replay",
+      "route_or_control": "/api/ops/logout",
+      "steps": "Sign out; replay saved test handles privately without logging their values",
+      "expected": "Both application/provider-linked sessions and refresh denied after logout",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-038",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "tenant_resource_denial",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Submit approved negative fixture IDs for another tenant/fleet/owner; also test read boundaries",
+      "expected": "403/404 denial without data leak or state change; platform denied carrier resources",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-039",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "mvp_workflow",
+      "route_or_control": "/app",
+      "steps": "Manage only assigned fleet employment and equipment; verify carrier approval remains separate",
+      "expected": "Meaningful persisted outcome with expected audit and no duplicate side effect",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-040",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "entry_and_login",
+      "route_or_control": "/uat/login",
+      "steps": "Use approved password setup then Email + Password; complete required MFA",
+      "expected": "Only approved canonical user reaches /app",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-041",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "identity_mapping",
+      "route_or_control": "/api/ops/session",
+      "steps": "Inspect sanitized session actor reference and server identity binding; compare both methods",
+      "expected": "Same approved canonical UUID and native principal; no email-only linking or enrollment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-042",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "workspace_scope",
+      "route_or_control": "/api/ops/state",
+      "steps": "Verify persona navigation permissions and visible resource ownership",
+      "expected": "Only approved role permissions tenant/fleet relationship and ownership; platform has no carrier state",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-043",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "refresh_and_mutation",
+      "route_or_control": "/uat/refresh",
+      "steps": "Record handle fingerprints only; refresh; perform permitted mutation; inspect cookie flags and CSRF rotation",
+      "expected": "Fresh native session/CSRF works; stale handles denied; Secure HttpOnly cookies; no token response to browser",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-044",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "logout_and_replay",
+      "route_or_control": "/api/ops/logout",
+      "steps": "Sign out; replay saved test handles privately without logging their values",
+      "expected": "Both application/provider-linked sessions and refresh denied after logout",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-045",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "tenant_resource_denial",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Submit approved negative fixture IDs for another tenant/fleet/owner; also test read boundaries",
+      "expected": "403/404 denial without data leak or state change; platform denied carrier resources",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-046",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "mvp_workflow",
+      "route_or_control": "/app",
+      "steps": "Manage only assigned fleet employment and equipment; verify carrier approval remains separate",
+      "expected": "Meaningful persisted outcome with expected audit and no duplicate side effect",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-047",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "entry_and_login",
+      "route_or_control": "/uat/login",
+      "steps": "Use Continue with Google; validate provider callback and PKCE state; complete required MFA",
+      "expected": "Only approved canonical user reaches /app",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-048",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "identity_mapping",
+      "route_or_control": "/api/ops/session",
+      "steps": "Inspect sanitized session actor reference and server identity binding; compare both methods",
+      "expected": "Same approved canonical UUID and native principal; no email-only linking or enrollment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-049",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "workspace_scope",
+      "route_or_control": "/api/ops/state",
+      "steps": "Verify persona navigation permissions and visible resource ownership",
+      "expected": "Only approved role permissions tenant/fleet relationship and ownership; platform has no carrier state",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-050",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "refresh_and_mutation",
+      "route_or_control": "/uat/refresh",
+      "steps": "Record handle fingerprints only; refresh; perform permitted mutation; inspect cookie flags and CSRF rotation",
+      "expected": "Fresh native session/CSRF works; stale handles denied; Secure HttpOnly cookies; no token response to browser",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-051",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "logout_and_replay",
+      "route_or_control": "/api/ops/logout",
+      "steps": "Sign out; replay saved test handles privately without logging their values",
+      "expected": "Both application/provider-linked sessions and refresh denied after logout",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-052",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "tenant_resource_denial",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Submit approved negative fixture IDs for another tenant/fleet/owner; also test read boundaries",
+      "expected": "403/404 denial without data leak or state change; platform denied carrier resources",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-053",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "mvp_workflow",
+      "route_or_control": "/app",
+      "steps": "Accept own assignment; pickup/transit/tracking/exception; recipient acknowledgment and delivery; no commercial fields",
+      "expected": "Meaningful persisted outcome with expected audit and no duplicate side effect",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-054",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "entry_and_login",
+      "route_or_control": "/uat/login",
+      "steps": "Use approved password setup then Email + Password; complete required MFA",
+      "expected": "Only approved canonical user reaches /app",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-055",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "identity_mapping",
+      "route_or_control": "/api/ops/session",
+      "steps": "Inspect sanitized session actor reference and server identity binding; compare both methods",
+      "expected": "Same approved canonical UUID and native principal; no email-only linking or enrollment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-056",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "workspace_scope",
+      "route_or_control": "/api/ops/state",
+      "steps": "Verify persona navigation permissions and visible resource ownership",
+      "expected": "Only approved role permissions tenant/fleet relationship and ownership; platform has no carrier state",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-057",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "refresh_and_mutation",
+      "route_or_control": "/uat/refresh",
+      "steps": "Record handle fingerprints only; refresh; perform permitted mutation; inspect cookie flags and CSRF rotation",
+      "expected": "Fresh native session/CSRF works; stale handles denied; Secure HttpOnly cookies; no token response to browser",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-058",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "logout_and_replay",
+      "route_or_control": "/api/ops/logout",
+      "steps": "Sign out; replay saved test handles privately without logging their values",
+      "expected": "Both application/provider-linked sessions and refresh denied after logout",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-059",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "tenant_resource_denial",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Submit approved negative fixture IDs for another tenant/fleet/owner; also test read boundaries",
+      "expected": "403/404 denial without data leak or state change; platform denied carrier resources",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-060",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "mvp_workflow",
+      "route_or_control": "/app",
+      "steps": "Accept own assignment; pickup/transit/tracking/exception; recipient acknowledgment and delivery; no commercial fields",
+      "expected": "Meaningful persisted outcome with expected audit and no duplicate side effect",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-061",
+      "tester": "oadeyemo306@gmail.com",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "one_time_setup",
+      "route_or_control": "/uat/setup",
+      "steps": "Redeem approved setup handle once; clear URL fragment; choose password; replay handle after use and expiry",
+      "expected": "Single-use expiring setup only; raw handle/password absent from logs and history",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-062",
+      "tester": "martin@tm88investments.com",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "one_time_setup",
+      "route_or_control": "/uat/setup",
+      "steps": "Redeem approved setup handle once; clear URL fragment; choose password; replay handle after use and expiry",
+      "expected": "Single-use expiring setup only; raw handle/password absent from logs and history",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-063",
+      "tester": "info@tm88investments.com",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "one_time_setup",
+      "route_or_control": "/uat/setup",
+      "steps": "Redeem approved setup handle once; clear URL fragment; choose password; replay handle after use and expiry",
+      "expected": "Single-use expiring setup only; raw handle/password absent from logs and history",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-064",
+      "tester": "cassiomey@gmail.com",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "one_time_setup",
+      "route_or_control": "/uat/setup",
+      "steps": "Redeem approved setup handle once; clear URL fragment; choose password; replay handle after use and expiry",
+      "expected": "Single-use expiring setup only; raw handle/password absent from logs and history",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-065",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "fifth_identity",
+      "route_or_control": "/uat/login",
+      "steps": "Attempt with approved negative fifth identity",
+      "expected": "Denied before application session even if provider sign-in succeeds",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-066",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "wrong_google_subject",
+      "route_or_control": "/auth/callback",
+      "steps": "Use mismatched subject evidence for a matching-email negative fixture",
+      "expected": "Denied without automatic linking",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-067",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "wrong_canonical_uuid",
+      "route_or_control": "/uat/password",
+      "steps": "Provider identity maps to a different approved UUID negative fixture",
+      "expected": "Denied with no native principal reassignment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-068",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "pkce_state_mismatch",
+      "route_or_control": "/auth/callback",
+      "steps": "Use missing/wrong state or transaction cookie",
+      "expected": "Denied without creating a native session",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-069",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "callback_replay",
+      "route_or_control": "/auth/callback",
+      "steps": "Replay consumed or expired callback transaction",
+      "expected": "Denied; one-time transaction consumed",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-070",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "revoked_invitation",
+      "route_or_control": "/uat/setup",
+      "steps": "Attempt revoked recovery/setup handle",
+      "expected": "Denied without password activation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-071",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "expired_session",
+      "route_or_control": "/api/ops/session",
+      "steps": "Reach idle/absolute expiry then request data and refresh",
+      "expected": "Denied with no stale protected state",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-072",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "membership_revocation",
+      "route_or_control": "/api/ops/state",
+      "steps": "Authorized administrator revokes the test membership then reuse session",
+      "expected": "Both native and parent sessions fenced; no remaining data access",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-073",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "native_revocation",
+      "route_or_control": "/uat/session",
+      "steps": "Authorized administrator revokes native session then request UAT/native endpoints",
+      "expected": "No re-bootstrap or refresh bypass",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-074",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "binding_role_drift",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Approved test changes canonical binding permission or role then reuses old session",
+      "expected": "Denied rather than using stale authorization",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-075",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "employment_change",
+      "route_or_control": "/api/ops/state",
+      "steps": "Approved test ends driver employment/fleet relation then reuses session",
+      "expected": "Denied for stale ownership/relationship",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-076",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "csrf_and_origin",
+      "route_or_control": "/api/ops/commands",
+      "steps": "Omit/alter CSRF and send foreign Origin negative requests",
+      "expected": "Denied before mutation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-077",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "duplicate_submission",
+      "route_or_control": "/app and /admin",
+      "steps": "Double-submit approved same mutation during response delay",
+      "expected": "One persisted side effect and auditable idempotency/version behavior",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-078",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "invalid_fields_recovery",
+      "route_or_control": "/app and /admin",
+      "steps": "Run empty negative fractional overflow malformed JSON and reversed chronological fields then correct them",
+      "expected": "Validation/error announced; input retained where appropriate; valid correction succeeds",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-079",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "provider_refresh_failure",
+      "route_or_control": "/uat/refresh",
+      "steps": "Approved fixture simulates invalid/revoked provider refresh proof",
+      "expected": "No orphan native session or continued protected access",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-080",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "protected_share_revocation",
+      "route_or_control": "Vercel protected entry",
+      "steps": "Owner revokes one individually approved share then repeat entry",
+      "expected": "Deployment protection denies removed tester without team access",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-081",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "direct_origin",
+      "route_or_control": "approved Preview origin",
+      "steps": "Attempt unapproved direct origin or alternate deployment link",
+      "expected": "Protection and application authorization both enforced",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-082",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "runtime_identity",
+      "route_or_control": "PostgreSQL restricted connections",
+      "steps": "Connect with actual auth/broker credentials; query session_user/current_user and catalog flags",
+      "expected": "Exact restricted identities; no administrator substitution ownership bypass or DDL privileges",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-083",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "rls_tenant_isolation",
+      "route_or_control": "PostgreSQL restricted connections",
+      "steps": "Use authorized isolated fixtures to verify RLS read/write and tenant claims with actual runtime",
+      "expected": "Foreign rows denied and no unintended tenant reassignment",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "HOST-084",
+      "tester": "approved-negative-fixture",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "recovery_revocation",
+      "route_or_control": "approved recovery flow",
+      "steps": "Authorized recovery of approved existing user followed by stale session replay",
+      "expected": "Same canonical identity; old sessions revoked; no unsafe linking",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "B791-UAT-01",
+      "persona": "platform",
+      "method": "approved_google_or_password_with_mfa",
+      "scenario": "configuration_48_reload_and_fresh_session",
+      "route_or_control": "/uat/control; /api/ops/platform/workspace",
+      "expected": "Confirmed durable state, explicit pending/error status, preserved permission/tenant boundary; no duplicate or stale write",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "B791-UAT-02",
+      "persona": "platform",
+      "method": "approved_google_or_password_with_mfa",
+      "scenario": "adjacent_forms_fenced_during_pending_save",
+      "route_or_control": "/uat/control; /api/ops/platform/workspace",
+      "expected": "Confirmed durable state, explicit pending/error status, preserved permission/tenant boundary; no duplicate or stale write",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "B791-UAT-03",
+      "persona": "platform",
+      "method": "approved_google_or_password_with_mfa",
+      "scenario": "configuration_lost_receipt_exact_retry",
+      "route_or_control": "/uat/control; /api/ops/platform/workspace",
+      "expected": "Confirmed durable state, explicit pending/error status, preserved permission/tenant boundary; no duplicate or stale write",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    },
+    {
+      "case": "B791-UAT-04",
+      "persona": "platform",
+      "method": "approved_google_or_password_with_mfa",
+      "scenario": "governance_reconstruction_and_operational_kind_denial",
+      "route_or_control": "/uat/control; /api/ops/platform/workspace",
+      "expected": "Confirmed durable state, explicit pending/error status, preserved permission/tenant boundary; no duplicate or stale write",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "EXCLUSIVE_STAGING_DATABASE_AND_MANAGEMENT_OWNER_REQUIRED",
+        "CONSISTENT_TARGET_PINS_AND_SCHEMA_LOGIN_CERTIFICATION_REQUIRED",
+        "PREVIEW_APPLICATION_PRIVILEGED_SECRET_POLICY_UNRESOLVED",
+        "REAL_IDENTITY_RELATIONSHIP_MFA_DELIVERY_VERIFICATION_REQUIRED",
+        "APPROVED_PROTECTED_PREVIEW_AND_TESTER_ENTRY_REQUIRED"
+      ],
+      "requiredIdentityBindings": "Not verified for an approved current target"
+    }
+  ]
+}
