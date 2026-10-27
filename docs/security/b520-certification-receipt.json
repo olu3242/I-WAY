@@ -1,0 +1,105 @@
+{
+  "release": "NO-GO",
+  "changedImplementationFiles": [
+    "db/review-only/iway_auth_catalog_b498.sql",
+    "db/review-only/iway_auth_postflight_b512.sql",
+    "db/review-only/iway_auth_preflight_b512.sql",
+    "db/review-only/iway_auth_role_b513.sql",
+    "db/review-only/iway_private_auth_sessions_b512.sql",
+    "docs/security/b511-b520-certification.md",
+    "docs/security/b516-readiness.json",
+    "docs/security/b516-staging-metadata.json",
+    "scripts/auth-staging-readiness.mjs",
+    "scripts/package-auth-staging.mjs",
+    "scripts/test-auth-postgres-isolated.mjs",
+    "scripts/verify-hosted-auth.mjs",
+    "server/operations-auth-database-check.mjs",
+    "server/operations-auth-runtime.mjs",
+    "tests/local/operations-auth-postgres.test.mjs",
+    "tests/operations-auth-hosted-gates.test.mjs",
+    "tests/operations-auth-readiness.test.mjs",
+    "tests/operations-auth-runtime.test.mjs"
+  ],
+  "date": "2026-10-21",
+  "tests": {
+    "repositoryPassed": 765,
+    "failed": 0,
+    "skipped": 0,
+    "standaloneBuild": "PASS: nodejs24.x, 7 routes, 1 static file, backendSourcePublic=false, clean source",
+    "focusedAuthPassed": 86,
+    "source": "PASS",
+    "postgres18Passed": 16
+  },
+  "ci": [
+    39683852164,
+    39683852256,
+    39683852326,
+    39683852133
+  ],
+  "reviewOnlySql": [
+    {
+      "hostedApplied": false,
+      "sha256": "6c86adfb590e31d06179c67eff8c9fd0a3e16c6ea6366b5532f5d0d3147d8a85",
+      "path": "iway_auth_postflight_b512.sql"
+    },
+    {
+      "hostedApplied": false,
+      "sha256": "9130fd2b10900a3f7984f06f7cacc2eb090950c072004eda22b985aa51848afd",
+      "path": "iway_auth_preflight_b512.sql"
+    },
+    {
+      "hostedApplied": false,
+      "sha256": "8747c83a473133a949faa3e056f30b67628498da7aa1ab3ee6e82ddba3a403eb",
+      "path": "iway_private_auth_sessions_b512.sql"
+    },
+    {
+      "hostedApplied": false,
+      "sha256": "cc1590f0eae671cbf0b83465b491144341b41f28f292c47613ca2612098f133a",
+      "path": "iway_auth_role_b513.sql"
+    },
+    {
+      "hostedApplied": false,
+      "sha256": "4be7767cf9559c6ff1e6b39e693073312d71392951f2e8f8e7fe45af33e3561d",
+      "path": "iway_auth_catalog_b498.sql"
+    }
+  ],
+  "baseline": "82ecb58b832ebecbab6126873302fb8ffce6abab",
+  "ciConclusion": "All four succeeded at implementationCommit",
+  "hosted": {
+    "migrationApplied": false,
+    "catalog": "BLOCKED: 403 before SQL",
+    "secretsChanged": false,
+    "rollback": "NOT RUN",
+    "deploymentId": null,
+    "certified": false,
+    "realProvider": "NOT RUN"
+  },
+  "publicSiteChanged": false,
+  "localArtifacts": [
+    {
+      "file": "auth-focused-final.log",
+      "sha256": "5b633669dd5c1e3a2500754385d5fb19559458552b66b161770a98115027f4dd"
+    },
+    {
+      "file": "auth-pg-final.log",
+      "sha256": "73603e7ecae0ec47be5ca34e781dd77c45c64e91cb1b2852021854348cf63912"
+    },
+    {
+      "file": "build-final.log",
+      "sha256": "e14696f777e28dfc496acedcfee8f67295d6edeedd42cfc466eb8da93976ddf8"
+    },
+    {
+      "file": "repository-final.log",
+      "sha256": "00918555d6315318f7b75098df0eb2b89cf467b9db096d4d399d02553ff3da76"
+    },
+    {
+      "file": "source-final.log",
+      "sha256": "5d1068586033fe33a97dc3c502f14996d68e1ca77bf93e7209bbf580d63531e0"
+    },
+    {
+      "file": "auth-staging-certified.manifest.json",
+      "sha256": "3f61c6841c5169224feb44271c6fe8940547b9a67601ab7df1ef645e7e75f034"
+    }
+  ],
+  "implementationCommit": "0573f5cf4c4a3c3c56cf1f5239ec2253f6543c3b"
+}
