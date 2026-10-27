@@ -24,11 +24,11 @@
     },
     {
       "path": "docs/certification/b821-b840/approval-register.md",
-      "sha256": "af70c9d9a6a597a32128d68806afcfff88f992215b4188e18bd181d5cdabbb7c"
+      "sha256": "85ff719eda27b5c707122610a61380faebd601393da20d3a9d3db3432be57d25"
     },
     {
       "path": "docs/certification/b821-b840/certification-report.md",
-      "sha256": "72ed65817c9baaed535fc3b874d62cfea7fef6ecd3456631f3c12202a2c12195"
+      "sha256": "f1121da2f3740e9e0a39d76415a51fbead9c5c3f66ac4efc7341368c7c708b7a"
     },
     {
       "path": "docs/certification/b821-b840/changed-files.json"
@@ -63,15 +63,15 @@
     },
     {
       "path": "docs/certification/b821-b840/receipt.json",
-      "sha256": "823b73763f24e3c9c5cc18441ceb53ba22ff819c8a7dc2922c22d3911feade27"
+      "sha256": "a9f5055c54099dcc1c3b97b4f091725053447358accf7afd2c3c27ffbc905580"
     },
     {
       "path": "docs/certification/b821-b840/requirements.json",
-      "sha256": "33633796a51e96ee493e56831052e4013bc1946c737cf53baa5383968c9fff92"
+      "sha256": "7bdb6836860697515fdec879e6ed6d744e2b09b51203d90113af00c57bde98c2"
     },
     {
       "path": "docs/certification/b821-b840/risk-register.json",
-      "sha256": "9f4f53733be4ee0c21cc13bafb928d15eff5d9444f943462f15065db9dda30e3"
+      "sha256": "92cde5ff5fd113cd24c5a1b631245dbfb6b3fccee62f3a9e880d2c334b513235"
     },
     {
       "path": "docs/certification/harmonized-figma/matrix.json",
@@ -83,7 +83,7 @@
     },
     {
       "path": "docs/security/iway-unified-approval-register.md",
-      "sha256": "9ca49d713c2b221d16b29cb50cfbfd5123c33759fe6f6972cf88c6ae37fb0d1e"
+      "sha256": "099459d2451b7f5b392c24512a298f3849580b0a383c90a10360bd0848e3e33c"
     },
     {
       "path": "domain/operations-feedback-contract.mjs",

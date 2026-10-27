@@ -91,6 +91,13 @@
       "status": "BLOCKED",
       "risk": "Feedback is opt-in and no real participant is enabled",
       "nextAction": "Approve individual stored opt-ins and base authority after identity/tenant verification; no grant endpoint or automatic provisioning."
+    },
+    {
+      "id": "R14",
+      "severity": "high",
+      "status": "OWNER_REVIEW_REQUIRED",
+      "risk": "PR #21 merged independently at the earlier candidate while remediation was running; the tested onboarding fix is in draft follow-up #23.",
+      "nextAction": "Review the integration handoff and required-check governance. This execution did not merge/revert or change branch protection."
     }
   ],
   "hostedDecision": "NO_GO",

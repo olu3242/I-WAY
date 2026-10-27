@@ -2,7 +2,7 @@
 
 Local decision: **GO for implemented, tested contracts only**. Hosted UAT and Production: **NO-GO**. Real-user acceptance is unperformed. Production deployment is prohibited in this task.
 
-Starting SHA: `c5998b3ada6121ff7de91f81f71a5cba886f2f5b`. Branch: `work/b751-b770-harmonization-20261026`. [Draft PR #21](https://github.com/olu3242/I-WAY/pull/21) remains unmerged. The ending SHA, remote CI jobs, clean state and exact package hash are recorded after commit in `dist/b821-b840/final/post-commit-verification.json`; these results cannot truthfully be embedded before that commit exists.
+Starting SHA: `c5998b3ada6121ff7de91f81f71a5cba886f2f5b`. Branch: `work/b751-b770-harmonization-20261026`. [Draft follow-up PR #23](https://github.com/olu3242/I-WAY/pull/23) contains the onboarding correction. PR #21 was independently merged at `5dee665` by `olu3242` on 2026-10-27 at 15:52:25 UTC; that merge did not include the tested correction and was not performed by this execution. The ending SHA, remote CI jobs, clean state and exact package hash are recorded after commit in `dist/b821-b840/review-handoff/post-commit-verification.json`; these results cannot truthfully be embedded before that commit exists.
 
 ## Implementation and baseline
 
@@ -113,3 +113,7 @@ The [95-case hosted matrix](hosted-uat-results.json) preserves all 88 B791–B82
 Recommended B841–B860 sequence: database designation; management owner; consistent pins; target-specific migration review; restricted login/TLS; Preview secret policy; Google callbacks; canonical identity hierarchy; human MFA; delivery ownership; individual protected entry; exact artifact/CI gate; approved Preview deployment; real Google tests; password/reset tests; session/offline recovery; finance reconciliation; human accessibility; real feedback/retest acceptance; final release decision. These are next prerequisites, not actions executed in this batch.
 
 The reviewed changed-file manifest and receipt accompany this report. Post-commit verification records ending SHA, source/blob checks, original-work preservation, package checksum, publication and final CI. **Hosted UAT NO-GO. Production NO-GO.**
+
+## Review handoff reconciliation
+
+GitHub reports PR #21 merged into the feature integration branch at `9dd0e51ba432166cb1e1692aaa0f28e5f3e423fb`, while local remediation was running. Its earlier failed PR CI remains recorded. This execution preserved that history, published the tested additive correction and opened draft PR #23 against the same integration branch. It did not merge a PR, merge into main or undo the external change. Source SHA `21caa6452a761b8b423479cae5622c8fe66c40b5` passed both [Verify](https://github.com/olu3242/I-WAY/actions/runs/40542296614) and [Identity Access](https://github.com/olu3242/I-WAY/actions/runs/40542296628) push workflows. The documentation-only handoff commit keeps that tested runtime source unchanged; final-SHA checks are recorded separately in the post-commit sidecar. Owner review of the handoff and required-check governance remains necessary.

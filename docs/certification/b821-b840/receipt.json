@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "startingCommit": "c5998b3ada6121ff7de91f81f71a5cba886f2f5b",
-  "endingCommit": "Exact value in Git and dist/b821-b840/final/post-commit-verification.json; self-referential SHA deliberately excluded",
+  "endingCommit": "Exact value in Git and dist/b821-b840/review-handoff/post-commit-verification.json; runtime source unchanged from tested 21caa645",
   "branch": "work/b751-b770-harmonization-20261026",
-  "pullRequest": "https://github.com/olu3242/I-WAY/pull/21",
+  "pullRequest": "https://github.com/olu3242/I-WAY/pull/23",
   "sourceDigest": "9f16a955adca185e356432e8236455293f2f9f7ef17d84c86c5940bd3253819b",
   "sourceHashEncoding": "SHA-256, UTF-8 LF; raw font binaries",
   "results": {
@@ -147,8 +147,16 @@
   "deployed": false,
   "hostedAuthenticationCertified": false,
   "remoteCI": {
-    "baseline": "c5998b3 PR Verify and Identity workflows passed",
-    "finalCandidate": "See post-commit-verification.json; not claimed before commit"
+    "runtimeSourceCommit": "21caa6452a761b8b423479cae5622c8fe66c40b5",
+    "pushVerify": {
+      "status": "PASS",
+      "runId": 40542296614
+    },
+    "pushIdentity": {
+      "status": "PASS",
+      "runId": 40542296628
+    },
+    "finalDocumentationCommit": "Verified after publication in review-handoff/post-commit-verification.json"
   },
   "artifactEvidence": [
     {
@@ -274,6 +282,49 @@
     {
       "path": "dist/b821-b840/final/write-certification.mjs",
       "sha256": "25e97aa1a92acc280d5980fa9869f1ba58473e6b61486c17fe393df5b33e75e3"
+    },
+    {
+      "path": "dist/b821-b840/review-handoff/external-pr21-merge.json",
+      "sha256": "f9e21858163e014efde2f7b7750f71370ec19c97b5ef901199024149d1bd30c8"
+    },
+    {
+      "path": "dist/b821-b840/review-handoff/review-state.json",
+      "sha256": "4596f283a38f05165af4a2eb98cc5f14f5cf7bcd8398236ef3ec04a654b5443c"
+    },
+    {
+      "path": "dist/b821-b840/review-handoff/reconcile-review.mjs",
+      "sha256": "8dcb7c9e4913bcfacc53cffd2e6a992b3f6096f574d76d684524792d31910105"
+    },
+    {
+      "path": "dist/b821-b840/review-handoff/secret-review.json",
+      "sha256": "d7672df9c700601c3f42f0deac513ebbceb7993ec3373e271c19df5c32f5a910"
     }
-  ]
+  ],
+  "reviewHandoff": {
+    "priorPullRequest": {
+      "number": 21,
+      "state": "closed",
+      "merged": true,
+      "mergedAt": "2026-10-27T15:52:25Z",
+      "mergedBy": "olu3242",
+      "mergeCommit": "9dd0e51ba432166cb1e1692aaa0f28e5f3e423fb",
+      "headSha": "5dee665e9e42cbcb35e92b1fe46d202e426e59e9",
+      "baseBranch": "work/first-value-demo-20261025",
+      "url": "https://github.com/olu3242/I-WAY/pull/21"
+    },
+    "performedByThisExecution": false,
+    "followUp": {
+      "number": 23,
+      "url": "https://github.com/olu3242/I-WAY/pull/23",
+      "draft": true,
+      "base": "work/first-value-demo-20261025",
+      "runtimeSourceCommit": "21caa6452a761b8b423479cae5622c8fe66c40b5"
+    },
+    "sourceChanged": false
+  },
+  "documentationReconciliation": {
+    "runtimeSourceChanged": false,
+    "observedAt": "2026-10-27T17:01:34.159Z",
+    "script": "dist/b821-b840/review-handoff/reconcile-review.mjs"
+  }
 }
