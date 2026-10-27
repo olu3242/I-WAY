@@ -15,6 +15,11 @@ try {
     Start-Sleep -Seconds 1
   }
   if (-not $ready) { throw 'Disposable PostgreSQL did not become ready' }
+  # Supabase initializes these API roles; vanilla postgres:17 does not.
+  # Create inert placeholders ONLY inside this disposable Docker database.
+  $bootstrap = "CREATE ROLE anon NOLOGIN; CREATE ROLE authenticated NOLOGIN;"
+  $bootstrap | docker exec -i $container psql -X -v ON_ERROR_STOP=1 -U postgres -d iway_cert -f -
+  if ($LASTEXITCODE -ne 0) { throw 'Disposable Supabase-role bootstrap failed' }
   $migrations = Get-ChildItem (Join-Path $root 'supabase/migrations') -Filter '*.sql' | Sort-Object Name
   foreach ($migration in $migrations) {
     Write-Host "MIGRATION: $($migration.Name)"
@@ -36,5 +41,5 @@ END $$;
   if ($LASTEXITCODE -ne 0) { throw 'PostgreSQL authorization smoke check failed' }
   Write-Host 'POSTGRESQL MIGRATION + AUTHORIZATION SMOKE PASS'
 } finally {
-  docker rm -f $container *> $null
+  try { docker rm -f $container 2>$null | Out-Null } catch { Write-Warning 'Disposable container cleanup failed; inspect docker ps -a' }
 }
