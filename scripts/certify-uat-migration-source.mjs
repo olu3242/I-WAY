@@ -13,7 +13,10 @@ const checks=[
 ['runtime role non-login',/CREATE ROLE iway_operations_runtime\s+NOLOGIN/i.test(runtime.sql)],
 ['runtime grants read-only',!/GRANT\s+(INSERT|UPDATE|DELETE|TRUNCATE)/i.test(runtime.sql)],
 ['dispatcher FORCE RLS',/ALTER TABLE operations_private\.dispatcher_directory FORCE ROW LEVEL SECURITY/i.test(directory.sql)],
-['dispatcher scoped INSERT policy',/CREATE POLICY\s+\w+\s+ON\s+operations_private\.dispatcher_directory[\s\S]*?FOR INSERT/i.test(directory.sql)]
+['dispatcher scoped INSERT policy',/CREATE POLICY dispatcher_directory_provision_insert ON operations_private\.dispatcher_directory\s+FOR INSERT TO iway_dispatcher_provisioner[\s\S]*?WITH CHECK \(tenant_id=/i.test(directory.sql)],
+['dispatcher scoped UPDATE policy',/CREATE POLICY dispatcher_directory_provision_update ON operations_private\.dispatcher_directory\s+FOR UPDATE TO iway_dispatcher_provisioner[\s\S]*?WITH CHECK \(tenant_id=/i.test(directory.sql)],
+['dispatcher provisioner nonlogin',/CREATE ROLE iway_dispatcher_provisioner NOLOGIN NOINHERIT[^;]*NOBYPASSRLS/i.test(directory.sql)],
+['dispatcher runtime not provisioner',!/GRANT\s+iway_dispatcher_provisioner\s+TO\s+iway_operations_runtime/i.test(directory.sql+runtime.sql)]
 ];
 for(const [name,pass] of checks)console.log((pass?'PASS':'BLOCKED')+': '+name);
 const blocked=checks.filter(([,pass])=>!pass).length;
