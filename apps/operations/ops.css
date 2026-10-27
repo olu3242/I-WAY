@@ -46,3 +46,8 @@ fieldset{min-inline-size:0;border:1px solid #DCE7F3;border-radius:12px;padding:1
 @media(max-width:650px){.sidebar nav .nav-group{display:contents}.sidebar nav .nav-group h2{display:none}.workspace-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-shortcuts a{padding:12px;font-size:13px}.platform-page .stats{grid-template-columns:1fr}}
 
 .load-phases{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0 0 24px;list-style:none}.load-phases li{border:1px solid #DCE7F3;border-radius:12px;padding:10px 12px;color:#475569;background:#fff;text-transform:capitalize}.load-phases [aria-current=step]{border:2px solid #1261F3;color:#092448;font-weight:700;background:#E0EAFF}
+
+/* Long permission-filtered menus scroll without hiding identity or sign-out. */
+@media(min-width:651px){.workspace>.sidebar{position:sticky;top:0;height:100vh;height:100dvh;min-height:0}.workspace>.sidebar>#nav{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:4px}.workspace>.sidebar>.sidebar-bottom{flex:none}.workspace>.sidebar .logo-chip,.workspace>.sidebar>.sidebar-label{flex:none}}
+/* Keep summary cards compact at common phone widths; 320px retains one column. */
+@media(min-width:360px) and (max-width:400px){.workspace .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace .stat{padding:16px}.workspace .stat p{overflow-wrap:anywhere}}

@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "branch": "work/b751-b770-harmonization-20261026",
+  "startingIntegrationCommit": "893f7f56d39d3e1a46c8bddadb71265216b30ae1",
+  "startingBatchCommit": "4d35fc6b7d005483bd39b657c812adf4a604185f",
+  "endingCommit": "Reported in Git and ignored dist/b771-b790/post-commit-verification.json to avoid self-reference",
+  "results": {
+    "repository": {
+      "passed": 978,
+      "failed": 0,
+      "skipped": 0
+    },
+    "generalBrowser": {
+      "total": 175,
+      "passed": 175,
+      "failed": 0,
+      "skipped": 0,
+      "status": "PASS",
+      "sourceBinding": "All application bytes unchanged; subsequent test-only readiness assertion separately verified in actual PG rerun"
+    },
+    "postgresBrowser": {
+      "total": 64,
+      "passed": 64,
+      "failed": 0,
+      "skipped": 0,
+      "mode": "COMPOSITE",
+      "main": {
+        "passed": 63,
+        "failed": 1
+      },
+      "affectedRerun": {
+        "passed": 6,
+        "failed": 0
+      }
+    },
+    "postgresContracts": {
+      "version": "17.11",
+      "leafScenarios": 108,
+      "suites": 10,
+      "nodeChecksIncludingParents": 118,
+      "failed": 0,
+      "skipped": 0
+    },
+    "postgresHttpLogistics": {
+      "passed": 1,
+      "failed": 0
+    },
+    "targetedBrowser": {
+      "passed": 13,
+      "failed": 0,
+      "scope": "Earlier diagnostic targeted run, not additional distinct scenarios"
+    },
+    "supplementaryVisualRecovery": {
+      "passed": 1,
+      "failed": 0,
+      "scope": "Repeated governance recovery case for screenshots, excluded from primary totals"
+    },
+    "axe": {
+      "generalScans": 338,
+      "postgresCompositeScans": 72,
+      "total": 410,
+      "violations": 0,
+      "conformance": "HUMAN_REVIEW_NOT_RUN"
+    },
+    "controls": {
+      "action": {
+        "inventoried": 87,
+        "observed": 71,
+        "interacted": 71,
+        "verifiedOutcome": 87
+      },
+      "button": {
+        "inventoried": 60,
+        "observed": 60,
+        "interacted": 60,
+        "verifiedOutcome": 60
+      },
+      "dialog": {
+        "inventoried": 19,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      },
+      "disclosure": {
+        "inventoried": 2,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 1
+      },
+      "field": {
+        "inventoried": 150,
+        "observed": 138,
+        "interacted": 113,
+        "verifiedOutcome": 0
+      },
+      "form": {
+        "inventoried": 40,
+        "observed": 40,
+        "interacted": 40,
+        "verifiedOutcome": 40
+      },
+      "navigation": {
+        "inventoried": 26,
+        "observed": 26,
+        "interacted": 26,
+        "verifiedOutcome": 26
+      },
+      "route": {
+        "inventoried": 72,
+        "observed": 8,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      }
+    },
+    "performance": {
+      "status": "PASS",
+      "unchangedBudgets": true,
+      "scenarios": [
+        {
+          "scenario": "dispatch",
+          "p95Ms": 57.69730000000001,
+          "throughputPerSecond": 63.069796189953614
+        },
+        {
+          "scenario": "workflow",
+          "p95Ms": 117.10120000000003,
+          "throughputPerSecond": 147.38248703034105
+        },
+        {
+          "scenario": "documents",
+          "p95Ms": 91.98570000000001,
+          "throughputPerSecond": 126.4632189631596
+        },
+        {
+          "scenario": "tenant_isolation",
+          "p95Ms": 46.152799999999985,
+          "throughputPerSecond": 262.3762322117112
+        }
+      ]
+    },
+    "recovery": {
+      "status": "PASS",
+      "scope": "Isolated local SQLite rehearsal; not hosted disaster-recovery certification",
+      "rtoMs": 344.86860000000024,
+      "rpoMs": 742
+    },
+    "dependencyAudit": {
+      "reportedVulnerabilities": 0,
+      "totalDependencies": 39
+    },
+    "artifactGuardTests": {
+      "passed": 6,
+      "failed": 0
+    },
+    "screens": {
+      "accounted": 35,
+      "currentMappings": 27,
+      "unavailableMappings": 8,
+      "mappedCaptures": 81,
+      "widths": [
+        390,
+        768,
+        1440
+      ],
+      "beforeAfterPairs": 12,
+      "approvedBaselines": "BLOCKED_REFERENCE",
+      "functionalityConformityPercentage": null,
+      "visualConformityPercentage": null
+    },
+    "hosted": {
+      "status": "BLOCKED",
+      "executed": 0,
+      "simulatedAuthenticationNeverHostedPass": true
+    }
+  },
+  "decisions": {
+    "local": "GO_IMPLEMENTED_AND_TESTED_CONTRACTS",
+    "wholeFigma": "NO_GO_BLOCKED_REFERENCE_AND_CONTRACTS",
+    "hosted": "NO_GO",
+    "production": "NO_GO"
+  },
+  "artifacts": [
+    {
+      "path": "dist/b771-b790/verify.log",
+      "sha256": "fba560cf9aed42ca8fa0c25de8cb0b417ff1ca618977d5760551621ac8281cf4"
+    },
+    {
+      "path": "dist/b771-b790/browser/browser-evidence.json",
+      "sha256": "9adbe6c2aaad7113487624ba7ae36067d090812f8c3b4096ca7ad623c1a8a880"
+    },
+    {
+      "path": "dist/b771-b790/browser/mvp-coverage.json",
+      "sha256": "d62b2213d484be1be74a6106a06a85b9431ef4e79894d8cea22ff1cf88a10a14"
+    },
+    {
+      "path": "dist/b771-b790/postgres-browser/browser-evidence.json",
+      "sha256": "767e526c25e5000d2b175b7c203c1c4d3d7db1d32fe51da63c71994baa3140ca"
+    },
+    {
+      "path": "dist/b771-b790/platform-rerun/browser-evidence.json",
+      "sha256": "90c141428a4bb52dd7baf550e9e650598664e833e0ee04e7e140763b124837a0"
+    },
+    {
+      "path": "dist/b771-b790/postgres-browser-composite.json",
+      "sha256": "874e5de9d6617a42353c0d59074c3acc2c6d57d4e9b6215de2771d4c7e630b7b"
+    },
+    {
+      "path": "dist/b771-b790/postgres/postgres17-compatibility.json",
+      "sha256": "7f488439f2e2f4c436ab46f6124c4089e014e779675a6f726322a105b9482b6b"
+    },
+    {
+      "path": "dist/b771-b790/postgres-logistics.log",
+      "sha256": "b245843987958761ab315eb6d8d60955a3ea2e91fa461f5ca85f71c32c971ee7"
+    },
+    {
+      "path": "dist/b771-b790/performance.json",
+      "sha256": "a94f8575d30adfd72fa0eeb18897d783b4b1d39a8d0484c56459d8decebd48a3"
+    },
+    {
+      "path": "dist/b771-b790/recovery.json",
+      "sha256": "4b9f6053943bbd8f5f4216633a4e0a422fa41af1761303dfa2d812530b76d0da"
+    },
+    {
+      "path": "dist/b771-b790/npm-audit.json",
+      "sha256": "352c05d2e69b568aeef394e8f0b42d609fcc4c763cbd15e4cd0cf30238b813ce"
+    },
+    {
+      "path": "dist/b771-b790/source-review.json",
+      "sha256": "fdf5c28cb794f268ba5165baf94fee1403ad4bf6f207dd5a152053f79d82a11f"
+    },
+    {
+      "path": "dist/b771-b790/platform-initialization-diagnosis.json",
+      "sha256": "43cd9fcca8702824e6dcb5cad79b3b7fe116c23e14ce6f6cbd2e3a1d8fb737ac"
+    },
+    {
+      "path": "dist/b771-b790/visual-comparison.json",
+      "sha256": "fd558f11e31733d2f22e3fdf6471bd18a0cfaba6d619b22262f43e676de230e1"
+    },
+    {
+      "path": "dist/b771-b790/visual-recovery/browser-evidence.json",
+      "sha256": "ad88d45bd9b51162fae26ff1983b7e85c61b511a5d0326df9d288051b675a725"
+    },
+    {
+      "path": "dist/b771-b790/deployment-trigger-audit.json",
+      "sha256": "c3fce79cd4b15dcaf41f020f747d655a038198060cfbc9dc5da29f1f7901134b"
+    },
+    {
+      "path": "dist/b771-b790/artifact-checks-final.log",
+      "sha256": "5d1b98c6fada190ce910b503a078a752dd6db312674e2eb7fdcb15e9c8da3677"
+    }
+  ],
+  "secretReview": {
+    "status": "PASS",
+    "candidateRegularFilesScanned": 962,
+    "unchangedGitlinksExcluded": [
+      ".worktrees/b245-b256",
+      ".worktrees/hosted-registration",
+      ".worktrees/sop-b16"
+    ],
+    "archivesScanned": 0,
+    "configuredPrivateCredentialMatches": 0,
+    "matches": [],
+    "envPathIgnored": true,
+    "envPathTracked": false,
+    "privateValuesPrinted": false,
+    "scope": "Configured private values and decoded DB password exact-match scan, selected private-secret formats; not a universal or historical secret-scanning guarantee",
+    "evidencePath": "dist/b771-b790/secret-review.json",
+    "sha256": "1a74e73ee67f5178113851ab54ae26f88021859d6a1e734b700d1a1f57aa3efc"
+  },
+  "originalWorktree": {
+    "startingCommit": "b1e39bb6c1ada7e91f6fa1d5e35807842238aa85",
+    "preservedFiles": 136,
+    "rawBytesUnchanged": true
+  }
+}

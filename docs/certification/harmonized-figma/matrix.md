@@ -1,6 +1,6 @@
 # Harmonized screen and functionality matrix
 
-Source: [Issue #20](https://github.com/olu3242/I-WAY/issues/20). Route and navigation are separate: client tabs are not fictional HTTP routes. Every mapped screen remains partial unless its complete acceptance criteria have evidence. Test paths identify regression scope, not PASS. Current executed subsets and preserved denials: [B751–B770 execution matrix](../b751-b770/screen-evidence.md).
+Source: [Issue #20](https://github.com/olu3242/I-WAY/issues/20). Route and navigation are separate: client tabs are not fictional HTTP routes. Every mapped screen remains partial unless its complete acceptance criteria have evidence. Test paths identify regression scope, not PASS. Current executed subsets and preserved denials: [B751–B770 execution matrix](../b751-b770/screen-evidence.md) and [B771–B790 captures and certification](../b771-b790/certification-report.md).
 
 | Persona / prototype screen | Current route · navigation | Required permissions | Working scope | Status / remaining gap |
 |---|---|---|---|---|
