@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "cf052ee430d98d5578ebb4c58fadb32a6e685f51",
+  "branch": "work/b751-b770-harmonization-20261026",
+  "manifestExcludesItself": true,
+  "files": [
+    {
+      "path": ".github/workflows/identity-access.yml",
+      "sha256": "21517154e180300127de3dc91d1424fdd10d5d20cd8c492e3022c0ec0febcfad"
+    },
+    {
+      "path": "apps/operations/platform-workspace.js",
+      "sha256": "0c594ef3852b3cf0ece2c0405a6d303013d2ed9071fc373b0755664a8da56482"
+    },
+    {
+      "path": "docs/certification/b791-b820/certification-report.md",
+      "sha256": "c2b278f272875086949bb125c01e6ce47fee6a530c7d2fdfe3bc07c44789cf36"
+    },
+    {
+      "path": "docs/certification/b791-b820/defect-register.json",
+      "sha256": "51766ab4af3d3ce52a1ada3e99df08cc0f35b909dc01fa0dcbf8dde97a840e86"
+    },
+    {
+      "path": "docs/certification/b791-b820/defect-register.md",
+      "sha256": "bc3bb0bf9186b57a6fd71e4fa580cae2fb561e75e746b30077c9c249e2ead59b"
+    },
+    {
+      "path": "docs/certification/b791-b820/environment-checklist.md",
+      "sha256": "a137dda3ed1d047f1961056d26c0be3e326a92d9169146a7865d10952ec340e8"
+    },
+    {
+      "path": "docs/certification/b791-b820/hosted-gate.md",
+      "sha256": "1a879a9726faa516f70861d46b639f103c986d5a725b34ed6a6dbf55240f0288"
+    },
+    {
+      "path": "docs/certification/b791-b820/hosted-uat-results.json",
+      "sha256": "992beeea6484708203772b38199811bf3a14dccdf38e4653edf1d179a41a93ab"
+    },
+    {
+      "path": "docs/certification/b791-b820/manual-accessibility.json",
+      "sha256": "fa6bd6f14de88b3a5b24ae3f4e5ee2617c14fb0c68262f7da10e725ebc8d669e"
+    },
+    {
+      "path": "docs/certification/b791-b820/receipt.json",
+      "sha256": "c0e29e463fc0e4c44c9927deafa5863deb8905152e71be5b6ffb8d164afca5d5"
+    },
+    {
+      "path": "docs/certification/b791-b820/requirements.json",
+      "sha256": "dca153380c5e053bdc1a15aeef0b132bc5a432e4bab035bae4d88e2e8d464864"
+    },
+    {
+      "path": "docs/certification/b791-b820/screen-evidence.json",
+      "sha256": "14ce32281efea89a7cdb49632e99439f1c70b7326348aac3203bb92394a7f04e"
+    },
+    {
+      "path": "docs/certification/b791-b820/screen-evidence.md",
+      "sha256": "5ea88aa8679e9aa1d5af77d2d3351a6de5e31f5c026d97a38d27a27654e53a67"
+    },
+    {
+      "path": "docs/certification/harmonized-figma/matrix.json",
+      "sha256": "4cbc0cce45665aa964c01a53c77a3459c86c24921295f9057b8645482a39351f"
+    },
+    {
+      "path": "docs/security/b591-mvp-inventory.json",
+      "sha256": "8e64eee12a985d973429412f0da1f08e89be79df1078d6e09f77f1024d471e3d"
+    },
+    {
+      "path": "domain/operations-platform-contract.mjs",
+      "sha256": "cb4307f05af18dbb53fe3d4d4074b40b1974d0dd38a250c5a464e59eaa6d582d"
+    },
+    {
+      "path": "scripts/measure-uat-local-latency.mjs",
+      "sha256": "75e6b8970df41e2c1ec2276e5b9ef84a5a87c892643735762b5e2d4a2277bd23"
+    },
+    {
+      "path": "scripts/reconcile-figma-functionality.mjs",
+      "sha256": "cfc9f1909219b47509359bcef2d08f85e2ef1db506e986c725839eb8917d626d"
+    },
+    {
+      "path": "server/operations-uat-session-bridge.mjs",
+      "sha256": "28cf879fbc11fb67ab65260ea3375179d26088f100df895ad9550d83f1bfc637"
+    },
+    {
+      "path": "tests/browser/b791-platform-persistence.spec.mjs",
+      "sha256": "6592fef49ecb232cb42cdba255a4a1d9eae90afe5289ba5a7796cfdb5f05cf89"
+    },
+    {
+      "path": "tests/browser/integrated-workspace.mjs",
+      "sha256": "418d55195b656cb1ba088ed34106186f2250a56726021e3f14fb07059d22a409"
+    },
+    {
+      "path": "tests/browser/responsive-personas.spec.mjs",
+      "sha256": "e6dd09882b48b4da1bd5a54bf7b028aec4db6b0f80c7b28b73f6a931afe64222"
+    },
+    {
+      "path": "tests/operations-uat-application.test.mjs",
+      "sha256": "930c16c057f08c3f53b37930ab2012ffdedc58e6673407206262e3bac5d42831"
+    }
+  ]
+}

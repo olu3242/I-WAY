@@ -5,7 +5,7 @@ import {durableUatFixture} from '../helpers/durable-uat-fixture.mjs';
 import {createHostedUatHandler} from '../../server/operations-uat-hosted-handler.mjs';
 import {trackControls} from './control-evidence.mjs';
 
-export async function integratedWorkspace(browser,{role,width,postgres,platformPermissions}={}){
+export async function integratedWorkspace(browser,{role,width,postgres,platformPermissions,responseInterceptor}={}){
  const cleanup=[],f=await uatApplicationFixture({after:fn=>cleanup.push(fn)},{fullPermissions:true,platformPermissions});
  f.setLoginRole(role);
  let application=postgres?await durableUatFixture(f,postgres):f.integrated;
@@ -23,6 +23,9 @@ export async function integratedWorkspace(browser,{role,width,postgres,platformP
    });req.on('error',reject);req.end(request.postData()??undefined);
   });
   for(const name of ['transfer-encoding','connection','keep-alive','content-length'])delete response.headers[name];
+  // Fault injection stays after the loopback request commits. route.fetch()
+  // would bypass this fixture bridge and attempt the illustrative DNS origin.
+  if(responseInterceptor&&await responseInterceptor(request,response)==='abort'){await route.abort('failed');return;}
   // A fixture-only refresh starts a new routed navigation after an HTTP 303.
   // The real redirect contract is covered by the HTTP integration suite.
   if(response.status===303){

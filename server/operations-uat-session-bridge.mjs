@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {authenticateIdentity,principalFingerprint} from './operations-identity.mjs';
 import {session} from './operations-auth.mjs';
 import {readAuthCookie,SESSION_COOKIE} from './operations-supabase-pkce-session.experimental.mjs';
+import {platformGovernanceResourceKinds} from '../domain/operations-platform-contract.mjs';
 const hash=v=>createHash('sha256').update(v).digest('hex');
 const valid=v=>typeof v==='string'&&/^[A-Za-z0-9_-]{43}$/.test(v);
 const denied=()=>{throw Error('UAT_APPLICATION_SESSION_DENIED');};
@@ -12,7 +13,7 @@ export const clearOperationsCookie='iway_ops=; Path=/; Max-Age=0; HttpOnly; Secu
 export function createUatOperationsSessionBridge({origin,workflow,providerSessions,store,identityVerifier,platformNamespaceId,platformNamespaceVerified=false,clock=()=>Date.now()}={}){
  if(new URL(origin).origin!==origin||!origin.startsWith('https://')||![workflow?.session,workflow?.logout,providerSessions?.get,store?.principal].every(f=>typeof f==='function')||!identityVerifier||(!store.tenant(platformNamespaceId)&&!platformNamespaceVerified))throw Error('UAT_APPLICATION_BINDINGS_REQUIRED');
  // Platform namespace is an independently approved governance realm, not a carrier.
- if(store.db.prepare("SELECT 1 FROM users WHERE tenant_id=? AND json_extract(data,'$.role')<>'platform' LIMIT 1").get(platformNamespaceId)||store.db.prepare('SELECT 1 FROM resources WHERE tenant_id=? LIMIT 1').get(platformNamespaceId))throw Error('UAT_GOVERNANCE_NAMESPACE_INVALID');
+ if(store.db.prepare("SELECT 1 FROM users WHERE tenant_id=? AND json_extract(data,'$.role')<>'platform' LIMIT 1").get(platformNamespaceId)||store.db.prepare('SELECT 1 FROM resources WHERE tenant_id=? AND kind NOT IN ('+platformGovernanceResourceKinds.map(()=>'?').join(',')+') LIMIT 1').get(platformNamespaceId,...platformGovernanceResourceKinds))throw Error('UAT_GOVERNANCE_NAMESPACE_INVALID');
  store.db.exec(`CREATE TABLE IF NOT EXISTS uat_application_sessions(
   parent_hash TEXT PRIMARY KEY,native_hash TEXT NOT NULL,user_id TEXT NOT NULL,
   principal_id TEXT NOT NULL,revoked INTEGER NOT NULL DEFAULT 0,issued_at INTEGER NOT NULL);`);

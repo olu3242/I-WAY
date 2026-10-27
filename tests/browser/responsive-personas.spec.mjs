@@ -28,12 +28,15 @@ for(const width of [320,375,390,768,1024,1440])for(const role of ['platform','ca
   await expect(page).toHaveURL(f.origin+(role==='platform'?'/uat/control':'/app'));
   await expect(page.locator('h1')).toBeVisible();
   if(role==='platform'){
+   await expect(page.locator('#platform-workspace')).toHaveAttribute('aria-busy','false');
    await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Skip to administration'})).toBeFocused();
    await page.keyboard.press('Enter');await expect(page.locator('#main')).toBeFocused();
    // Keyboard press does not wait for enabled state; keep the deferred-script
    // initialization guard and verify readiness before exercising the control.
    await expect(page.getByRole('button',{name:'View administration activity'})).toBeEnabled();
+   const auditResponse=page.waitForResponse(r=>r.url().endsWith('/api/ops/platform')&&r.request().method()==='POST');
    await page.getByRole('button',{name:'View administration activity'}).press('Enter');
+   expect((await auditResponse).status()).toBe(200);
    await verifiedOutcome('button:View administration activity',async()=>{await expect(page.locator('#activity')).toContainText('platform:audit');});
    await layout(page,'platform-audit');await axeAccessibility(page,'responsive-platform-audit');
   }else{

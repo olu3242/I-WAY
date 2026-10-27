@@ -27,6 +27,9 @@ jobs:
           path: |
             dist/browser-results
             dist/browser-report
+            dist/browser-evidence.json
+            dist/mvp-control-evidence.json
+            dist/mvp-coverage.json
           retention-days: 7
   disposable-postgres:
     runs-on: ubuntu-24.04
@@ -106,7 +109,7 @@ jobs:
           IWAY_BROWSER_DURABLE_OPT_IN: 'true'
           IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
           IWAY_LOCAL_OPENSSL: /usr/bin/openssl
-        run: npx playwright test tests/browser/uat-application.spec.mjs tests/browser/first-value-persistence.spec.mjs tests/browser/owner-profiles.spec.mjs tests/browser/b751-b770.spec.mjs tests/browser/responsive-personas.spec.mjs
+        run: npx playwright test tests/browser/uat-application.spec.mjs tests/browser/first-value-persistence.spec.mjs tests/browser/owner-profiles.spec.mjs tests/browser/b751-b770.spec.mjs tests/browser/responsive-personas.spec.mjs tests/browser/b791-platform-persistence.spec.mjs
       - name: Retain synthetic browser evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -115,4 +118,6 @@ jobs:
           path: |
             dist/browser-report
             dist/browser-results
+            dist/browser-evidence.json
+            dist/mvp-control-evidence.json
           retention-days: 7

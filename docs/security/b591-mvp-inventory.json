@@ -17,7 +17,7 @@
     "apps/operations/load-wizard.js": "92d63aa6c4cc3aaaa87e230c5de3907d82ca5998d157f02da5e6e4ecedc23585",
     "apps/operations/expenses.js": "3d9e1e447f2c8467f00289daa40509c4a8b704d1e7e41bec982d04d244960460",
     "apps/operations/onboarding.js": "125bc603a4777088be7eb8d2aa0669dd6b628b0a8bf6af754c291a6db21f716c",
-    "apps/operations/platform-workspace.js": "1b5c7d7d07f4858d08f60153c67e58c0d9bd00cb9ed58c05968054c1254b1e0b",
+    "apps/operations/platform-workspace.js": "0c594ef3852b3cf0ece2c0405a6d303013d2ed9071fc373b0755664a8da56482",
     "server/operations-platform-workspace.mjs": "529bbdabc9adaec4792955d0894765bf7f368c1f32cfc5c4706f4233aab26985",
     "server/operations-pdf.mjs": "924b74295b3796528b9c78728c8665b7e7274cd71496c997c45d507c04b7486e",
     "apps/operations/maintenance.js": "4e55da00c88c2c65a11bfd8f42f6e89eeb95e6f41370df5d1de8b57240338920",
@@ -1713,7 +1713,7 @@
       "locations": [
         {
           "path": "apps/operations/platform-workspace.js",
-          "line": 11
+          "line": 25
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
