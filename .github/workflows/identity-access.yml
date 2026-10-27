@@ -17,7 +17,20 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run site:build
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test tests/browser/early-access.spec.mjs tests/browser/operations.spec.mjs
+      - run: npm run test:browser
+      - run: node scripts/report-mvp-coverage.mjs dist docs/certification/b751-b770/control-assertion-map.json
+      - name: Retain synthetic browser diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-diagnostics
+          path: |
+            dist/browser-results
+            dist/browser-report
+            dist/browser-evidence.json
+            dist/mvp-control-evidence.json
+            dist/mvp-coverage.json
+          retention-days: 7
   disposable-postgres:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -40,3 +53,71 @@ jobs:
           IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
           IWAY_LOCAL_OPENSSL: /usr/bin/openssl
         run: npm run test:pg:operations:local
+      - name: Certify isolated authentication lifecycle
+        env:
+          IWAY_AUTH_LOCAL_OPT_IN: 'true'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: node scripts/test-auth-postgres-isolated.mjs
+      - name: Certify isolated UAT broker
+        env:
+          IWAY_UAT_LOCAL_OPT_IN: 'true'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: node --test tests/local/uat-postgres.test.mjs
+      - name: Verify broker installer and managed role membership boundaries
+        env:
+          IWAY_B631_LOCAL_OPT_IN: 'true'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: node --test tests/b631-broker-remediation.postgres.mjs
+      - name: Certify durable Operations transactions and restart recovery
+        env:
+          IWAY_DURABLE_LOCAL_OPT_IN: 'true'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: node --test tests/local/durable-operations-postgres.test.mjs
+      - name: Certify isolated onboarding command custody
+        env:
+          IWAY_MANAGEMENT_LOCAL_OPT_IN: 'true'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: node --test tests/local/uat-management-postgres.test.mjs
+      - name: Certify hosted HTTP logistics across an actual PostgreSQL restart
+        env:
+          IWAY_BROWSER_DURABLE_OPT_IN: 'true'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: node --test tests/local/hosted-logistics-postgres.test.mjs
+  durable-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.16.0'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - name: Install disposable database prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-16 openssl
+      - name: Exercise hosted handler with four personas and durable Operations
+        env:
+          IWAY_BROWSER_DURABLE_OPT_IN: 'true'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: npx playwright test tests/browser/uat-application.spec.mjs tests/browser/first-value-persistence.spec.mjs tests/browser/owner-profiles.spec.mjs tests/browser/b751-b770.spec.mjs tests/browser/responsive-personas.spec.mjs tests/browser/b791-platform-persistence.spec.mjs tests/browser/b821-feedback.spec.mjs
+      - name: Retain synthetic browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: durable-browser-evidence
+          path: |
+            dist/browser-report
+            dist/browser-results
+            dist/browser-evidence.json
+            dist/mvp-control-evidence.json
+          retention-days: 7

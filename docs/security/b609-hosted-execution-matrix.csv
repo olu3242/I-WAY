@@ -1,0 +1,33 @@
+case,tester,persona,method,scenario,expected,status
+H-001,oadeyemo306@gmail.com,platform,google,login,Only approved canonical identity enters the correct native workspace,BLOCKED
+H-002,oadeyemo306@gmail.com,platform,google,refresh_logout_replay,Native and provider session lifecycle denies old handles after revocation,BLOCKED
+H-003,oadeyemo306@gmail.com,platform,google,role_tenant_resource_scope,Only approved permissions tenant relationship and ownership are visible,BLOCKED
+H-004,oadeyemo306@gmail.com,platform,password,login,Only approved canonical identity enters the correct native workspace,BLOCKED
+H-005,oadeyemo306@gmail.com,platform,password,refresh_logout_replay,Native and provider session lifecycle denies old handles after revocation,BLOCKED
+H-006,oadeyemo306@gmail.com,platform,password,role_tenant_resource_scope,Only approved permissions tenant relationship and ownership are visible,BLOCKED
+H-007,martin@tm88investments.com,carrier,google,login,Only approved canonical identity enters the correct native workspace,BLOCKED
+H-008,martin@tm88investments.com,carrier,google,refresh_logout_replay,Native and provider session lifecycle denies old handles after revocation,BLOCKED
+H-009,martin@tm88investments.com,carrier,google,role_tenant_resource_scope,Only approved permissions tenant relationship and ownership are visible,BLOCKED
+H-010,martin@tm88investments.com,carrier,password,login,Only approved canonical identity enters the correct native workspace,BLOCKED
+H-011,martin@tm88investments.com,carrier,password,refresh_logout_replay,Native and provider session lifecycle denies old handles after revocation,BLOCKED
+H-012,martin@tm88investments.com,carrier,password,role_tenant_resource_scope,Only approved permissions tenant relationship and ownership are visible,BLOCKED
+H-013,info@tm88investments.com,fleet,google,login,Only approved canonical identity enters the correct native workspace,BLOCKED
+H-014,info@tm88investments.com,fleet,google,refresh_logout_replay,Native and provider session lifecycle denies old handles after revocation,BLOCKED
+H-015,info@tm88investments.com,fleet,google,role_tenant_resource_scope,Only approved permissions tenant relationship and ownership are visible,BLOCKED
+H-016,info@tm88investments.com,fleet,password,login,Only approved canonical identity enters the correct native workspace,BLOCKED
+H-017,info@tm88investments.com,fleet,password,refresh_logout_replay,Native and provider session lifecycle denies old handles after revocation,BLOCKED
+H-018,info@tm88investments.com,fleet,password,role_tenant_resource_scope,Only approved permissions tenant relationship and ownership are visible,BLOCKED
+H-019,cassiomey@gmail.com,driver,google,login,Only approved canonical identity enters the correct native workspace,BLOCKED
+H-020,cassiomey@gmail.com,driver,google,refresh_logout_replay,Native and provider session lifecycle denies old handles after revocation,BLOCKED
+H-021,cassiomey@gmail.com,driver,google,role_tenant_resource_scope,Only approved permissions tenant relationship and ownership are visible,BLOCKED
+H-022,cassiomey@gmail.com,driver,password,login,Only approved canonical identity enters the correct native workspace,BLOCKED
+H-023,cassiomey@gmail.com,driver,password,refresh_logout_replay,Native and provider session lifecycle denies old handles after revocation,BLOCKED
+H-024,cassiomey@gmail.com,driver,password,role_tenant_resource_scope,Only approved permissions tenant relationship and ownership are visible,BLOCKED
+H-025,approved-negative-fixture,negative,both,fifth_identity,Unapproved identity denied before application session,BLOCKED
+H-026,approved-negative-fixture,negative,both,wrong_google_subject,Subject mismatch denied even with matching email,BLOCKED
+H-027,approved-negative-fixture,negative,both,expired_invitation_replay,Expired revoked and previously redeemed handle denied,BLOCKED
+H-028,approved-negative-fixture,negative,both,mfa_failure,Privileged session denied at aal1 or invalid challenge,BLOCKED
+H-029,approved-negative-fixture,negative,both,admin_revocation,Both cookie layers and refresh fail after native or roster revocation,BLOCKED
+H-030,approved-negative-fixture,negative,both,cross_tenant_identifier,Forged IDs and ownership changes denied without data exposure,BLOCKED
+H-031,approved-negative-fixture,negative,both,direct_origin_or_revoked_share,Entry protection denies direct ingress and removed tester access,BLOCKED
+H-032,approved-negative-fixture,negative,both,credentials_recovery,Approved recovery revokes old sessions without unsafe linking,BLOCKED

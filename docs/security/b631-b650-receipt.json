@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-23T23:22:02.827Z",
+  "branch": "work/b561-b580-external-uat",
+  "certifiedApplicationCommit": "b744cdc80d2cd2b9d5d0629baa2e044244cbc084",
+  "preparationParentCommit": "b744cdc80d2cd2b9d5d0629baa2e044244cbc084",
+  "preparationRevision": "The enclosing Git commit identifies this preparation snapshot; no new application implementation or deployment is certified",
+  "startingWorktreeClean": true,
+  "preparationChangedFiles": [
+    "db/review-only/b631-broker-remediation.sql",
+    "db/review-only/b631-broker-verify.sql",
+    "docs/security/b631-b650-receipt.json",
+    "docs/security/b631-b650-unified-certification.md",
+    "docs/security/b631-deployment-plan.md",
+    "tests/b631-broker-remediation.postgres.mjs",
+    "tests/helpers/uat-application-fixture.mjs",
+    "tests/operations-uat-application.test.mjs"
+  ],
+  "applicationSourceChanges": [],
+  "configuredSecretMatches": 0,
+  "filesScanned": 797,
+  "gitlinksNotRecursed": [
+    ".worktrees/b245-b256",
+    ".worktrees/hosted-registration",
+    ".worktrees/sop-b16"
+  ],
+  "baselineSourceHashesVerified": 33,
+  "evidenceReuse": {
+    "fullSuiteArtifacts": 9,
+    "handoffArtifacts": 13,
+    "hostedObservedAt": "2026-10-23T22:58:39.886Z",
+    "freshHostedInspection": false
+  },
+  "verification": {
+    "freshRepositoryTargeted": {
+      "pass": 37,
+      "fail": 0,
+      "skip": 0
+    },
+    "freshPostgres": {
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "note": "Node test total includes one parent and ten subtests; disposable local broker only"
+    },
+    "freshBuildChecks": {
+      "pass": 4,
+      "fail": 0
+    },
+    "priorRepository": {
+      "pass": 806,
+      "fail": 0,
+      "skip": 0
+    },
+    "priorBrowser": {
+      "pass": 52,
+      "fail": 0,
+      "skip": 0
+    },
+    "priorPostgres": {
+      "pass": 41,
+      "fail": 0,
+      "skip": 0
+    },
+    "priorAxe": {
+      "scans": 105,
+      "violations": 0
+    },
+    "hosted": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 84,
+      "NOT_RUN": 0,
+      "executed": 0
+    },
+    "manualAccessibility": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 0,
+      "NOT_RUN": 48
+    }
+  },
+  "decisions": {
+    "local": "GO_COVERED_WORKFLOWS",
+    "protectedPreview": "NO_GO",
+    "fourPersonaHostedUat": "NO_GO",
+    "production": "NO_GO"
+  },
+  "blockers": [
+    "DURABLE_OPERATIONS_AND_INTEGRATED_PACKAGE_UNFINISHED",
+    "PUBLIC_PROJECT_GIT_PUSH_DEPLOYMENT_TRIGGER",
+    "MISSING_BROKER_ROLE_SCHEMA_AND_REAL_RUNTIME_CREDENTIALS",
+    "TWELVE_PREVIEW_KEYS_MISSING",
+    "ZERO_REAL_USERS_IDENTITIES_AND_MEMBERSHIPS",
+    "UNVERIFIED_CALLBACKS_ORIGIN_AND_IDENTITY_MAPPING",
+    "FOUR_EXTERNAL_SHARES_REQUIRE_ELIGIBLE_PLAN_AND_APPROVAL",
+    "OWNER_CREDENTIAL_ROTATION_AND_HOSTED_VERIFICATION_REQUIRED"
+  ],
+  "externalWrites": [],
+  "artifacts": [
+    {
+      "path": "assemble-review.mjs",
+      "sha256": "db3fb66b7194d4c22b400d1b5b9b8f1ba48f6d81db4eb50bd754cbc4a54331fe"
+    },
+    {
+      "path": "baseline-evidence-validation.json",
+      "sha256": "22e70ade5cf7e446177f73115fcc4edfd46e27cfca15ad0af3d310c132379d4d"
+    },
+    {
+      "path": "baseline-tests/b601-verify.log",
+      "sha256": "70f8cdd9961e36778712f9440c7dc9f5d35fa29f3ad50f2da20179473a3a6a1c"
+    },
+    {
+      "path": "baseline-tests/b608-auth-postgres.log",
+      "sha256": "445333e64b3cd90ed7ccdce3a4b6d6d43ecfad13d5736838ad9f2f14baaf8947"
+    },
+    {
+      "path": "baseline-tests/b608-broker-postgres.log",
+      "sha256": "8c697dcf46447caeb39fc5efa03f31b7d50d22d9545d5a76acc5b8b4eea91d08"
+    },
+    {
+      "path": "baseline-tests/b608-browser.log",
+      "sha256": "33225d27341872427ad8ef2f2021b58c50ec739224d9ba1eed2897d68e4915b9"
+    },
+    {
+      "path": "baseline-tests/b608-operations-postgres.log",
+      "sha256": "3275cb40ad1fb645bb58741db45e89bb6f8ca5afee47d26b0ada6ed99b7138ef"
+    },
+    {
+      "path": "baseline-tests/b608-verify-final.log",
+      "sha256": "fc73127a54851d92073d97e855145824e3a80ae837a5a6b83233e7010383b39c"
+    },
+    {
+      "path": "baseline-tests/browser-evidence.json",
+      "sha256": "8327ba290d81eebcfb5b41507a386852ff480f29a70571c9f1c742355f3a2f99"
+    },
+    {
+      "path": "baseline-tests/mvp-control-evidence.json",
+      "sha256": "ee72b10c69cdb059ed88e5778fd869bfe16494f59c76004a9e31cd06d6db05e3"
+    },
+    {
+      "path": "baseline-tests/mvp-coverage.json",
+      "sha256": "85e7c3fd545ef1a63f776fc2d7488539b3070985bfcaf5262c00266d719d8e65"
+    },
+    {
+      "path": "broker-remediation-dry-run.log",
+      "sha256": "12ac33ddcf9d1e182037a410aba87bfc2e224f99e6ec0b866e5f952e86c55c77"
+    },
+    {
+      "path": "build-checks.json",
+      "sha256": "d3d5372195662e260deccb948361fe127d3c4500061ea7e7289b3feff11181d4"
+    },
+    {
+      "path": "prior/candidate-integrity.json",
+      "sha256": "21bdb84414c8f66b18f06620f496f6de90689a10362b07ec383567cc199a2a78"
+    },
+    {
+      "path": "prior/environment-matrix.csv",
+      "sha256": "14c4f8bf48fabc7d22ee7a7cb4b962a7e82a450029cbe2c76fba20b44b9185f8"
+    },
+    {
+      "path": "prior/environment-matrix.json",
+      "sha256": "dacd9e9d8550a008c0629b791dc1cb2d6a66db3adec8b70ed8c4d9d060a92eb5"
+    },
+    {
+      "path": "prior/execution-plan.json",
+      "sha256": "e578141aca026222d485f760f18aa2ad5a1687637d904002e6d8753b254c7a6f"
+    },
+    {
+      "path": "prior/git-project-settings.json",
+      "sha256": "fcd34212274b557c1065de6573a9bf914dade24b2787f07f7a2d52f34404f5c2"
+    },
+    {
+      "path": "prior/hosted-e2e-matrix.csv",
+      "sha256": "a5a501dc51d7ede8c57826ef0ba6040f09d7108c1c7820675871c1305bd11874"
+    },
+    {
+      "path": "prior/hosted-readonly-inspection.json",
+      "sha256": "fe1842f8ca3cd35cca2390ffe1f399a6b040e6822c6acccd5c31aa3cf7e91b6c"
+    },
+    {
+      "path": "prior/local-readiness-checks.log",
+      "sha256": "46f761df7845f18b3f5904bf8f02ce7c92eb6bfe63d7b8a89ee81b9d2a83fb1d"
+    },
+    {
+      "path": "prior/manual-accessibility-checklist.csv",
+      "sha256": "ca604a5ec3ee9a0ac5a82bb380eb58526a4d910f0f9e882a4fe02f00b05f94e7"
+    },
+    {
+      "path": "prior/provisioning-manifest.json",
+      "sha256": "201366f980f5bc6c7c093969eaf978ceed025c300a537c1eef49d950fa19eb9a"
+    },
+    {
+      "path": "prior/provisioning-validation.json",
+      "sha256": "4707709d79865ff20fed9c20dcff51d4e2229d61e8de65c76c67e827e417c9dc"
+    },
+    {
+      "path": "prior/readiness-report.md",
+      "sha256": "d433b0db59bfd3e79f4dc94f593d05961ce59aeea0e0a0ec3ace5bd3e8feb7a1"
+    },
+    {
+      "path": "prior/receipt.json",
+      "sha256": "365a2ae43c5c3745b09d932931332040ab2e8539ccaaf4a7b94ac40f55470e22"
+    },
+    {
+      "path": "prior/staging-configuration-proposal.json",
+      "sha256": "1beca954feeb02ced5f4187c10098c6faa4e3d7c20464be08a350ede87dcc2f3"
+    },
+    {
+      "path": "prior-evidence-validation.json",
+      "sha256": "19870a9818bfe382ff5367f2cd156782b5af03b2191ed5bb581c2140b7d8450b"
+    },
+    {
+      "path": "review-files/db/review-only/b631-broker-remediation.sql",
+      "sha256": "47b9008a2bccf224976a2710c69703d0aa05c23433cb3ca92edd06dab37ad2a8"
+    },
+    {
+      "path": "review-files/db/review-only/b631-broker-verify.sql",
+      "sha256": "4f4c6e88891ed671a6de1499179685e0486836cb95f116f50e2a2567fb1bbb77"
+    },
+    {
+      "path": "review-files/docs/security/b631-b650-unified-certification.md",
+      "sha256": "46cac56b0dec426b57c337d6d8730ad14562bddd70a94e657f272bb588beef90"
+    },
+    {
+      "path": "review-files/docs/security/b631-deployment-plan.md",
+      "sha256": "07db45281b378de5246689e68c52c5e4062b4be90c60d0b0e1c9263246e9b4f4"
+    },
+    {
+      "path": "review-files/tests/b631-broker-remediation.postgres.mjs",
+      "sha256": "9e3ee0a74824c7abe37ae728a0c29c34400884a71db453541aba3483ac44f6b9"
+    },
+    {
+      "path": "review-files/tests/helpers/uat-application-fixture.mjs",
+      "sha256": "334d63299d0d17de43b8ad92c96950a04152a4ff73408f81ec272007d011ea9e"
+    },
+    {
+      "path": "review-files/tests/operations-uat-application.test.mjs",
+      "sha256": "73a13fb9bc796b7dfefa3c3be3493b97fb54f91b00581c57921746668b7899dd"
+    },
+    {
+      "path": "targeted-authentication.log",
+      "sha256": "b438e39cccd135b055de51bdaae4a2b8a671e95f39b7433522f3eba0e3d97a55"
+    }
+  ]
+}

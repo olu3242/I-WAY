@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "scope": "Current implemented contracts and explicit release dependencies; FIXED requires final evidence gates",
+  "items": [
+    {
+      "id": "D01",
+      "severity": "HIGH",
+      "status": "FIXED",
+      "rootCause": "Pending governance response replaced adjacent edited fields; stale success remained visible",
+      "correctionOrNextAction": "Serialize workspace writes, capture FormData before disabling controls, expose busy state, clear prior success, and confirm refreshed state before saved announcement",
+      "evidence": "CI trace has zero config POST; deterministic baseline failure and fixed browser/PG persistence, retry and stale-revision cases"
+    },
+    {
+      "id": "D02",
+      "severity": "HIGH",
+      "status": "FIXED",
+      "rootCause": "Durable request reconstruction rejected legitimate governance resource records",
+      "correctionOrNextAction": "Allow only platformcase, platformcaseevent, platformconfig and supportrequest in governance; retain platform-only principals and deny operational/unknown kinds",
+      "evidence": "Positive reconstructed-store unit regression; five disallowed kinds plus carrier-principal negatives; four real disposable-PG browser regressions"
+    },
+    {
+      "id": "D03",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "rootCause": "Remote source/test edits left reconciliation and MVP inventory hashes stale",
+      "correctionOrNextAction": "Regenerate both authoritative artifacts from current LF-normalized source; preserve discovery-versus-execution classifications",
+      "evidence": "Figma mapping, MVP inventory and Linux/Windows normalization assertions; fresh full verify"
+    },
+    {
+      "id": "D04",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "rootCause": "Platform keyboard test could begin during initial governance hydration",
+      "correctionOrNextAction": "Wait for completed actual initial hydration and enabled control; require real audit POST 200 before retaining original audit assertion",
+      "evidence": "Six platform widths with keyboard audit outcome; no sleeps or weaker assertion"
+    },
+    {
+      "id": "D05",
+      "severity": "MEDIUM",
+      "status": "IMPLEMENTED_LOCAL_CI_BLOCKED",
+      "rootCause": "CI artifact upload omitted machine-readable browser/control summaries",
+      "correctionOrNextAction": "Retain non-secret summary JSON alongside existing synthetic browser artifacts and include four configuration regressions in durable CI",
+      "evidence": "Workflow diff and actual final-SHA CI artifacts/jobs to be recorded after publication"
+    },
+    {
+      "id": "G01",
+      "severity": "CRITICAL",
+      "status": "BLOCKED_OWNER_TARGET",
+      "rootCause": "No exclusive approved staging database/management owner; code pins explicitly excluded public early-access project",
+      "correctionOrNextAction": "Owner designates target and private management owner/location, followed by one consistent reviewed pin/schema/credential integration",
+      "evidence": "Do not connect or deploy against inferred/public/unrelated target"
+    },
+    {
+      "id": "G02",
+      "severity": "HIGH",
+      "status": "BLOCKED_HOSTED_POLICY",
+      "rootCause": "SUPABASE_SERVICE_ROLE_KEY name configured in application Preview scope",
+      "correctionOrNextAction": "Owner reviews removal from exact Preview scope and keeps management credential outside application; do not touch Production scope",
+      "evidence": "Names-only metadata and application-consumption policy; value/use not asserted"
+    },
+    {
+      "id": "G03",
+      "severity": "HIGH",
+      "status": "BLOCKED_IDENTITY_ACCESS",
+      "rootCause": "Approved four-email roster lacks verified target-specific canonical identity/role/tenant/fleet/employment evidence and controlled entry",
+      "correctionOrNextAction": "Verify approved actual bindings and MFA; designate delivery owner/provider; approve each provisioning/access action separately",
+      "evidence": "No assumption of zero accounts or successful upstream grants; no real creation/invitation/enrollment performed"
+    },
+    {
+      "id": "G04",
+      "severity": "HIGH",
+      "status": "BLOCKED_CONTRACT",
+      "rootCause": "Full Platform tenant provisioning/global readers and end-to-end platform-created onboarding are unsupported",
+      "correctionOrNextAction": "Approve least-privilege management API, lifecycle, permissions and audit contracts; preserve carrier-owned dispatch",
+      "evidence": "Seeded synthetic setup does not certify a product provisioning feature"
+    },
+    {
+      "id": "G05",
+      "severity": "MEDIUM",
+      "status": "BLOCKED_REFERENCE",
+      "rootCause": "Original approved Figma version and exports unavailable",
+      "correctionOrNextAction": "Design owner provides canonical file/version and original screen exports while Brand Kit stays authoritative",
+      "evidence": "All 35 mappings retained; no conformity percentage inferred from current captures"
+    },
+    {
+      "id": "G06",
+      "severity": "MEDIUM",
+      "status": "NOT_RUN_HUMAN",
+      "rootCause": "Human accessibility and real tester acceptance not performed",
+      "correctionOrNextAction": "Execute preserved 48 human scripts and approved UAT acceptance after infrastructure/identity gates",
+      "evidence": "Axe and synthetic journeys are not WCAG or human acceptance certification"
+    },
+    {
+      "id": "G07",
+      "severity": "MEDIUM",
+      "status": "BLOCKED_CONTRACT",
+      "rootCause": "Sensitive upload/signature/GPS/provider contracts and seven named-agent aliases unresolved",
+      "correctionOrNextAction": "Approve storage/access/retention/deletion and provider/alias-to-owner mappings before activation",
+      "evidence": "Five actual bounded advisory summaries preserved; no invented live AI or payment transfer"
+    },
+    {
+      "id": "G08",
+      "severity": "HIGH",
+      "status": "BLOCKED_PUSH_APPROVAL",
+      "rootCause": "Automatic approval review denied combined commit/push, citing standing no-push restriction",
+      "correctionOrNextAction": "Owner explicitly approves pushing the exact local candidate SHA to existing feature branch/PR #21; then run and inspect authoritative CI before considering deployment",
+      "evidence": "No remote publication or final-candidate CI run; last inspected remote cf052ee remains failed"
+    }
+  ]
+}

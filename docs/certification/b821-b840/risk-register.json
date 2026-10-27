@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "risks": [
+    {
+      "id": "R01",
+      "severity": "critical",
+      "status": "BLOCKED",
+      "risk": "Exclusive staging database and authenticated management owner unassigned",
+      "nextAction": "Owner supplies approved project/database ID and private connection location; never reuse public/Velocity targets."
+    },
+    {
+      "id": "R02",
+      "severity": "critical",
+      "status": "BLOCKED",
+      "risk": "Current target pins still identify excluded public early access",
+      "nextAction": "After R01, one reviewed consistent database/issuer/JWKS/provider/publishable-key pin change and regression; no validator relaxation."
+    },
+    {
+      "id": "R03",
+      "severity": "critical",
+      "status": "BLOCKED",
+      "risk": "Preview application contains a service-role key name; values/runtime not certified",
+      "nextAction": "Owner approves exact Preview cleanup and dedicated restricted credentials; Production remains excluded."
+    },
+    {
+      "id": "R04",
+      "severity": "critical",
+      "status": "BLOCKED",
+      "risk": "Canonical identity, tenant/fleet/employment, MFA and target schema evidence absent",
+      "nextAction": "Owner approves and verifies actual IDs/grants/enrollment; roster remains intended hierarchy only."
+    },
+    {
+      "id": "R05",
+      "severity": "high",
+      "status": "BLOCKED",
+      "risk": "Invitation provider/sender and accountable management owner unknown",
+      "nextAction": "Designate provider and isolated management connection, approve actual existing-user issuance and verify delivery evidence."
+    },
+    {
+      "id": "R06",
+      "severity": "high",
+      "status": "BLOCKED",
+      "risk": "Protected external tester entry not granted",
+      "nextAction": "Owner approves exact protected commit Preview, individual identities, expiry and serial Hobby grants; keep SSO."
+    },
+    {
+      "id": "R07",
+      "severity": "high",
+      "status": "NOT_RUN",
+      "risk": "Human UAT/accessibility and supported browser acceptance",
+      "nextAction": "Run 48 scripts plus feedback tasks with named reviewers/AT/device versions; no human results fabricated."
+    },
+    {
+      "id": "R08",
+      "severity": "high",
+      "status": "BLOCKED",
+      "risk": "Original approved Figma file/version/exports unavailable",
+      "nextAction": "Provide canonical approved reference; percentages remain null."
+    },
+    {
+      "id": "R09",
+      "severity": "high",
+      "status": "BLOCKED",
+      "risk": "Seven agent names lack approved responsibilities/mappings",
+      "nextAction": "Owner approves mapping to current bounded roles; do not invent capabilities or autonomous financial authority."
+    },
+    {
+      "id": "R10",
+      "severity": "high",
+      "status": "BLOCKED",
+      "risk": "Full sensitive document/storage, specialized equipment and provider contracts incomplete",
+      "nextAction": "Approve privacy/access/retention/deletion and business contracts before enabling those flows."
+    },
+    {
+      "id": "R11",
+      "severity": "high",
+      "status": "BLOCKED",
+      "risk": "Hosted backup/restore, SLO/capacity and recovery deployment unverified",
+      "nextAction": "Database/release owners define approved recovery target, objectives and rehearse in staging."
+    },
+    {
+      "id": "R12",
+      "severity": "high",
+      "status": "CONTROLLED",
+      "risk": "Rollback after governance feedback requires allowlist compatibility",
+      "nextAction": "Retain both feedback resource kinds in a reviewed recovery build; preserve records and history."
+    },
+    {
+      "id": "R13",
+      "severity": "high",
+      "status": "BLOCKED",
+      "risk": "Feedback is opt-in and no real participant is enabled",
+      "nextAction": "Approve individual stored opt-ins and base authority after identity/tenant verification; no grant endpoint or automatic provisioning."
+    }
+  ],
+  "hostedDecision": "NO_GO",
+  "productionDecision": "NO_GO"
+}

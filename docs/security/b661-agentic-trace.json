@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "scope": "Internal Operations architecture and B665 agentic integration; no hosted or live-model certification",
+  "baseline": "9d1f2f4b100333953cac9911f4a08e4c9604ec3e",
+  "namedAgents": [
+    {"name":"MAX","status":"NO_NAMED_EXECUTABLE_BINDING","approvedFunctionalMapping":null},
+    {"name":"PULSE","status":"NO_NAMED_EXECUTABLE_BINDING","approvedFunctionalMapping":null},
+    {"name":"CLARA","status":"NO_NAMED_EXECUTABLE_BINDING","approvedFunctionalMapping":null},
+    {"name":"GUARDIAN","status":"NO_NAMED_EXECUTABLE_BINDING","approvedFunctionalMapping":null},
+    {"name":"FINN","status":"NO_NAMED_EXECUTABLE_BINDING","approvedFunctionalMapping":null},
+    {"name":"SAGE","status":"NO_NAMED_EXECUTABLE_BINDING","approvedFunctionalMapping":null},
+    {"name":"ATLAS","status":"NO_NAMED_EXECUTABLE_BINDING","approvedFunctionalMapping":null}
+  ],
+  "namedAgentFinding": "The executable source does not bind the requested brand names to services. Functional advisory roles exist; assigning a brand name to one would invent a mapping. No named-agent or live-model PASS is claimed.",
+  "applicationPath": {
+    "ui": ["apps/operations/ops.js","apps/operations/intelligence.js","apps/operations/extended.js"],
+    "commandEndpoint": "POST /api/ops/commands",
+    "httpHandler": "server/operations-app.mjs:makeOperationsApp",
+    "commandEngine": "domain/operations.mjs:Operations.execute",
+    "featureComposition": "domain/operations-features.mjs:createOperationsFeatures",
+    "localWorker": "scripts/operations-start.mjs:startLocalOperations",
+    "workerComposition": "domain/operations-features.mjs:runFeatureTick",
+    "durableCommandWorker":"server/operations-durable-worker.mjs:advanceDurableAdvisories",
+    "durableWorkerBoundary":"Runs inside an existing verified single-tenant transaction following a successful authorized mutation. At most one exception workflow and five checkpoints from one deterministic orchestration job; human approval is never decided by the worker. No GET-triggered scheduling, interval, connector execution or live provider call.",
+    "stateEndpoint": "GET /api/ops/state",
+    "baselinePersistence": "Synchronous SQLite via server/operations-store.mjs; the baseline async PostgreSQL load adapter is not a complete application adapter",
+    "security": ["Authenticated principal","Approved host and same origin","CSRF for mutations","Current role and permission","Tenant and resource relationship","Optimistic resource version","Actor-scoped idempotency digest","Append-only audit"]
+  },
+  "workflows": [
+    {
+      "id":"coordinated-review",
+      "uiAction":"orchestration:request",
+      "service":"domain/operations-runtime.mjs",
+      "entrypoints":["createRuntimeExtensions","claimJob","executeAdvisory","completeJob","failJob","heartbeatJob"],
+      "roles":["dispatch","tracking","documents","exceptions","finance"],
+      "tools":["dispatch:summary","tracking:summary","documents:summary","exceptions:summary","finance:readiness"],
+      "persistedKinds":["orchestration","agentdecision","governancepolicy","aipolicy"],
+      "behavior":"Current tenant records produce bounded advisory checkpoints; five roles only when requester permissions permit finance. Driver and fleet principals cannot request orchestration.",
+      "recovery":"Leases, bounded heartbeats, fencing, retry/backoff, three-attempt dead letters, cancellation and human reauthorization. Authority and current load version rechecked at claim and completion.",
+      "auditActions":["orchestration:request","runtime:claim","runtime:decision","runtime:checkpoint","runtime:failure","runtime:blocked","orchestration:retry","orchestration:cancel"],
+      "consequentialExecution":false,
+      "model":null,
+      "live":false
+    },
+    {
+      "id":"exception-recovery",
+      "uiActions":["exception:report","workflow:advance","workflow:restart","approval:decide"],
+      "service":"domain/operations-automation.mjs",
+      "persistedKinds":["exception","workflow","recommendation","approval"],
+      "behavior":"A rules recommendation requests an independent carrier review before applying an exception resolution. The service cannot decide human approvals, dispatch or approve finances.",
+      "recovery":"Transient step failures retry with bounded backoff; expired/stale approvals and revoked reviewer authority fail closed. Current capacity eligibility rechecked before approved application.",
+      "auditActions":["exception:report","workflow:start","recommendation:create","approval:request","approval:decide","approval:invalidate","approval:apply","exception:resolve","workflow:failed","workflow:complete"],
+      "requiresIndependentApproval":true,
+      "model":null,
+      "live":false
+    },
+    {
+      "id":"capacity-recommendation",
+      "uiActions":["capacity:recommend","capacity:decide","capacity:apply"],
+      "service":"domain/operations-intelligence.mjs",
+      "persistedKinds":["capacityproposal","assignment","load","shipment"],
+      "behavior":"Eligibility-derived proposal requires independent carrier approval, then explicit authorized human application. No autonomous driver assignment.",
+      "recovery":"Stale load/capacity/approver evidence, expiry, rejection, self approval, authority withdrawal and replay are rejected; immutable proposal evidence and single-active-assignment constraints remain authoritative.",
+      "auditActions":["capacity:recommend","capacity:decide","capacity:apply"],
+      "requiresIndependentApproval":true,
+      "model":null,
+      "live":false
+    },
+    {
+      "id":"risk-and-arrival",
+      "uiActions":["risk:analyze","route:evaluate"],
+      "service":"domain/operations-intelligence.mjs",
+      "persistedKinds":["risk","routeevaluation"],
+      "behavior":"Deterministic risk from recorded evidence and ETA from explicit distance/speed/handling assumptions. No live GPS or routing provider.",
+      "consequentialExecution":false,
+      "model":null,
+      "live":false
+    },
+    {
+      "id":"document-extraction",
+      "uiActions":["document:ingest","document:review","document:scan"],
+      "services":["domain/operations-documents.mjs","domain/operations-document-adapters.mjs"],
+      "persistedKinds":["document","documentexception","pod"],
+      "behavior":"Bounded plain text/JSON parser, metadata lineage and separate human document review. Supported local parser outputs are validated against reproducible extraction semantics.",
+      "recovery":"Bounded provider timeout and explicit local fallback; malformed provenance/schema rejected. External OCR/model adapter is blocked.",
+      "model":null,
+      "live":false
+    },
+    {
+      "id":"governed-provider-advice",
+      "command":"provider:recommend",
+      "service":"domain/operations-provider.mjs",
+      "persistedKinds":["providerrecommendation","governancepolicy"],
+      "uiStatus":"Command and state projection implemented; no dedicated provider:recommend button in the current native UI",
+      "behavior":"Server-minimized dispatch/document/exception/finance context, local deterministic labels, immutable advice, no tool calls. Current permissions and carrier governance govern replay and visibility.",
+      "recovery":"Invalid output/failure/timeout produces bounded local fallback with sanitized provenance; unapproved live/model adapters rejected before invocation.",
+      "modelProviderStatus":"BLOCKED",
+      "modelInferenceCount":0,
+      "inferenceCostUSD":null,
+      "live":false
+    },
+    {
+      "id":"local-connectors",
+      "uiActions":["connector:request","connector:retry","connector:cancel"],
+      "services":["domain/operations-runtime.mjs","domain/operations-connectors.mjs"],
+      "capabilities":["mapping","telematics","communications","accounting","logistics"],
+      "persistedKinds":["connectorjob","connectorresult"],
+      "behavior":"Explicit local fixture or user-reported inputs only. Communications record local results without delivery; accounting does not send transactions; telematics does not infer live GPS.",
+      "recovery":"Server-approved adapter binding, result provenance, source snapshot, job lease/fence and current authorization checked before immutable completion.",
+      "externalIntegration":false,
+      "model":null,
+      "live":false
+    }
+  ],
+  "durabilityContract": {
+    "implementedAdapter":"server/operations-durable-postgres.mjs:DurableOperationsPgEngine",
+    "implementedStorage":"Restricted PostgreSQL operations_engine_private.state plus append-only operations_engine_private.audit are authoritative; a tenant-scoped in-memory SQLite materialization retains the existing synchronous domain validation, indices and triggers for a single PostgreSQL transaction.",
+    "postgresEvidence":{"suite":"tests/local/durable-operations-postgres.test.mjs","log":"dist/b661-b680/durable-postgres.log","pass":15,"fail":0,"skip":0,"countIncludesParent":true,"agenticSubtests":4,"hosted":false},
+    "coreTables":["tenants","users","resources","commands","audit","sessions","session_security","identity_bindings","invitations","invitation_deliveries"],
+    "atomicity":"A domain command, actor-scoped idempotency evidence and all related resource/audit writes must commit or roll back together.",
+    "criticalConstraints":["Tenant ownership cannot change","Single active assignment per load/driver/vehicle","Single active advisory/connector job per scope","Single immutable checkpoint per job/run/checkpoint","Runtime evidence immutable","Audit append only","Command evidence immutable","Identity subject binding unique","Current principal authorization on replay"],
+    "restartEvidenceRequired":["Committed resources and command replay survive connection/process restart","Pending human approval remains pending","Approved reviewer authority is rechecked after recovery","Retry/backoff and lease fences survive reopening","Incomplete evidence rolls back","Cross-tenant reads remain denied after restart"],
+    "snapshotCompatibilityRequirement":"The PostgreSQL compatibility execution restores the tenant domain schema and its constraints, preserves tenant records, serializes tenant mutations and persists only after transaction success. An ephemeral execution store is never the durable source of truth.",
+    "remainingLimits":["A complete tenant snapshot is materialized for each transaction; this is an MVP compatibility adapter, not a normalized high-volume implementation","Tenant snapshot limit is 32 MiB; full tenant journal is read and verified per transaction","Real hosted credentials, provisioned identities and protected route execution remain unverified"]
+  },
+  "unexecutedOrDisconnected": [
+    "Named MAX/PULSE/CLARA/GUARDIAN/FINN/SAGE/ATLAS service mappings are absent",
+    "Live model inference, external OCR, live GPS, external messages and external accounting are deliberately blocked",
+    "provider:recommend has an API command and state projection but no dedicated native UI action",
+    "Hosted identities, runtime credentials, external protected entry and hosted workflow execution remain separate blocked gates"
+  ],
+  "baselineEvidence": ["tests/operations-runtime.test.mjs","tests/operations-automation.test.mjs","tests/operations-intelligence.test.mjs","tests/operations-provider.test.mjs","tests/operations-document-adapters.test.mjs","tests/operations-ai-policy.test.mjs"],
+  "certificationBoundary":"Local deterministic workflow execution is not named-agent certification, model inference evidence or hosted PASS. The new disposable PostgreSQL suite proves durable local advisory handoffs and recovery separately from existing SQLite tests."
+}

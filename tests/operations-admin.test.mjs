@@ -15,7 +15,7 @@ function setup(){
  return {db,admin:createOperationsAdmin(store),actors};
 }
 test('organization admin CRUD isolates tenants and rejects stale versions',()=>{
- const {admin,actors}=setup();
+ const {admin,actors,db}=setup();
  assert.equal(admin.updateSettings(actors.owner,{legalName:'A Logistics',currency:'USD'},0).ok,true);
  assert.equal(admin.getSettings(actors.other).version,0);
  assert.equal(admin.updateSettings(actors.owner,{legalName:'Changed'},0).code,'CONFLICT');
@@ -23,6 +23,10 @@ test('organization admin CRUD isolates tenants and rejects stale versions',()=>{
  assert.equal(admin.list(actors.other,'permission-set').items.length,0);
  assert.equal(admin.upsert(actors.owner,'permission-set','dispatch',{name:'dispatch',grants:[],denials:[]},0).code,'CONFLICT');
  assert.equal(admin.remove(actors.owner,'permission-set','dispatch',1).ok,true);
+ assert.equal(admin.list(actors.owner,'permission-set').items.length,0);
+ const retained=db.prepare("SELECT version,data FROM organization_admin WHERE id='dispatch'").get();
+ assert.equal(retained.version,2);assert.equal(JSON.parse(retained.data)._deactivated,true);
+ assert.equal(admin.audit(actors.owner).events[0].operation,'deactivate');
  assert.equal(admin.audit(actors.owner).events.length,3);
 });
 test('admin blocks noncarrier and revoked governance permission',()=>{

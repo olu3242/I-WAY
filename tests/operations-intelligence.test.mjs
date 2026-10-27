@@ -151,13 +151,22 @@ test('workspace audit exposes metadata only, including after domain permission w
  f.command(f.dispatcher,'route:evaluate',load,routeInput);
  setGrants(f,f.manager,f.manager.permissions.filter(permission=>permission!=='cost:manage'));
  setGrants(f,f.dispatcher,f.dispatcher.permissions.filter(permission=>permission!=='intelligence:view'));
+ // An allowed UUID can contain the same digits as a private amount. Compare
+ // typed metadata fields, rather than searching all serialized identifiers.
+ const metadataId='00091743-1111-4111-8111-111111111111';
+ f.store.audit(f.manager,'cost:record',metadataId,'success',{after:{amountCents:91743,reference:'ILL-AUDIT-PRIVATE-PAYLOAD'}});
  const managerState=f.ops.state(f.manager.id),dispatcherState=f.ops.state(f.dispatcher.id);
  assert.equal(managerState.costSummary,null);assert.deepEqual(dispatcherState.routes,[]);
  for(const state of [managerState,dispatcherState]){
   assert.ok(state.audit.length>0);
-  for(const row of state.audit)assert.deepEqual(Object.keys(row).sort(),['sequence','actorId','action','resourceId','at','outcome'].sort());
-  assert.ok(!JSON.stringify(state.audit).includes('91743'));
+  for(const row of state.audit){
+   assert.deepEqual(Object.keys(row).sort(),['sequence','actorId','action','resourceId','at','outcome'].sort());
+   const stored=f.store.db.prepare('SELECT sequence,actor_id AS actorId,action,resource_id AS resourceId,at,outcome FROM audit WHERE sequence=?').get(row.sequence);
+   assert.deepEqual({...row},{...stored});
+  }
+  assert.ok(!JSON.stringify(state.audit).includes('ILL-AUDIT-PRIVATE-PAYLOAD'));
  }
+ assert.ok(managerState.audit.some(row=>row.resourceId===metadataId));
  const stored=JSON.parse(f.store.db.prepare('SELECT detail FROM audit WHERE resource_id=?').get(cost.id).detail);
  assert.equal(stored.after.amountCents,91743);
  assert.throws(()=>f.store.db.prepare('DELETE FROM audit WHERE resource_id=?').run(cost.id),/append.only|immutable/i);

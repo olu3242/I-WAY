@@ -4,10 +4,10 @@ import {OpsError,fields,text,requireValue} from '../domain/operations-errors.mjs
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const hour=3600000,defaultIdle=30*60000;
 const verifiers=new WeakSet(),proofs=new WeakSet(),trustedSessions=new WeakSet();
-const sessionTokens=new WeakMap();
+const sessionTokens=new WeakMap(),profileContexts=new WeakMap();
 const atomic=(store,fn)=>store.db.isTransaction?fn():store.transaction(fn);
 function trustedSession(value,token){Object.freeze(value.actor.permissions);Object.freeze(value.actor);Object.freeze(value);trustedSessions.add(value);sessionTokens.set(value,token);return value;}
-export function isTrustedIdentitySession(store,auth,now=Date.now()){return trustedSessions.has(auth)&&!!readSession(store,sessionTokens.get(auth),now);}
+export function isTrustedIdentitySession(store,auth,now=Date.now()){const context=profileContexts.get(auth);if(context)return context.store===store&&now<context.expiresAt&&!!store.principal(auth.actor.id)&&principalFingerprint(store.principal(auth.actor.id))===context.fingerprint&&store.principal(auth.actor.id)?.ownerUserId===context.ownerUserId;return trustedSessions.has(auth)&&!!readSession(store,sessionTokens.get(auth),now);}
 export function verifyIdentityProof(verifier,token,now=Date.now()){requireValue(verifiers.has(verifier),'IDENTITY_CONFIG','A configured identity verifier is required.',503);return verifier.verify(token,now); }
 export const identitySQL=`
  CREATE TABLE IF NOT EXISTS session_security(
@@ -201,3 +201,14 @@ export function createIdentityExtensions(){return {
   return {id:updated.id,role:updated.role,permissions:updated.permissions,authVersion:updated.authVersion,active:updated.active};
  }
 };}
+
+// Request-scoped owner profile authority. The caller has already authenticated the
+// original native session; a signed AAL2 proof and an owner-owned principal are
+// independently required here. This never changes another user's identity binding.
+export function authenticateOwnerProfile(store,verifier,token,{ownerUserId,principalId,role,tenantId,fleetId,permissions,csrf},now=Date.now()){
+ const proof=verifyIdentityProof(verifier,token,now),actor=store.principal(principalId);
+ requireValue(proof.subject===ownerUserId&&proof.assurance==='aal2'&&actor?.active&&actor.identityOnly===true&&actor.ownerUserId===ownerUserId&&actor.role===role&&actor.tenantId===tenantId&&(actor.fleetId??null)===(fleetId??null)&&JSON.stringify([...actor.permissions].sort())===JSON.stringify([...permissions].sort())&&typeof csrf==='string'&&/^[A-Za-z0-9_-]{43}$/.test(csrf),'PROFILE_DENIED','Profile access denied.',403);
+ const auth=trustedSession({actor,csrf,source:'federated',assurance:'aal2',verifiedMfa:true,expiresAt:proof.expiresAt},null);
+ profileContexts.set(auth,{store,ownerUserId,expiresAt:proof.expiresAt,fingerprint:principalFingerprint(actor)});
+ return auth;
+}

@@ -1,0 +1,344 @@
+{
+  "schemaVersion": 1,
+  "batches": "B681-B700",
+  "branch": "work/b561-b580-external-uat",
+  "baselineCommit": "928dfc7a9af8e09ddd794d61bce403fe47ec2390",
+  "readinessRevision": "The enclosing Git commit; exact post-commit SHA is recorded in dist/b681-b700/iway-staging-manifest.json and final response to avoid a self-referential tracked receipt",
+  "observedAt": "2026-10-24T00:14:44.350Z",
+  "decisions": {
+    "localCoveredWorkflows": "GO",
+    "protectedPreview": "NO-GO",
+    "hostedUat": "NO-GO",
+    "production": "NO-GO"
+  },
+  "baselineIntegrity": {
+    "sourceHashesMatched": 38,
+    "evidenceHashesMatched": 17,
+    "gitBlobsMatched": 81,
+    "artifactFilesVerified": 86,
+    "reproducedByteIdentical": true,
+    "archiveSha256": "e7cee3eaafce3b9668a1b4e6d658dc40bf460b5d97c3d2aebd169a5ea43d4f37",
+    "receiptSha256": "9961ef11a6815142dc8cd3237dff228855517f8a540ae7266d7f3f8e04beafbb",
+    "reportSha256": "14f1265567d037d8e00312bc5b2aa721a025d84af8c6944d17eca01392169ed0",
+    "manifestSha256": "08cbc10b8448da5b3dbd49ebf8312a799fd718915ed191922802010dbeef59a4",
+    "hostedMatrixSha256": "4e86f6d3c1819fa3b3a39484a981f9b04b3c502e08d530e72b148e6a329d5f01"
+  },
+  "tests": {
+    "repositoryFresh": {
+      "PASS": 846,
+      "FAIL": 0,
+      "SKIPPED": 0,
+      "command": "npm run verify",
+      "sourceBuildIpAndSiteChecks": "PASS"
+    },
+    "focusedFresh": {
+      "PASS": 53,
+      "FAIL": 0,
+      "SKIPPED": 0,
+      "includedInRepository": true,
+      "newTests": 6
+    },
+    "browserBaseline": {
+      "PASS": 52,
+      "FAIL": 0,
+      "SKIPPED": 0
+    },
+    "durablePostgresBrowserBaseline": {
+      "PASS": 16,
+      "FAIL": 0,
+      "SKIPPED": 0,
+      "syntheticIdentityProvider": true
+    },
+    "targetedWorkerBrowserBaseline": {
+      "PASS": 1,
+      "FAIL": 0,
+      "SKIPPED": 0,
+      "repeatedScenario": true
+    },
+    "postgresBaseline": {
+      "PASS": 68,
+      "FAIL": 0,
+      "SKIPPED": 0,
+      "suites": [
+        {
+          "name": "auth",
+          "exitCode": 0,
+          "tests": 19,
+          "pass": 19,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "name": "broker",
+          "exitCode": 0,
+          "tests": 7,
+          "pass": 7,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "name": "operations-contract",
+          "exitCode": 0,
+          "tests": 16,
+          "pass": 16,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "name": "durable-engine",
+          "exitCode": 0,
+          "tests": 15,
+          "pass": 15,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "name": "broker-remediation",
+          "exitCode": 0,
+          "tests": 11,
+          "pass": 11,
+          "fail": 0,
+          "skipped": 0
+        }
+      ],
+      "parentCountsIncluded": true
+    },
+    "axeBaseline": {
+      "recordedScans": 105,
+      "violations": 0,
+      "manualReviewRequired": true,
+      "incompleteRuleIds": [
+        "color-contrast"
+      ]
+    },
+    "freshBrowser": "NOT_RUN: no UI or runtime changes; verified baseline reused",
+    "freshPostgres": "NOT_RUN: no database or runtime changes; verified baseline reused",
+    "postgres17Parity": "NOT_RUN: local installed baseline PostgreSQL 18 differs from hosted 17.11",
+    "hosted": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 84,
+      "executed": 0
+    },
+    "humanAccessibility": {
+      "PASS": 0,
+      "FAIL": 0,
+      "NOT_RUN": 48
+    },
+    "uniqueGrandTotal": null,
+    "countingNote": "NOT_ASSERTED: worker check repeats a lifecycle scenario; suites include parent and subtest counts; focused 53 are part of fresh repository 846"
+  },
+  "environment": {
+    "requiredNames": 13,
+    "missingPreview": [
+      "IWAY_AUTH_ENABLED",
+      "IWAY_AUTH_SCHEMA_APPROVED",
+      "IWAY_STAGING_VERCEL_PROJECT_ID",
+      "IWAY_AUTH_ORIGIN",
+      "IWAY_AUTH_APPROVED_ORIGIN",
+      "IWAY_AUTH_DATABASE_URL",
+      "IWAY_AUTH_PROVIDER",
+      "IWAY_SUPABASE_PUBLISHABLE_KEY",
+      "IWAY_SESSION_ENCRYPTION_KEY",
+      "IWAY_UAT_ENABLED",
+      "IWAY_UAT_SCHEMA_APPROVED",
+      "IWAY_UAT_DATABASE_URL",
+      "IWAY_OPERATIONS_DATABASE_URL"
+    ],
+    "missingLocal": [
+      "IWAY_AUTH_ENABLED",
+      "IWAY_AUTH_SCHEMA_APPROVED",
+      "IWAY_STAGING_VERCEL_PROJECT_ID",
+      "IWAY_AUTH_APPROVED_ORIGIN",
+      "IWAY_AUTH_DATABASE_URL",
+      "IWAY_SUPABASE_PUBLISHABLE_KEY",
+      "IWAY_SESSION_ENCRYPTION_KEY",
+      "IWAY_UAT_ENABLED",
+      "IWAY_UAT_SCHEMA_APPROVED",
+      "IWAY_UAT_DATABASE_URL",
+      "IWAY_OPERATIONS_DATABASE_URL"
+    ],
+    "privateValuesIncluded": false
+  },
+  "hosted": {
+    "latestDeployment": {
+      "id": "dpl_APs1ZkJVQfADo9H8Vq6wxDFBfPNc",
+      "url": "iway-auth-staging-mo7yigsep-eduradiusllc.vercel.app",
+      "target": "production",
+      "state": "READY",
+      "commit": "e53192fc076aa3b96f84fc6fb7f2e6b616785fdc",
+      "branch": "work/b391-b398-hosted-identity-certification"
+    },
+    "candidatePreviewDeployed": false,
+    "actualRestrictedRoleLogins": {
+      "auth": "BLOCKED_MISSING_FRESH_RESTRICTED_CREDENTIAL",
+      "broker": "BLOCKED_ROLE_SCHEMA_CREDENTIAL_ABSENT",
+      "operations": "BLOCKED_ROLE_SCHEMA_CREDENTIAL_ABSENT"
+    },
+    "availableRoles": [
+      {
+        "name": "iway_auth_runtime",
+        "login": true,
+        "inherit": false,
+        "bypassRls": false,
+        "superuser": false,
+        "createRole": false,
+        "replication": false,
+        "createDatabase": false
+      }
+    ],
+    "missingRoles": [
+      "iway_uat_runtime",
+      "iway_operations_runtime"
+    ],
+    "hostedPostgresVersion": "17.11",
+    "actualAuthUsers": 0,
+    "actualActiveMemberships": 0,
+    "verifiedMfaFactors": 0,
+    "publicSigningKeyAdapterLoad": "PASS",
+    "realGoogleOAuth": "BLOCKED",
+    "realPasswordLogin": "BLOCKED",
+    "privateCallbackConfiguration": "BLOCKED_OWNER_VERIFICATION",
+    "securityAdvisorFindings": 0,
+    "catalogReadIsRuntimeCertification": false
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "P1",
+      "status": "FIXED_LOCAL",
+      "detail": "Preflight omitted the separate Operations runtime credential and treated whitespace credentials inconsistently"
+    },
+    {
+      "id": "F02",
+      "severity": "P1",
+      "status": "BLOCKED",
+      "detail": "All 13 Preview environment keys are absent; only an older Production-target deployment exists"
+    },
+    {
+      "id": "F03",
+      "severity": "P1",
+      "status": "BLOCKED",
+      "detail": "Broker/engine restricted roles and schemas are absent; three actual restricted logins not verified"
+    },
+    {
+      "id": "F04",
+      "severity": "P1",
+      "status": "BLOCKED",
+      "detail": "Zero Auth users, memberships, MFA factors and actual relationship records; approved roster is not provisioned"
+    },
+    {
+      "id": "F05",
+      "severity": "P1",
+      "status": "BLOCKED_ENGINEERING",
+      "detail": "Hosted invitation issuer and delivery adapters deliberately deny; separate reviewed management-plane implementation and approval required"
+    },
+    {
+      "id": "F06",
+      "severity": "P1",
+      "status": "BLOCKED",
+      "detail": "Exact private callback/signup/linking policy and privileged verified TOTP enrollment not verified"
+    },
+    {
+      "id": "F07",
+      "severity": "P1",
+      "status": "BLOCKED_APPROVAL",
+      "detail": "Feature push may trigger public Vercel Preview; staging Hobby external sharing permits only one collaborator at a time"
+    },
+    {
+      "id": "F08",
+      "severity": "P2",
+      "status": "NOT_RUN",
+      "detail": "PostgreSQL 17 parity and human accessibility remain unexecuted"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "scripts/uat-handoff-preflight.mjs",
+      "workingTreeSha256": "e1564e86f8b159b9acd84f3aafaec0d5b24f87d2ff325f5e25aea99a998b214a"
+    },
+    {
+      "path": "tests/uat-handoff-preflight.test.mjs",
+      "workingTreeSha256": "dc60a96dd3ab420b04c82cf3a8c1efcc255d0f960bb24ac71eac690d533a200a"
+    },
+    {
+      "path": "tests/b691-four-persona-activation.test.mjs",
+      "workingTreeSha256": "0bcc8031431f2c86a3556ba1d5321bca874c0dff51d5e25c2d7c5f6097d7af0a"
+    },
+    {
+      "path": "docs/security/b691-b695-provisioning-readiness.json",
+      "workingTreeSha256": "c5dbe42e92f8e5e2df4e572913dd5bdaa62e90e1295248c30b10c180a7694abc"
+    },
+    {
+      "path": "docs/security/b681-b700-certification.md",
+      "workingTreeSha256": "ebccef295e62c9a05db566c25028c11b5c8a6351cfa5f3a90bb67320d79059aa"
+    }
+  ],
+  "changedFiles": [
+    "scripts/uat-handoff-preflight.mjs",
+    "tests/uat-handoff-preflight.test.mjs",
+    "tests/b691-four-persona-activation.test.mjs",
+    "docs/security/b691-b695-provisioning-readiness.json",
+    "docs/security/b681-b700-certification.md",
+    "docs/security/b681-b700-receipt.json"
+  ],
+  "evidence": [
+    {
+      "path": "dist/b681-b700/baseline-integrity.json",
+      "sha256": "8096990f41ab96234a03576bb7115a3008ea1bc0f0fb83271b99cdf4e0e937c3"
+    },
+    {
+      "path": "dist/b681-b700/baseline-delivery-verification.json",
+      "sha256": "f14acc77a1644bd574e0cccaf1fee9e9d0da40cb6e7385cd1526d8243ed49651"
+    },
+    {
+      "path": "dist/b681-b700/hosted-readonly-inspection.json",
+      "sha256": "a5fba14c4dffbdee1deff89fd7249c18e71cda589da8ccbbf5a302f82efe67b8"
+    },
+    {
+      "path": "dist/b681-b700/environment-contract.json",
+      "sha256": "484b4f2dfd138a4b4f34ae30ee000d72ef589fdf3a5bbedbd8e9a58840e6e115"
+    },
+    {
+      "path": "dist/b681-b700/hosted-test-matrix.json",
+      "sha256": "2591a16e6c9faf152669b05ac9cb242a3912011515feadaa595f486267832be8"
+    },
+    {
+      "path": "dist/b681-b700/focused-authentication.log",
+      "sha256": "04817e306f654547143e0af5ed94b81220ae0e624a949e443bd22dc55cd8c122"
+    },
+    {
+      "path": "dist/b681-b700/repository-verify.log",
+      "sha256": "dce671d133c066d576c21d67cab31b926ae42083df3d241a9a7b172c12aa226a"
+    },
+    {
+      "path": "dist/b681-b700/secret-review.json",
+      "sha256": "9c43847f65e6e3c833db2295b629cdd532648ca75f2c07adb721baa77bf6a10c"
+    }
+  ],
+  "secretReview": {
+    "status": "PASS",
+    "trackedAndCandidateRegularFilesScanned": 788,
+    "configuredPrivateCredentialMatches": 0,
+    "privateFormatScan": "Changed and untracked candidate files",
+    "matches": [],
+    "archiveConfiguredCredentialMatches": 0,
+    "envPathIgnored": true,
+    "envPathTracked": false,
+    "privateValuesPrinted": false,
+    "scope": "Configured private credentials and decoded DB password exact matches; selected private-secret formats; not a universal secret-scanning guarantee",
+    "credentialsSentByThisBatch": false
+  },
+  "externalWrites": [],
+  "protectedActionsPerformed": [],
+  "approvalsRequired": [
+    "fresh private credential replacement/configuration",
+    "owner-reviewed schema application and actual restricted-login verification",
+    "four Auth users, exact identity bindings and least-privilege permission/relationship assignments",
+    "privileged MFA enrollment and exact provider callback policy",
+    "reviewed separate invitation issuer/delivery implementation and controlled issuance",
+    "exact SHA protected Preview deployment and individual external collaborators",
+    "billing approval only if selecting concurrent paid-plan access"
+  ],
+  "unresolvedNamedAgentBindings": "MAX/PULSE/CLARA/GUARDIAN/FINN/SAGE/ATLAS remain unmapped; no new feature implementation or capability claim"
+}

@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "framework": null,
+  "outputDirectory": "public",
+  "installCommand": "npm ci --omit=dev --ignore-scripts",
+  "git": {
+    "deploymentEnabled": false
+  },
+  "functions": {
+    "api/index.mjs": {
+      "maxDuration": 30,
+      "includeFiles": "{server,domain,lib/intelligence,apps/operations}/**"
+    }
+  },
+  "routes": [
+    {
+      "src": "^/(?:auth|uat)(?:/.*)?$",
+      "dest": "/api/index"
+    },
+    {
+      "src": "^/api/(?:health|ops(?:/.*)?)$",
+      "dest": "/api/index"
+    },
+    {
+      "src": "^/health$",
+      "dest": "/api/index"
+    },
+    {
+      "src": "^/(?:app|portal|admin|login|assets/.*)?$",
+      "dest": "/api/index"
+    },
+    {
+      "src": "^/(?:offline|driver-sw\\.js|domain/driver-offline-replay\\.mjs)$",
+      "dest": "/api/index"
+    },
+    {
+      "src": "^/.*$",
+      "status": 404
+    }
+  ]
+}

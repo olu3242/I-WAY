@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "startingCommit": "c5998b3ada6121ff7de91f81f71a5cba886f2f5b",
+  "endingCommit": "Exact value in Git and dist/b821-b840/post-commit-verification.json; self-referential SHA deliberately excluded",
+  "branch": "work/b751-b770-harmonization-20261026",
+  "pullRequest": "https://github.com/olu3242/I-WAY/pull/21",
+  "sourceDigest": "36c14e1ac73d4f43d443bc9b35ae2c558a4101f483d1b4fcf798510d1ec1006a",
+  "sourceHashEncoding": "SHA-256, UTF-8 LF; raw font binaries",
+  "results": {
+    "repository": {
+      "total": 989,
+      "passed": 989,
+      "failed": 0,
+      "skipped": 0
+    },
+    "generalBrowser": {
+      "total": 186,
+      "passed": 186,
+      "failed": 0,
+      "skipped": 0
+    },
+    "postgresBrowser": {
+      "total": 74,
+      "passed": 74,
+      "failed": 0,
+      "skipped": 0
+    },
+    "postgresContracts": {
+      "leafScenarios": 108,
+      "nodeChecksIncludingParents": 118,
+      "suites": 10,
+      "binaryVersion": "postgres (PostgreSQL) 17.11",
+      "status": "PASS"
+    },
+    "postgresHttpRestart": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "postgresFeedbackPhysicalRestartBrowser": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "axe": {
+      "primaryScans": 423,
+      "restartScans": 1,
+      "totalScans": 424,
+      "violations": 0,
+      "humanScripts": 48,
+      "humanExecuted": 0,
+      "supplementalRepeatedTargetedScansExcluded": true
+    },
+    "coverage": {
+      "action": {
+        "inventoried": 87,
+        "observed": 71,
+        "interacted": 71,
+        "verifiedOutcome": 87
+      },
+      "button": {
+        "inventoried": 64,
+        "observed": 64,
+        "interacted": 64,
+        "verifiedOutcome": 64
+      },
+      "dialog": {
+        "inventoried": 19,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      },
+      "disclosure": {
+        "inventoried": 3,
+        "observed": 0,
+        "interacted": 0,
+        "verifiedOutcome": 1
+      },
+      "field": {
+        "inventoried": 155,
+        "observed": 143,
+        "interacted": 119,
+        "verifiedOutcome": 0
+      },
+      "form": {
+        "inventoried": 41,
+        "observed": 41,
+        "interacted": 41,
+        "verifiedOutcome": 41
+      },
+      "navigation": {
+        "inventoried": 26,
+        "observed": 26,
+        "interacted": 26,
+        "verifiedOutcome": 26
+      },
+      "route": {
+        "inventoried": 74,
+        "observed": 8,
+        "interacted": 0,
+        "verifiedOutcome": 0
+      }
+    },
+    "performance": "PASS",
+    "recovery": "PASS",
+    "hosted": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 94,
+      "NOT_RUN": 0
+    },
+    "humanAcceptance": {
+      "passed": 0,
+      "failed": 0,
+      "notRun": 4
+    },
+    "dependencyVulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "secretReview": {
+    "status": "PASS",
+    "candidateRegularFilesScanned": 996,
+    "unchangedGitlinksExcluded": [
+      ".worktrees/b245-b256",
+      ".worktrees/hosted-registration",
+      ".worktrees/sop-b16"
+    ],
+    "archivesScanned": 0,
+    "configuredPrivateCredentialMatches": 0,
+    "matches": [],
+    "envPathIgnored": true,
+    "envPathTracked": false,
+    "privateValuesPrinted": false,
+    "scope": "Configured private values and decoded DB password exact-match scan, selected private-secret formats; not a universal or historical secret-scanning guarantee"
+  },
+  "localDecision": "GO_TESTED_IMPLEMENTED_CONTRACTS_ONLY",
+  "hostedDecision": "NO_GO",
+  "productionDecision": "NO_GO",
+  "deployed": false,
+  "hostedAuthenticationCertified": false,
+  "remoteCI": {
+    "baseline": "c5998b3 PR Verify and Identity workflows passed",
+    "finalCandidate": "See post-commit-verification.json; not claimed before commit"
+  },
+  "artifactEvidence": [
+    {
+      "path": "dist/b821-b840/verify-final.log",
+      "sha256": "9a2df08161c075bca2b74bb494bfbea78b112792e3893eeb1f70ee8a48bbf5df"
+    },
+    {
+      "path": "dist/b821-b840/support-integration-final.log",
+      "sha256": "c57ab50e1745f870f20f23aeea75f8679b3f26cd8c6490d2c53057396b0130ea"
+    },
+    {
+      "path": "dist/b821-b840/feedback-unit-final-2.log",
+      "sha256": "efbe3541c51d78907fa436cf8ccdf4f84895f073fdc2b3f51537b3cd240f00a7"
+    },
+    {
+      "path": "dist/b821-b840/package-tests.log",
+      "sha256": "11d8e9de0026df29d5f1ecbfb1ecfe396721df206d0b347e59f4806f232019f0"
+    },
+    {
+      "path": "dist/b821-b840/browser-final/browser-evidence.json",
+      "sha256": "f9116f752d87dd774e9801207e469e6aac838c2af223716bd8fc88bcc56c2fb0"
+    },
+    {
+      "path": "dist/b821-b840/browser-final/mvp-control-evidence.json",
+      "sha256": "1a9f2a63194be3a8281deb8aca32a8f10560be2fb92b298f171ee69bac012049"
+    },
+    {
+      "path": "dist/b821-b840/browser-final/mvp-coverage.json",
+      "sha256": "b17a262cfc3c30550f44f19d913971a16435820ca0196007b9eba242159ac5cd"
+    },
+    {
+      "path": "dist/b821-b840/postgres-browser/browser-evidence.json",
+      "sha256": "ca683d0ddb584f4433eee73d76f509eaa9de405889d4bd95995e2e885ef0b62a"
+    },
+    {
+      "path": "dist/b821-b840/postgres/postgres17-compatibility.json",
+      "sha256": "0e77389fe08f11014a853a2573c35aa0e25ced56eed0379ed1411cc07e3e50dc"
+    },
+    {
+      "path": "dist/b821-b840/postgres-http-recovery.log",
+      "sha256": "ab7fb225dde988c54f09d43b4a54930df8aff387ba979710ba2968b54bc6fa56"
+    },
+    {
+      "path": "dist/b821-b840/feedback-physical-restart-final/browser-evidence.json",
+      "sha256": "68fdf9146d23762083b11250d4b617f0bdde1faa40faadbdd51ae285faf9e125"
+    },
+    {
+      "path": "dist/b821-b840/pg-restart-tests/feedback-restart.spec.mjs",
+      "sha256": "06af41e420838265ca761b726155aeecbbdb21793ecca2f1d4c4bf5479dd00bf"
+    },
+    {
+      "path": "dist/b821-b840/pg-restart.config.mjs",
+      "sha256": "3ca9740d09a94187fda61b9c68ad9d25c0f5517cc9ba33ac0077f13a638b68be"
+    },
+    {
+      "path": "dist/b821-b840/performance.json",
+      "sha256": "aa1d6d858998ca2c65049aaf2296e1f7805244b33d8fdc56c554aa77a7b5086e"
+    },
+    {
+      "path": "dist/b821-b840/recovery.json",
+      "sha256": "380592ec621aca75d4b9ce2968a8405810048a7fc5c7461a8126c5bbe0b37ae5"
+    },
+    {
+      "path": "dist/b821-b840/local-postgres-http-latency.json",
+      "sha256": "ab3a0d030cae4cbcd6478eda056429fe452c80ca4b567315a125f84d24bb548e"
+    },
+    {
+      "path": "dist/b821-b840/npm-audit.json",
+      "sha256": "352c05d2e69b568aeef394e8f0b42d609fcc4c763cbd15e4cd0cf30238b813ce"
+    },
+    {
+      "path": "dist/b821-b840/secret-review-final.json",
+      "sha256": "4fd4de40bad2010b2f715f53d82c73775c70b12114332b9f86d1cef298d15494"
+    },
+    {
+      "path": "dist/b821-b840/baseline-integrity.json",
+      "sha256": "b2ed24ce691b285f37137210b089e73d9d5c807fe9df6829af8f605b4282f844"
+    },
+    {
+      "path": "dist/b821-b840/baseline-ci.json",
+      "sha256": "91cd17e238b1451a17b6dce3cfb966ad237c3b4eaf635fd3d99922dd7af832bf"
+    },
+    {
+      "path": "dist/b821-b840/project-metadata.json",
+      "sha256": "5aaee41f183db9428720304c2d824beaab12e741bcc1c2b16a534e7b5534581e"
+    },
+    {
+      "path": "dist/b821-b840/environment-contract.json",
+      "sha256": "8aca44d6642b1b220e463d06217639909edb103bcc0396d8c7b3270ac32b7c78"
+    },
+    {
+      "path": "dist/b821-b840/vercel-plan.json",
+      "sha256": "845ab5ae7fbe8b3a795078e1c31be3151cc64cdf055a6340e8513d72cbd5c21e"
+    },
+    {
+      "path": "dist/b821-b840/write-certification.mjs",
+      "sha256": "9575ca8764e371f565ba1a9d3fe37aec61cf56a8e3a079b90a20aea9a6e0860f"
+    }
+  ]
+}

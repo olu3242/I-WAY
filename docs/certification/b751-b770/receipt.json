@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "branch": "work/b751-b770-harmonization-20261026",
+  "startingCommit": "893f7f56d39d3e1a46c8bddadb71265216b30ae1",
+  "preservedOriginal": {
+    "commit": "b1e39bb6c1ada7e91f6fa1d5e35807842238aa85",
+    "files": 136,
+    "unchanged": true
+  },
+  "sourceCandidate": "b1e39bb6c1ada7e91f6fa1d5e35807842238aa85",
+  "results": {
+    "repository": {
+      "passed": 978,
+      "failed": 0,
+      "skipped": 0
+    },
+    "generalBrowser": {
+      "mode": "COMPOSITE",
+      "distinctScenarios": 162,
+      "main": {
+        "passed": 158,
+        "failed": 4
+      },
+      "affectedRerun": {
+        "passed": 4,
+        "failed": 0
+      },
+      "finalUnresolved": 0
+    },
+    "postgresBrowser": {
+      "passed": 64,
+      "failed": 0,
+      "skipped": 0
+    },
+    "postgresContracts": {
+      "leafScenarios": 108,
+      "suites": 10,
+      "nodeChecksIncludingParents": 118,
+      "failed": 0,
+      "version": "17.11"
+    },
+    "postgresLogistics": {
+      "passed": 1,
+      "failed": 0
+    },
+    "axe": {
+      "capturedScans": 342,
+      "violations": 0
+    },
+    "performance": {
+      "initial": "FAIL_CONCURRENT_LOAD",
+      "isolatedRerun": "PASS_UNCHANGED_BUDGETS"
+    },
+    "recovery": {
+      "status": "PASS_LOCAL_SQLITE",
+      "rtoMs": 1287.0061,
+      "rpoMs": 3073
+    },
+    "controls": {
+      "actions": "87/87",
+      "forms": "40/40",
+      "buttons": "59/59",
+      "navigation": "26/26"
+    },
+    "wholeFigma": "BLOCKED_REFERENCE",
+    "humanAssistiveTechnology": "NOT_RUN",
+    "hosted": "BLOCKED"
+  },
+  "decisions": {
+    "local": "GO_CURRENT_IMPLEMENTED_SCOPE",
+    "wholeFigma": "NO_GO",
+    "hosted": "NO_GO",
+    "production": "NO_GO"
+  },
+  "artifacts": [
+    {
+      "path": "dist/b751-b770/verify.log",
+      "sha256": "8950b15f1203d535d5ac206b64f97bfec8a07711d2ddc3c39ac4db57c7a41baf"
+    },
+    {
+      "path": "dist/b751-b770/browser/browser-evidence.json",
+      "sha256": "33655be22b3c1a1836e9d666d7bf6f13a6e4cfaf4d0298a98b1aa1dd26d21af1"
+    },
+    {
+      "path": "dist/b751-b770/auth-brand-rerun/browser-evidence.json",
+      "sha256": "74e17ba219c30b6e1a0e0e5ccf4486c336a4eba1bf665c70ff4e1a9c8ea3457c"
+    },
+    {
+      "path": "dist/b751-b770/combined-browser/browser-evidence.json",
+      "sha256": "95f18a69c74d8e3e9b49fc14367880dd5ec2711d9fab9a790bad47a79b0a205a"
+    },
+    {
+      "path": "dist/b751-b770/combined-browser/mvp-coverage.json",
+      "sha256": "167fcf6b017e38bde56bbd6c2baa51e1490a2e349f5469cc75320eb46782c08b"
+    },
+    {
+      "path": "dist/b751-b770/postgres-browser/browser-evidence.json",
+      "sha256": "87b67fe72997c9128b29b949d5c5d9bdea54326f5694782dbfc445c918672e3b"
+    },
+    {
+      "path": "dist/b751-b770/postgres/postgres17-compatibility.json",
+      "sha256": "3615b2e07f86f9d6d3b2482876ec285da1bf61435428ec20f779280424ac7b60"
+    },
+    {
+      "path": "dist/b751-b770/postgres-logistics.log",
+      "sha256": "e2e4acd8882e6ca257e32d2c9c85e6ef5526ad4f5ccc3a57bb48bd59c645a5f2"
+    },
+    {
+      "path": "dist/b751-b770/performance.json",
+      "sha256": "2bd8adfcd3aa857a70bdfc3a95599619c92d3b8b5f6ee84f72ce0aaa74f4eb07"
+    },
+    {
+      "path": "dist/b751-b770/performance-final.json",
+      "sha256": "7475f30335abf93cd82ab9e1f2e899a113d7be5f6e76be9e98cdb684ef635be4"
+    },
+    {
+      "path": "dist/b751-b770/recovery.json",
+      "sha256": "306282f867ecf0589fa7dce9d01f95aea424c9e3b0c92a73f1d5036602d57bcc"
+    },
+    {
+      "path": "dist/b751-b770/deployment-trigger-audit.json",
+      "sha256": "cb51e85c08685c779e283f6031b9baae6b689866315c6903cdf453b143151634"
+    },
+    {
+      "path": "dist/b751-b770/domain-preservation.json",
+      "sha256": "4cbde749761faac7c5e113455b996ba3ec48b30683ecb5cd50ed8edae6b8434a"
+    },
+    {
+      "path": "dist/b751-b770/visual-evidence.json",
+      "sha256": "8baa23644d1b9154a98b680244ec51cef72d70fce19492201fafac368ba19c4e"
+    },
+    {
+      "path": "dist/b751-b770/secret-review.json",
+      "sha256": "9ec299fa82cdcfa25c8e87e737db112393dc9e250443621991ed26917ebe1502"
+    }
+  ],
+  "endingCommit": "See git log and ignored dist/b751-b770/post-commit-verification.json; no self-referential commit SHA"
+}

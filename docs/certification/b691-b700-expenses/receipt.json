@@ -1,0 +1,436 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-25T15:21:40.698Z",
+  "git": {
+    "startingCommit": "864b19980515a3b3ad74d83df39ac670c074d08c",
+    "branch": "work/b561-b580-external-uat",
+    "baselineClean": true,
+    "endingCommitLocation": "dist/b691-b700/post-commit-verification.json"
+  },
+  "changedFiles": [
+    "apps/operations/expenses.js",
+    "apps/operations/ops.css",
+    "docs/certification/b691-b700-expenses/certification-report.md",
+    "docs/certification/b691-b700-expenses/contracts.json",
+    "docs/certification/b691-b700-expenses/hosted-uat-matrix.json",
+    "docs/certification/b691-b700-expenses/receipt.json",
+    "docs/certification/b691-b700-expenses/requirements.json",
+    "docs/security/b591-mvp-inventory.json",
+    "domain/operations-expenses.mjs",
+    "domain/operations-settlements.mjs",
+    "scripts/certify-postgres17.mjs",
+    "scripts/inventory-mvp-controls.mjs",
+    "tests/browser/b691-expenses.spec.mjs",
+    "tests/browser/expenses.spec.mjs",
+    "tests/local/expenses-browser-postgres.mjs",
+    "tests/local/expenses.postgres.mjs",
+    "tests/operations-expense-lifecycle.test.mjs",
+    "tests/operations-expense-recovery.test.mjs"
+  ],
+  "sourceFiles": [
+    {
+      "path": "apps/operations/expenses.js",
+      "sha256LF": "3d9e1e447f2c8467f00289daa40509c4a8b704d1e7e41bec982d04d244960460"
+    },
+    {
+      "path": "apps/operations/ops.css",
+      "sha256LF": "7610fc9684c04c61e4382132c0ae46582a458f97b5b49415901ae8b11d14d4a3"
+    },
+    {
+      "path": "docs/certification/b691-b700-expenses/certification-report.md",
+      "sha256LF": "490f4a8c28eb62518487d6df7db415e9fd3ece916ec3450fbaae596d0d307807"
+    },
+    {
+      "path": "docs/certification/b691-b700-expenses/contracts.json",
+      "sha256LF": "5b36e7d7280602c53d9e0628a8d45f29fa6c34aa6c13f3687e7d1b8b93a16383"
+    },
+    {
+      "path": "docs/certification/b691-b700-expenses/hosted-uat-matrix.json",
+      "sha256LF": "cea2b14b392e5651701a355575fa6cb28949c687eb61f97c8ffa76876a03f138"
+    },
+    {
+      "path": "docs/certification/b691-b700-expenses/requirements.json",
+      "sha256LF": "65082325b6f2000c1c614222b0924637ec746fefb9c45d21c210ce6e46633d35"
+    },
+    {
+      "path": "docs/security/b591-mvp-inventory.json",
+      "sha256LF": "85c92d27d22235cccea277e2e8dc1526568f030d6c0afcf277f4c980a7b96516"
+    },
+    {
+      "path": "domain/operations-expenses.mjs",
+      "sha256LF": "a711144e316a9c98b71be54f32fabddacea2b4958d2fe147c40f57645304bca9"
+    },
+    {
+      "path": "domain/operations-settlements.mjs",
+      "sha256LF": "b0f73d87341d1a1c777d23c5443dc29302615e0a130a494e50fbd0198f46fa37"
+    },
+    {
+      "path": "scripts/certify-postgres17.mjs",
+      "sha256LF": "5a6e4cb6471010058195692713e049335e249f79ef08880dfc49250310a519f5"
+    },
+    {
+      "path": "scripts/inventory-mvp-controls.mjs",
+      "sha256LF": "ee3557fdfa35ea4006e4bf41e5bc6aef59f9df22d872fe9f9281b95488e05113"
+    },
+    {
+      "path": "tests/browser/b691-expenses.spec.mjs",
+      "sha256LF": "a4d542bad85c4eb9c5935fa5176ab7d30669a5bf35bea7619194a5c311c759c0"
+    },
+    {
+      "path": "tests/browser/expenses.spec.mjs",
+      "sha256LF": "70316e58b6a30409f60908abc97f6b1e3de3bee3354b8ec9d94ac1e004199f4b"
+    },
+    {
+      "path": "tests/local/expenses-browser-postgres.mjs",
+      "sha256LF": "e8c596a60259e04d917210c0ad97dfd9a17112cacbaef1bd24a9a6de85dcf853"
+    },
+    {
+      "path": "tests/local/expenses.postgres.mjs",
+      "sha256LF": "9790242d4d51a7571ba784d864e0fb4381beab82761736ec1f9417a5ca2d4311"
+    },
+    {
+      "path": "tests/operations-expense-lifecycle.test.mjs",
+      "sha256LF": "ac9162f9aa4c88250ef4c12cfa5517ffa8881ce4a6a91a295cd630eda37ebf47"
+    },
+    {
+      "path": "tests/operations-expense-recovery.test.mjs",
+      "sha256LF": "0a2d3f92bfa4cdc6a2d3e826c4fa41d7de50ba2af9ad85844edbaca6bce872bd"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "dist/b691-b700/baseline-integrity.json",
+      "sha256": "532af0e3d78a094bb5fc283d864b6b53b0d32fbf70e29eb57e05343ecd308a51"
+    },
+    {
+      "path": "dist/b691-b700/repository-final.log",
+      "sha256": "5f4f8f00f4500465040ee4cc2b871db117ca058f87e68a7712023a7838aa05d3"
+    },
+    {
+      "path": "dist/b691-b700/expense-unit-release.log",
+      "sha256": "8bbd4a6c1984c5a046336a3eba622f4c1def73331c24fac29e90eba4237fb907"
+    },
+    {
+      "path": "dist/b691-b700/final-browser.log",
+      "sha256": "ddd86e3040de2eff2659ff1f928cad52a3da13c593471603923ddca7dde7d233"
+    },
+    {
+      "path": "dist/b691-b700/final-browser/browser-evidence.json",
+      "sha256": "b1a23fc34b5b982deb439b7de3deb3ea079db8574b9c7f4ac379c5e15c2d9da0"
+    },
+    {
+      "path": "dist/b691-b700/final-browser/mvp-control-evidence.json",
+      "sha256": "c7341d850490ab151c05566f8175a7f7415d9a55f1a716c1beb8222703ed6cd1"
+    },
+    {
+      "path": "dist/b691-b700/release-durable-browser.log",
+      "sha256": "8d2ca0f6fb556129b4c77cd3e55b13d0dc03b67184fc0472f8dadc4e7e393b64"
+    },
+    {
+      "path": "dist/b691-b700/release-durable-browser/browser-evidence.json",
+      "sha256": "2a73d3bee64193fc8ceb573724cda80b6dbc18e34bc71ea8126f609f4d580a63"
+    },
+    {
+      "path": "dist/b691-b700/release-durable-browser/mvp-control-evidence.json",
+      "sha256": "0366be36b7e33eb2f9ab7fcd5663367218d9fd49511e720f87e56837432c2710"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres17-compatibility.json",
+      "sha256": "b9dcc2e18ef433d2cd6933efff5ae62bb5b2d7ee116a409f8511c94a87deeab0"
+    },
+    {
+      "path": "dist/b691-b700/expense-browser-postgres-final.log",
+      "sha256": "922c0b145ad26ac49af0ee69df795396a9e1f016db1329d02d8bae1a3c213625"
+    },
+    {
+      "path": "dist/b691-b700/wizard-browser-postgres-final.log",
+      "sha256": "ff05de9fe1d5b80f4462258877bed9c5b564f1b93f834d17ccd647e23cc0f9d3"
+    },
+    {
+      "path": "dist/b691-b700/postgres-browser-expenses/evidence.json",
+      "sha256": "e9b278e2ea53f7c0282fe9e85a2ddc2e84e53876d9299cedd8099b100c4bf7c0"
+    },
+    {
+      "path": "dist/b691-b700/postgres-browser-expenses/expense-reimbursement.png",
+      "sha256": "f4d82b4d6e1ed78f4801268e74d2d7b8cf948f81c02ca8b2ea8d0e8abbb509b0"
+    },
+    {
+      "path": "dist/b691-b700/postgres-browser-wizard/evidence.json",
+      "sha256": "9031d3c5d158aca4e1ff9b10253f9e6798c0daf1284ad2b72a878e4a1277ce59"
+    },
+    {
+      "path": "dist/b691-b700/postgres-browser-wizard/persisted-load.png",
+      "sha256": "6f7655eecc7c2ea539a29c7ebb8eca614aacfe061904dfbd0df62a5c0d4192f7"
+    },
+    {
+      "path": "dist/b691-b700/performance.json",
+      "sha256": "091d3b087a35eb5da9d95522e54c1cfd7b6b31e9ebb47752de06001798ca3ea0"
+    },
+    {
+      "path": "dist/b691-b700/recovery.json",
+      "sha256": "c89fe1854a322535a9a16b37b6282ef739696cafa9a5153e3cbf0c2006eca033"
+    },
+    {
+      "path": "dist/b691-b700/expense-performance.json",
+      "sha256": "752c1663f8a09fac1480a08c171cf09566b812155c52c9117ab11ade0cfbd40f"
+    },
+    {
+      "path": "dist/b691-b700/performance-recovery.mjs",
+      "sha256": "faafd5f9bdc19ef841786ac010bf004f621f22bccd3516c001aa807aba02902f"
+    },
+    {
+      "path": "dist/b691-b700/expense-performance.mjs",
+      "sha256": "b80aa947a6e990295db7cae36d6ec4c890208e7ff797ede8ccc83d4ee5b7adca"
+    },
+    {
+      "path": "dist/b691-b700/wizard-regression.postgres.mjs",
+      "sha256": "8ea304b952c4cc14b7d421b23c8fbe51c5403201c5550e426f437dfc54b36e4f"
+    },
+    {
+      "path": "dist/b691-b700/verify-commit.mjs",
+      "sha256": "5d7bb2690aaf1516f5c4620bd730f68f0500c2780123f9e6be1c5fff9fe28296"
+    },
+    {
+      "path": "dist/b691-b700/secret-review.json",
+      "sha256": "8f50beecb35134673d6d26202ee9b0a38db464d2e5bf67cba965fb3f76f17dcc"
+    },
+    {
+      "path": "dist/b691-b700/calendar-probe.json",
+      "sha256": "929f4ed124ec2dde2bccbdefe72222b68c0125646b8f1429d81562d3344396d1"
+    },
+    {
+      "path": "dist/b691-b700/domain.log",
+      "sha256": "51cfd6597dfe32622a01932f66932c430646b275f242516357d2cd399be54425"
+    },
+    {
+      "path": "dist/b691-b700/exploratory-browser.log",
+      "sha256": "e87711dbbdca152d3c8100a281b4aed69410e69b5398f2d4726480a6d59944ca"
+    },
+    {
+      "path": "dist/b691-b700/affected-browser.log",
+      "sha256": "118941a4409fc1648814044958848a03acccbb857ec93e0d486f0530952773b8"
+    },
+    {
+      "path": "dist/b691-b700/affected-browser-corrected.log",
+      "sha256": "33f2a0b7f6f166a90fd73a017c0f08c0bc30fa544523df6c57c591cadff0e636"
+    },
+    {
+      "path": "docs/operations/PERFORMANCE_BASELINE.json",
+      "sha256": "7477de8af4d5c006a529a729a47e0394c2f0977fa0b87e652646b01530711ddf"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-expense-lifecycle.log",
+      "sha256": "53fb92d3686a5b6c0eeb95450725cebaea9d28a935daa1165137ddd7de5aa524"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-next-gap-closure.log",
+      "sha256": "b9087b50d183e21a64ad8462f5d684fd88c88038186db7c9728ea4dd338276bc"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-figma-finance-offline.log",
+      "sha256": "08171633fd30b835f5a4895b4caca366580d5befc0144a1ff10d5c669068c5d0"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-auth.log",
+      "sha256": "3bb31f190389ac3e1565e3c97ff55b0567db7b0bb5cd4f166127702a0ad7be6a"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-broker.log",
+      "sha256": "65b0946edcc0ad8d8a3a932779753fe186188c2e7046957290b6b847a5ce9064"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-operations-contract.log",
+      "sha256": "921c82316296a3be964d76b8b9a19d90173d6c997e203ce4fcaaece62b32665e"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-durable-engine.log",
+      "sha256": "7871bb8d3d81d4913d4c92e36f881c4844fd615e3357bb3113f8971541bddc9c"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-broker-remediation.log",
+      "sha256": "281423d15b45e0df64430d26066342adede046db330d86f4d24cfc2c6d632aca"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-management.log",
+      "sha256": "edcfeae4afaab6b07c9e174842df2582da3585a881112075f4116e5fdc40bf0d"
+    },
+    {
+      "path": "dist/b691-b700/final-postgres/postgres-staging-schema.log",
+      "sha256": "aa3d657a26cd870ced8af145ca874ebf9470cc19b22167ce35aec647e79cadf4"
+    },
+    {
+      "path": "dist/b691-b700/final-browser/results/b691-expenses-expense-draf-05a8f--linkage-and-history-at-390/expense-history-390.png",
+      "sha256": "3498b2573f916d4d33550f80a9df0cb2cd7f998879f306962b287d875505e935"
+    },
+    {
+      "path": "dist/b691-b700/final-browser/results/b691-expenses-expense-draf-0a1b4-linkage-and-history-at-1440/expense-history-1440.png",
+      "sha256": "e479596280ace1a737b6fd14ecde6f2e390ad38a2aa4c58cd0c9b5a546a4b10a"
+    }
+  ],
+  "results": {
+    "repository": {
+      "tests": 929,
+      "pass": 929,
+      "fail": 0,
+      "skipped": 0
+    },
+    "generalBrowser": {
+      "total": 119,
+      "passed": 119,
+      "failed": 0,
+      "skipped": 0,
+      "sourceUnchanged": true,
+      "axeScans": 224,
+      "axeViolations": 0
+    },
+    "postgresBrowserVariants": {
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "sourceUnchanged": true,
+      "axeScans": 46,
+      "axeViolations": 0,
+      "overlapsGeneralBrowser": true
+    },
+    "postgres": {
+      "status": "PASS",
+      "serverVersion": {
+        "version": "17.11",
+        "number": 170011
+      },
+      "leafScenarios": 105,
+      "nodeChecks": 115,
+      "orchestrationParents": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    "expensePostgresBrowser": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "leafScenarios": 6,
+      "axeScans": 3,
+      "axeViolations": 0,
+      "syntheticOAuth": true
+    },
+    "acceptedWizardPostgresBrowser": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0,
+      "leafScenarios": 5,
+      "axeScans": 4,
+      "axeViolations": 0
+    },
+    "performance": {
+      "status": "PASS",
+      "scenarioCount": 4,
+      "unchangedBudgetSha256": "7477de8af4d5c006a529a729a47e0394c2f0977fa0b87e652646b01530711ddf",
+      "p95Ms": {
+        "dispatch": 98.20410000000004,
+        "workflow": 98.82,
+        "documents": 119.09789999999998,
+        "tenant_isolation": 104.096
+      }
+    },
+    "expensePerformance": {
+      "status": "MEASURED",
+      "scope": "100 synthetic expenses and their permitted history; 20 complete driver workspace projections",
+      "p50Ms": 11.142299999999977,
+      "p95Ms": 18.40689999999995,
+      "maxMs": 18.82199999999966,
+      "expenseCount": 100,
+      "historyEvents": 100,
+      "iterations": 20,
+      "certifiedSlo": false,
+      "reason": "No expense-specific SLO has been approved; general four-scenario performance gates are reported separately"
+    },
+    "recovery": {
+      "status": "PASS",
+      "rtoMs": 600.8647000000001,
+      "rpoMs": 707,
+      "checks": {
+        "integrity": true,
+        "auditPrefixPreserved": true,
+        "postSnapshotFixtureLoadAbsent": true,
+        "recoveredWorkflowCompleted": true,
+        "restoredSessionsRevoked": true,
+        "sourcePreserved": true
+      }
+    },
+    "hosted": {
+      "status": "BLOCKED",
+      "counts": {
+        "PASS": 0,
+        "FAIL": 0,
+        "BLOCKED": 8,
+        "NOT RUN": 0
+      },
+      "executed": 0
+    },
+    "humanAssistiveTechnology": {
+      "status": "NOT RUN"
+    },
+    "sensitiveUploads": {
+      "status": "BLOCKED_POLICY"
+    },
+    "figmaConformity": {
+      "status": "BLOCKED_REFERENCE",
+      "percentage": null
+    }
+  },
+  "developmentDefects": [
+    {
+      "defect": "Mobile expense history target below minimum size",
+      "status": "FIXED",
+      "verification": "Affected and final axe scans"
+    },
+    {
+      "defect": "Impossible calendar dates silently normalized",
+      "status": "FIXED",
+      "verification": "Direct pre-fix probe, unit and PostgreSQL negative tests"
+    },
+    {
+      "defect": "Test cleanup order and selectors/error-state expectation",
+      "status": "CORRECTED_TEST_INFRASTRUCTURE",
+      "verification": "Passing final runs"
+    }
+  ],
+  "decisions": {
+    "localReferenceOnlyExpenses": "GO",
+    "hosted": "NO_GO",
+    "production": "NO_GO",
+    "fullFigmaConformity": "BLOCKED_REFERENCE",
+    "b701Started": false
+  },
+  "secretReview": {
+    "status": "PASS",
+    "candidateRegularFilesScanned": 898,
+    "unchangedGitlinksExcluded": [
+      ".worktrees/b245-b256",
+      ".worktrees/hosted-registration",
+      ".worktrees/sop-b16"
+    ],
+    "archivesScanned": 0,
+    "configuredPrivateCredentialMatches": 0,
+    "matches": [],
+    "envPathIgnored": true,
+    "envPathTracked": false,
+    "privateValuesPrinted": false,
+    "scope": "Configured private values and decoded DB password exact-match scan, selected private-secret formats; not a universal or historical secret-scanning guarantee"
+  },
+  "controls": {
+    "push": false,
+    "merge": false,
+    "deploy": false,
+    "hostedMigrations": false,
+    "realAccountsProvisioned": false,
+    "realInvitationsSent": false,
+    "realPaymentInitiated": false,
+    "hostedSettingsModified": false,
+    "productionModified": false,
+    "privateValuesPrinted": false
+  }
+}

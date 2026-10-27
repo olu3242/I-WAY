@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "approvalScope": "Identity allowlist only; no provisioning, invitations, privileges or deployment authorized",
+  "source": "User reaffirmed roster in this session on 2026-10-23; cited October 14 and October 19–20 discussions were not independently retrieved",
+  "status": "BLOCKED_IDENTITY_AND_RELATIONSHIP_PROVISIONING",
+  "testers": [
+    {"email":"oadeyemo306@gmail.com","role":"platform","scope":"control-plane","userId":null,"googleSubject":null,"tenantId":null,"fleetId":null,"principalId":null},
+    {"email":"martin@tm88investments.com","role":"carrier","scope":"tenant","userId":null,"googleSubject":null,"tenantId":null,"fleetId":null,"principalId":null},
+    {"email":"info@tm88investments.com","role":"fleet","scope":"tenant","userId":null,"googleSubject":null,"tenantId":null,"fleetId":null,"principalId":null},
+    {"email":"cassiomey@gmail.com","role":"driver","scope":"tenant","userId":null,"googleSubject":null,"tenantId":null,"fleetId":null,"principalId":null}
+  ]
+}

@@ -1,0 +1,3 @@
+#!/bin/sh
+# Opt-in hook: git config core.hooksPath .githooks (review existing hooks first).
+exec node scripts/guard-uat-push.mjs --hook

@@ -1,0 +1,42 @@
+{
+  "scope": "First-value persistence regression; no hosted certification",
+  "parentCommit": "0cb2c2f30d11e706b6788557192dc629c2533dca",
+  "local": {
+    "command": "playwright test first-value-persistence.spec.mjs first-value.spec.mjs (temporary Chromium configuration)",
+    "backend": "disposable SQLite",
+    "counts": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    "sourceUnchanged": true,
+    "accessibilityScans": 9,
+    "accessibilityViolations": 0,
+    "databaseRestartExecuted": false
+  },
+  "ciContract": {
+    "job": "durable-browser",
+    "optIn": "IWAY_BROWSER_DURABLE_OPT_IN=true",
+    "expectedNewScenarios": 2,
+    "database": "disposable PostgreSQL",
+    "checks": [
+      "create, validate and assign through browser",
+      "accept as assigned driver",
+      "restart PostgreSQL and recreate application",
+      "accepted status and unchanged version after reload",
+      "carrier confirms the accepted load"
+    ],
+    "executionResult": "Read exact-commit CI; not inferred from local SQLite run"
+  },
+  "sourceHashes": {
+    "tests/browser/first-value-persistence.spec.mjs": "06751a70d3015a98bd95c09b3570824a44f4613041ddeeb4d10ffbe6dc930ca6",
+    ".github/workflows/identity-access.yml": "6bef4c959bc016e951d58c8b670e960ff3f0a417af207dbf717dd40a7af9fe70"
+  },
+  "limitations": [
+    "Synthetic identities only",
+    "No live hosted environment certification",
+    "No production or staging deployment",
+    "No finished video or human speed benchmark"
+  ]
+}

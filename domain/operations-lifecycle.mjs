@@ -15,6 +15,16 @@ export function createLifecycleExtensions(){
   return updated;
  };
  return {
+  'load:reject':(ops,actor,c)=>{
+   fields(c.payload??{},['reason']);const reason=text(c.payload.reason,300),load=ops.read('load',c.resourceId,actor,'load:execute');ops.version(load,c.expectedVersion);
+   requireValue(actor.role==='driver'&&load.driverId===actor.id&&load.status==='assigned','TRANSITION','Only your pending assignment may be rejected.',409);
+   const assignment=ops.store.list('assignment',actor.tenantId).find(a=>a.loadId===load.id&&a.status==='active');
+   requireValue(!!assignment,'ASSIGNMENT','A current assignment is required.',409);
+   ops.change(actor,assignment,{status:'rejected',endedAt:ops.now().toISOString()},'assignment:reject',reason);
+   transition(ops,actor,load,{status:'validated',driverId:null,vehicleId:null,fleetId:null},c.action,reason);
+   // Receipt remains visible to its driver after the shipment relationship ends.
+   return ops.create(actor,'assignmentresponse',{assignmentId:assignment.id,driverId:actor.id,status:'rejected',reason,recordedAt:ops.now().toISOString()},'assignment:response');
+  },
   'load:ready':(ops,actor,c)=>{
    fields(c.payload??{},[]);const load=ops.read('load',c.resourceId,actor,'load:dispatch');ops.version(load,c.expectedVersion);
    requireValue(load.status==='validated'&&!load.readyAt,'TRANSITION','Only validated shipments can become ready.',409);

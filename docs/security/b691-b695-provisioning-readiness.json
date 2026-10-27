@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "928dfc7a9af8e09ddd794d61bce403fe47ec2390",
+  "status": "BLOCKED_ENGINEERING_AND_OWNER_APPROVALS",
+  "approvalScope": "Identity allowlist only; no provisioning, invitations, privileges or deployment authorized",
+  "provisioningApproval": null,
+  "externalActionsExecuted": [],
+  "observedCounts": {
+    "authUsers": 0,
+    "googleIdentities": 0,
+    "activeMemberships": 0,
+    "authTenants": 0,
+    "authResources": 0,
+    "mfaFactors": 0
+  },
+  "testers": [
+    {
+      "email": "oadeyemo306@gmail.com",
+      "role": "platform",
+      "scope": "control-plane",
+      "userId": null,
+      "googleSubject": null,
+      "tenantId": null,
+      "fleetId": null,
+      "principalId": null,
+      "permissions": [],
+      "permissionsApproved": false,
+      "identityEvidence": null,
+      "employmentEvidence": null,
+      "governanceNamespaceId": null,
+      "driverId": null,
+      "employmentRelationshipId": null,
+      "requiresVerifiedTotp": true,
+      "missingPrerequisites": [
+        "canonical Auth UUID",
+        "verified Google subject",
+        "native principal UUID",
+        "approved permission subset",
+        "governance namespace UUID",
+        "verified TOTP enrollment"
+      ]
+    },
+    {
+      "email": "martin@tm88investments.com",
+      "role": "carrier",
+      "scope": "tenant",
+      "userId": null,
+      "googleSubject": null,
+      "tenantId": null,
+      "fleetId": null,
+      "principalId": null,
+      "permissions": [],
+      "permissionsApproved": false,
+      "identityEvidence": null,
+      "employmentEvidence": null,
+      "governanceNamespaceId": null,
+      "driverId": null,
+      "employmentRelationshipId": null,
+      "requiresVerifiedTotp": true,
+      "missingPrerequisites": [
+        "canonical Auth UUID",
+        "verified Google subject",
+        "native principal UUID",
+        "approved permission subset",
+        "carrier tenant UUID",
+        "verified TOTP enrollment"
+      ]
+    },
+    {
+      "email": "info@tm88investments.com",
+      "role": "fleet",
+      "scope": "tenant",
+      "userId": null,
+      "googleSubject": null,
+      "tenantId": null,
+      "fleetId": null,
+      "principalId": null,
+      "permissions": [],
+      "permissionsApproved": false,
+      "identityEvidence": null,
+      "employmentEvidence": null,
+      "governanceNamespaceId": null,
+      "driverId": null,
+      "employmentRelationshipId": null,
+      "requiresVerifiedTotp": false,
+      "missingPrerequisites": [
+        "canonical Auth UUID",
+        "verified Google subject",
+        "native principal UUID",
+        "approved permission subset",
+        "parent carrier tenant UUID",
+        "fleet UUID"
+      ]
+    },
+    {
+      "email": "cassiomey@gmail.com",
+      "role": "driver",
+      "scope": "tenant",
+      "userId": null,
+      "googleSubject": null,
+      "tenantId": null,
+      "fleetId": null,
+      "principalId": null,
+      "permissions": [],
+      "permissionsApproved": false,
+      "identityEvidence": null,
+      "employmentEvidence": null,
+      "governanceNamespaceId": null,
+      "driverId": null,
+      "employmentRelationshipId": null,
+      "requiresVerifiedTotp": false,
+      "missingPrerequisites": [
+        "canonical Auth UUID",
+        "verified Google subject",
+        "native principal UUID",
+        "approved permission subset",
+        "carrier tenant UUID",
+        "fleet UUID",
+        "driver UUID",
+        "active employment relationship"
+      ]
+    }
+  ],
+  "relationships": {
+    "platform": "Governance control plane only; tenantId and fleetId remain null",
+    "carrier": "One actual synthetic carrier tenant shared with approved fleet and driver; carrier fleetId remains null",
+    "fleet": "One actual synthetic fleet under the same carrier",
+    "driver": "Same fleet and carrier; actual active employment relationship and ownership checks"
+  },
+  "invitationContract": {
+    "issuanceStatus": "DENIED_BY_HOSTED_ADAPTER",
+    "engineeringDependency": "Implement and review a separate authorized management-plane issuer and fixed-origin confidential delivery adapter; application runtime cannot issue or deliver invitations",
+    "requiresExistingAuthUser": true,
+    "administratorRequires": [
+      "active verified administrator",
+      "AAL2",
+      "platform:invite",
+      "explicit authorization for target"
+    ],
+    "oneTime": true,
+    "defaultTtlSeconds": 3600,
+    "minTtlSeconds": 60,
+    "maxTtlSeconds": 86400,
+    "passwordLength": {
+      "min": 15,
+      "max": 128
+    },
+    "setupCreatesApplicationSession": false,
+    "passwordLoginRequiresReadyState": true,
+    "privilegedMfa": "Existing verified TOTP is required; candidate challenges existing factors and does not enroll them",
+    "delivery": "Fixed approved origin, opaque single-use fragment handle; never log, screenshot, or commit the handle",
+    "rateLimits": {
+      "globalPerMinute": 60,
+      "networkPerMinute": 10,
+      "accountPer15Minutes": 5
+    },
+    "audit": "Issuance requested/failed, setup, session creation, revocation; append-only audit custody retained"
+  },
+  "approvalChecklist": [
+    {
+      "id": "P01",
+      "action": "Owner approves fresh restricted credentials and review-only schema application",
+      "status": "BLOCKED",
+      "executed": false
+    },
+    {
+      "id": "P02",
+      "action": "Establish actual synthetic carrier, fleet, driver employment, governance and native principal records; retrieve record IDs without invention",
+      "status": "BLOCKED",
+      "executed": false
+    },
+    {
+      "id": "P03",
+      "action": "Owner approves four roster Auth users and explicit role permission subsets; capture canonical UUID and verified Google subject from real provider records",
+      "status": "BLOCKED",
+      "executed": false
+    },
+    {
+      "id": "P04",
+      "action": "Owner approves privileged TOTP enrollment and verifies platform/carrier factors using a reviewed enrollment process",
+      "status": "BLOCKED",
+      "executed": false
+    },
+    {
+      "id": "P05",
+      "action": "Review and implement separate privileged issuance and confidential delivery; owner approves initial broker states and deployment bindings",
+      "status": "BLOCKED_ENGINEERING",
+      "executed": false
+    },
+    {
+      "id": "P06",
+      "action": "Owner approves exact immutable protected Preview artifact, 13 Preview keys and exact Google/Supabase redirect settings",
+      "status": "BLOCKED",
+      "executed": false
+    },
+    {
+      "id": "P07",
+      "action": "Owner approves individual external collaborators: one active at a time on current Hobby plan, or separately approved paid plan for four concurrent collaborators; SSO remains enabled",
+      "status": "BLOCKED",
+      "executed": false
+    },
+    {
+      "id": "P08",
+      "action": "Owner approves controlled invitation issuance/delivery, then four users activate and complete hosted UAT including negative and tenant-isolation checks",
+      "status": "BLOCKED",
+      "executed": false
+    }
+  ],
+  "approvalDoesNotAuthorizeProduction": true
+}

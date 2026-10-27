@@ -1,5 +1,7 @@
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
+import {validatePublicImages} from './lib/public-image-contract.mjs';
+const missingImages=validatePublicImages('site/public');if(missingImages.length)throw Error('Public image contract: '+JSON.stringify(missingImages));
 const pages=['index.html','early-access.html','privacy.html','terms.html'];
 for(const page of pages){const html=await readFile('site/public/'+page,'utf8');if(!html.includes('<main')||!html.includes('<title>'))throw new Error('Invalid page '+page);}
 const form=await readFile('site/public/early-access.html','utf8');

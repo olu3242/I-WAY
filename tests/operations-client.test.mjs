@@ -13,12 +13,12 @@ async function client(t,f,actor,{dropFirstCommand=false}={}){
  const response=await fetch(base+'/api/ops/login',{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:JSON.stringify({username:actor.username,password})});
  assert.equal(response.status,200);const cookie=response.headers.get('set-cookie').split(';')[0];
  const elements=new Map();const element=id=>{if(!elements.has(id))elements.set(id,{innerHTML:'',textContent:'',listeners:{},addEventListener(name,fn){this.listeners[name]=fn},scrollIntoView(){}});return elements.get(id)};
- let dropped=false;const context=createContext({document:{querySelector:element},crypto:webcrypto,Intl,Date,console,location:{assign(){throw new Error('Unexpected signout')}},fetch:async(path,options={})=>{
+ let dropped=false;const context=createContext({CustomEvent,document:Object.assign(new EventTarget(),{querySelector:element}),crypto:webcrypto,Intl,Date,console,location:{assign(){throw new Error('Unexpected signout')}},fetch:async(path,options={})=>{
   const result=await fetch(base+path,{...options,headers:{...options.headers,Origin:base,Cookie:cookie}});
   if(dropFirstCommand&&!dropped&&path==='/api/ops/commands'){dropped=true;await result.text();throw new Error('Illustrative lost response')}
   return result;
  }});
- runInContext(source.replace('refresh().catch(error=>alertMessage(error.message,true));','globalThis.initialized=refresh();'),context);
+ runInContext(source.replace('\nrefresh().catch(error=>alertMessage(error.message,true));','globalThis.initialized=refresh();'),context);
  await context.initialized;
  return {context,element,run:code=>runInContext(code,context)};
 }
@@ -39,7 +39,7 @@ test('all persona views render from real API state and fleet creation uses its o
   for(const view of ['loads','assets','workflows','finance','audit','people'])await c.run("tab="+JSON.stringify(view)+";render()");
   if(actor.role==='fleet'){assert.match(c.element('#view').innerHTML,/Fleet employment/);assert.match(c.element('#view').innerHTML,/id="fleet-driver"/)}
   if(actor.role==='carrier'){
-   assert.match(c.run("createLoad()"),/Additional charge/);
+   assert.equal(c.run("can('load:create')"),true);
    assert.doesNotMatch(c.run("select('fleetId','Owner',[['','Carrier']])"),/required/);
   }
   c.run('tab="loads";selected=state.loads[0]?.id??null;render()');

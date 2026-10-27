@@ -1,0 +1,582 @@
+{
+  "schemaVersion": 1,
+  "execution": "Unified B781–B820 remaining implementation",
+  "git": {
+    "branch": "work/b561-b580-external-uat",
+    "startingCommit": "887eeddb33f381733092569fb5d0f2f393b02920",
+    "startingWorktree": "CLEAN",
+    "endingCommit": "Commit containing this receipt; literal SHA in dist/iway-hosted-activation/post-commit-verification.json",
+    "localCommitAuthorized": true,
+    "pushAuthorized": false,
+    "exactHostedMutationApproval": false
+  },
+  "decisions": {
+    "localCoveredWorkflows": "GO",
+    "protectedPreview": "NO_GO",
+    "externalUat": "NO_GO",
+    "production": "NO_GO"
+  },
+  "changedFiles": [
+    "apps/operations/index.html",
+    "apps/operations/ops.css",
+    "apps/operations/ops.js",
+    "docs/security/b591-mvp-inventory.json",
+    "docs/security/iway-unified-approval-register.md",
+    "docs/security/iway-unified-hosted-activation-certification.md",
+    "docs/security/iway-unified-receipt.json",
+    "server/operations-uat-application.mjs",
+    "tests/browser/evidence-reporter.mjs",
+    "tests/browser/integrated-workspace.mjs",
+    "tests/browser/responsive-personas.spec.mjs",
+    "tests/helpers/uat-application-fixture.mjs",
+    "tests/operations-uat-application.test.mjs"
+  ],
+  "sourceHashEncoding": "SHA-256 canonical LF; compared to committed Git blobs after commit",
+  "sourceFiles": [
+    {
+      "path": "apps/operations/index.html",
+      "sha256LF": "196cfc7a641a0aa015eb4dee131efe5995f3d83cef06cbe125c05b86555c4ff6"
+    },
+    {
+      "path": "apps/operations/ops.css",
+      "sha256LF": "80dadd73d8635cf82e65e7d4552b7d13ad07d75a3aca64fbb5d7c2b8f4cda474"
+    },
+    {
+      "path": "apps/operations/ops.js",
+      "sha256LF": "3c928508d901f1f113c6c744fb1efd564ea194a07ad42f4f6def85500b4c9777"
+    },
+    {
+      "path": "docs/security/b591-mvp-inventory.json",
+      "sha256LF": "dd044a213ead7154b086e65cbd7bc38fd6865822ab226337445f45e189ccd1c9"
+    },
+    {
+      "path": "docs/security/iway-unified-approval-register.md",
+      "sha256LF": "099227d701dd6641cb32f82ecf8a4f18dd373138cd9c574a61420abd609263b4"
+    },
+    {
+      "path": "docs/security/iway-unified-hosted-activation-certification.md",
+      "sha256LF": "c39a422cb6c973f7b99e13b329242ba63d66474acaca5d3f0901a7062dc90997"
+    },
+    {
+      "path": "server/operations-uat-application.mjs",
+      "sha256LF": "ac2483e629af2721b2abdf06b109c90df641f5d307b9a1ee7e8ba37500e45b50"
+    },
+    {
+      "path": "tests/browser/evidence-reporter.mjs",
+      "sha256LF": "0f9ca24a4d4185a21a2fa780b6e56827a424590e4e26fd9bd94d6273fcd71f74"
+    },
+    {
+      "path": "tests/browser/integrated-workspace.mjs",
+      "sha256LF": "f62d352879ff83b7a1ebaa87991a6c3ea54c4a04ec05a2cd1f3c967cb9d228e4"
+    },
+    {
+      "path": "tests/browser/responsive-personas.spec.mjs",
+      "sha256LF": "15e2c2a06cd18325dc831e370f472e1b1ae0bdea3a69d8a757d1a6d11fe46908"
+    },
+    {
+      "path": "tests/helpers/uat-application-fixture.mjs",
+      "sha256LF": "936a28dd8ce5505fcd0601fe6af986be7164b0df7747410307a0f4cd50494cb7"
+    },
+    {
+      "path": "tests/operations-uat-application.test.mjs",
+      "sha256LF": "add32a7f4459e0cf254f75454c8a78f53a50e8cc1dd3c39b128ed890df7d337b"
+    }
+  ],
+  "schemaSequenceFiles": [
+    {
+      "path": "db/review-only/iway_auth_runtime_review_b533.sql",
+      "sha256LF": "4e7d38c287497db85b26a41dc9d90e28b027da7452867bb4b76034313217d312"
+    },
+    {
+      "path": "db/review-only/iway_auth_postflight_b512.sql",
+      "sha256LF": "586c58958fcbd0e64d8fd16f524c4b10d88297a066911c5e189d4c368b7b4b6c"
+    },
+    {
+      "path": "db/review-only/b631-broker-remediation.sql",
+      "sha256LF": "47b9008a2bccf224976a2710c69703d0aa05c23433cb3ca92edd06dab37ad2a8"
+    },
+    {
+      "path": "db/review-only/b631-broker-verify.sql",
+      "sha256LF": "4f4c6e88891ed671a6de1499179685e0486836cb95f116f50e2a2567fb1bbb77"
+    },
+    {
+      "path": "supabase/migrations/20261011174100_operations_persistence_readiness.sql",
+      "sha256LF": "0f2bf75c58ab0af6cc7a245f092e29da2943a8316611e8aa85deb699d3436c81"
+    },
+    {
+      "path": "supabase/migrations/20261011210552_operations_active_principal_rls.sql",
+      "sha256LF": "0e18a93c613a977010bfaa481318033087a9687b2c086f7d5fe66746f9dc2ef9"
+    },
+    {
+      "path": "supabase/migrations/20261011220000_operations_actor_evidence.sql",
+      "sha256LF": "96969f98e7af15b7ba26527ab92764642e7eb8ebe2711921fe321a4b2ca8527e"
+    },
+    {
+      "path": "supabase/migrations/20261011221000_operations_dispatcher_directory.sql",
+      "sha256LF": "0a8b2ba5dddc1c8dd438797c3ef57e16a1eedce5515f8241e0ec01bc4236de5b"
+    },
+    {
+      "path": "db/review-only/b662-operations-engine.sql",
+      "sha256LF": "3e8f8f9d502a3aa39a826702ca56aae0815b46e85f5c7353a00c9dd0c9001e20"
+    },
+    {
+      "path": "db/review-only/b710-uat-management.sql",
+      "sha256LF": "3d348be3fe7d4d13b284cac8dfe7031199ab635c8356b9846eb7de265c8ec05d"
+    },
+    {
+      "path": "scripts/lib/operations-migrations.mjs",
+      "sha256LF": "459459dec53c06f1b171ba165d1351ec29d05fe790fbdd4d61ea9b9039f2d6c9"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "dist/iway-hosted-activation/approval-register.json",
+      "sha256": "492a3e9ea1cc0a0b22a624e63612ee79115eeb444c078702f39b62c3d536b8cc"
+    },
+    {
+      "path": "dist/iway-hosted-activation/artifact-probe.mjs",
+      "sha256": "d4100c1afe457935a1be158e6efde3baef9432aeaf09ad796b26a83f4fe7f741"
+    },
+    {
+      "path": "dist/iway-hosted-activation/baseline-integrity.json",
+      "sha256": "d7ed598e70bfd53e8fe1c2be65988f252b1f4552a4522a33e63ec34659a73437"
+    },
+    {
+      "path": "dist/iway-hosted-activation/browser-durable-control-evidence.json",
+      "sha256": "5b7e7ad781f1d76cc8b865c42b723b7e33935f744371d6894000dee20b233446"
+    },
+    {
+      "path": "dist/iway-hosted-activation/browser-durable-evidence.json",
+      "sha256": "03f68aadd8759a886956c2df882aa39d7613a3b4d74e0fb542f46557c4781249"
+    },
+    {
+      "path": "dist/iway-hosted-activation/browser-durable-final.log",
+      "sha256": "d3a052f1a55e566fb4a78a2ff29cdf0cb6d5dc5a4acaca40d4ca366a1326dc78"
+    },
+    {
+      "path": "dist/iway-hosted-activation/browser-durable-release.log",
+      "sha256": "b6693065738cee9bb5068a7cfdcf91f86b08a5777be47d8304cea7a368ed491b"
+    },
+    {
+      "path": "dist/iway-hosted-activation/browser-durable.log",
+      "sha256": "c4999fbeb0b1e9ff2cc943835f65481954b47b112f54d3e6da112d72e5223275"
+    },
+    {
+      "path": "dist/iway-hosted-activation/browser-evidence.json",
+      "sha256": "e8cb52d656b97c87a79f7ed18a51084ce3197f86c18115d984125b793e4b0b86"
+    },
+    {
+      "path": "dist/iway-hosted-activation/browser-final.log",
+      "sha256": "bcfec8ceb0db5f86553dbaae649efa2290cdf519b29e3192709efc47bcd6226b"
+    },
+    {
+      "path": "dist/iway-hosted-activation/browser-full.log",
+      "sha256": "1ac41f9482668feca73a0d0f0c818c95fbf0ef23e4edd02d83dd563133638fa4"
+    },
+    {
+      "path": "dist/iway-hosted-activation/clickability-audit.json",
+      "sha256": "89ff59f0f32be42d654135eef1239943c0c2a81591d931e2c684e4fa5540d38d"
+    },
+    {
+      "path": "dist/iway-hosted-activation/control-coverage-final.log",
+      "sha256": "e5011e89fca2bb84a87c136bb6c8bd9edcb0fa4994196784b6f3eabea7982107"
+    },
+    {
+      "path": "dist/iway-hosted-activation/control-coverage.log",
+      "sha256": "e5011e89fca2bb84a87c136bb6c8bd9edcb0fa4994196784b6f3eabea7982107"
+    },
+    {
+      "path": "dist/iway-hosted-activation/database-readiness.json",
+      "sha256": "7541348925bf9047d5e300aea87c516396097bd095decdd67c7abab5a13b5746"
+    },
+    {
+      "path": "dist/iway-hosted-activation/defects.json",
+      "sha256": "0170b904e382bccbeb3bc954c04502541c53a6a63b6d116700a97321f4cbbbbd"
+    },
+    {
+      "path": "dist/iway-hosted-activation/deployment.json",
+      "sha256": "6bad7e037209b011683e7727cd724b727127dc5c5b7c0672cc54d92511085cfb"
+    },
+    {
+      "path": "dist/iway-hosted-activation/durable-carrier-diagnostic-retry.log",
+      "sha256": "29a1518ab77734fcea47c2488a52bc7fb6c2d6f85958a16553a072537b84e188"
+    },
+    {
+      "path": "dist/iway-hosted-activation/durable-carrier-diagnostic.log",
+      "sha256": "2ed43535e144d69c6571c4b28f19d14f6a8f54a6cca24ad75b03eb56d6353ea8"
+    },
+    {
+      "path": "dist/iway-hosted-activation/durable-carrier-location.log",
+      "sha256": "bcd0dc2d57809bc07469c2cd8650a961b00b1f7b70c4b3de71f992a9bf982a17"
+    },
+    {
+      "path": "dist/iway-hosted-activation/durable-logout-fix.log",
+      "sha256": "acd645d4eb2b52ed2203868f8d2d1185743586f3b557c4e550565ab34eca0a48"
+    },
+    {
+      "path": "dist/iway-hosted-activation/durable-logout-loading.log",
+      "sha256": "4a31b65c1279069f2a5e83e609f8222821a8734148815b6f74e4953522913c61"
+    },
+    {
+      "path": "dist/iway-hosted-activation/environment-readiness.json",
+      "sha256": "ea3aede4939f5f377ee986830e76fe62de050101b87d3e62bf998673d96c7fb1"
+    },
+    {
+      "path": "dist/iway-hosted-activation/finalize-evidence.mjs",
+      "sha256": "ef6efcfba9bd977cb76d2897e9f27da83abba3c487d35a350eb3c241faff4807"
+    },
+    {
+      "path": "dist/iway-hosted-activation/finish-certification.mjs",
+      "sha256": "e6e1914fc43b8784390b2436cf4c536969dba86e20d94421f8eb966dea8f52e8"
+    },
+    {
+      "path": "dist/iway-hosted-activation/four-persona-login.json",
+      "sha256": "1f44f0d7511c51a8f5611ebc4fe744e1e3f96fc251e6fa0c671a0a26847d8b51"
+    },
+    {
+      "path": "dist/iway-hosted-activation/hosted-readonly-snapshot.json",
+      "sha256": "783a09bf9b941f7ae53154922ba1a8579f85c31f2ba7b2feaec1955e468902e0"
+    },
+    {
+      "path": "dist/iway-hosted-activation/hosted-uat-results.json",
+      "sha256": "f1507634139e90f78824926a55f4155a5cbfbd7bf7776d5991cc6cea878f5b95"
+    },
+    {
+      "path": "dist/iway-hosted-activation/mvp-control-evidence.json",
+      "sha256": "ca8dcb5be517e7e83f3d887018aef3a48846cede19e5f9fc45481bc2096cdfa5"
+    },
+    {
+      "path": "dist/iway-hosted-activation/mvp-inventory.json",
+      "sha256": "7a54ef20a568f18caece8c2e1570972bf9c96d89985a9e626d928b76538ff787"
+    },
+    {
+      "path": "dist/iway-hosted-activation/package-integrity.json",
+      "sha256": "7fcb5799139201dc59430a3cd09fb81f273710f26fafd6a93ff080d7072acd4a"
+    },
+    {
+      "path": "dist/iway-hosted-activation/postgres-auth.log",
+      "sha256": "d31c22fc17c8e67cc08abd2141b193d219498e7efe2dd02b51523f00f89624df"
+    },
+    {
+      "path": "dist/iway-hosted-activation/postgres-broker-remediation.log",
+      "sha256": "9789d7aae86b0d21d9245908f5ea5bf274f7ab1de39001715f7c727ae168a9eb"
+    },
+    {
+      "path": "dist/iway-hosted-activation/postgres-broker.log",
+      "sha256": "cac3c0249ab64980424140a8bdbd5590263a163c236c393211abdbeb62dabe47"
+    },
+    {
+      "path": "dist/iway-hosted-activation/postgres-durable-engine.log",
+      "sha256": "b7199e39ed8d7017f1e964249b0ff175a0b57bb8a788e59a24bbfaa737872c39"
+    },
+    {
+      "path": "dist/iway-hosted-activation/postgres-management.log",
+      "sha256": "7309ce7524978bc9f15dfde68883bd58580dae171a6cf6726d53350436e067e6"
+    },
+    {
+      "path": "dist/iway-hosted-activation/postgres-operations-contract.log",
+      "sha256": "034142322a33ec08bb71acfe993a3e7e276152a7b2ae2cc7d7e718e3fc808d4e"
+    },
+    {
+      "path": "dist/iway-hosted-activation/postgres-staging-schema.log",
+      "sha256": "d9a0c88253ca4dea899d3ec8ac532f60feb604293d92ffd78586ac0e13457260"
+    },
+    {
+      "path": "dist/iway-hosted-activation/postgres17-compatibility.json",
+      "sha256": "15e4dc4b32b7b518324e19c5d6489020cc05f979b40d0a8d770dc53e32bb3bdc"
+    },
+    {
+      "path": "dist/iway-hosted-activation/postgres17-runner.log",
+      "sha256": "450dcd93fc96d280ac4ece64b0f9593d4a4970c3ecfd32114e79566bafc7e35b"
+    },
+    {
+      "path": "dist/iway-hosted-activation/prepare-evidence.mjs",
+      "sha256": "031d553aad60aa8c32460379b3c5301faf69b578c74b40d69344a9295d9952f1"
+    },
+    {
+      "path": "dist/iway-hosted-activation/probe-protection.mjs",
+      "sha256": "e0cd42e17f818cf54e759a71ffa87831d5659b3bdb49e793ab37aa8fee8e82db"
+    },
+    {
+      "path": "dist/iway-hosted-activation/project-settings.json",
+      "sha256": "14b128bbb2a0a0accf423f9c2a3023d5be8549050e76fdf863a1273c4cab55fa"
+    },
+    {
+      "path": "dist/iway-hosted-activation/protection-http.json",
+      "sha256": "89213acb2d68ad86fffdd00f66ab6197019087041543e056d022cfff4f14fc5f"
+    },
+    {
+      "path": "dist/iway-hosted-activation/repository-release.log",
+      "sha256": "beb535e1f465fa2c45fe3eb7f34311a73f1d1b9d5da5ee09925bc4a05543c84f"
+    },
+    {
+      "path": "dist/iway-hosted-activation/repository-verify-final.log",
+      "sha256": "1207ee8f8183b7873b570e349b3bd2552ebe69675cb6acf29b9d451165719f66"
+    },
+    {
+      "path": "dist/iway-hosted-activation/repository-verify.log",
+      "sha256": "c12e2d6f58eca4a7c880158b65a88eb1173ea02b123646055e11f9d96ee7f817"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-after.log",
+      "sha256": "14d79d249c1e0eaada33c9b93863a09fd5d5afee7bda207bd99c680fe3a71c9c"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-before.log",
+      "sha256": "276e28a9ed7bb382a9b7ac5a7a055a133a63e6756c63cec0bffac4b945f9da2e"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-certification.json",
+      "sha256": "68177751d2dd70d5e1cdff7663ac8b2cf6f3ddcb45f20113a72c5336f9f78db8"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-fixed.log",
+      "sha256": "c998f1e470d43bbc4181a756790a02c4145033cee2322d872cf7b9163be81e96"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-local.log",
+      "sha256": "4380ec9138bad69dbfe6ded4cc7a3186daaf25ab2bd117e707fb40885852a9d4"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/carrier-1440.png",
+      "sha256": "ee6f1ec8ba19bab99dc091c74150424f1e61fdbfd2931339837f068b89412857"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/carrier-375.png",
+      "sha256": "340194506d6e009de29ea3564182cdb783edfc7e0952f0b84a417e2041899896"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/carrier-768.png",
+      "sha256": "61ce43d3abc93561d13df6c3bd4839821c6b124d678de4c85c924f85b65577aa"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/driver-1440.png",
+      "sha256": "b699cefddb23b99d39dc51a763033cbe6976f9cb04ef385804d5dbc8df6d8c10"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/driver-375.png",
+      "sha256": "4ee9d81e1ff3c502f6bf4926060a0eb7d11fb2beb14fe090daced5ea5eaf1582"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/driver-768.png",
+      "sha256": "e29f87230f5eee7a6e90c3d8ea0f944911ffc31bc3bfa5d5fba6a6149698a3d7"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/fleet-1440.png",
+      "sha256": "955b36869f7a900ed1a6caebfa59f8a86147530d8061d82d11cc829ad73fd392"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/fleet-375.png",
+      "sha256": "bd886a4d42457e02b0b378c38c3157c9000539d6ee0298b6d130edc61fe24dd7"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/fleet-768.png",
+      "sha256": "54a15c1fb66a95130d8ac8645877678e0979766d6dcbf4b5f6e7b6392cfb86ee"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/platform-1440.png",
+      "sha256": "032fb31fdc95b397ee07f94ac363e83639b738584bafaaadbaac8358458f952d"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/platform-375.png",
+      "sha256": "64532a17fd4aa10e3b11f6cc048a2eb20d05063fd99489abb462bee2ad919529"
+    },
+    {
+      "path": "dist/iway-hosted-activation/responsive-screenshots/platform-768.png",
+      "sha256": "393f9f772cf9fffd3d8dcedc5dd861f856f0afca4bf5e26da69fa41988bdf51f"
+    },
+    {
+      "path": "dist/iway-hosted-activation/scan-candidate.mjs",
+      "sha256": "8d9242063a57d8848757d539d0064dae19569702b118ff734a77e39b5d2927f6"
+    },
+    {
+      "path": "dist/iway-hosted-activation/secret-review.json",
+      "sha256": "35904a1801bbd2349b9d1e5aa912f32546b0f3e812b444ed496237d84ef29967"
+    },
+    {
+      "path": "dist/iway-hosted-activation/session-integration.log",
+      "sha256": "fa604b7350bf9dd63100c91d110c90a77ad7fa8f828b73fd9fab51e6276f8ac7"
+    },
+    {
+      "path": "dist/iway-hosted-activation/team-plan.json",
+      "sha256": "ab30ab3c67091f0cb09af900b97e6cd157d9ffd940c484f85635946941c0cd5d"
+    },
+    {
+      "path": "dist/iway-hosted-activation/verify-baseline.mjs",
+      "sha256": "0899bdba49d599132da2d06483dcb30fcc11e5bb24c3dc407006119754db8e58"
+    },
+    {
+      "path": "dist/iway-hosted-activation/verify-package.mjs",
+      "sha256": "39911bf43de802fa3db5d88217cbd8f371e469a5c470d101b12564b07ac9a197"
+    },
+    {
+      "path": "dist/iway-hosted-activation/verify-zip.ps1",
+      "sha256": "90ba33633dcd744db559a44b609fa7854908babb9785105e2fb45773288ee867"
+    },
+    {
+      "path": "dist/iway-hosted-activation/write-receipt.mjs",
+      "sha256": "a6288794ae502d5e3ed22f41be475f0d5260f72a385a56f68fb096f502e7b700"
+    }
+  ],
+  "tests": {
+    "repository": {
+      "pass": 878,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "dist/iway-hosted-activation/repository-release.log"
+    },
+    "browser": {
+      "total": 73,
+      "passed": 73,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "dist/iway-hosted-activation/browser-evidence.json"
+    },
+    "durableBrowser": {
+      "total": 29,
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "overlapsGeneralBrowserCases": true,
+      "evidence": "dist/iway-hosted-activation/browser-durable-evidence.json"
+    },
+    "postgres": {
+      "version": {
+        "version": "17.11",
+        "number": 170011
+      },
+      "leafScenarios": 79,
+      "reportedNodeChecks": 86,
+      "orchestrationParents": 7,
+      "status": "PASS",
+      "evidence": "dist/iway-hosted-activation/postgres17-compatibility.json"
+    },
+    "responsive": {
+      "widths": [
+        375,
+        768,
+        1440
+      ],
+      "personas": 4,
+      "workflowVariants": 12,
+      "layoutObservations": 105,
+      "localPassed": 12,
+      "durablePassed": 12,
+      "hostedExecuted": 0
+    },
+    "accessibility": {
+      "generalScans": 136,
+      "durableScans": 31,
+      "violations": 0,
+      "manualNotRun": 48,
+      "conformanceCertified": false
+    },
+    "hostedUat": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 84,
+      "NOT RUN": 0,
+      "actualHostedLogins": 0
+    },
+    "secretReview": {
+      "status": "PASS",
+      "trackedAndCandidateRegularFilesScanned": 817,
+      "localEvidenceFilesScanned": 60,
+      "configuredPrivateCredentialMatches": 0,
+      "privateFormatScan": "Changed and untracked candidate files",
+      "matches": [],
+      "archiveConfiguredCredentialMatches": 0,
+      "envPathIgnored": true,
+      "envPathTracked": false,
+      "privateValuesPrinted": false,
+      "scope": "Configured private credentials and decoded DB password exact matches; selected private-secret formats; not a universal secret-scanning guarantee"
+    }
+  },
+  "approvalActions": [
+    {
+      "id": "A01",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A02",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A03",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A04",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A05",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A06",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A07",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A08",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A09",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A10",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A11",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    },
+    {
+      "id": "A12",
+      "status": "BLOCKED_APPROVAL_REQUIRED",
+      "ownerDecision": null,
+      "executed": false
+    }
+  ],
+  "ownerConfirmedMissing": {
+    "exclusiveStagingDatabase": true,
+    "managementOwnerAndConnection": true,
+    "invitationProviderAndSenderOwner": true
+  },
+  "excludedDatabaseProjects": [
+    "vnoxdinldneeczxibicp",
+    "yewhurwlsfcrilxpodoo",
+    "rhcgbiotoxweyqyculvl"
+  ],
+  "actualHostedChanges": [],
+  "pastCertificationPreserved": true,
+  "privateValuesIncluded": false
+}

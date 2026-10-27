@@ -1,0 +1,548 @@
+{
+  "schemaVersion": 1,
+  "batches": "B761–B780",
+  "git": {
+    "branch": "work/b561-b580-external-uat",
+    "startingCommit": "22d8c90c6cbd7aecf1e740216dcbeeac87fefbc2",
+    "startingState": "CLEAN",
+    "endingCommit": "Commit containing this receipt; literal SHA in dist/b761-b780/post-commit-verification.json",
+    "remoteReconciliation": "dist/b761-b780/git-reconciliation.json",
+    "localCommitAuthorized": true,
+    "pushAuthorized": false
+  },
+  "decisions": {
+    "localCoveredWorkflows": "GO",
+    "approvalPackageForOwnerReview": "GO",
+    "protectedPreview": "NO_GO",
+    "externalUat": "NO_GO",
+    "production": "NO_GO"
+  },
+  "changedFiles": [
+    "docs/security/b761-b780-activation-readiness.md",
+    "docs/security/b761-b780-approval-matrix.md",
+    "docs/security/b761-b780-receipt.json"
+  ],
+  "changeScope": "Internal documentation and local evidence only; application, UI, SQL, dependencies, CI and configuration unchanged",
+  "sourceHashEncoding": "SHA-256 of canonical LF text; verified against committed Git blobs post-commit",
+  "sourceFiles": [
+    {
+      "path": "docs/security/b761-b780-activation-readiness.md",
+      "sha256LF": "f9b23117bb92cbcbd6224913095a4806db0d4a2bc5439e24ef22457fad5cece8"
+    },
+    {
+      "path": "docs/security/b761-b780-approval-matrix.md",
+      "sha256LF": "3fb3055b6b7658948f15533a1e4fd38041837f7efed6b802d2dc38c54d644013"
+    }
+  ],
+  "schemaSequenceFiles": [
+    {
+      "path": "db/review-only/iway_auth_runtime_review_b533.sql",
+      "sha256LF": "4e7d38c287497db85b26a41dc9d90e28b027da7452867bb4b76034313217d312"
+    },
+    {
+      "path": "db/review-only/iway_auth_postflight_b512.sql",
+      "sha256LF": "586c58958fcbd0e64d8fd16f524c4b10d88297a066911c5e189d4c368b7b4b6c"
+    },
+    {
+      "path": "db/review-only/b631-broker-remediation.sql",
+      "sha256LF": "47b9008a2bccf224976a2710c69703d0aa05c23433cb3ca92edd06dab37ad2a8"
+    },
+    {
+      "path": "db/review-only/b631-broker-verify.sql",
+      "sha256LF": "4f4c6e88891ed671a6de1499179685e0486836cb95f116f50e2a2567fb1bbb77"
+    },
+    {
+      "path": "supabase/migrations/20261011174100_operations_persistence_readiness.sql",
+      "sha256LF": "0f2bf75c58ab0af6cc7a245f092e29da2943a8316611e8aa85deb699d3436c81"
+    },
+    {
+      "path": "supabase/migrations/20261011210552_operations_active_principal_rls.sql",
+      "sha256LF": "0e18a93c613a977010bfaa481318033087a9687b2c086f7d5fe66746f9dc2ef9"
+    },
+    {
+      "path": "supabase/migrations/20261011220000_operations_actor_evidence.sql",
+      "sha256LF": "96969f98e7af15b7ba26527ab92764642e7eb8ebe2711921fe321a4b2ca8527e"
+    },
+    {
+      "path": "supabase/migrations/20261011221000_operations_dispatcher_directory.sql",
+      "sha256LF": "0a8b2ba5dddc1c8dd438797c3ef57e16a1eedce5515f8241e0ec01bc4236de5b"
+    },
+    {
+      "path": "db/review-only/b662-operations-engine.sql",
+      "sha256LF": "3e8f8f9d502a3aa39a826702ca56aae0815b46e85f5c7353a00c9dd0c9001e20"
+    },
+    {
+      "path": "db/review-only/b710-uat-management.sql",
+      "sha256LF": "3d348be3fe7d4d13b284cac8dfe7031199ab635c8356b9846eb7de265c8ec05d"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "dist/b761-b780/approval-matrix.json",
+      "sha256": "c333f7988e1096870123283660f37c1c1170c819f187e227cbf002b576dc5783"
+    },
+    {
+      "path": "dist/b761-b780/baseline-integrity.json",
+      "sha256": "b42ec7f9378db4008c6844bdfd632ca719228a26c6d10aeb9b30d9a935d7729e"
+    },
+    {
+      "path": "dist/b761-b780/browser-durable-evidence.json",
+      "sha256": "acccdbc0b713509611ab29d77646d1dbc10db4e49fc1e455f88e8bb69595d9e6"
+    },
+    {
+      "path": "dist/b761-b780/browser-durable.log",
+      "sha256": "3d4cb01442ab3852b3c66f2dfc523ab54a42708a71b28c47f64008d013c63243"
+    },
+    {
+      "path": "dist/b761-b780/browser-evidence.json",
+      "sha256": "7fcf9cdf8543f8bdb686098894311ddc7fd8192adee314c9ecbe9be11e884efa"
+    },
+    {
+      "path": "dist/b761-b780/browser-full.log",
+      "sha256": "efc0333dfa16f2643d5a742049daebd824391dd71d7b0dfefff4cf1f86002729"
+    },
+    {
+      "path": "dist/b761-b780/control-coverage.log",
+      "sha256": "e5011e89fca2bb84a87c136bb6c8bd9edcb0fa4994196784b6f3eabea7982107"
+    },
+    {
+      "path": "dist/b761-b780/deployment-isolation.json",
+      "sha256": "15eb04ef0f5f078030041342caf70b4bfe74e5f8a4a40024dc44d8ad6ed2f5ed"
+    },
+    {
+      "path": "dist/b761-b780/environment-contract.json",
+      "sha256": "48d518918ffc75cb2e459327e32154d0968fd0f08662c91be5a756ce6284692b"
+    },
+    {
+      "path": "dist/b761-b780/git-reconciliation.json",
+      "sha256": "414cb1da7411be0a525a76a6c996e35952fbf22e32d669e32c61a8ede5167742"
+    },
+    {
+      "path": "dist/b761-b780/hosted-readonly-inspection.json",
+      "sha256": "5f1684e94201435f1a300f277e78c91d3a9ff3f596d0c0ed8e5850677e6b525a"
+    },
+    {
+      "path": "dist/b761-b780/hosted-schema-catalog.json",
+      "sha256": "db1e01acd8953dd7acc6a9164f905f465b1e72e88e145c2755dfe8d7af333036"
+    },
+    {
+      "path": "dist/b761-b780/hosted-uat-matrix.json",
+      "sha256": "6769e833d3a3949ab31629c2c8743ec35f5376d4bcdd0031f87ed957befbeafe"
+    },
+    {
+      "path": "dist/b761-b780/identity-mapping-manifest.json",
+      "sha256": "f2f2ff3862498137b8eaef727777d9e585ab5b53c0b2b915ca806f6025816cc6"
+    },
+    {
+      "path": "dist/b761-b780/management-focused.log",
+      "sha256": "2a0e49b38473fd416e5f423048a11e34b187ae15339adbc4775b6354d433fb8f"
+    },
+    {
+      "path": "dist/b761-b780/manual-accessibility-scripts.json",
+      "sha256": "88ee0f967e2e3e5ea1b7d66ffe914dfd1f6337368a120ff1bcb960c3d699493e"
+    },
+    {
+      "path": "dist/b761-b780/manual-accessibility-scripts.md",
+      "sha256": "3247748793925f37bf70e3a4810203df812fb6cac9c8119c2294c8d502195f38"
+    },
+    {
+      "path": "dist/b761-b780/migration-approval-packages.json",
+      "sha256": "fa5dd6f16ebc3e1837778c8a51c1c6bbfeb1d0f8d1edbc3329f562b58a60f2bc"
+    },
+    {
+      "path": "dist/b761-b780/mvp-control-evidence.json",
+      "sha256": "51a91e08988aa4bc75ba7bbcefb270e2322e1b4ebe0e9476785c9f775fd897ed"
+    },
+    {
+      "path": "dist/b761-b780/mvp-coverage.json",
+      "sha256": "08149162ea1f68e234b57638a892a346ccfbd41b2baf28ff90a67ec2df27d1d5"
+    },
+    {
+      "path": "dist/b761-b780/package-integrity.json",
+      "sha256": "184a63db5b996769324480b65606c700b209c67197895a05314ee91ef3e81bc5"
+    },
+    {
+      "path": "dist/b761-b780/package-validation.json",
+      "sha256": "814c629c3cb77ebf68ffd02aa0affab633e1fd97d3a32876c4149344b7b40e3f"
+    },
+    {
+      "path": "dist/b761-b780/postgres-auth.log",
+      "sha256": "a025f7baa71af6cb16ed965c219fc91c213cb3ef6b50876e4aba960f4853d21c"
+    },
+    {
+      "path": "dist/b761-b780/postgres-broker-remediation.log",
+      "sha256": "671ff3037758681007715fca7791e4e1eeccd79f89301e8ea9b62c451572d3fa"
+    },
+    {
+      "path": "dist/b761-b780/postgres-broker.log",
+      "sha256": "454aa288a1e70554143d157dae55a36093edc8d29fc11e98c15dfb59d5fbfe36"
+    },
+    {
+      "path": "dist/b761-b780/postgres-durable-engine.log",
+      "sha256": "e5bbd81556b1c3bb7255f277c8ace9d66d58607927964790c0669a4acefd71fa"
+    },
+    {
+      "path": "dist/b761-b780/postgres-management.log",
+      "sha256": "5081999f0877b7e26b49ef5920e24d3d328bafc906d655c3de8bddac37b8d8b2"
+    },
+    {
+      "path": "dist/b761-b780/postgres-operations-contract.log",
+      "sha256": "ce8f9a9d0ee261974f31c30c268fe909396c4a9b2453bda9a41c5a798d430fda"
+    },
+    {
+      "path": "dist/b761-b780/postgres-staging-schema.log",
+      "sha256": "efda9fe38ab495cfc2dee478b16e9d89ba4b15ccdd801b50330aea2625e18ff2"
+    },
+    {
+      "path": "dist/b761-b780/postgres17-compatibility.json",
+      "sha256": "bcd58296a8ce0669bf0fd2399a8d14fde0e10f83404b5a51c5f5233948f15792"
+    },
+    {
+      "path": "dist/b761-b780/prepare-evidence.mjs",
+      "sha256": "5158d70a3087428a6cb5b3d94a8c4eb4cf3df9de5afe8f08e5810b87032b4986"
+    },
+    {
+      "path": "dist/b761-b780/probe-public-auth.mjs",
+      "sha256": "f16fcc2019bb3ed1c1c02ad443912840eb89f062fe8444898ccd0f76970576e6"
+    },
+    {
+      "path": "dist/b761-b780/project-settings.json",
+      "sha256": "a58f17de8d67960335af11a0f1d1b1a15fcb865c6d8c2034c9db8820e9263d9d"
+    },
+    {
+      "path": "dist/b761-b780/public-auth-readiness.json",
+      "sha256": "eae5f685daaadb00936cdd5c539a430281116d3afb10f8ea4b915b15a69fb2e2"
+    },
+    {
+      "path": "dist/b761-b780/repository-verify.log",
+      "sha256": "fe9df2235e79f9cb1fef824cb6f91112d0801368818086fd4b97044b05c31008"
+    },
+    {
+      "path": "dist/b761-b780/scan-candidate.mjs",
+      "sha256": "99530fe5f881b49fa04a95bca0f02ca211153d589dceaa222dae143bed4fef36"
+    },
+    {
+      "path": "dist/b761-b780/schema-readiness.json",
+      "sha256": "11ad52e78f2dfc83fb4a7b8a8f300cc1ed660d3925f15b3ef55717ee8a84a1bd"
+    },
+    {
+      "path": "dist/b761-b780/secret-review.json",
+      "sha256": "fa8b6531d7a4fcda18fae6e6a4672403517c2102f391ce3d84d3b612213f3d14"
+    },
+    {
+      "path": "dist/b761-b780/verify-baseline.mjs",
+      "sha256": "71de4ad481dbb26469ffe1841022751e022cc9898f259b3c50e13e1ed8c2c551"
+    },
+    {
+      "path": "dist/b761-b780/verify-package.mjs",
+      "sha256": "c558ab586b4d44c4806b1affb20c9c7eaef5c789680680ab0398a566dafd7220"
+    }
+  ],
+  "baselineIntegrity": {
+    "status": "PASS",
+    "sourceAndSchemaHashes": 17,
+    "evidenceHashes": 32,
+    "packagedGitBlobs": 81,
+    "artifactFiles": 86,
+    "archiveSha256": "4eb1d7b7aebd48de72949af026af8e3d29c967d253583a672112d74af9c28488",
+    "priorPostCommitBinding": {
+      "endingSHA": "22d8c90c6cbd7aecf1e740216dcbeeac87fefbc2",
+      "postCommitStatus": "PASS",
+      "receiptHashMatches": true,
+      "archiveByteIdentical": true,
+      "postCommitSidecarSha256": "613591bad8659827f5d310bef756b03c2c781a1ee2f1cfb17eda4cd6b75ba8c8"
+    }
+  },
+  "tests": {
+    "repository": {
+      "command": "npm run verify",
+      "PASS": 869,
+      "FAIL": 0,
+      "SKIPPED": 0,
+      "sourceBuildIpStructureGates": "PASS"
+    },
+    "browserGeneral": {
+      "command": "npx playwright test",
+      "total": 60,
+      "passed": 60,
+      "failed": 0,
+      "skipped": 0,
+      "singleFullRun": true,
+      "syntheticIdentityProvider": true
+    },
+    "postgres17": {
+      "command": "node scripts/certify-postgres17.mjs dist/b761-b780",
+      "status": "PASS",
+      "actualServer": {
+        "version": "17.11",
+        "number": 170011
+      },
+      "PASS_leafScenarios": 79,
+      "reportedNodeChecks": 86,
+      "orchestrationParentsExcluded": 7,
+      "FAIL": 0,
+      "SKIPPED": 0,
+      "suites": [
+        {
+          "name": "auth",
+          "command": "node scripts/test-auth-postgres-isolated.mjs",
+          "exitCode": 0,
+          "tests": 19,
+          "pass": 19,
+          "fail": 0,
+          "skipped": 0,
+          "orchestrationParents": 1,
+          "leafScenarios": 18,
+          "log": "dist/b761-b780/postgres-auth.log"
+        },
+        {
+          "name": "broker",
+          "command": "node --test tests/local/uat-postgres.test.mjs",
+          "exitCode": 0,
+          "tests": 7,
+          "pass": 7,
+          "fail": 0,
+          "skipped": 0,
+          "orchestrationParents": 1,
+          "leafScenarios": 6,
+          "log": "dist/b761-b780/postgres-broker.log"
+        },
+        {
+          "name": "operations-contract",
+          "command": "node --test tests/local/operations-postgres.test.mjs",
+          "exitCode": 0,
+          "tests": 16,
+          "pass": 16,
+          "fail": 0,
+          "skipped": 0,
+          "orchestrationParents": 1,
+          "leafScenarios": 15,
+          "log": "dist/b761-b780/postgres-operations-contract.log"
+        },
+        {
+          "name": "durable-engine",
+          "command": "node --test tests/local/durable-operations-postgres.test.mjs",
+          "exitCode": 0,
+          "tests": 16,
+          "pass": 16,
+          "fail": 0,
+          "skipped": 0,
+          "orchestrationParents": 1,
+          "leafScenarios": 15,
+          "log": "dist/b761-b780/postgres-durable-engine.log"
+        },
+        {
+          "name": "broker-remediation",
+          "command": "node --test tests/b631-broker-remediation.postgres.mjs",
+          "exitCode": 0,
+          "tests": 11,
+          "pass": 11,
+          "fail": 0,
+          "skipped": 0,
+          "orchestrationParents": 1,
+          "leafScenarios": 10,
+          "log": "dist/b761-b780/postgres-broker-remediation.log"
+        },
+        {
+          "name": "management",
+          "command": "node --test tests/local/uat-management-postgres.test.mjs",
+          "exitCode": 0,
+          "tests": 10,
+          "pass": 10,
+          "fail": 0,
+          "skipped": 0,
+          "orchestrationParents": 1,
+          "leafScenarios": 9,
+          "log": "dist/b761-b780/postgres-management.log"
+        },
+        {
+          "name": "staging-schema",
+          "command": "node --test tests/local/uat-staging-schema.postgres.mjs",
+          "exitCode": 0,
+          "tests": 7,
+          "pass": 7,
+          "fail": 0,
+          "skipped": 0,
+          "orchestrationParents": 1,
+          "leafScenarios": 6,
+          "log": "dist/b761-b780/postgres-staging-schema.log"
+        }
+      ],
+      "hostedExecuted": false
+    },
+    "browserDurablePostgres17": {
+      "command": "IWAY_BROWSER_DURABLE_OPT_IN=true IWAY_LOCAL_PG_MAJOR=17 npx playwright test tests/browser/uat-application.spec.mjs",
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "overlapsGeneralCaseIdentities": true,
+      "syntheticAuthAndBroker": true
+    },
+    "focusedManagementProviderPreflight": {
+      "PASS": 29,
+      "FAIL": 0,
+      "SKIPPED": 0,
+      "alreadyIncludedInRepository": true
+    },
+    "accessibility": {
+      "generalScans": 121,
+      "generalViolations": 0,
+      "durableScans": 16,
+      "durableViolations": 0,
+      "humanScriptsPrepared": 48,
+      "humanPerformed": 0,
+      "humanStatus": "NOT RUN",
+      "humanHostedExecutionGate": "BLOCKED",
+      "wcagConformanceCertified": false
+    },
+    "hosted": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 84,
+      "NOT_RUN": 0,
+      "executed": 0
+    },
+    "packageIntegrity": {
+      "status": "PASS_PACKAGE_VALIDATION_ONLY",
+      "approvalActions": 12,
+      "approvedActions": 0,
+      "configurationRows": 13,
+      "missingPreviewNames": 13,
+      "verifiedSqlHashes": 10,
+      "hostedCasesBlocked": 84,
+      "manualScriptsNotRun": 48,
+      "realIdentityBindings": "UNPROVISIONED_NULL_IDS",
+      "hostedExecuted": 0,
+      "privateValuesIncluded": false
+    },
+    "uniqueGrandTotal": null,
+    "countingNote": "No aggregate across layers; focused cases already in869, durable16 repeat general browser identities, PostgreSQL79 excludes7 orchestration parents."
+  },
+  "controls": {
+    "verifiedActions": 40,
+    "totalActions": 40,
+    "verifiedForms": 25,
+    "totalForms": 25,
+    "verifiedButtonLabels": 30,
+    "totalButtonLabels": 30,
+    "verifiedNavigation": 18,
+    "totalNavigation": 18,
+    "routePatterns": 48,
+    "fieldsObserved": 76,
+    "fieldsInteracted": 55,
+    "nativeDialogsRequiringHumanReview": 12
+  },
+  "hostedReadiness": {
+    "observedAt": "2026-10-24T22:34:05.037Z",
+    "project": "vnoxdinldneeczxibicp",
+    "postgresVersion": "17.11",
+    "authUsers": 0,
+    "googleIdentities": 0,
+    "activeMemberships": 0,
+    "verifiedMfa": 0,
+    "authColumnNamesAndTypes": "PASS_LIMITED_READ_ONLY_COMPARISON_33_COLUMNS",
+    "authRuntimeLogin": "BLOCKED",
+    "authTablesForceRls": 5,
+    "authPolicies": 5,
+    "authTableGrants": 9,
+    "authCreatorEdge": "Matches existing B533 narrow exception; no role mutation performed",
+    "missingRoles": [
+      "iway_uat_runtime",
+      "iway_operations_runtime",
+      "iway_uat_management_runtime"
+    ],
+    "missingSchemas": [
+      "iway_uat_private",
+      "operations_private",
+      "operations_engine_private",
+      "iway_uat_management_private"
+    ],
+    "previewKeysMissing": 13,
+    "stagingProtection": "all",
+    "actualProviderSettings": "BLOCKED",
+    "publicJwks": {
+      "scope": "Public Auth configuration observation only; no authentication",
+      "issuer": "https://vnoxdinldneeczxibicp.supabase.co/auth/v1",
+      "audience": "authenticated",
+      "status": "PASS_PUBLIC_SIGNING_KEYS_ONLY",
+      "hostedLogin": "BLOCKED",
+      "privateProviderSettings": "BLOCKED",
+      "tokensUsed": false,
+      "httpStatus": 200,
+      "keyCount": 1,
+      "algorithms": [
+        "ES256"
+      ]
+    },
+    "publicPreviewSecretNamesObserved": [
+      "DATABASE_URL",
+      "SUPABASE_SERVICE_ROLE_KEY",
+      "SUPABASE_DB_PASSWORD"
+    ],
+    "publicSecretExposureProven": false
+  },
+  "approvalActions": {
+    "count": 12,
+    "approved": 0,
+    "executed": 0,
+    "document": "docs/security/b761-b780-approval-matrix.md",
+    "machineReadable": "dist/b761-b780/approval-matrix.json",
+    "eachIncludes": [
+      "exactTarget",
+      "intendedChange",
+      "owner",
+      "prerequisites",
+      "securityRisks",
+      "verification",
+      "rollback"
+    ],
+    "graphAcyclic": true
+  },
+  "identity": {
+    "approvedRosterSource": "docs/security/uat-provisioning-manifest.json",
+    "sourcePreserved": true,
+    "actualIdsInvented": false,
+    "actualPermissionsAssigned": false,
+    "syntheticIdsScope": "Existing local fixtures only; never real provisioning inputs",
+    "provisioningExecuted": false
+  },
+  "remainingDependencies": [
+    "13 scoped Preview keys and private validation",
+    "Owner-confirmed staging-only data scope and fresh genuine runtime logins",
+    "Broker/Operations/management roles and schemas",
+    "Exact approved Preview origin, private Auth settings and verified Google Console client addendum",
+    "Canonical real UUID/subject/principal, hierarchy, employment and permission approvals",
+    "Controlled privileged TOTP enrollment route and actual AAL2 verification",
+    "Separate management process/provider/transport identity and approval",
+    "Exact candidate protected Preview deployment and individual external access approval",
+    "84 hosted E2E cases and48 human accessibility outcomes"
+  ],
+  "secretReview": {
+    "status": "PASS",
+    "trackedAndCandidateRegularFilesScanned": 807,
+    "localEvidenceFilesScanned": 40,
+    "configuredPrivateCredentialMatches": 0,
+    "privateFormatScan": "Changed and untracked candidate files",
+    "matches": [],
+    "archiveConfiguredCredentialMatches": 0,
+    "envPathIgnored": true,
+    "envPathTracked": false,
+    "privateValuesPrinted": false,
+    "scope": "Configured private credentials and decoded DB password exact matches; selected private-secret formats; not a universal secret-scanning guarantee"
+  },
+  "artifact": {
+    "postCommitVerification": "dist/b761-b780/post-commit-verification.json",
+    "output": "dist/b761-b780/iway-staging-artifact.zip",
+    "manifest": "dist/b761-b780/iway-staging-manifest.json",
+    "expectedFiles": 86,
+    "expectedSourceBlobs": 81,
+    "applicationSourceUnchangedFromStartingCommit": true,
+    "reproducibilityRequired": true,
+    "deployExecuted": false
+  },
+  "externalWrites": false,
+  "protectedActionsPerformed": [],
+  "messagesSent": 0,
+  "productionChanges": 0
+}

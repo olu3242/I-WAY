@@ -1,27 +1,36 @@
 // Private local operational views. Content is escaped; documents never enter public assets.
 function extendedTabs(){
- const tabs=typeof intelligenceTabs==='function'?intelligenceTabs():[];
+ const expenseTabs=['carrier','driver','fleet'].includes(state.actor.role)?[['expenses','Expenses'],['onboarding','Onboarding']]:[];
+ const directoryTabs=can('customer:manage')?[['directories','Directories']]:[];
+ const wizard=can('load:create')?[['load-wizard','Load drafts']]:[];
+ const tabs=[...(typeof maintenanceTabs==='function'?maintenanceTabs():[]),...(typeof financialTabs==='function'?financialTabs():[]),...(typeof intelligenceTabs==='function'?intelligenceTabs():[])];
  if(can('billing:manage'))tabs.push(['billing','Billing & receivables']);
  if(can('document:review'))tabs.push(['documents','Document review']);
  if(can('analytics:view'))tabs.push(['analytics','Operations analytics']);
  if(can('customer:manage'))tabs.push(['customers','Customers']);
  if(can('notification:preferences'))tabs.push(['notifications','Notifications']);
  if(state.actor.role==='customer')tabs.push(['customer-invoices','Invoices']);
- return tabs;
+ return [...wizard,...directoryTabs,...expenseTabs,...tabs];
 }
 function extendedLoadPanels(load){
  if(!state.documents)return '';
  const documents=state.documents.filter(d=>d.loadId===load.id),pods=state.pods.filter(p=>p.loadId===load.id);
- let html='<section class="card"><h2>Shipping documents</h2>'+documents.map(d=>'<div class="inline-record"><div><strong>'+esc(d.type)+' · Revision '+d.revision+'</strong><p>'+chip(d.status)+' · '+esc(d.extraction.confidence)+' confidence</p><p class="small muted">Local text parser · Human review '+(d.reviewNeeded?'required':'recorded')+'</p><a href="/api/ops/documents/'+encodeURIComponent(d.id)+'" target="_blank" rel="noopener">Read document revision '+d.revision+'</a></div><div class="actions">'+(d.reviewNeeded&&can('document:review')?button('Validate document','document:validate',d.id)+button('Reject document','document:reject',d.id):'')+'</div></div>').join('')+(documents.length?'':'<p>No shipping documents recorded.</p>')+'</section>';
+ let html='<section class="card"><h2>Shipping documents</h2><p><a href="/api/ops/pdfs/shipping/'+encodeURIComponent(load.id)+'">Download shipping summary PDF</a></p>'+documents.map(d=>'<div class="inline-record"><div><strong>'+esc(d.type)+' · Revision '+d.revision+'</strong><p>'+chip(d.status)+' · '+esc(d.extraction.confidence)+' confidence</p><p class="small muted">Local text parser · Human review '+(d.reviewNeeded?'required':'recorded')+'</p><a href="/api/ops/documents/'+encodeURIComponent(d.id)+'" target="_blank" rel="noopener">Read document revision '+d.revision+'</a></div><div class="actions">'+(d.reviewNeeded&&can('document:review')?button('Validate document','document:validate',d.id)+button('Reject document','document:reject',d.id):'')+'</div></div>').join('')+(documents.length?'':'<p>No shipping documents recorded.</p>')+'</section>';
  if(can('document:manage'))html+='<form id="document-ingest" class="card"><h2>Add shipping document</h2><p class="muted">Plain text or JSON only. Extraction uses local field rules; every revision requires human review.</p><div class="grid">'+select('documentType','Document type',[['auto','Classify from content'],['BOL','Bill of lading'],['other','Other document']])+select('mimeType','Content format',[['application/json','JSON fields'],['text/plain','Plain text fields']])+select('previousDocId','Revise existing document',[['','New document'],...documents.map(d=>[d.id,d.type+' revision '+d.revision])])+'<div class="wide"><label for="documentContent">Document text</label><textarea id="documentContent" name="documentContent" maxlength="32768" required></textarea><p class="small muted">BOL fields: loadReference, shipper, consignee, commodity, weightLb, pickupLocation, deliveryLocation.</p></div></div><div class="actions"><button class="primary">Ingest document</button>'+(can('document:review')?button('Check document requirements','document:scan',load.id):'')+'</div></form>';
  if(can('pod:record')&&['in_transit','delivered'].includes(load.status)){
   const pending=load.stops.filter(s=>s.type==='delivery'&&!pods.some(p=>p.stopId===s.id));
   if(pending.length)html+='<form id="pod-record" class="card"><h2>Recipient acknowledgment</h2><p>Record a confirmed acknowledgment and an evidence reference. Do not enter signature images or precise GPS.</p><div class="grid">'+select('stopId','Delivery stop',pending.map(s=>[s.id,s.location]))+field('evidenceReference','Acknowledgment evidence reference')+'<div class="wide"><label class="check-label"><input type="checkbox" name="recipientAcknowledged" required> Recipient has acknowledged receipt</label></div></div><div class="actions"><button>Record acknowledgment</button></div></form>';
  }
  if(pods.length)html+='<section class="card"><h2>Delivery acknowledgments</h2>'+pods.map(p=>'<p>'+esc(p.stopId)+' · Recipient acknowledged · '+esc(date(p.recordedAt))+'</p>').join('')+'</section>';
- return html+(typeof intelligenceLoadPanels==='function'?intelligenceLoadPanels(load):'');
+ return html+(can('load:create')&&['draft','validated'].includes(load.status)?button('Correct load','wizard:edit',load.id):'')+(typeof intelligenceLoadPanels==='function'?intelligenceLoadPanels(load):'');
 }
 function extendedView(name){
+ if(name==='directories')return directoryView();
+ if(name==='onboarding')return onboardingView();
+ if(name==='expenses')return expenseView();
+ if(name==='load-wizard')return wizardForm();
+ const maintenance=typeof maintenanceView==='function'?maintenanceView(name):null;if(maintenance!==null)return maintenance;
+ const financial=typeof financialView==='function'?financialView(name):null;if(financial!==null)return financial;
  const intelligence=typeof intelligenceView==='function'?intelligenceView(name):null;if(intelligence!==null)return intelligence;
  if(name==='billing')return billingView();
  if(name==='documents')return pageHead('Document review','Review extracted shipping fields and resolve document exceptions.')+'<section class="notice">Classification uses deterministic local parsing. PDF/image OCR and model extraction are not configured.</section><section class="card"><h2>Exception queue</h2>'+(state.documentexceptions??[]).filter(e=>e.status==='open').map(e=>'<div class="inline-record"><div><strong>'+esc(state.loads.find(l=>l.id===e.loadId)?.reference)+'</strong><p>'+esc(e.issueCodes.join(', '))+' · '+esc(e.escalation)+'</p></div>'+button('Open shipment','open',e.loadId)+'</div>').join('')+'</section>'+loadTable(state.loads.filter(l=>(state.documents??[]).some(d=>d.loadId===l.id&&d.reviewNeeded)));
@@ -32,6 +41,11 @@ function extendedView(name){
  return null;
 }
 async function handleExtendedClick(event){
+ if(await onboardingClick(event))return true;
+ if(await expenseClick(event))return true;
+ if(await wizardClick(event))return true;
+ if(typeof handleMaintenanceClick==='function'&&await handleMaintenanceClick(event))return true;
+ if(typeof handleFinancialClick==='function'&&await handleFinancialClick(event))return true;
  if(typeof handleIntelligenceClick==='function'&&await handleIntelligenceClick(event))return true;
  const b=event.target.closest('[data-action]');if(!b||!['document','billing','payment'].includes(b.dataset.action.split(':')[0]))return false;
  b.disabled=true;try{
@@ -43,6 +57,12 @@ async function handleExtendedClick(event){
  }catch(e){alertMessage(e.message,true)}finally{b.disabled=false}return true;
 }
 async function handleExtendedSubmit(event){
+ if(await directorySubmit(event))return true;
+ if(await onboardingSubmit(event))return true;
+ if(await expenseSubmit(event))return true;
+ if(await wizardSubmit(event))return true;
+ if(typeof handleMaintenanceSubmit==='function'&&await handleMaintenanceSubmit(event))return true;
+ if(typeof handleFinancialSubmit==='function'&&await handleFinancialSubmit(event))return true;
  if(typeof handleIntelligenceSubmit==='function'&&await handleIntelligenceSubmit(event))return true;
  const form=event.target;if(!['document-ingest','pod-record','notification-preference','payment-record','customer-create'].includes(form.id))return false;
  event.preventDefault();const b=form.querySelector('button'),v=Object.fromEntries(new FormData(form));b.disabled=true;

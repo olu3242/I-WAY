@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-23",
+  "branch": "work/b561-b580-external-uat",
+  "baseCommit": "e53192fc076aa3b96f84fc6fb7f2e6b616785fdc",
+  "deployment": {
+    "id": "dpl_APs1ZkJVQfADo9H8Vq6wxDFBfPNc",
+    "project": "iway-auth-staging",
+    "projectId": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+    "teamId": "team_zNHlJbJHa4YZFwN4p9lcHzEH",
+    "commit": "e53192fc076aa3b96f84fc6fb7f2e6b616785fdc",
+    "target": "production",
+    "readyState": "READY",
+    "ssoProtection": {"enabled":true,"deploymentType":"all"},
+    "unauthenticatedHealthStatus": 302,
+    "unauthenticatedRedirectHost": "vercel.com"
+  },
+  "account": {"plan":"hobby","billingStatus":"active","externalCollaboratorLimitDocumented":1,"planChanged":false},
+  "supabase": {
+    "projectId": "vnoxdinldneeczxibicp",
+    "totalAuthUsers": 0,
+    "activeTenantMemberships": 0,
+    "inspectionIdentity": "Connected administrative catalog read; not runtime authentication evidence",
+    "runtimeRoleCatalog": {"name":"iway_auth_runtime","login":true,"superuser":false,"bypassRls":false,"createRole":false,"createDatabase":false},
+    "runtimeLoginAttempted": false,
+    "publicJwks": {"httpStatus":200,"keys":[{"kid":"94474f6d-47f4-404f-9731-b626269e183a","algorithm":"ES256","keyType":"EC"}]}
+  },
+  "currentProjectVariableNames": {
+    "scope": "Current project metadata, not a decrypted deployment snapshot",
+    "production": ["PORT","DATABASE_URL","PGSSL","SUPABASE_SERVICE_ROLE_KEY","SUPABASE_PROJECT_REF","OPENAI_API_KEY","IWAY_AUTH_ORIGIN","IWAY_AUTH_PROVIDER","IWAY_AUTH_CLIENT_ID","IWAY_AUTH_CLIENT_SECRET"],
+    "preview": [],
+    "missingAuthRuntimeNamesInProduction": ["IWAY_AUTH_DATABASE_URL","IWAY_SESSION_ENCRYPTION_KEY","IWAY_SUPABASE_PUBLISHABLE_KEY","IWAY_AUTH_ENABLED","IWAY_AUTH_SCHEMA_APPROVED","IWAY_AUTH_APPROVED_ORIGIN","IWAY_STAGING_VERCEL_PROJECT_ID"],
+    "valuesDecrypted": false
+  },
+  "changesToHostedState": [],
+  "credentialsIssued": false,
+  "invitationsSent": false,
+  "productionAccessGranted": false,
+  "decision": "HOSTED_UAT_NO_GO"
+}

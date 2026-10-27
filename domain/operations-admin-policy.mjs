@@ -19,6 +19,7 @@ export function effectiveAdminDenials(store,actor){
  const sets=new Map(),assigned=new Set();
  for(const row of rows){
   let data;try{data=JSON.parse(row.data)}catch{continue}
+  if(data._deactivated)continue;
   if(row.kind==='permission-set')sets.set(row.id,data);
   else if(row.id===actor.id&&Array.isArray(data.setIds))for(const setId of data.setIds)if(id(setId))assigned.add(setId);
  }
@@ -41,7 +42,7 @@ export function projectConfiguredFields({store,actor,resource,object,record}){
  const denied=new Set();
  for(const row of rows){
   let rule;try{rule=JSON.parse(row.data)}catch{continue}
-  if(rule.object===object&&typeof rule.field==='string'&&Array.isArray(rule.read)&&rule.read.includes(actor.role)===false)denied.add(rule.field);
+  if(!rule._deactivated&&rule.object===object&&typeof rule.field==='string'&&Array.isArray(rule.read)&&rule.read.includes(actor.role)===false)denied.add(rule.field);
  }
  return Object.fromEntries(Object.entries(record).filter(([key])=>!denied.has(key)));
 }

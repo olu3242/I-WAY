@@ -12,16 +12,30 @@ const run=(file,args,logPath)=>{
  const fd=logPath?openSync(logPath,'w',0o600):null;
  try{return execFileSync(file,args,{stdio:fd!==null?['ignore',fd,fd]:file==='whoami'?'pipe':'ignore',windowsHide:true,timeout:/initdb(?:\.exe)?$/i.test(file)?180000:60000})}finally{if(fd!==null)closeSync(fd)}
 };
-export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_PG_BIN??'C:/Program Files/PostgreSQL/18/bin',openssl=process.env.IWAY_LOCAL_OPENSSL??'C:/Program Files/Git/usr/bin/openssl.exe'}={}){
+export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_PG_BIN??'C:/Program Files/PostgreSQL/18/bin',openssl=process.env.IWAY_LOCAL_OPENSSL??'C:/Program Files/Git/usr/bin/openssl.exe',expectedMajor=process.env.IWAY_LOCAL_PG_MAJOR,bootstrapOperations=true}={}){
  if(optIn!==true)throw Error('LOCAL_FIXTURE_OPT_IN_REQUIRED');
+ if(expectedMajor!==undefined&&!/^[1-9][0-9]$/.test(String(expectedMajor)))throw Error('LOCAL_POSTGRES_MAJOR_INVALID');
+ if(typeof bootstrapOperations!=='boolean')throw Error('LOCAL_FIXTURE_BOOTSTRAP_INVALID');
  for(const exe of ['initdb','pg_ctl'])if(!existsSync(join(bin,exe+(process.platform==='win32'?'.exe':''))))throw Error('LOCAL_POSTGRES_BINARIES_REQUIRED');
  if(!existsSync(openssl))throw Error('LOCAL_OPENSSL_REQUIRED');
  await new Promise((ok,no)=>{const s=createServer();s.once('error',()=>no(Error('LOCAL_FIXTURE_PORT_5433_UNAVAILABLE')));s.listen(5433,'127.0.0.1',()=>s.close(ok));});
  const base=realpathSync(tmpdir()),root=mkdtempSync(join(base,'iway-pg-fixture-')),data=join(root,'data'),password=randomBytes(32).toString('hex'),restrictedPassword=randomBytes(32).toString('hex');
  let started=false,admin;const pools=[];
+ // pg Pool.end() can resolve while clients removed after query errors are still
+ // closing. Drain those sockets before stopping the disposable server.
+ const closing=new WeakMap();
+ const fixturePool=options=>{
+  const pool=new Pool(options),connections=new Set();closing.set(pool,connections);
+  pool.on('connect',client=>{
+   const ended=new Promise(resolve=>client.once('end',resolve));
+   connections.add(ended);ended.then(()=>connections.delete(ended));
+  });
+  return pool;
+ };
+ const drain=async pool=>{if(!pool.ending)await pool.end();await Promise.all([...closing.get(pool)]);};
  const cleanup=async()=>{
-  await Promise.allSettled(pools.map(p=>p.end()));
-  if(admin)await admin.end();
+  await Promise.allSettled(pools.map(p=>drain(p)));
+  if(admin)await drain(admin);
   if(started||existsSync(join(data,'postmaster.pid'))){run(join(bin,'pg_ctl'),['-D',data,'-m','immediate','-w','stop']);started=false;}
   const target=resolve(root);
   if(!target.startsWith(base+sep)||!target.slice(base.length+1).startsWith('iway-pg-fixture-'))throw Error('UNSAFE_FIXTURE_CLEANUP');
@@ -53,21 +67,32 @@ export async function isolatedPostgres({optIn=false,bin=process.env.IWAY_LOCAL_P
   run(join(bin,'pg_ctl'),['-D',data,'-l',join(root,'server.log'),'-w','start']);started=true;
   const ssl={ca:readFileSync(join(root,'ca.crt'),'utf8'),rejectUnauthorized:true,minVersion:'TLSv1.2'};
   const common={host:'127.0.0.1',port:5433,ssl,connectionTimeoutMillis:5000,max:6};
-  admin=new Pool({...common,user:'iway_fixture_admin',password,database:'postgres'});
+  admin=fixturePool({...common,user:'iway_fixture_admin',password,database:'postgres'});
   stage='LOCAL_FIXTURE_SCHEMA';
   await admin.query('CREATE DATABASE iway_fixture');
-  await admin.end();admin=new Pool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
+  await drain(admin);admin=fixturePool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
+  stage='LOCAL_FIXTURE_VERSION';
+  const version=(await admin.query("SELECT current_setting('server_version') AS version,current_setting('server_version_num')::int AS number")).rows[0];
+  if(expectedMajor!==undefined&&Math.floor(version.number/10000)!==Number(expectedMajor))throw Error('LOCAL_POSTGRES_MAJOR_MISMATCH');
   // Password originates only from randomBytes hex above, not input. No credentials reach command arguments/logs.
   await admin.query("CREATE ROLE iway_operations_fixture LOGIN PASSWORD '"+restrictedPassword+"' NOSUPERUSER NOBYPASSRLS NOCREATEROLE NOCREATEDB NOREPLICATION");
+  if(bootstrapOperations){
   await applyOperationsMigrations(admin);
   await admin.query('GRANT USAGE ON SCHEMA operations_private TO iway_operations_fixture');
   await admin.query('GRANT SELECT ON operations_private.tenants,operations_private.users,operations_private.dispatcher_directory TO iway_operations_fixture');
   await admin.query('GRANT SELECT,INSERT,UPDATE ON operations_private.resources,operations_private.sessions TO iway_operations_fixture');
   await admin.query('GRANT SELECT,INSERT ON operations_private.commands,operations_private.audit TO iway_operations_fixture');
   await admin.query('GRANT USAGE ON ALL SEQUENCES IN SCHEMA operations_private TO iway_operations_fixture');
+  }
   const restricted={...common,user:'iway_operations_fixture',password:restrictedPassword,database:'iway_fixture'};
-  const pool=new Pool(restricted);pools.push(pool);
-  return {admin,pool,ssl,restricted,caPath:join(root,'ca.crt'),createPool(options={}){const p=new Pool({...restricted,...options});pools.push(p);return p},cleanup};
+  const pool=fixturePool(restricted);pools.push(pool);
+  return {version,get admin(){return admin},pool,ssl,restricted,caPath:join(root,'ca.crt'),createPool(options={}){const p=fixturePool({...restricted,...options});pools.push(p);return p},
+   async restartDatabase(){
+    // Fixture-owned paths and process only. Callers close their borrowed pools first.
+    await Promise.allSettled(pools.map(p=>drain(p)));await drain(admin);admin=null;
+    run(join(bin,'pg_ctl'),['-D',data,'-m','fast','-w','restart']);
+    admin=fixturePool({...common,user:'iway_fixture_admin',password,database:'iway_fixture'});
+   },cleanup};
  }catch(error){
   let diagnostic='';
   if(stage==='LOCAL_FIXTURE_INITDB'&&existsSync(join(root,'initdb.log')))diagnostic=readFileSync(join(root,'initdb.log'),'utf8').slice(-700).replaceAll(root,'[fixture]').replaceAll(password,'[redacted]');

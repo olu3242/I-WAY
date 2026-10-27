@@ -1,3 +1,5 @@
+import {expenseIntegritySQL} from '../domain/operations-expenses.mjs';
+import {settlementIntegritySQL} from '../domain/operations-settlements.mjs';
 import {invitationSQL} from './operations-invitations.mjs';
 import {aiPolicyIntegritySQL} from '../domain/operations-ai-policy.mjs';
 import{identitySQL}from'./operations-identity.mjs';
@@ -26,6 +28,7 @@ export class OperationsStore{
   this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;
    CREATE TABLE IF NOT EXISTS tenants(id TEXT PRIMARY KEY,name TEXT NOT NULL,timezone TEXT NOT NULL);
    CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,tenant_id TEXT NOT NULL REFERENCES tenants(id),username TEXT UNIQUE NOT NULL,data TEXT NOT NULL,password TEXT NOT NULL);
+   CREATE TABLE IF NOT EXISTS owner_profile_sessions(parent_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id),profile_id TEXT NOT NULL,selection_hash TEXT NOT NULL,csrf TEXT NOT NULL);
    CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id),csrf TEXT NOT NULL,expires_at INTEGER NOT NULL);
    CREATE TABLE IF NOT EXISTS resources(kind TEXT NOT NULL,id TEXT NOT NULL,tenant_id TEXT NOT NULL REFERENCES tenants(id),version INTEGER NOT NULL,data TEXT NOT NULL,
     PRIMARY KEY(kind,id),CHECK(json_extract(data,'$.tenantId')=tenant_id),CHECK(json_extract(data,'$.id')=id));
@@ -38,6 +41,7 @@ export class OperationsStore{
    CREATE TRIGGER IF NOT EXISTS audit_no_update BEFORE UPDATE ON audit BEGIN SELECT RAISE(ABORT,'Audit is append only'); END;
    CREATE TRIGGER IF NOT EXISTS audit_no_delete BEFORE DELETE ON audit BEGIN SELECT RAISE(ABORT,'Audit is append only'); END;
   `);
+  this.db.exec(settlementIntegritySQL);this.db.exec(expenseIntegritySQL);
   this.db.exec(documentIntegritySQL);
   this.db.exec(intelligenceIntegritySQL);
   this.db.exec(runtimeIntegritySQL);
@@ -83,7 +87,7 @@ export class OperationsStore{
   return after;
  }
  audit(actor,action,resourceId,outcome,detail={},at=new Date().toISOString()){
-  this.#prepare('INSERT INTO audit(id,tenant_id,actor_id,action,resource_id,at,outcome,detail) VALUES(?,?,?,?,?,?,?,?)').run(randomUUID(),actor.tenantId,actor.id,action,resourceId??null,at,outcome,JSON.stringify(detail));
+  this.#prepare('INSERT INTO audit(id,tenant_id,actor_id,action,resource_id,at,outcome,detail) VALUES(?,?,?,?,?,?,?,?)').run(randomUUID(),actor.tenantId,actor.id,action,resourceId??null,at,outcome,JSON.stringify(actor.ownerUserId?{...detail,authenticatedOwnerUserId:actor.ownerUserId,activeProfileId:actor.id}:detail));
  }
  close(){this.#statements.clear();this.db.close()}
 }

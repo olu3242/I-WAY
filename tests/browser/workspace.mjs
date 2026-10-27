@@ -3,7 +3,9 @@ import AxeBuilder from '@axe-core/playwright';
 import {fixture,password} from '../helpers/operations-fixture.mjs';
 import {makeOperationsApp} from '../../server/operations-app.mjs';
 import {createOperationsFeatures} from '../../domain/operations-features.mjs';
+import {trackControls,attachControlEvidence,verifiedJourney} from './control-evidence.mjs';
 export const test=base.extend({
+ controlEvidence:[async({},use)=>{await use();await attachControlEvidence();},{auto:true}],
  workspace:async({},use)=>{
   const cleanup=[],f=await fixture({after:fn=>cleanup.push(fn)},createOperationsFeatures());
   const server=makeOperationsApp({store:f.store,operations:f.ops});
@@ -17,6 +19,7 @@ export const test=base.extend({
 });
 export {expect};
 export async function signIn(page,workspace,actor){
+ await trackControls(page);
  await page.goto(workspace.baseURL+'/login');
  await page.getByLabel('Username',{exact:true}).fill(actor.username);
  await page.getByLabel('Password',{exact:true}).fill(password);
@@ -24,6 +27,7 @@ export async function signIn(page,workspace,actor){
  await expect(page).toHaveURL(workspace.baseURL+(actor.role==='customer'?'/portal':'/app'));
  await expect(page.locator('#identity')).toContainText(actor.name);
  await expect(page.locator('h1')).toHaveCount(1);
+ await verifiedJourney(['form:login','button:Sign in'],async()=>{await expect(page.locator('#identity')).toContainText(actor.name);});
 }
 export async function basicAccessibility(page){
  await expect(page.locator('html')).toHaveAttribute('lang','en');

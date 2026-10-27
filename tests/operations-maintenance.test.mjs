@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {settlementFixture} from './helpers/settlement-fixture.mjs';
+test('service information is assignment-bound, persistent, monotonic and reviewed by its maintenance owner',async t=>{
+ const f=await settlementFixture(t,{fleet:true}),load=f.assign();
+ let v=f.store.get('vehicle',f.vehicle.id,f.manager.tenantId);
+ v=f.command(f.manager,'vehicle:serviceplan',v,{odometerMiles:1000,intervalMiles:100,warningMiles:10,reason:'Illustrative carrier-configured service interval'});
+ const p={vehicleId:v.id,odometerMiles:1095,performedAt:'2026-01-01T00:00:00.000Z',category:'scheduled_service',note:'Illustrative fleet-private repair summary'};
+ assert.throws(()=>f.command(f.outsider,'maintenance:record',null,p));assert.throws(()=>f.command(f.manager,'maintenance:record',null,p),e=>e.code==='MAINTENANCE_OWNER');
+ const row=f.command(f.driver,'maintenance:record',null,p);assert.equal(row.status,'pending_review');assert.equal(f.ops.state(f.driver.id).serviceVehicles[0].due,true);
+ assert.throws(()=>f.command(f.driver,'maintenance:review',row,{decision:'approve',reason:'Self review denied'}));
+ assert.throws(()=>f.command(f.manager,'maintenance:review',row,{decision:'approve',reason:'Fleet owns review'}),e=>e.code==='MAINTENANCE_OWNER');
+ assert.equal(f.ops.state(f.manager.id).serviceRecords[0].note,undefined);
+ f.command(f.fleetUser,'maintenance:review',row,{decision:'approve',reason:'Illustrative fleet service verification'});
+ assert.equal(f.ops.state(f.driver.id).serviceVehicles[0].nextServiceOdometer,1195);
+ assert.equal(f.ops.state(f.driver.id).serviceVehicles[0].due,false);
+ assert.throws(()=>f.command(f.driver,'maintenance:record',null,{...p,odometerMiles:1000}));
+ f.command(f.dispatcher,'load:unassign',load,{reason:'Illustrative assignment ended'});
+ assert.equal(f.ops.state(f.driver.id).serviceVehicles.length,0);
+ assert.throws(()=>f.command(f.driver,'maintenance:record',null,p));
+});
+test('fleet maintenance cannot clear carrier out-of-service authority, including after approved service',async t=>{
+ const f=await settlementFixture(t,{fleet:true});let vehicle=f.store.get('vehicle',f.vehicle.id,f.manager.tenantId);
+ vehicle=f.command(f.manager,'vehicle:update',vehicle,{maintenance:'out_of_service',reason:'Illustrative carrier safety hold'});
+ assert.throws(()=>f.command(f.fleetUser,'vehicle:update',vehicle,{maintenance:'ready',reason:'Fleet cannot clear carrier hold'}),e=>e.code==='CARRIER_HOLD');
+ const record=f.command(f.fleetUser,'maintenance:record',null,{vehicleId:vehicle.id,odometerMiles:1,performedAt:'2026-01-01T00:00:00.000Z',category:'repair',note:'Illustrative completed repair'});
+ f.command(f.fleetUser,'maintenance:review',record,{decision:'approve',reason:'Illustrative fleet review'});
+ const current=f.store.get('vehicle',vehicle.id,vehicle.tenantId);assert.equal(current.maintenance,'out_of_service');
+ assert.equal(f.command(f.manager,'vehicle:update',current,{maintenance:'ready',reason:'Illustrative independent carrier safety review'}).maintenance,'ready');
+});

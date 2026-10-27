@@ -21,6 +21,13 @@ test('explicit assignment applies deny only and cannot expand baseline authority
  assert.equal(authorizeConfigured({store,actor,action:'load:view',resource}),true);
  assert.equal(authorizeConfigured({store,actor,action:'load:view',resource:{tenantId:'tenant-b'}}),false);
 });
+
+test('retained deactivated permission and field rules are excluded without granting new authority',()=>{
+ const {store,actor,add}=fixture();add('tenant-a','permission-set','retained',{name:'retained',grants:[],denials:['load:dispatch'],_deactivated:true});add('tenant-a','permission-assignment',actor.id,{name:'assigned',setIds:['retained']});
+ assert.equal(authorizeConfigured({store,actor,action:'load:dispatch',resource:{tenantId:'tenant-a'}}),true);
+ assert.equal(authorizeConfigured({store,actor,action:'load:dispatch',resource:{tenantId:'tenant-b'}}),false);
+ add('tenant-a','field-security','retained-field',{name:'retained-field',object:'load',field:'rateCents',read:[],_deactivated:true});assert.deepEqual(projectConfiguredFields({store,actor,object:'load',record:{rateCents:1}}),{rateCents:1});store.db.close();
+});
 test('configured field read restrictions remove data from server projection',()=>{
  const {store,actor,add}=fixture();
  add('tenant-a','field-security','sensitive',{name:'sensitive',object:'load',field:'rateCents',read:['dispatcher']});

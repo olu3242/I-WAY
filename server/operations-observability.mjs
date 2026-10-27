@@ -1,6 +1,6 @@
 import {randomUUID} from 'node:crypto';
 import {authorize} from '../domain/authorization.mjs';
-const routes=new Set(['/api/ops/login','/api/ops/logout','/api/ops/commands','/api/ops/state','/api/ops/health','/health','/app','/portal','/login','/']);
+const routes=new Set(['/api/ops/feedback','/api/ops/login','/api/ops/logout','/api/ops/commands','/api/ops/state','/api/ops/health','/health','/app','/portal','/login','/']);
 export const routeClass=path=>routes.has(path)?path:path?.startsWith('/assets/')?'asset':path?.startsWith('/api/ops/documents/')?'document':'other';
 export function failureClass(status){return status>=500?'availability':status===401?'authentication':status===403?'authorization':status===409?'conflict':status===429?'rate_limit':status>=400?'validation':'none';}
 export function observeRequest(req,res,{sink=()=>{},now=()=>performance.now()}={}){

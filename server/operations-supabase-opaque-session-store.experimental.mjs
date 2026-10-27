@@ -35,6 +35,14 @@ export function createPostgresOpaqueSessionStore({query,cipher,clock=()=>new Dat
    try{return {user_id:result.rows[0].user_id,access_token:cipher.decrypt(result.rows[0].access_token),refresh_token:cipher.decrypt(result.rows[0].refresh_token)};}
    catch{throw Error('SESSION_TOKEN_DECRYPTION_FAILED');}
   },
+  async getForRefresh(id){
+   if(!valid(id))return null;
+   // A refresh preflight grants no resource access and never returns old tokens.
+   // The atomic refresh claim below still enforces absolute expiry/revocation.
+   const result=await query(`SELECT user_id FROM iway_private.auth_server_sessions
+    WHERE session_hash=$1 AND expires_at>$2 AND revoked_at IS NULL AND refresh_claim IS NULL`,[hash(id),clock()]);
+   return result.rowCount===1?{user_id:result.rows[0].user_id}:null;
+  },
   revoke,
   async refresh(id,refreshTokens){
    if(!valid(id)||typeof refreshTokens!=='function')return null;

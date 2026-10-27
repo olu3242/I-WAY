@@ -1,0 +1,26 @@
+{
+  "status": "PROPOSAL_ONLY_BLOCKED",
+  "branch": "work/b561-b580-external-uat",
+  "projectId": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+  "proposedTarget": "preview",
+  "approvedOrigin": null,
+  "approvedCallback": null,
+  "productionGate": "REJECT_UNCHANGED",
+  "currentProductionDeployment": "KEEP_UNCHANGED",
+  "ssoProtection": "KEEP_ENABLED_ALL_DEPLOYMENTS",
+  "requiredPreviewVariableNames": [
+    "IWAY_AUTH_ENABLED", "IWAY_AUTH_SCHEMA_APPROVED", "IWAY_STAGING_VERCEL_PROJECT_ID",
+    "IWAY_AUTH_ORIGIN", "IWAY_AUTH_APPROVED_ORIGIN", "IWAY_AUTH_DATABASE_URL",
+    "IWAY_AUTH_PROVIDER", "IWAY_SUPABASE_PUBLISHABLE_KEY", "IWAY_SESSION_ENCRYPTION_KEY",
+    "IWAY_UAT_ENABLED", "IWAY_UAT_SCHEMA_APPROVED", "IWAY_UAT_DATABASE_URL"
+  ],
+  "approvalRequiredFor": [
+    "durable Operations adapter and reviewed hosted entrypoint",
+    "schema/runtime credential setup and auth activation",
+    "verified roster provisioning and explicit role/tenant/fleet/relationship assignments",
+    "exact Preview source, origin, callback and deployment",
+    "individual external access grants and any billing change"
+  ],
+  "gitPush": "HELD_AUTOMATIC_DEPLOYMENT_BEHAVIOR_NOT_VERIFIED",
+  "actionsPerformed": []
+}
