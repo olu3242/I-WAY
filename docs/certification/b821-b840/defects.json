@@ -2,6 +2,20 @@
   "unresolvedCriticalLocalDefects": 0,
   "defects": [
     {
+      "id": "D821-07",
+      "kind": "product and test synchronization",
+      "severity": "major",
+      "issue": "PR CI left onboarding approved at reload; prior decision-saved text could satisfy a later wait before prompts/activation completed.",
+      "fix": "Clear stale success before prompts, explicitly announce cancellation/pending save, await approval and activation responses, verify active persistence before reload. Held-response regression reproduces the old stale-success failure.",
+      "status": "RESOLVED_LOCAL",
+      "evidence": [
+        "tests/operations-feedback.test.mjs",
+        "tests/browser/b821-feedback.spec.mjs",
+        "tests/browser/b821-feedback-disabled.spec.mjs",
+        "tests/uat-staging-package.test.mjs"
+      ]
+    },
+    {
       "id": "D821-01",
       "kind": "test/design correction",
       "severity": "major",
