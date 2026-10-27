@@ -1,0 +1,25 @@
+{
+  "status": "BLOCKED",
+  "blockers": [
+    "MISSING_IWAY_AUTH_DATABASE_URL",
+    "MISSING_IWAY_SESSION_ENCRYPTION_KEY",
+    "MISSING_IWAY_SUPABASE_PUBLISHABLE_KEY",
+    "MISSING_IWAY_AUTH_PROVIDER",
+    "MISSING_IWAY_AUTH_SCHEMA_APPROVED",
+    "MISSING_IWAY_AUTH_APPROVED_ORIGIN",
+    "SECRET_STORAGE_IWAY_AUTH_DATABASE_URL",
+    "SECRET_STORAGE_IWAY_SESSION_ENCRYPTION_KEY",
+    "CLEAN_SOURCE_MANIFEST",
+    "EVIDENCE_COMMIT",
+    "MISSING_catalogReviewed",
+    "MISSING_schemaApproved",
+    "MISSING_restrictedRoleVerified",
+    "MISSING_providerCallbackApproved",
+    "MISSING_syntheticIdentitiesApproved",
+    "MISSING_ciPassed",
+    "MISSING_previewDeploymentAuthorized"
+  ],
+  "hostedTested": false,
+  "rollbackCandidateVerified": false,
+  "production": "NO-GO"
+}

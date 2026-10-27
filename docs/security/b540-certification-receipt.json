@@ -1,0 +1,78 @@
+{
+  "implementationCommit": "eb3c5442e696cd01b16712588ac9bf84f4050fa1",
+  "baseline": "22b8b35aa0832c74b65a9228902f01586b8df750",
+  "changedFiles": [
+    "db/review-only/iway_auth_runtime_review_b533.sql",
+    "docs/security/b531-b540-certification.md",
+    "docs/security/b531-live-evidence.json",
+    "server/operations-auth-database-check.mjs",
+    "tests/local/operations-auth-postgres.test.mjs",
+    "tests/operations-auth-runtime.test.mjs"
+  ],
+  "databaseMigrationsReverified": [
+    "20261021222437",
+    "20261021222452"
+  ],
+  "databaseChangesThisCycle": false,
+  "readOnlyB533Review": "PASS",
+  "repositoryTests": {
+    "passed": 766,
+    "skipped": 0,
+    "failed": 0
+  },
+  "isolatedPostgresTests": {
+    "passed": 18,
+    "skipped": 0,
+    "failed": 0,
+    "ciVersion": 16,
+    "localVersion": 18
+  },
+  "ci": [
+    {
+      "name": "Verify",
+      "result": "success",
+      "id": 39687754156
+    },
+    {
+      "name": "Identity access certification",
+      "result": "success",
+      "id": 39687754172
+    },
+    {
+      "name": "Auth lifecycle PostgreSQL and standalone build",
+      "result": "success",
+      "id": 39687754168
+    },
+    {
+      "name": "B391 B392 isolated PostgreSQL verification",
+      "result": "success",
+      "id": 39687754138
+    }
+  ],
+  "evidenceHashes": [
+    {
+      "sha256": "a8d0f6e588f36509735da7c326f6ea4119443038000dd92a9827a227c375a7b2",
+      "file": "b531-live-evidence.json"
+    },
+    {
+      "sha256": "4e7d38c287497db85b26a41dc9d90e28b027da7452867bb4b76034313217d312",
+      "file": "iway_auth_runtime_review_b533.sql"
+    },
+    {
+      "sha256": "b4bf5474b336e28713891887167e0a73c23d5f0ee084cd1bb69b32e47429d7a6",
+      "file": "repository.log"
+    },
+    {
+      "sha256": "5a6df3f0cad6889b6d9fe117ddd1185fde4dc47101fc22d3f57e888cdf4ca54e",
+      "file": "postgres.log"
+    }
+  ],
+  "restrictedLogin": "NOT RUN: approved credential workflow missing",
+  "deploymentId": null,
+  "deploymentUrl": null,
+  "hostedE2E": "NOT RUN",
+  "hostedRecovery": "NOT RUN",
+  "rollback": "NOT RUN",
+  "production": "NO-GO",
+  "realTesterOnboarding": "NOT AUTHORIZED"
+}

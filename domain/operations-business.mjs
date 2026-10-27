@@ -5,23 +5,17 @@ import {shippingDocumentReadiness} from './operations-documents.mjs';
 import {fields,text,integer,utc,requireValue} from './operations-errors.mjs';
 
 const templates=Object.freeze({
-<<<<<<< HEAD
  shipment_created:'A shipment has been created.',
  dispatch_confirmed:'Dispatch has been confirmed.',
  pickup_completed:'Pickup has been recorded.',
  in_transit:'The shipment is in transit.',
  operational_exception:'An operational exception needs review.',
  pod_available:'Delivery acknowledgment is available.',
-=======
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  load_delivered:'The shipment has a recorded delivery.',
  invoice_issued:'An invoice is available for review.',
  document_exception:'Shipping documents need review.'
 });
-<<<<<<< HEAD
 const lifecycleTemplates=new Set(['shipment_created','dispatch_confirmed','pickup_completed','in_transit','operational_exception','pod_available']);
-=======
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
 const humanRoles=['carrier','dispatcher','driver','fleet','customer'];
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const scope=actor=>({tenantId:actor.tenantId,fleetId:actor.fleetId,driverId:actor.id,customerId:actor.customerId,dispatcherId:actor.role==='dispatcher'?actor.id:undefined});
@@ -140,27 +134,19 @@ export function runNotificationTick(ops,{adapter=localNotificationAdapter}={}){
    for(const l of loads)if(l.status==='delivered')events.push({template:'load_delivered',sourceId:l.id,eventKey:'delivered:'+l.id,loadId:l.id,at:l.stops.filter(s=>s.type==='delivery').at(-1)?.completedAt??now});
    for(const i of ops.store.list('invoice',tenant.id))if(i.issuedAt&&i.status!=='void')events.push({template:'invoice_issued',sourceId:i.id,eventKey:'invoice:'+i.id,loadId:i.loadId,at:i.issuedAt});
    for(const d of ops.store.list('documentexception',tenant.id))if(d.status==='open')events.push({template:'document_exception',sourceId:d.id,eventKey:'document-exception:'+d.id+':'+d.version,loadId:d.loadId,at:d.updatedAt??d.createdAt??now});
-<<<<<<< HEAD
    // Read only the minimal metadata needed from committed events. Never render audit payloads.
    const eventTemplates={'load:create':'shipment_created','load:accept':'dispatch_confirmed','load:pickup':'pickup_completed','load:transit':'in_transit','exception:report':'operational_exception','pod:record':'pod_available'};
    for(const row of ops.store.db.prepare("SELECT id,action,resource_id,at,json_extract(detail,'$.loadId') AS load_id,json_extract(detail,'$.after.loadId') AS related_id FROM audit WHERE tenant_id=? AND outcome='success' AND action IN ('load:create','load:accept','load:pickup','load:transit','exception:report','pod:record') ORDER BY sequence").all(tenant.id))events.push({template:eventTemplates[row.action],sourceId:row.resource_id,eventKey:'lifecycle:'+row.id,loadId:row.load_id??row.related_id??row.resource_id,at:row.at});
-=======
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
    const principals=ops.store.db.prepare('SELECT data FROM users WHERE tenant_id=?').all(tenant.id).map(r=>JSON.parse(r.data)),existing=ops.store.list('notification',tenant.id),preferences=ops.store.list('preference',tenant.id);
    for(const e of events){
     const load=loads.find(l=>l.id===e.loadId);if(!load)continue;
     for(const recipient of principals.filter(p=>eligibleRecipient(p,load,e.template))){
      if(existing.some(n=>n.eventKey===e.eventKey&&n.recipientId===recipient.id))continue;
-<<<<<<< HEAD
      const pref=preferences.find(p=>p.userId===recipient.id);
      // New lifecycle templates require explicit opt-in; existing templates keep their contract.
      if(lifecycleTemplates.has(e.template)&&!pref?.templates.includes(e.template))continue;
      const suppressed=pref&&(!pref.enabled||!pref.templates.includes(e.template));
      const result=ops.create(actor,'notification',{...e,recipientId:recipient.id,templateVersion:1,message:templates[e.template],status:suppressed?'suppressed':'pending',attempts:0,nextAttemptAt:null,createdAt:now,adapter:'local-test',externalDelivery:false,communicationPolicy:lifecycleTemplates.has(e.template)?'explicit_local_preference':'legacy_local_preference'},'notification:queue');
-=======
-     const pref=preferences.find(p=>p.userId===recipient.id),suppressed=pref&&(!pref.enabled||!pref.templates.includes(e.template));
-     const result=ops.create(actor,'notification',{...e,recipientId:recipient.id,templateVersion:1,message:templates[e.template],status:suppressed?'suppressed':'pending',attempts:0,nextAttemptAt:null,createdAt:now,adapter:'local-test',externalDelivery:false},'notification:queue');
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
      existing.push(result);changed++;
     }
    }

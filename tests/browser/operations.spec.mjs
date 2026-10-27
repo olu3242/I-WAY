@@ -39,11 +39,8 @@ for(const persona of [
 }
 
 test('browser journey creates, dispatches, executes and approves an invoice with real persistence',async({browser,workspace})=>{
-<<<<<<< HEAD
  // Full multi-view/persona journey includes repeated axe scans; assertion deadlines remain unchanged.
  test.setTimeout(180000);
-=======
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline
  const customer=workspace.command(workspace.manager,'customer:create',null,{name:'Illustrative journey customer'});
  const customerReader=workspace.command(workspace.manager,'user:create',null,{username:'journey-customer@illustrative.invalid',name:'Illustrative Journey Reader',role:'customer',customerId:customer.id,password});
  const pages={},contexts=[];
@@ -91,6 +88,8 @@ test('browser journey creates, dispatches, executes and approves an invoice with
   await driver.getByRole('button',{name:'Accept assignment',exact:true}).click();
   await driver.getByRole('button',{name:'Complete pickup',exact:true}).click();
   await driver.getByRole('button',{name:'Start transit',exact:true}).click();
+  // Command completion replaces the form; wait before typing into the new form.
+  await expect(driver.getByRole('button',{name:'Start transit',exact:true})).toHaveCount(0);
   await driver.getByLabel('Current location',{exact:true}).fill('Illustrative driver-reported waypoint');
   await driver.getByLabel('Milestone note',{exact:true}).fill('Illustrative recorded progress, no live GPS');
   await driver.getByRole('button',{name:'Record update',exact:true}).click();
@@ -374,7 +373,6 @@ test('Wave 4 browser joins advisory analysis, human assignment approval and boun
   expect(errors).toEqual([]);
  }finally{for(const context of contexts)await context.close();}
 });
-<<<<<<< HEAD
 
  test('dispatcher can mark ready and cancel an assignment without duplicate active claims',async({page,workspace})=>{
   let load=workspace.command(workspace.dispatcher,'load:validate',workspace.createLoad());
@@ -387,5 +385,3 @@ test('Wave 4 browser joins advisory analysis, human assignment approval and boun
   await page.getByRole('button',{name:'Cancel assignment',exact:true}).click();await expect(page.getByRole('button',{name:'Cancel assignment',exact:true})).toHaveCount(0);
   expect(workspace.store.list('assignment',workspace.manager.tenantId).filter(a=>a.status==='active')).toHaveLength(0);await basicAccessibility(page);
  });
-=======
->>>>>>> origin/feat/fcc-03-batches-2-11-driver-offline

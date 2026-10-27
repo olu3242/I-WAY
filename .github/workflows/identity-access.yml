@@ -1,0 +1,42 @@
+name: Identity access certification
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.16.0'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run site:build
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test tests/browser/early-access.spec.mjs tests/browser/operations.spec.mjs
+  disposable-postgres:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.16.0'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Install disposable database prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-16 openssl
+          test -x /usr/lib/postgresql/16/bin/initdb
+          test -x /usr/bin/openssl
+      - name: Certify isolated operations persistence and RLS
+        env:
+          IWAY_OPERATIONS_LOCAL_OPT_IN: '1'
+          IWAY_LOCAL_PG_BIN: /usr/lib/postgresql/16/bin
+          IWAY_LOCAL_OPENSSL: /usr/bin/openssl
+        run: npm run test:pg:operations:local
