@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "authority": [
+    "docs/PRD.md FR-DRV-020",
+    "BR-004",
+    "BR-007",
+    "BR-010",
+    "BR-011",
+    "BR-012",
+    "BR-015",
+    "BR-016",
+    "Existing expense and settlement contracts at 864b19980515a3b3ad74d83df39ac670c074d08c"
+  ],
+  "identity": {
+    "generatedId": "UUID",
+    "immutable": [
+      "id",
+      "tenantId",
+      "driverId",
+      "fleetId",
+      "loadId",
+      "currency",
+      "createdAt"
+    ],
+    "legacy": "Missing historical currency/createdAt are not rewritten; USD is the read default"
+  },
+  "money": {
+    "currency": "USD",
+    "integerCents": true,
+    "minimum": 1,
+    "maximum": 100000000,
+    "basis": "Existing technical range; no reimbursement eligibility/limit policy was added"
+  },
+  "categories": [
+    "fuel",
+    "lumper",
+    "scale",
+    "toll",
+    "parking",
+    "maintenance",
+    "other"
+  ],
+  "states": [
+    "draft",
+    "submitted",
+    "needs_information",
+    "approved",
+    "rejected",
+    "withdrawn"
+  ],
+  "commands": {
+    "expense:draft": {
+      "from": null,
+      "to": "draft",
+      "owner": "Assigned driver",
+      "input": "Complete valid expense data"
+    },
+    "expense:submit": {
+      "from": null,
+      "to": "submitted",
+      "owner": "Assigned driver",
+      "compatibility": "Existing command retained"
+    },
+    "expense:update": {
+      "from": [
+        "draft",
+        "needs_information"
+      ],
+      "to": "unchanged",
+      "owner": "Original driver",
+      "reasonRequired": true,
+      "expectedVersionRequired": true
+    },
+    "expense:resubmit": {
+      "from": [
+        "draft",
+        "needs_information"
+      ],
+      "to": "submitted",
+      "owner": "Original driver",
+      "expectedVersionRequired": true
+    },
+    "expense:review": {
+      "from": [
+        "submitted"
+      ],
+      "to": [
+        "approved",
+        "rejected",
+        "needs_information"
+      ],
+      "owner": "Original employing company; independent reviewer",
+      "reasonRequired": true,
+      "expectedVersionRequired": true
+    },
+    "expense:withdraw": {
+      "from": [
+        "draft",
+        "submitted",
+        "needs_information"
+      ],
+      "to": "withdrawn",
+      "owner": "Original driver",
+      "reasonRequired": true,
+      "expectedVersionRequired": true
+    }
+  },
+  "authorization": {
+    "read": "Driver owns driverId; fleet owns matching fleetId; carrier owns carrier-employed driver expense with no fleetId; configured denies remain effective",
+    "review": "Existing carrier/fleet authority retained; platform, dispatcher and driver cannot approve",
+    "changedRelationships": "Hold for explicit authorized reconciliation; no automatic employer/load transfer"
+  },
+  "uniqueness": {
+    "receiptKey": [
+      "tenantId",
+      "driverId",
+      "loadId",
+      "uppercase trimmed evidenceReference"
+    ],
+    "reservedStates": [
+      "draft",
+      "submitted",
+      "needs_information",
+      "approved"
+    ],
+    "replay": "Existing actor/tenant-bound command digest and idempotency receipt; conflicting input rejected",
+    "physicalReceiptAuthenticity": "NOT VERIFIED; opaque codes cannot prove authenticity or cross-load physical-receipt identity"
+  },
+  "financial": {
+    "carrierEmployed": "Approved carrier-driver settlement sources",
+    "fleetEmployed": "Approved fleet driver-pay sources; carrier fleet settlement does not separately reimburse the same expense",
+    "approvalChecks": [
+      "Original employer, driver and load membership",
+      "Approved expense version and integer-cent amount",
+      "Source total matches reimbursement total",
+      "One approved financial record per expense ID",
+      "Existing source and fleet pay budget gates"
+    ],
+    "reopen": "Existing explicit owner un-approval and reviewed recalculation/revision; no automatic amendment",
+    "payment": "NOT VERIFIED; no transferred-funds claim or payment initiation"
+  },
+  "timestamps": "Canonical valid calendar date, UTC ISO timestamp with seconds and optional 1-3 milliseconds; no future expenses",
+  "evidence": {
+    "type": "Opaque ASCII receipt code, 1-120 characters",
+    "urlsPathsUploads": "Rejected or unavailable",
+    "sensitiveUploads": "BLOCKED_PENDING_STORAGE_ACCESS_RETENTION_DELETION_APPROVAL",
+    "note": "Existing 1-300 character description; users must exclude sensitive data; no universal PII-detection claim"
+  },
+  "audit": {
+    "source": "Existing append-only audit with actor, UTC time, before/after and reasons",
+    "projection": "Only authorized expense IDs; most recent 1000 events with explicit truncation flag",
+    "approvedExpense": "Immutable, no hard delete"
+  },
+  "api": [
+    "POST /api/ops/commands",
+    "GET /api/ops/state"
+  ],
+  "draftStorage": "Server persistence after successful save; unsaved editor values only in memory, no expense offline queue or browser storage"
+}

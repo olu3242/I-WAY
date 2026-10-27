@@ -3,9 +3,10 @@ import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
 export const protectedBranch='work/b561-b580-external-uat';
+export const protectedBranches=[protectedBranch,'work/b721-b740-hosted-integration-20261025','work/first-value-demo-20261025','work/b751-b770-harmonization-20261026'];
 export function assertDeploymentPolicy(config){
  const rules=config?.git?.deploymentEnabled;
- if(config?.outputDirectory!=='site/public'||!rules||rules[protectedBranch]!==false||Object.values(rules).some(v=>v!==false))throw Error('UAT_AUTOMATIC_DEPLOYMENT_POLICY_MISSING');
+ if(config?.outputDirectory!=='site/public'||!rules||protectedBranches.some(branch=>rules[branch]!==false)||Object.values(rules).some(v=>v!==false))throw Error('UAT_AUTOMATIC_DEPLOYMENT_POLICY_MISSING');
  return true;
 }
 export function assertPushAllowed(input){

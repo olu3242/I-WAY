@@ -1,6 +1,6 @@
 {
-  "$comment": "I-way design tokens. 'source: kit' = supplied in brand-tokens.json (authoritative). 'source: derived' = introduced for UI/accessibility, pending brand-owner approval.",
-  "name": "I-way",
+  "$comment": "Iway design tokens. 'source: kit' = supplied in brand-tokens.json (authoritative). 'source: derived' = introduced for UI/accessibility, pending brand-owner approval.",
+  "name": "Iway",
   "version": "1.0",
   "color": {
     "navy":   { "value": "#092448", "rgb": "9 36 72",    "role": "Primary: text, headers, dark surfaces", "source": "kit" },

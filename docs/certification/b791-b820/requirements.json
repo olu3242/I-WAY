@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "startingWorktreeCommit": "87e87a2b36009a6bf8454d83c2d87a0f91f241a1",
+  "startingImplementationCommit": "cf052ee430d98d5578ebb4c58fadb32a6e685f51",
+  "branch": "work/b751-b770-harmonization-20261026",
+  "scope": "Actual local implementation versus blocked hosted/full-product scope",
+  "batches": [
+    {
+      "id": "B791",
+      "status": "PASS",
+      "evidence": "PR #21 and draft dependencies reviewed; clean local 87e87a2 fast-forwarded to cf052ee; original 136 files preserved"
+    },
+    {
+      "id": "B792",
+      "status": "PASS_LOCAL",
+      "evidence": "Fixed adjacent-form overwrite/stale success and durable governance reconstruction; 48 persists across actual PG reload, application reconstruction and fresh login"
+    },
+    {
+      "id": "B793",
+      "status": "PASS",
+      "evidence": "Authoritative 35-screen reconciliation regenerated; current reviewed source hashes and LF normalization verified"
+    },
+    {
+      "id": "B794",
+      "status": "PASS",
+      "evidence": "MVP inventory regenerated; discovery stays distinct from executed outcome evidence"
+    },
+    {
+      "id": "B795",
+      "status": "PASS_LOCAL_BLOCKED_REMOTE_CI",
+      "evidence": "981 repository, 179 general browser, 68 PG browser, 108 PG contract scenarios and one PG HTTP restart case pass locally; final-commit remote CI is blocked by push approval review"
+    },
+    {
+      "id": "B796",
+      "status": "PARTIAL",
+      "evidence": "Current governance, case configuration, synthetic onboarding/invitation/MFA and owner profiles pass; real identities/delivery and global tenant administration remain blocked"
+    },
+    {
+      "id": "B797",
+      "status": "PASS_LOCAL_IMPLEMENTED_SCOPE",
+      "evidence": "Current carrier wizard, dispatch, controlled documents/manual tracking, settlements and exception workflows regressions pass; real registration/provider activation not certified"
+    },
+    {
+      "id": "B798",
+      "status": "PASS_LOCAL_IMPLEMENTED_SCOPE",
+      "evidence": "Fleet-owned resources, maintenance, employment, eligibility and driver pay pass; carrier retains dispatch authority"
+    },
+    {
+      "id": "B799",
+      "status": "PASS_LOCAL_IMPLEMENTED_SCOPE",
+      "evidence": "Driver acceptance, pickup, online delivery/POD reference, earnings, bounded offline replay and recovery pass; sensitive capture/live tracking contracts remain blocked"
+    },
+    {
+      "id": "B800",
+      "status": "PARTIAL",
+      "evidence": "Synthetic initialized four-persona core HTTP logistics, financial PG suites and audit pass; platform-created tenant provisioning is unsupported, so a complete product-provisioned journey is not certified"
+    },
+    {
+      "id": "B801",
+      "status": "BLOCKED_OWNER_TARGET",
+      "evidence": "Isolated Vercel project/protection verified; no approved exclusive staging database/management owner; current pinned public early-access target explicitly excluded"
+    },
+    {
+      "id": "B802",
+      "status": "BLOCKED_VALUES_POLICY",
+      "evidence": "13/13 Preview names present; values/TLS/login/provider callbacks not certified; prohibited application Preview service-role key name found; consent version empty locally"
+    },
+    {
+      "id": "B803",
+      "status": "BLOCKED",
+      "evidence": "Approved four-email roster has no verified target-specific canonical UUID/subject/tenant/fleet/employment and MFA evidence; actual account absence is not assumed"
+    },
+    {
+      "id": "B804",
+      "status": "BLOCKED",
+      "evidence": "No authorized approved staging database connection or deployed current candidate; local restricted runtime/RLS/transactions do not become hosted PASS"
+    },
+    {
+      "id": "B805",
+      "status": "BLOCKED",
+      "evidence": "Mandatory database/secret-policy/identity/access prerequisites unresolved; do not deploy merely because CI passes"
+    },
+    {
+      "id": "B806",
+      "status": "LOCAL_PACKAGE_AFTER_COMMIT",
+      "evidence": "Exact clean committed Git-blob package, dependency installation and archive scan recorded in post-commit sidecar; remote Vercel build not performed"
+    },
+    {
+      "id": "B807",
+      "status": "BLOCKED_NOT_ATTEMPTED",
+      "evidence": "Conditional isolated Preview authorization cannot execute while B805 fails; no deployment ID/URL for this candidate"
+    },
+    {
+      "id": "B808",
+      "status": "BLOCKED",
+      "evidence": "0 hosted browser tests executed; 88 planned cases remain blocked"
+    },
+    {
+      "id": "B809",
+      "status": "BLOCKED",
+      "evidence": "Actual protected hosted reliability/security and real session/MFA/tenant/reconnect validation unavailable"
+    },
+    {
+      "id": "B810",
+      "status": "NO_GO",
+      "evidence": "Deployment receipt records blocked prerequisites rather than a fabricated READY deployment"
+    },
+    {
+      "id": "B811",
+      "status": "PARTIAL_BLOCKED_REFERENCE",
+      "evidence": "All 35 roots retained; approved original Figma version/exports missing; 27 current surfaces and eight unavailable mappings; no conformity percentage"
+    },
+    {
+      "id": "B812",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "390/768/1440 mappings, additional 320/375/1024 regression, overflow, keyboard and state usability pass"
+    },
+    {
+      "id": "B813",
+      "status": "PASS_LOCAL_DISCOVERED_CONTROLS",
+      "evidence": "87/87 actions, 40/40 forms, 60/60 labels and 26/26 navigation outcomes verified; field permutations/route patterns are not exhaustive certification"
+    },
+    {
+      "id": "B814",
+      "status": "PASS_AUTOMATED_HUMAN_NOT_RUN",
+      "evidence": "412 scans in full browser suites plus one pending-state scan; zero violations; 48 human scripts preserved and NOT RUN"
+    },
+    {
+      "id": "B815",
+      "status": "PARTIAL_LOCAL_MEASUREMENTS",
+      "evidence": "Four concurrent lab workload budgets pass unchanged; 128 authenticated document/read-API requests measured on disposable PG; browser rendering/hosted traffic not measured"
+    },
+    {
+      "id": "B816",
+      "status": "PASS_LOCAL_SCOPE",
+      "evidence": "Lost responses, concurrent idempotency, stale revisions, failed writes, PG restart, audit, session and tenant denials pass; SQLite backup/recovery rehearsal passes"
+    },
+    {
+      "id": "B817",
+      "status": "SYNTHETIC_PASS_HUMAN_BLOCKED",
+      "evidence": "Approved existing local persona suites pass; 84 historical hosted IDs plus four new regressions and 48 human scripts prepared; no real human acceptance claimed"
+    },
+    {
+      "id": "B818",
+      "status": "PASS_LOCAL_REMEDIATION",
+      "evidence": "Four verified local defects corrected; CI summary retention implemented locally but remote execution blocked; all final local regressions pass"
+    },
+    {
+      "id": "B819",
+      "status": "PARTIAL_BLOCKED_PUSH_AND_HOSTED",
+      "evidence": "Local integrity/secret/branch checks pass; automatic review denied push under standing restriction. Existing PR stays draft; final commit is local only and has no remote CI run"
+    },
+    {
+      "id": "B820",
+      "status": "PARTIAL_UAT_NO_GO",
+      "evidence": "Consolidated report, exact file manifest, receipt and next owner action prepared; UAT and Production remain NO-GO"
+    }
+  ]
+}

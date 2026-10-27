@@ -6,7 +6,7 @@ export async function assertUatPostgresRuntime(pool){
  const fail=()=>{throw Error('UAT_RUNTIME_PRIVILEGES_INVALID');};
  try{
   const identity=(await pool.query(`SELECT session_user,current_user,r.rolsuper,r.rolbypassrls,r.rolcreaterole,r.rolcreatedb,r.rolreplication,r.rolinherit,r.rolcanlogin,
-   EXISTS(SELECT 1 FROM pg_auth_members m WHERE m.member=r.oid) AS memberships,
+   EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles administrator ON administrator.oid=m.member JOIN pg_roles grantor ON grantor.oid=m.grantor WHERE m.member=r.oid OR (m.roleid=r.oid AND NOT (administrator.rolname='postgres' AND administrator.rolcreaterole AND grantor.oid=10 AND grantor.rolsuper AND m.admin_option AND NOT m.inherit_option AND NOT m.set_option))) AS memberships,
    EXISTS(SELECT 1 FROM pg_namespace n WHERE n.nspname !~ '^pg_' AND n.nspname<>'information_schema' AND (n.nspowner=r.oid OR has_schema_privilege(r.oid,n.oid,'CREATE'))) AS schema_ddl,
    EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname !~ '^pg_' AND n.nspname<>'information_schema' AND c.relowner=r.oid) AS owns_relation
    FROM pg_roles r WHERE r.rolname=current_user`)).rows[0];

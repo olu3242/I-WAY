@@ -2,6 +2,7 @@ import {test,expect,axeAccessibility} from './workspace.mjs';
 import {trackControls,verifiedOutcome} from './control-evidence.mjs';
 import {createServer,request as httpRequest} from 'node:http';
 import {uatApplicationFixture} from '../helpers/uat-application-fixture.mjs';
+import {createHostedUatHandler} from '../../server/operations-uat-hosted-handler.mjs';
 import {syntheticPassword} from '../helpers/uat-fixture.mjs';
 import {durablePostgresFixture,durableUatFixture} from '../helpers/durable-uat-fixture.mjs';
 const durable=process.env.IWAY_BROWSER_DURABLE_OPT_IN==='true';let postgres;
@@ -12,7 +13,8 @@ for(const method of ['google','password'])for(const width of [390,1440])for(cons
  test.setTimeout(180000);
  const cleanup=[],f=await uatApplicationFixture({after:fn=>cleanup.push(fn)},{fullPermissions:true});f.setLoginRole(role);
  let application=durable?await durableUatFixture(f,postgres):f.integrated;
- const server=createServer((req,res)=>application.handler(req,res));await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ const hostedHandler=createHostedUatHandler({createRuntime:async()=>({expiresAt:Date.now()+300000,close:async()=>{},handler:(req,res)=>application.handler(req,res)})});
+ const server=createServer(hostedHandler);await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await context.route(f.origin+'/**',async route=>{
   const incoming=route.request(),url=new URL(incoming.url());

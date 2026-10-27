@@ -1,0 +1,145 @@
+{
+  "startingCommit": "c5998b3ada6121ff7de91f81f71a5cba886f2f5b",
+  "normalization": "SHA-256 over UTF-8 LF; manifest self-hash excluded",
+  "files": [
+    {
+      "path": ".github/workflows/identity-access.yml",
+      "sha256": "025b3625c904513ffe17a4e589cf674a0bb0ee5af48d03513db59a28c23af18a"
+    },
+    {
+      "path": "apps/operations/feedback.js",
+      "sha256": "b601c03235f9bd9daf6d0e3fadb7bcb5281320e325aa1a10edfacd076977367a"
+    },
+    {
+      "path": "apps/operations/index.html",
+      "sha256": "978035987ba98600321ff79768461c25ed77f12412e2782fea3d313c68d8212d"
+    },
+    {
+      "path": "apps/operations/ops.css",
+      "sha256": "95d65d2a070b6b8d7b6a5f1b70600562d445c331fc8552eb8bbc7dea21112bd5"
+    },
+    {
+      "path": "docs/certification/b821-b840/approval-register.md",
+      "sha256": "af70c9d9a6a597a32128d68806afcfff88f992215b4188e18bd181d5cdabbb7c"
+    },
+    {
+      "path": "docs/certification/b821-b840/certification-report.md",
+      "sha256": "4449709f29558e22443410ec7e3cb35258b6d4fa931a11832561da89928804ff"
+    },
+    {
+      "path": "docs/certification/b821-b840/changed-files.json"
+    },
+    {
+      "path": "docs/certification/b821-b840/defects.json",
+      "sha256": "70cf348fde242e4160a6f80c367dcf3a285dea7cc16d455c1db3f0e95c035be9"
+    },
+    {
+      "path": "docs/certification/b821-b840/environment-contract.json",
+      "sha256": "8aca44d6642b1b220e463d06217639909edb103bcc0396d8c7b3270ac32b7c78"
+    },
+    {
+      "path": "docs/certification/b821-b840/feedback-contract.md",
+      "sha256": "71f823d4bed433eac86ccbadc9b822232c6f477947eb324d838966114dfb0c0c"
+    },
+    {
+      "path": "docs/certification/b821-b840/four-persona-acceptance.json",
+      "sha256": "5aabeb04dec9f8b36dea7af671450b0c6a16314f52ae7b1bb7d6640874ed9d97"
+    },
+    {
+      "path": "docs/certification/b821-b840/hosted-uat-results.json",
+      "sha256": "7b800d253d7574de84247bfa9e3aaddebe7dd6a8b9eadaf3dd40006c40bb4731"
+    },
+    {
+      "path": "docs/certification/b821-b840/manual-accessibility.json",
+      "sha256": "13f72787e2457b851769d34b712a79a6a7da7bafb87bd9d65c67478919664203"
+    },
+    {
+      "path": "docs/certification/b821-b840/operations-runbook.md",
+      "sha256": "0c6d2f7f50dd7c8b79b24384baaceb610b9031ff57993057950822a1ebcad11e"
+    },
+    {
+      "path": "docs/certification/b821-b840/receipt.json",
+      "sha256": "60e5399aa015bf790c36d2cbb27608c849014b50ca0e9d1925fd4633115e3d68"
+    },
+    {
+      "path": "docs/certification/b821-b840/requirements.json",
+      "sha256": "0a813d04cf749c69a83de4bc2502f0ae76cfe24e92e83fa76449e23490e9b1d3"
+    },
+    {
+      "path": "docs/certification/b821-b840/risk-register.json",
+      "sha256": "9f4f53733be4ee0c21cc13bafb928d15eff5d9444f943462f15065db9dda30e3"
+    },
+    {
+      "path": "docs/certification/harmonized-figma/matrix.json",
+      "sha256": "b27508887cb0e9d0554c8f57201abd6f21f8ea20e3d1aea9fcb0db80baede5b8"
+    },
+    {
+      "path": "docs/security/b591-mvp-inventory.json",
+      "sha256": "08e16efd20c5289358c463c5005d302ee6adbce4f81e6e24dc24d8e4f570ee3f"
+    },
+    {
+      "path": "docs/security/iway-unified-approval-register.md",
+      "sha256": "9ca49d713c2b221d16b29cb50cfbfd5123c33759fe6f6972cf88c6ae37fb0d1e"
+    },
+    {
+      "path": "domain/operations-feedback-contract.mjs",
+      "sha256": "1be7b4e08bafae55babd920e4416cec19429e129ad66d8f65d87d9a004b36a69"
+    },
+    {
+      "path": "domain/operations-platform-contract.mjs",
+      "sha256": "fccff0ed6790410ce043fee4bb24cabf20233f7054bf590ff6e1ec0c0b40be30"
+    },
+    {
+      "path": "scripts/inventory-mvp-controls.mjs",
+      "sha256": "8cad5e633dc413330a475ca684cf73c0e0e9b937dc5fccf7ad144ace6997112c"
+    },
+    {
+      "path": "scripts/package-uat-staging.mjs",
+      "sha256": "9fd16dacd349209b4b629c8e31c9f1d5f5d001ff6bf1b918f8bc7bead027b6f9"
+    },
+    {
+      "path": "scripts/reconcile-figma-functionality.mjs",
+      "sha256": "82b869767d37046ab96f15b82f1083b99231a202b89530114ad32b8fdd5257ce"
+    },
+    {
+      "path": "server/operations-app.mjs",
+      "sha256": "a32abac0fa4823d7447f99bdecccb21e3a0a03801f54374c62373f6292b172cb"
+    },
+    {
+      "path": "server/operations-feedback.mjs",
+      "sha256": "e79b38894b03e235edc37b5f68469b9a51dfa395880c545a83b5f9907e650361"
+    },
+    {
+      "path": "server/operations-observability.mjs",
+      "sha256": "0a009c34145e829b15055b9946ba645374f72253cd29a1eb7659c66f4ae58c97"
+    },
+    {
+      "path": "server/operations-uat-application.mjs",
+      "sha256": "78311db65e1e66203c2f6d6f5c24e87773a6348a83a03b4d276496364fd67758"
+    },
+    {
+      "path": "tests/browser/b821-feedback-disabled.spec.mjs",
+      "sha256": "d56a0368b482a3686f1531eaa70f6f7782305f777c53a304450fea308403d9a2"
+    },
+    {
+      "path": "tests/browser/b821-feedback.spec.mjs",
+      "sha256": "2ce3e0be7093875b9ae8e5f9029d733e2fe97181bab41982b7835094352aa70d"
+    },
+    {
+      "path": "tests/browser/integrated-workspace.mjs",
+      "sha256": "cc858cae1fc8ea7351aa9e057e27c1c68da733b2678329e81042fd402b0d69c9"
+    },
+    {
+      "path": "tests/helpers/uat-application-fixture.mjs",
+      "sha256": "5f47f0ca4864b8982bffbf029d067382312f7fc78583fdf0192ac43254333b74"
+    },
+    {
+      "path": "tests/operations-feedback.test.mjs",
+      "sha256": "c60d5f9d8b10baa1fd929abd7e1018783a112b76a2a49717165540a21ceb8289"
+    },
+    {
+      "path": "tests/uat-staging-package.test.mjs",
+      "sha256": "f5645fd110912625f1ce8ffbdf718daad4a9d4963e2bed002453c49daff437e1"
+    }
+  ]
+}

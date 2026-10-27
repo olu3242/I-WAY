@@ -1,3 +1,4 @@
+import {createOwnerProfileHandler} from './operations-owner-profiles.mjs';
 import {EventEmitter} from 'node:events';
 import {createIntegratedUatApplication} from './operations-uat-application.mjs';
 import {createUatCandidateHttp} from './operations-uat-http.mjs';
@@ -16,7 +17,7 @@ export class TransactionResponse extends EventEmitter{
  end(chunk){this.write(chunk);this.writableEnded=true;this.emit('finish');return this;}
  flush(res){res.writeHead(this.statusCode,this.headers);res.end(Buffer.concat(this.chunks));}
 }
-export async function createDurableUatApplication({engine,platformNamespaceId,...dependencies}={}){
+export async function createDurableUatApplication({engine,platformNamespaceId,ownerProfiles=[],...dependencies}={}){
  if(!engine||!await engine.validatePlatformNamespace(platformNamespaceId))throw Error('APPROVED_GOVERNANCE_NAMESPACE_REQUIRED');
  const {workflow,origin}=dependencies;
  const scope=parent=>({tenantId:parent.role==='platform'?platformNamespaceId:parent.tenantId,actorId:parent.principalId});
@@ -55,5 +56,5 @@ export async function createDurableUatApplication({engine,platformNamespaceId,..
    if(!req.aborted&&!res.destroyed)buffered.flush(res);
   }catch{if(!res.headersSent){res.writeHead(503,{'content-type':'application/json','cache-control':'no-store'});res.end('{"error":"UNAVAILABLE"}');}else res.destroy();}
  };
- return {handler};
+ return {handler:createOwnerProfileHandler({baseHandler:handler,engine,platformNamespaceId,ownerProfiles,...dependencies})};
 }

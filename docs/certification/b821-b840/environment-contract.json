@@ -1,0 +1,290 @@
+{
+  "projectId": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+  "metadataOnly": true,
+  "rows": [
+    {
+      "name": "IWAY_AUTH_ENABLED",
+      "purpose": "Authentication activation",
+      "validation": "Exact true; owner approval required",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "plain"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_AUTH_SCHEMA_APPROVED",
+      "purpose": "Reviewed auth schema",
+      "validation": "Exact b512-v4",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "plain"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_STAGING_VERCEL_PROJECT_ID",
+      "purpose": "Isolated project pin",
+      "validation": "Exact staging project; match genuine VERCEL_PROJECT_ID",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "plain"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_AUTH_ORIGIN",
+      "purpose": "Application callback and cookie origin",
+      "validation": "Exact HTTPS origin; no credentials, path, query or fragment",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "production"
+          ],
+          "gitBranch": null,
+          "type": "sensitive"
+        },
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "plain"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_AUTH_APPROVED_ORIGIN",
+      "purpose": "Owner-approved callback origin",
+      "validation": "Exact match to IWAY_AUTH_ORIGIN",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "plain"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_AUTH_DATABASE_URL",
+      "purpose": "Auth persistence",
+      "validation": "Pinned PostgreSQL project/database; iway_auth_runtime LOGIN; verified TLS; session port 5432",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "sensitive"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_AUTH_PROVIDER",
+      "purpose": "OAuth provider",
+      "validation": "Exact google",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "production"
+          ],
+          "gitBranch": null,
+          "type": "sensitive"
+        },
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "plain"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_SUPABASE_PUBLISHABLE_KEY",
+      "purpose": "Public Auth API credential",
+      "validation": "Publishable key or pinned-project anon compatibility key; never service-role/secret key",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "plain"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_SESSION_ENCRYPTION_KEY",
+      "purpose": "Server-side token encryption",
+      "validation": "Canonical 43-character base64url 32-byte key; server only",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "encrypted"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_UAT_ENABLED",
+      "purpose": "UAT broker activation",
+      "validation": "Exact true; owner approval required",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "plain"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_UAT_SCHEMA_APPROVED",
+      "purpose": "Reviewed broker schema",
+      "validation": "Exact b574-candidate-v1",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "plain"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_UAT_DATABASE_URL",
+      "purpose": "Broker persistence",
+      "validation": "Pinned PostgreSQL project/database; iway_uat_runtime LOGIN; verified TLS; session port 5432",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "sensitive"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    },
+    {
+      "name": "IWAY_OPERATIONS_DATABASE_URL",
+      "purpose": "Operations persistence",
+      "validation": "Pinned PostgreSQL project/database; iway_operations_runtime LOGIN; verified TLS; explicit port 5432; password at least 12 characters",
+      "project": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+      "scope": "preview",
+      "publicProjectAllowed": false,
+      "configuredPreview": true,
+      "scopes": [
+        {
+          "targets": [
+            "preview"
+          ],
+          "gitBranch": null,
+          "type": "sensitive"
+        }
+      ],
+      "valueValidation": "NOT_RUN_HOSTED_SECRET_VALUES"
+    }
+  ],
+  "missingPreview": [],
+  "privilegedNames": [
+    {
+      "key": "SUPABASE_SERVICE_ROLE_KEY",
+      "target": [
+        "production"
+      ],
+      "gitBranch": null,
+      "type": "sensitive"
+    },
+    {
+      "key": "SUPABASE_SERVICE_ROLE_KEY",
+      "target": [
+        "preview"
+      ],
+      "gitBranch": null,
+      "type": "sensitive"
+    }
+  ],
+  "status": "BLOCKED_VALUES_TARGET_AND_PRIVILEGED_KEY_POLICY",
+  "decryptedSecretsRequested": false,
+  "environmentValueFieldsInspected": false,
+  "secretValuesPrinted": false
+}

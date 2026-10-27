@@ -5,8 +5,9 @@ async function open(page){await page.locator('#nav [data-tab="loads"]').click();
 async function stored(page){return page.evaluate(()=>new Promise((resolve,reject)=>{const r=indexedDB.open('iway-driver-queue-v1',1);r.onsuccess=()=>{const t=r.result.transaction('commands'),g=t.objectStore('commands').getAll();g.onsuccess=()=>resolve(g.result);g.onerror=reject;};r.onerror=reject;}));}
 
 test('driver offline pickup survives reload, replays once and purges on sign-out',async({page,context,workspace})=>{
+ const workerErrors=[];context.on('console',message=>{if(message.type()==='error')workerErrors.push(message.text());});page.on('pageerror',error=>workerErrors.push(error.message));
  const load=workspace.assign();workspace.command(workspace.driver,'load:accept',load);await page.setViewportSize({width:390,height:844});await signIn(page,workspace,workspace.driver);await ready(page);await open(page);
- await page.evaluate(async()=>{await navigator.serviceWorker.ready;});await expect.poll(()=>page.evaluate(()=>!!navigator.serviceWorker.controller)).toBe(true);
+ await expect.poll(async()=>({controlled:await page.evaluate(()=>!!navigator.serviceWorker.controller),errors:workerErrors}),{message:'Recovery worker must install and control the page'}).toMatchObject({controlled:true});
  const cachePaths=await page.evaluate(async()=>{const keys=await caches.keys(),paths=[];for(const key of keys)for(const request of await(await caches.open(key)).keys())paths.push(new URL(request.url).pathname);return paths;});expect(cachePaths.sort()).toEqual(['/assets/InterVariable.woff2','/assets/driver-offline.mjs','/assets/ops.css','/domain/driver-offline-replay.mjs','/offline'].sort());
  await context.setOffline(true);await page.getByRole('button',{name:'Complete pickup'}).click();await expect(page.getByRole('status')).toContainText('Queued on device');expect(workspace.store.get('load',load.id,workspace.driver.tenantId).status).toBe('accepted');
  const before=await stored(page);expect(before).toHaveLength(1);expect(before[0].envelope.payload).toEqual({stopId:load.stops[0].id});

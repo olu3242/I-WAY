@@ -39,12 +39,18 @@ export function createUatSupabaseProvider({apiKey,verifier,fetchImpl=fetch,clock
   async setPassword(accessToken,password){await inspect(accessToken);await request('/user',{method:'PUT',accessToken,body:{password}});},
   refresh:async refreshToken=>tokens(await request('/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:refreshToken}})),
   async logout(accessToken){await request('/logout?scope=local',{method:'POST',accessToken});},
-  async challengeMfa(accessToken){
+  async challengeMfa(accessToken,{enroll=false}={}){
    await inspect(accessToken);const user=await request('/user',{accessToken});
-   const factor=user.factors?.find(f=>f.factor_type==='totp'&&f.status==='verified');if(!factor||!/^[0-9a-f-]{36}$/i.test(factor.id))throw Error('UAT_MFA_ENROLLMENT_REQUIRED');
+   let factor=user.factors?.find(f=>f.factor_type==='totp'&&f.status==='verified'),enrollmentSecret;
+   if(!factor&&enroll){
+    const enrolled=await request('/factors',{method:'POST',accessToken,body:{factor_type:'totp',issuer:'I-WAY'}});
+    if(enrolled?.type!=='totp'||typeof enrolled.totp?.secret!=='string'||!/^[A-Z2-7]{16,128}$/.test(enrolled.totp.secret))throw Error('UAT_MFA_REJECTED');
+    factor={id:enrolled.id};enrollmentSecret=enrolled.totp.secret;
+   }
+   if(!factor||!/^[0-9a-f-]{36}$/i.test(factor.id))throw Error('UAT_MFA_ENROLLMENT_REQUIRED');
    const result=await request('/factors/'+factor.id+'/challenge',{method:'POST',accessToken,body:{}});
    if(typeof result?.id!=='string'||!/^[0-9a-f-]{36}$/i.test(result.id))throw Error('UAT_MFA_REJECTED');
-   return {factorId:factor.id,challengeId:result.id};
+   return {factorId:factor.id,challengeId:result.id,...(enrollmentSecret?{enrollmentSecret}:{})};
   },
   async verifyMfa(current,code){
    const {factorId,challengeId}=current.challenge??{};if(!/^[0-9a-f-]{36}$/i.test(factorId)||!/^[0-9a-f-]{36}$/i.test(challengeId)||!/^\d{6}$/.test(code))throw Error('UAT_MFA_REJECTED');

@@ -11,6 +11,8 @@ const version=execFileSync(resolve(process.env.IWAY_LOCAL_PG_BIN,process.platfor
 if(!/^postgres \(PostgreSQL\) 17\.[0-9]+$/.test(version))throw Error('POSTGRES17_BINARY_VERSION_REQUIRED');
 await mkdir(output,{recursive:true});
 const suites=[
+ ['expense-lifecycle',['--test','tests/local/expenses.postgres.mjs'],{IWAY_EXPENSES_LOCAL_OPT_IN:'true'}],
+ ['next-gap-closure',['--test','tests/local/next-gap-closure.postgres.mjs'],{IWAY_NEXT_GAP_LOCAL_OPT_IN:'true'}],
  ['figma-finance-offline',['--test','tests/local/figma-finance-offline.postgres.mjs'],{IWAY_FIGMA_LOCAL_OPT_IN:'true'}],
  ['auth',['scripts/test-auth-postgres-isolated.mjs'],{IWAY_AUTH_LOCAL_OPT_IN:'true'}],
  ['broker',['--test','tests/local/uat-postgres.test.mjs'],{IWAY_UAT_LOCAL_OPT_IN:'true'}],
@@ -37,6 +39,6 @@ for(const [name,args,optIn] of suites){
 const schemaLog=results.find(r=>r.name==='staging-schema');let schemaEvidence=null;
 if(schemaLog){const body=await readFile(resolve(root,schemaLog.log),'utf8'),match=/STAGING_SCHEMA_EVIDENCE (\{[^\r\n]+\})/.exec(body);if(match)schemaEvidence=JSON.parse(match[1]);}
 const complete=results.length===suites.length&&results.every(r=>r.exitCode===0&&r.fail===0&&r.skipped===0)&&schemaEvidence?.version?.number>=170000&&schemaEvidence.version.number<180000;
-const report={schemaVersion:1,status:complete?'PASS':'FAIL',scope:'Disposable loopback PostgreSQL; synthetic data and providers only',binaryVersion:version,serverVersion:schemaEvidence?.version??null,suites:results,reportedNodeChecks:results.reduce((n,r)=>n+r.pass,0),leafScenarios:results.reduce((n,r)=>n+r.leafScenarios,0),schemaEvidence,hostedExecuted:false,productionParityClaimed:false,counting:'Eight orchestration parents excluded from leafScenarios; cross-suite assertions may exercise the same security property. Browser and repository counts remain separate.'};
+const report={schemaVersion:1,status:complete?'PASS':'FAIL',scope:'Disposable loopback PostgreSQL; synthetic data and providers only',binaryVersion:version,serverVersion:schemaEvidence?.version??null,suites:results,reportedNodeChecks:results.reduce((n,r)=>n+r.pass,0),leafScenarios:results.reduce((n,r)=>n+r.leafScenarios,0),schemaEvidence,hostedExecuted:false,productionParityClaimed:false,counting:'One orchestration parent per suite excluded from leafScenarios; cross-suite assertions may exercise the same security property. Browser and repository counts remain separate.'};
 await writeFile(resolve(output,'postgres17-compatibility.json'),JSON.stringify(report,null,2)+'\n');
 if(!complete)process.exitCode=1;
