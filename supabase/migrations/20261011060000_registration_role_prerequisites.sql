@@ -7,7 +7,7 @@ BEGIN
     CREATE ROLE iway_registration NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
   ELSIF NOT EXISTS (
     SELECT 1 FROM pg_roles WHERE rolname = 'iway_registration'
-      AND NOT rolcanlogin AND NOT rolsuper AND NOT rolbypassrls
+      AND NOT rolcanlogin AND NOT rolinherit AND NOT rolsuper AND NOT rolbypassrls
       AND NOT rolcreaterole AND NOT rolcreatedb AND NOT rolreplication
   ) THEN
     RAISE EXCEPTION 'Existing iway_registration role is not least-privileged';
