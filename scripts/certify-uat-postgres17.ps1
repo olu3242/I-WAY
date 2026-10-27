@@ -42,7 +42,10 @@ END $$;
   $behavior = Join-Path $root 'scripts/uat-postgres17-behavior.sql'
   Get-Content -Raw $behavior | docker exec -i $container psql -X -v ON_ERROR_STOP=1 -U postgres -d iway_cert -f -
   if ($LASTEXITCODE -ne 0) { throw 'PostgreSQL behavioral authorization checks failed' }
-  Write-Host 'POSTGRESQL MIGRATION + AUTHORIZATION + BEHAVIORAL SMOKE PASS'
+  $tenantTests = Join-Path $root 'scripts/uat-postgres17-tenant-rls.sql'
+  Get-Content -Raw $tenantTests | docker exec -i $container psql -X -v ON_ERROR_STOP=1 -U postgres -d iway_cert -f -
+  if ($LASTEXITCODE -ne 0) { throw 'B841-B860 tenant RLS tests failed' }
+  Write-Host 'POSTGRESQL MIGRATION + AUTHORIZATION + BEHAVIORAL + TENANT RLS PASS'
 } finally {
   try { docker rm -f $container 2>$null | Out-Null } catch { Write-Warning 'Disposable container cleanup failed; inspect docker ps -a' }
 }
