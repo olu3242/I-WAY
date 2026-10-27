@@ -51,3 +51,11 @@ fieldset{min-inline-size:0;border:1px solid #DCE7F3;border-radius:12px;padding:1
 @media(min-width:651px){.workspace>.sidebar{position:sticky;top:0;height:100vh;height:100dvh;min-height:0}.workspace>.sidebar>#nav{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:4px}.workspace>.sidebar>.sidebar-bottom{flex:none}.workspace>.sidebar .logo-chip,.workspace>.sidebar>.sidebar-label{flex:none}}
 /* Keep summary cards compact at common phone widths; 320px retains one column. */
 @media(min-width:360px) and (max-width:400px){.workspace .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace .stat{padding:16px}.workspace .stat p{overflow-wrap:anywhere}}
+
+/* Scoped UAT feedback controls retain shared brand and touch-target rules. */
+#uat-feedback form{display:grid;gap:8px;margin-block:20px}
+#uat-feedback form>button{justify-self:start;margin-top:8px}
+#uat-feedback>button{margin-block:8px 20px}
+#uat-feedback details{margin-top:12px}
+#uat-feedback summary{min-height:44px;padding:12px 8px;line-height:1.5;cursor:pointer;color:#092448}
+#uat-feedback .card{margin-top:20px}

@@ -5,8 +5,8 @@ import {durableUatFixture} from '../helpers/durable-uat-fixture.mjs';
 import {createHostedUatHandler} from '../../server/operations-uat-hosted-handler.mjs';
 import {trackControls} from './control-evidence.mjs';
 
-export async function integratedWorkspace(browser,{role,width,postgres,platformPermissions,responseInterceptor}={}){
- const cleanup=[],f=await uatApplicationFixture({after:fn=>cleanup.push(fn)},{fullPermissions:true,platformPermissions});
+export async function integratedWorkspace(browser,{role,width,postgres,platformPermissions,feedbackPermissions,responseInterceptor}={}){
+ const cleanup=[],f=await uatApplicationFixture({after:fn=>cleanup.push(fn)},{fullPermissions:true,platformPermissions,feedbackPermissions});
  f.setLoginRole(role);
  let application=postgres?await durableUatFixture(f,postgres):f.integrated;
  const server=createServer(createHostedUatHandler({createRuntime:async()=>({expiresAt:Date.now()+300000,handler:(req,res)=>application.handler(req,res),close:async()=>{}})}));

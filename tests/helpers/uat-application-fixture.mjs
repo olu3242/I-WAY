@@ -6,7 +6,7 @@ import {addUser} from '../../server/operations-auth.mjs';
 import {createIdentityVerifier} from '../../server/operations-identity.mjs';
 import {createOperationsFeatures} from '../../domain/operations-features.mjs';
 import {createIntegratedUatApplication} from '../../server/operations-uat-application.mjs';
-export async function uatApplicationFixture(t,{fullPermissions=false,googleAssurance,platformPermissions=['platform:audit']}={}){
+export async function uatApplicationFixture(t,{fullPermissions=false,googleAssurance,feedbackPermissions=false,platformPermissions=['platform:audit']}={}){
  const native=await fixture(t,createOperationsFeatures()),governance=randomUUID();
  native.store.db.prepare('INSERT INTO tenants VALUES(?,?,?)').run(governance,'Illustrative governance namespace','UTC');
  const platform=addUser(native.store,{tenantId:governance,username:syntheticRoster[0].email,name:'Illustrative Platform',role:'platform',identityOnly:true,permissions:platformPermissions});
@@ -18,6 +18,7 @@ export async function uatApplicationFixture(t,{fullPermissions=false,googleAssur
  // Assign after the explicit synthetic fleet employment is established.
  const assignment=native.assign();
  const actors=[platform,native.manager,native.fleetUser,native.driver];
+ if(feedbackPermissions)for(const actor of actors)actor.uatFeedbackAccess=['submit',...(['platform','carrier','fleet'].includes(actor.role)?['triage']:[])];
  const roster=syntheticRoster.map((entry,i)=>({...entry,permissions:fullPermissions?[...actors[i].permissions]:entry.permissions,principalId:actors[i].id,tenantId:i===0?null:actors[i].tenantId,fleetId:i>=2?native.fleet.id:null}));
  for(let i=0;i<4;i++){
   const actor={...actors[i],identityOnly:true,permissions:[...roster[i].permissions],fleetId:roster[i].fleetId};

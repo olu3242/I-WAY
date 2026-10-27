@@ -1,4 +1,5 @@
 import {platformWorkspace} from './operations-platform-workspace.mjs';
+import {uatFeedback} from './operations-feedback.mjs';
 import {offlineContext,executeOfflineCommand} from './operations-offline.mjs';
 import {createInvitationService} from './operations-invitations.mjs';
 import {authenticateIdentity} from './operations-identity.mjs';
@@ -12,7 +13,7 @@ import {securityHeaders} from './security-headers.mjs';
 import {authenticate,session,logout} from './operations-auth.mjs';
 import {readDocument} from '../domain/operations-documents.mjs';
 import {OpsError,fields} from '../domain/operations-errors.mjs';
-const assets=new Map([['/assets/platform-workspace.js','platform-workspace.js'],['/assets/onboarding.js','onboarding.js'],['/assets/expenses.js','expenses.js'],['/assets/load-wizard.js','load-wizard.js'],['/assets/InterVariable.woff2','InterVariable.woff2'],['/assets/Inter-LICENSE.txt','Inter-LICENSE.txt'],['/offline','offline.html'],['/driver-sw.js','driver-sw.js'],['/assets/driver-offline.mjs','driver-offline.mjs'],['/domain/driver-offline-replay.mjs','../../domain/driver-offline-replay.mjs'],['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/maintenance.js','maintenance.js'],['/assets/financial.js','financial.js'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/admin','admin.html'],['/assets/admin.js','admin.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
+const assets=new Map([['/assets/feedback.js','feedback.js'],['/assets/platform-workspace.js','platform-workspace.js'],['/assets/onboarding.js','onboarding.js'],['/assets/expenses.js','expenses.js'],['/assets/load-wizard.js','load-wizard.js'],['/assets/InterVariable.woff2','InterVariable.woff2'],['/assets/Inter-LICENSE.txt','Inter-LICENSE.txt'],['/offline','offline.html'],['/driver-sw.js','driver-sw.js'],['/assets/driver-offline.mjs','driver-offline.mjs'],['/domain/driver-offline-replay.mjs','../../domain/driver-offline-replay.mjs'],['/login','login.html'],['/app','index.html'],['/portal','index.html'],['/assets/ops.css','ops.css'],['/assets/ops.js','ops.js'],['/assets/maintenance.js','maintenance.js'],['/assets/financial.js','financial.js'],['/assets/extended.js','extended.js'],['/assets/intelligence.js','intelligence.js'],['/assets/login.js','login.js'],['/admin','admin.html'],['/assets/admin.js','admin.js'],['/assets/i-way-logo.svg','i-way-logo.svg']]);
 export function makeOperationsApp({store,operations,logSink=()=>{},identityVerifier,invitationTransport,externalSessionBridge}){
  if(externalSessionBridge&&(!externalSessionBridge.origin?.startsWith('https://')||new URL(externalSessionBridge.origin).origin!==externalSessionBridge.origin||![externalSessionBridge.read,externalSessionBridge.logout].every(f=>typeof f==='function')))throw Error('EXTERNAL_SESSION_BRIDGE_INVALID');
  const loginAttempts=new Map(),enrollmentAttempts=new Map();
@@ -65,6 +66,7 @@ export function makeOperationsApp({store,operations,logSink=()=>{},identityVerif
     }
     if(!auth)return send(401,{error:'Sign in required.'});
     if(req.headers['x-csrf-token']!==auth.csrf)return send(403,{error:'Session verification failed.'});
+    if(path==='/api/ops/feedback')return send(200,uatFeedback(store,auth,await readBody()));
     if(path==='/api/ops/platform/workspace')return send(200,platformWorkspace(store,auth,await readBody()));
     if(path==='/api/ops/platform'){const input=await readBody();fields(input,['action','targetId','reason']);return send(200,platformGovernance(store,auth,input));}
     if(path==='/api/ops/invitations/list'){fields(await readBody(),[]);return send(200,invitations.list(auth));}

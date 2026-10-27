@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 
 const projectId='prj_7uof3CdmN1QvzKxETkXvHjlrLjVm';
 const orgId='team_zNHlJbJHa4YZFwN4p9lcHzEH';
-const assets=['InterVariable.ttf','platform-workspace.js','onboarding.js','expenses.js','load-wizard.js','InterVariable.woff2','Inter-LICENSE.txt','maintenance.js','offline.html','driver-sw.js','driver-offline.mjs','financial.js','admin.html','admin.js','extended.js','i-way-logo.svg','index.html','intelligence.js','login.html','login.js','ops.css','ops.js'];
+const assets=['feedback.js','InterVariable.ttf','platform-workspace.js','onboarding.js','expenses.js','load-wizard.js','InterVariable.woff2','Inter-LICENSE.txt','maintenance.js','offline.html','driver-sw.js','driver-offline.mjs','financial.js','admin.html','admin.js','extended.js','i-way-logo.svg','index.html','intelligence.js','login.html','login.js','ops.css','ops.js'];
 const intelligence=['lib/intelligence/policy-lifecycle.mjs','lib/intelligence/decision-plane.mjs'];
 const sha256=value=>createHash('sha256').update(value).digest('hex');
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');

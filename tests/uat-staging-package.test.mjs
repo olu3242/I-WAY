@@ -8,7 +8,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {packageUatStaging,deterministicZip} from '../scripts/package-uat-staging.mjs';
 import {verifyUatStagingDelivery} from '../scripts/verify-uat-staging-delivery.mjs';
 
-const assets=['InterVariable.ttf','platform-workspace.js','onboarding.js','expenses.js','load-wizard.js','InterVariable.woff2','Inter-LICENSE.txt','maintenance.js','offline.html','driver-sw.js','driver-offline.mjs','financial.js','admin.html','admin.js','extended.js','i-way-logo.svg','index.html','intelligence.js','login.html','login.js','ops.css','ops.js'];
+const assets=['feedback.js','InterVariable.ttf','platform-workspace.js','onboarding.js','expenses.js','load-wizard.js','InterVariable.woff2','Inter-LICENSE.txt','maintenance.js','offline.html','driver-sw.js','driver-offline.mjs','financial.js','admin.html','admin.js','extended.js','i-way-logo.svg','index.html','intelligence.js','login.html','login.js','ops.css','ops.js'];
 function git(source,args){return execFileSync('git',args,{cwd:source,encoding:'utf8',stdio:['ignore','pipe','pipe']}).trim();}
 async function fixture(t,extra={}){
  const source=await mkdtemp(join(tmpdir(),'iway-uat-package-'));t.after(()=>rm(source,{recursive:true,force:true}));
