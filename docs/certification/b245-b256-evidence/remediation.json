@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "scope": "offline-local-fixture-only",
+  "sourceHash": "9d42b324a77ce068b6c495243cf197aa76ed8eb4f83796e27dd7add2bab79fd5",
+  "evidenceDigest": "57f1ac53ed35b56dcb83a44a887bbabc6df7d851e6ba86271a3746c80019adc2",
+  "batches": {
+    "B245": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B246": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B247": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B248": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B249": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B250": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B251": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B252": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B253": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B254": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "B255": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    }
+  },
+  "prerequisites": {
+    "explicitHostedTestAuthorization": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "restrictedPostgresAuthentication": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "approvedConsent": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "exposedCredentialRotation": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "approvedHostedIdentity": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "dedicatedOperationsPersistence": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "approvedIntegrationFixtures": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    },
+    "approvedDeploymentAndRollback": {
+      "status": "BLOCKED",
+      "reason": "EVIDENCE_MISSING"
+    }
+  },
+  "localDecision": "PARTIAL",
+  "hostedDecision": "NO-GO",
+  "hostedExecuted": false,
+  "networkCalls": 0,
+  "deploymentExecuted": false,
+  "executionAuthorized": false,
+  "limitations": [
+    "Evidence metadata is not independent attestation.",
+    "Fixture checks do not establish hosted execution or production readiness."
+  ]
+}

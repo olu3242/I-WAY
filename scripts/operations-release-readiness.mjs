@@ -1,4 +1,5 @@
 import{readFileSync,writeFileSync,mkdirSync}from'node:fs';import{resolve,dirname}from'node:path';import{fileURLToPath}from'node:url';
+import {emptyHostedIntakeAssessment} from '../domain/hosted-evidence.mjs';
 import{sourceFingerprint}from'../domain/operations-certification.mjs';import{prepareHostedSandbox,validateHostedSandbox}from'../domain/hosted-sandbox-preparation.mjs';import{createHostedExecutionPreparation,validateHostedExecutionPreparation}from'../domain/hosted-execution-preparation.mjs';import{assessHostedEvidenceInventory,validateHostedEvidenceInventory}from'../domain/hosted-evidence-inventory.mjs';import{createHostedReleaseDossier,validateHostedReleaseDossier}from'../domain/hosted-release-dossier.mjs';import{assessScenarioRelease}from'../domain/scenario-release-evidence.mjs';import{deriveLocalRemediationEvidence,validateLocalRemediationEvidence}from'../domain/local-remediation-evidence.mjs';import{assessRemediationWave}from'../domain/remediation-wave.mjs';import{createReleaseAssessment,validateReleaseAssessment,hostedReadiness}from'../domain/operations-release.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..'),out=resolve(root,'dist/operations-evidence');
 try{
@@ -10,6 +11,12 @@ try{
   const cert=JSON.parse(readFileSync(resolve(out,'certification.json'),'utf8')),options={sourceHash:sourceFingerprint(root),readArtifact:name=>readFileSync(resolve(out,name))};
   const report=process.argv[2]==='validate'?JSON.parse(readFileSync(resolve(out,'release.json'),'utf8')):createReleaseAssessment(cert,options);
   const result=validateReleaseAssessment(report,cert,options);
+  // Independent signed intake is a separate trust boundary. No trust root is installed
+  // by this offline release command, so local metadata can never activate it.
+  const intake=emptyHostedIntakeAssessment(options.sourceHash),intakePath=resolve(out,'hosted-intake.json');
+  if(process.argv[2]==='validate'){
+   if(JSON.stringify(JSON.parse(readFileSync(intakePath,'utf8')))!==JSON.stringify(intake))throw Error('HOSTED_INTAKE_MISMATCH');
+  }else writeFileSync(intakePath,JSON.stringify(intake,null,2)+'\n');
   // B245-B255 evidence intake is offline and intentionally empty until independently observed.
   const scenarioAssessment=assessScenarioRelease(options.sourceHash,options.readArtifact);
   const scenarioPath=resolve(out,'scenario-release-evidence.json');
