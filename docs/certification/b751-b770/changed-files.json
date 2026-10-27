@@ -1,0 +1,470 @@
+{
+  "baseCommit": "893f7f56d39d3e1a46c8bddadb71265216b30ae1",
+  "manifestExcludesItself": true,
+  "files": [
+    {
+      "path": ".github/workflows/identity-access.yml",
+      "sha256": "d379d3a7e48c0a1de063b928c1712b90881b4349a76356a011809042be6f7db4"
+    },
+    {
+      "path": "apps/operations/InterVariable.ttf",
+      "sha256": "4989b125924991b90d05b2d16e0e388c48f7d5bb8b30539bbf9c755278d0ccaf"
+    },
+    {
+      "path": "apps/operations/admin.html",
+      "sha256": "ce83e841d9cadcb8560bed3a8bc4ecb5ce484e155cee4126a2f74252d33de898"
+    },
+    {
+      "path": "apps/operations/expenses.js",
+      "sha256": "b16987a8a7e272595b5bc102e8ab6f957036c383f93a9e70963dd6501ed503dd"
+    },
+    {
+      "path": "apps/operations/extended.js",
+      "sha256": "c5b3884ffbb5ca9721af6bf9cfb732db048f1bd6c599337d6205742963ec7f67"
+    },
+    {
+      "path": "apps/operations/financial.js",
+      "sha256": "4fd2c8e53edcd0a2935f50390a0e07e02469f72c434d7044d75fde1b6cf74501"
+    },
+    {
+      "path": "apps/operations/i-way-logo.svg",
+      "sha256": "2ee0c6e067c2f560ee9965d77b942d4f6f152f6f26e29479943c48ebfea9358c"
+    },
+    {
+      "path": "apps/operations/index.html",
+      "sha256": "7401f359ae2eaa1a99d969ed59e51e3bd8d727410e00eced42096c50a7901b36"
+    },
+    {
+      "path": "apps/operations/load-wizard.js",
+      "sha256": "6fea4f69230fc1cbe0743b00f43f61f201d127630b33ea7e4fefaaf1adafbdc1"
+    },
+    {
+      "path": "apps/operations/login.html",
+      "sha256": "7db8389d9f3d1438c3661f14374759dacda2d73092cf795acc891a0896876402"
+    },
+    {
+      "path": "apps/operations/offline.html",
+      "sha256": "7abf65c2c94fc7ba943e991a82ae5a9b3b17a36e48c549f5858924754809a1de"
+    },
+    {
+      "path": "apps/operations/onboarding.js",
+      "sha256": "d636d3727aa32d84147c0e64ea9c46e4d7f6b521f62523e32543bcc06891765b"
+    },
+    {
+      "path": "apps/operations/ops.css",
+      "sha256": "dd6263fc35ae1e29182141d2b7e900a5018ffbb184c5c3a9d4138179e0276c66"
+    },
+    {
+      "path": "apps/operations/ops.js",
+      "sha256": "aa3eadcd143e8d2fc12bc899e0c894eda6600194b5de517394f06af2ad6cb9eb"
+    },
+    {
+      "path": "apps/operations/platform-workspace.js",
+      "sha256": "ddb71c7916a89adabbbc45bc244bd162e5a31e65309f3c4403b0753c68ce9010"
+    },
+    {
+      "path": "docs/brand/tokens/iway-tokens.css",
+      "sha256": "8574140b419979075ce85bb940e853a8dc936d9874df3506f96f7dd4ab8a5116"
+    },
+    {
+      "path": "docs/brand/tokens/iway-tokens.json",
+      "sha256": "9579d9da9ba887c68cfb2e84dcb0b10044e110b5f5e21ee83d9ca438c43a6a34"
+    },
+    {
+      "path": "docs/certification/b681-b690-load-wizard/certification-report.md",
+      "sha256": "c7c9f10f221b86d74d4f6d6dfbea48cc790ed6e80028a1b4b5093be3ec41ca71"
+    },
+    {
+      "path": "docs/certification/b681-b690-load-wizard/receipt.json",
+      "sha256": "c18ec2cd01ab52efa70e6232c96816a328eadf81392d27ac39de6398d61cfdf5"
+    },
+    {
+      "path": "docs/certification/b691-b700-expenses/certification-report.md",
+      "sha256": "1aeb0bd9be5a410ccaeb75c6bad16971254746728c91022ebdac66a2eb4da52a"
+    },
+    {
+      "path": "docs/certification/b691-b700-expenses/contracts.json",
+      "sha256": "e506b8277547891cb3e8138e5cc71deb6013425e26be2e323094756c1232398a"
+    },
+    {
+      "path": "docs/certification/b691-b700-expenses/hosted-uat-matrix.json",
+      "sha256": "b2aa2a91940975fd8f2763b8814721eb2e5bd0bdb7882833c74d834a8edf08be"
+    },
+    {
+      "path": "docs/certification/b691-b700-expenses/receipt.json",
+      "sha256": "0c68041a85ab6dd0c68202f2ed730a1736a1b26f6940bda2deca22cbf6db4975"
+    },
+    {
+      "path": "docs/certification/b691-b700-expenses/requirements.json",
+      "sha256": "35dd611f90e9388f5e385585701b771e71781e0837537cb275bdf9cbafa85bab"
+    },
+    {
+      "path": "docs/certification/b751-b770/agent-alias-review.json",
+      "sha256": "a318d34d384d4558aa576d462eb76bbde6793e21eaeee699cec064e03170758c"
+    },
+    {
+      "path": "docs/certification/b751-b770/certification-report.md",
+      "sha256": "3884f59c74a855fffd899a85dcef5add1feae08ac776fdca51c7133a68ce7452"
+    },
+    {
+      "path": "docs/certification/b751-b770/control-assertion-map.json",
+      "sha256": "9e66a8ebaa9331c7a0109edf611a812caa2996d528da4c3bdc4d74bab4cea440"
+    },
+    {
+      "path": "docs/certification/b751-b770/integration-decision.md",
+      "sha256": "f8fb891ca2d3f9a3b03af06e34e2a47829687ec71330db17d82cb4069647c55d"
+    },
+    {
+      "path": "docs/certification/b751-b770/receipt.json",
+      "sha256": "2671c902a34a8ceb7b20d3f9876d7c748549cbbea217dc1e9157690d5f838f92"
+    },
+    {
+      "path": "docs/certification/b751-b770/requirements.json",
+      "sha256": "f3723f69f9fa3b303a88c671665d0cea37d117a2e8993cf459098e3ab2fb3e3f"
+    },
+    {
+      "path": "docs/certification/b751-b770/screen-evidence.json",
+      "sha256": "2722a5c52436b920217764d85607ba140f558ba86f3c64ebd90b0215dacf7702"
+    },
+    {
+      "path": "docs/certification/b751-b770/screen-evidence.md",
+      "sha256": "7719ba68eebc083198acf2c9f10d800e80e0a81bbc01eab07473ba84f162fe7d"
+    },
+    {
+      "path": "docs/certification/harmonized-figma/matrix.json",
+      "sha256": "88e6921fb771179c6d34d5fa224302815cb7f4dd36ccca077041a06021e0c3b6"
+    },
+    {
+      "path": "docs/certification/harmonized-figma/matrix.md",
+      "sha256": "76f905a7057cc6ee1862f6e45282565a2707d926589673e554292cd17fbb6215"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/certification-report.md",
+      "sha256": "a9d813dcb67394564661d648957ae36752a4ebea916d6a8b46baf0091555e756"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/control-assertions.json",
+      "sha256": "6ce46936e49e535b8975eb27427c591fe86b1c1a2bf30b92ad24aa5a1f1c355d"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/font-provenance.json",
+      "sha256": "3ca8377e050f5c138597290754c62d25200486bf6adb873f3a68ca466bee5234"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/gap-register.md",
+      "sha256": "563dba38766ce436426a7e62b0e16842df88d6e283e0f789acd9693b19f249bb"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/implementation-contracts.md",
+      "sha256": "8e5c788eb198060715584b87d4e601eb615efb572941bf14170500d696649b23"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/receipt.json",
+      "sha256": "cd646092ff92f49705be26798e07c8ca19ca0c957fd0e3331f618cd36b9f0b31"
+    },
+    {
+      "path": "docs/certification/next-gap-closure/requirements.json",
+      "sha256": "26715d36d6032278b6b5b9b4b671d474ec0fbe641cf0f5ebd3764580fe91cda7"
+    },
+    {
+      "path": "docs/security/b591-mvp-inventory.json",
+      "sha256": "a4b70ad841613f3695e705d7b53ad2af7384c99379f8ab41f6e31955913ff00e"
+    },
+    {
+      "path": "domain/authorization.mjs",
+      "sha256": "65644804563c8a9886dfaeb81530436b282c0dc29106abbeb6941ce6c2d996bc"
+    },
+    {
+      "path": "domain/operations-driver-pay.mjs",
+      "sha256": "c3d1c88f4878ee42d95cca04a10c9bfc17054dc0d3907ad8139698e3ef99288b"
+    },
+    {
+      "path": "domain/operations-earnings.mjs",
+      "sha256": "803533d30b88944c37432e5ca69f17b38dc6042fa87042cf8ff0c04520b61c79"
+    },
+    {
+      "path": "domain/operations-expenses.mjs",
+      "sha256": "509e1c2a10b1601e2f371a63d08b3e3bbb4aebcb2c1102099ac1930e30598712"
+    },
+    {
+      "path": "domain/operations-features.mjs",
+      "sha256": "8113e7aba517408705851fd0252dc6a77b0eaf6c5a346dafe6185f6a36960998"
+    },
+    {
+      "path": "domain/operations-load-contract.mjs",
+      "sha256": "9f8472f4d55b61cf5e3cc868fc493efc41853b02025eba525587b1c03b0d4aa0"
+    },
+    {
+      "path": "domain/operations-load-wizard.mjs",
+      "sha256": "85001aaf3783563c077cd183595f3b36b5f279044397d0cba080213a53218292"
+    },
+    {
+      "path": "domain/operations-onboarding.mjs",
+      "sha256": "0e32b80fb9950c5fc5b46842aaa830865da13340196131010e94b7d5bc5a8ecd"
+    },
+    {
+      "path": "domain/operations-platform-contract.mjs",
+      "sha256": "f67abb3e5615606e41b8567271a9dd3f9070679f23ac0b6cbac47c691d28b7cf"
+    },
+    {
+      "path": "domain/operations-projection.mjs",
+      "sha256": "eae421e0ab10e40d30623d25e35effcab90647396c8cf106f1a117483a8b7ec8"
+    },
+    {
+      "path": "domain/operations-settlements.mjs",
+      "sha256": "2695f247fda288cdff6844c076d8186829f9f3976b4e80bff14e2a868879921e"
+    },
+    {
+      "path": "domain/operations.mjs",
+      "sha256": "513d24dcffbd6537d9e9196629fb8961d2495912a7c00d24bbce79380ab13d7f"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "15abaa9a2e1d83f7adbcae853d4c71ef37ec773d9aaf48eb259b6e822c3ecf86"
+    },
+    {
+      "path": "package.json",
+      "sha256": "330d20db601bd25bf26d836e0e6986a57f0c33b751ec32b72fbfde92368d8992"
+    },
+    {
+      "path": "scripts/certify-postgres17.mjs",
+      "sha256": "4bcef7d4b63502c29bae3545ac8895455ed4e6415e1b177e354fca51c41159f3"
+    },
+    {
+      "path": "scripts/check-site.mjs",
+      "sha256": "4928d3472c639a651a05829ec6292b8cc09dc8a5b9252ae863e3eb93b4f3c8fd"
+    },
+    {
+      "path": "scripts/guard-uat-push.mjs",
+      "sha256": "afd43df249f6b516b94000d4dee4f52ad6c5954eaa786d51226df2fdd644ab4e"
+    },
+    {
+      "path": "scripts/inventory-mvp-controls.mjs",
+      "sha256": "f41036c7a0a6e19160b1ec637bd0a8907d2204a13999a8680e67a8316ec15ae7"
+    },
+    {
+      "path": "scripts/lib/public-image-contract.mjs",
+      "sha256": "6ef57c08f4cc2454387ab8e3947a580f06bb4e73f6031f8c44deb7d2e6617a08"
+    },
+    {
+      "path": "scripts/package-uat-staging.mjs",
+      "sha256": "6ebbee687903f1516d3f4f5d7c2aacb4cffa474e4941390c2be33ef0b803d0fe"
+    },
+    {
+      "path": "scripts/reconcile-figma-functionality.mjs",
+      "sha256": "5e6fa1cacc1def63d3140aeed0c91d0164126e4a1c6baed71c58b464d9774966"
+    },
+    {
+      "path": "scripts/report-mvp-coverage.mjs",
+      "sha256": "9ba7f93b23442265b51320d34bab7ae068368ee621a0f766c9765749480ff91f"
+    },
+    {
+      "path": "scripts/report-next-gap-closure.mjs",
+      "sha256": "4498ecf707eccb7aa59610a790f0a9e0c5985ae68e532c2b482ee0e311cd231c"
+    },
+    {
+      "path": "server/operations-app.mjs",
+      "sha256": "53536c881ad63583cfd56f61fc8f490a82d03ad3e5297640f33b5dc9e7ce53b3"
+    },
+    {
+      "path": "server/operations-invitations.mjs",
+      "sha256": "b991df0b2b26e379896280f5d4394c2f745bbd9ed74972bb06940964ba234826"
+    },
+    {
+      "path": "server/operations-owner-profiles.mjs",
+      "sha256": "db872cf89212ac3054455245524d9d55e6235f767fb73795d65760be263ca80f"
+    },
+    {
+      "path": "server/operations-pdf.mjs",
+      "sha256": "d009caf956500f2285a35ab99a14206b543d6277dc44e5d8f6c9c1681ea684d3"
+    },
+    {
+      "path": "server/operations-platform-workspace.mjs",
+      "sha256": "15f9c0cac46e034f4f66097fc07f6132d4febdb1cac2109ea408b58891656512"
+    },
+    {
+      "path": "server/operations-store.mjs",
+      "sha256": "bd8d2dd862427f4a2c917508ab99b959e352194c5a69b06ca56f06c16f707919"
+    },
+    {
+      "path": "server/operations-uat-application.mjs",
+      "sha256": "0d23537cbb81144b35636c64870f72fdd907288f063583ab1aaddcd218af4a52"
+    },
+    {
+      "path": "server/operations-uat-presentation.mjs",
+      "sha256": "106b57f97abb0d75d4207ba136f3bd33669510240cfac0a0434200e8e66c8712"
+    },
+    {
+      "path": "site/public/assets/brand/brand-tokens.json",
+      "sha256": "754cb89b5a6a712f25cb8316167feb430dc1c4bdd7e3dcdc66aa3fa810b017eb"
+    },
+    {
+      "path": "site/public/assets/brand/i-way-logo.svg",
+      "sha256": "2ee0c6e067c2f560ee9965d77b942d4f6f152f6f26e29479943c48ebfea9358c"
+    },
+    {
+      "path": "tests/browser/b681-load-wizard.spec.mjs",
+      "sha256": "302ffc0f873e45a786965071b08dbcec1ad69968284fd2860e2d34dc0b04adc7"
+    },
+    {
+      "path": "tests/browser/b691-expenses.spec.mjs",
+      "sha256": "60c3f48a756d04340f16dce2efc1641b50b677f9fdba63b891329afdf81778f8"
+    },
+    {
+      "path": "tests/browser/b751-b770.spec.mjs",
+      "sha256": "7dee4de81985f67fc188f61dd7c5359ec1c18725a182d8e631b6f16fc9cf09a6"
+    },
+    {
+      "path": "tests/browser/brand-tokens.spec.mjs",
+      "sha256": "9c0b0ca16b02427b3b8f8472bfb8d2b2aaf6f397dc536d10a5da729200008bb1"
+    },
+    {
+      "path": "tests/browser/certification-permutations.spec.mjs",
+      "sha256": "a2ed5badae3619f7a065c719c2665513e80c9fda02630049e63a0ee80adc75ce"
+    },
+    {
+      "path": "tests/browser/completion-controls.spec.mjs",
+      "sha256": "e721a1de1a92674dd56cb10f79328af529eefa69b81311b117676625f59c6dbc"
+    },
+    {
+      "path": "tests/browser/directories.spec.mjs",
+      "sha256": "b6973b6bde5f58d93ea995715db5768f49af916a939d9a85ed51009389e47205"
+    },
+    {
+      "path": "tests/browser/evidence-reporter.mjs",
+      "sha256": "ccb4c7c0415df87a16c0541d09b31fe60925cc5f58622e0bebf8d6c2c4ae7ee6"
+    },
+    {
+      "path": "tests/browser/expenses.spec.mjs",
+      "sha256": "35a68868d72d3716ed79b4f1cc58ccf6d21f13bab90051e8a9c8458a11924513"
+    },
+    {
+      "path": "tests/browser/first-value-persistence.spec.mjs",
+      "sha256": "f5e7e67167a532adead90e8a66165272c1d3be0eb24aad13d50da4df767ec613"
+    },
+    {
+      "path": "tests/browser/first-value.spec.mjs",
+      "sha256": "9b7e219de98bc064bbdd1409207e0f7db048b322b1758c40957e1cb6a1192ca5"
+    },
+    {
+      "path": "tests/browser/fleet-pay-models.spec.mjs",
+      "sha256": "3f8e0a264e9e770682368aae359ce1c5939001c266c14f22bd707d265538af88"
+    },
+    {
+      "path": "tests/browser/harmonized-functionality.spec.mjs",
+      "sha256": "cd1eea446c5acbed4c309021bbed04e1bc6c4ae4f30ec6accd4f753ac2e970ce"
+    },
+    {
+      "path": "tests/browser/integrated-workspace.mjs",
+      "sha256": "5cd5fba8b1038585b526fc79394c3807132e1a714eedae15a47e7f8de36afc66"
+    },
+    {
+      "path": "tests/browser/load-wizard-recovery.spec.mjs",
+      "sha256": "0d26886aa97ee3eb97212ba56b60bac709a747fda5bb0a5c9dea5ee9770e84e8"
+    },
+    {
+      "path": "tests/browser/load-wizard.spec.mjs",
+      "sha256": "9ac8e2420896cec93add940fa2f0ac042b8ff6a5430a6e3fd6be05b021477038"
+    },
+    {
+      "path": "tests/browser/mvp-actions.spec.mjs",
+      "sha256": "3baff8ab5befa42285661aaf354d9d0b867cd5b81af1b51f2d884bd5cd2c376d"
+    },
+    {
+      "path": "tests/browser/onboarding.spec.mjs",
+      "sha256": "dd5dff256b49bbe005e0e3e508c71d23e071479ab6cfbc4b581ed71f7d372df1"
+    },
+    {
+      "path": "tests/browser/operations.spec.mjs",
+      "sha256": "b4644697d11d2090cd976972cfb9e0098888b5889c6e74ceb28e08913093e186"
+    },
+    {
+      "path": "tests/browser/pdf-downloads.spec.mjs",
+      "sha256": "d722b24d7ba0a267b5d4020a294983c77a893e6e0bb0f3e4c74ad5e1add735d8"
+    },
+    {
+      "path": "tests/browser/platform-workspace.spec.mjs",
+      "sha256": "a44092d9e547813fa2f0ff41a4cecd6e5a7e935181dac09936c086195abe84ba"
+    },
+    {
+      "path": "tests/browser/uat.spec.mjs",
+      "sha256": "91ff569fa101ecb0c687b393ddc2e73d05409373e8f6a7a3eaef63170dfdf91e"
+    },
+    {
+      "path": "tests/figma-functionality-reconciliation.test.mjs",
+      "sha256": "d69f4aeb02bd458d7131a61c6af56b7dc49c3396cf9e355791bb5b0b5b5cd23a"
+    },
+    {
+      "path": "tests/helpers/invitation-fixture.mjs",
+      "sha256": "4926c7c85c4726bfbf80e946df1386aad488fd391410362b3e57893a3a60a4b2"
+    },
+    {
+      "path": "tests/helpers/uat-application-fixture.mjs",
+      "sha256": "69d38c11e7e20064742b2d32169267b3225c51494cb3742e95db0c5bab75833d"
+    },
+    {
+      "path": "tests/local/expenses-browser-postgres.mjs",
+      "sha256": "ebf502f44a79f4c7f01296c37e5ee371e41f5bdaf78ba28b5c87cee703eb230e"
+    },
+    {
+      "path": "tests/local/expenses.postgres.mjs",
+      "sha256": "57802db23939e3b50627f607e6a6c92e50c6a59ee2696747992fe0ce75558d4e"
+    },
+    {
+      "path": "tests/local/load-wizard-browser-postgres.mjs",
+      "sha256": "8d8951f771b3e97fbd360e753e13d3c4d0c7d6a7c1de8ba99ecfb5ec16f5ae7f"
+    },
+    {
+      "path": "tests/local/next-gap-closure.postgres.mjs",
+      "sha256": "e26b769b7b1ec9efb19fcc28aff182b53168ba822597c47aafc4f77848db9388"
+    },
+    {
+      "path": "tests/operations-client.test.mjs",
+      "sha256": "3f47409f021d91b992e8f5f58b7316ce36fcc8f6f41f8cce1cea009d6862ca8c"
+    },
+    {
+      "path": "tests/operations-earnings.test.mjs",
+      "sha256": "2ba7a66b9e84ff371bd67830d23cd84bcbfcc846f3700f48c4d91acddc39bfc9"
+    },
+    {
+      "path": "tests/operations-expense-lifecycle.test.mjs",
+      "sha256": "cfbb39bb1c88436715755b9a27a9c50e85911a1c989ae4c9f224d6205554b38f"
+    },
+    {
+      "path": "tests/operations-expense-recovery.test.mjs",
+      "sha256": "917709776e947216f13df68b2b1f497960985006bfbeaa8061f1c3840bfdb93f"
+    },
+    {
+      "path": "tests/operations-expenses-pay-models.test.mjs",
+      "sha256": "ff4aaab1752bd499c40e7ef22c705881f761bb049fa7776cc874d0301a280f78"
+    },
+    {
+      "path": "tests/operations-load-wizard.test.mjs",
+      "sha256": "934b40b773d76379f5db2452a6426c208c40da0dcdc97896076c8ec188e67289"
+    },
+    {
+      "path": "tests/operations-onboarding.test.mjs",
+      "sha256": "3bf6b6ab5c08d0f316fdf0bc7d990eeb66e999d5e0bfac8f9ec305b2618d70b9"
+    },
+    {
+      "path": "tests/operations-pdf.test.mjs",
+      "sha256": "a8bfe12e4493ee9fdb23d69db8895172f96d352ef25e1e2fbd5b4524fdab82b2"
+    },
+    {
+      "path": "tests/operations-platform-workspace.test.mjs",
+      "sha256": "657e180920f31f896b286941321deda885adf6952cd772c4cdafe92f2e3d3739"
+    },
+    {
+      "path": "tests/public-image-contract.test.mjs",
+      "sha256": "f76386a8784774dc6cb8a79596b169aa8623e80015292ff513001d11e89615ac"
+    },
+    {
+      "path": "tests/uat-staging-package.test.mjs",
+      "sha256": "92533986632a05898fbc2bea1c8c733cb8112fead96f94b4d016fed6ebcf0a4d"
+    },
+    {
+      "path": "vercel.json",
+      "sha256": "f44955ce2a40131e5da8cd81c297c18722cd01ae843f9852c6d70f0522547319"
+    }
+  ]
+}

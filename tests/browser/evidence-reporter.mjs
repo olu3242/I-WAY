@@ -3,7 +3,7 @@ import{join,relative,resolve,sep}from'node:path';
 import{createHash}from'node:crypto';
 const sha=value=>createHash('sha256').update(value).digest('hex');
 function files(root){return readdirSync(root,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?files(join(root,entry.name)):[join(root,entry.name)]);}
-function browserSourceHashes(){const candidates=[...files('apps/operations'),...files('domain'),...files('server'),...files('lib/intelligence'),...files('tests/helpers'),...files('tests/browser'),'playwright.config.mjs','package-lock.json'];return Object.fromEntries(candidates.sort().map(p=>[p.replaceAll('\\','/'),sha(p.endsWith('.woff2')?readFileSync(p):readFileSync(p,'utf8').replace(/\r\n/g,'\n'))]));}
+function browserSourceHashes(){const candidates=[...files('apps/operations'),...files('domain'),...files('server'),...files('lib/intelligence'),...files('tests/helpers'),...files('tests/browser'),'playwright.config.mjs','package-lock.json'];return Object.fromEntries(candidates.sort().map(p=>[p.replaceAll('\\','/'),sha(/\.(woff2|ttf)$/.test(p)?readFileSync(p):readFileSync(p,'utf8').replace(/\r\n/g,'\n'))]));}
 export default class BrowserEvidenceReporter{
  onBegin(config,suite){this.started=new Date().toISOString();this.total=suite.allTests().length;this.tests=[];this.scans=[];this.controls=[];this.responsive=[];this.sourceHashes=browserSourceHashes();}
  onTestEnd(test,result){

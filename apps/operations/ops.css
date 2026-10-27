@@ -27,3 +27,22 @@ fieldset{min-inline-size:0;border:1px solid #DCE7F3;border-radius:12px;padding:1
 .journey-steps{padding:0;list-style:none;display:grid;gap:12px}.journey-steps li{display:flex;align-items:center;gap:12px}.journey-steps .chip{min-width:78px;text-align:center}.first-load-guide{border-top:4px solid #1261F3}
 
 .owner-profile-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px 24px;background:#092448;color:white;font:14px/1.5 Inter,system-ui,sans-serif}.owner-profile-bar a{color:white;display:inline-flex;align-items:center;min-height:44px;text-decoration:underline}.owner-profile-bar a:focus-visible{outline:3px solid #FFB000;outline-offset:4px}
+
+/* Four-step creation uses the shared brand controls and wraps on narrow screens. */
+.wizard-progress{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;list-style:none;padding:0;margin:20px 0}
+.wizard-progress button{width:100%;height:100%;white-space:normal;text-align:left;min-height:48px}
+.wizard-progress [aria-current=step] button{border:2px solid #1261F3;color:#092448;background:#F5F8FC}
+#load-wizard input[type=checkbox]{width:20px;height:20px;vertical-align:middle;margin-right:8px}
+@media(max-width:768px){.wizard-progress{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+[data-expense-id] summary{min-height:44px;padding:12px 0;line-height:1.5;cursor:pointer;color:#092448}
+[data-expense-id] details{margin-top:12px;border-top:1px solid #DCE7F3}
+
+/* Shared role workspaces retain all server-filtered navigation and operational controls. */
+.sidebar nav .nav-group{display:grid;gap:5px}.sidebar nav .nav-group h2{color:#fff;font-size:11px;letter-spacing:.09em;text-transform:uppercase;margin:18px 12px 4px}
+.workspace-shortcuts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px;margin-bottom:24px}.workspace-shortcuts a{display:flex;justify-content:space-between;align-items:center;min-height:52px;padding:16px;background:#fff;border:1px solid #DCE7F3;border-radius:12px;color:#092448;text-decoration:none;font-weight:650}.workspace-shortcuts a:hover{border-color:#1261F3}
+.assignment-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px}.assignment-card{border:1px solid #DCE7F3;border-radius:20px;padding:20px;background:#F5F8FC}.assignment-card>button{width:100%;min-height:52px}.assignment-route{padding-left:22px}.assignment-route li{padding:8px 0}.assignment-route p{margin:4px 0;overflow-wrap:anywhere}
+.governance-navigation{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}.governance-navigation a{min-height:44px;display:inline-flex;align-items:center;padding:10px 16px;border:1px solid #DCE7F3;border-radius:12px;background:#fff;color:#092448}.platform-page .stats{margin-top:20px;grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:650px){.sidebar nav .nav-group{display:contents}.sidebar nav .nav-group h2{display:none}.workspace-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-shortcuts a{padding:12px;font-size:13px}.platform-page .stats{grid-template-columns:1fr}}
+
+.load-phases{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0 0 24px;list-style:none}.load-phases li{border:1px solid #DCE7F3;border-radius:12px;padding:10px 12px;color:#475569;background:#fff;text-transform:capitalize}.load-phases [aria-current=step]{border:2px solid #1261F3;color:#092448;font-weight:700;background:#E0EAFF}

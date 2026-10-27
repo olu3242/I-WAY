@@ -22,7 +22,7 @@ for(const width of [320,390,768,1440])test('isolated UAT password setup, Google 
   await page.goto(origin+'/uat/setup#'+f.mail[0].token);await expect(page).toHaveURL(origin+'/uat/setup');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   expect(await page.locator('.layout').evaluate(el=>getComputedStyle(el).display)).toBe('grid');
-  await expect(page.getByRole('img',{name:'I-way',exact:true})).toBeVisible();
+  await expect(page.getByRole('img',{name:'Iway',exact:true})).toBeVisible();
   expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze()).violations).toEqual([]);
   await page.getByLabel('New password').fill(syntheticPassword);await page.getByRole('button',{name:'Set password',exact:true}).click();await expect(page.getByRole('status')).toContainText('Password set');
   await page.getByRole('link',{name:'Return to sign in'}).click();await expect(page.getByRole('button',{name:'Continue with Google'})).toBeVisible();

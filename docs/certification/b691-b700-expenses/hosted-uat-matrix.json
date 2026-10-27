@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "scope": "Hosted execution preparation only",
+  "executed": 0,
+  "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "BLOCKED": 8,
+    "NOT RUN": 0
+  },
+  "cases": [
+    {
+      "id": "B69-HOST-01",
+      "scenario": "Driver draft, correction, reload and submission",
+      "status": "BLOCKED",
+      "prerequisites": [
+        "Owner-approved exclusive I-WAY staging database and restricted runtime",
+        "Approved canonical identities, tenant/fleet/employment mappings",
+        "Approved individually controlled deployment access",
+        "Existing A01-A12 approvals as applicable; real provider configuration"
+      ],
+      "executed": false
+    },
+    {
+      "id": "B69-HOST-02",
+      "scenario": "Carrier review of carrier-employed driver; fleet-denial negative",
+      "status": "BLOCKED",
+      "prerequisites": [
+        "Owner-approved exclusive I-WAY staging database and restricted runtime",
+        "Approved canonical identities, tenant/fleet/employment mappings",
+        "Approved individually controlled deployment access",
+        "Existing A01-A12 approvals as applicable; real provider configuration"
+      ],
+      "executed": false
+    },
+    {
+      "id": "B69-HOST-03",
+      "scenario": "Fleet review, needs-information and resubmission; carrier/other-fleet denial",
+      "status": "BLOCKED",
+      "prerequisites": [
+        "Owner-approved exclusive I-WAY staging database and restricted runtime",
+        "Approved canonical identities, tenant/fleet/employment mappings",
+        "Approved individually controlled deployment access",
+        "Existing A01-A12 approvals as applicable; real provider configuration"
+      ],
+      "executed": false
+    },
+    {
+      "id": "B69-HOST-04",
+      "scenario": "Approved expense included once in owner-reviewed settlement or driver pay",
+      "status": "BLOCKED",
+      "prerequisites": [
+        "Owner-approved exclusive I-WAY staging database and restricted runtime",
+        "Approved canonical identities, tenant/fleet/employment mappings",
+        "Approved individually controlled deployment access",
+        "Existing A01-A12 approvals as applicable; real provider configuration"
+      ],
+      "executed": false
+    },
+    {
+      "id": "B69-HOST-05",
+      "scenario": "Concurrent review, stale revisions and replay after response loss",
+      "status": "BLOCKED",
+      "prerequisites": [
+        "Owner-approved exclusive I-WAY staging database and restricted runtime",
+        "Approved canonical identities, tenant/fleet/employment mappings",
+        "Approved individually controlled deployment access",
+        "Existing A01-A12 approvals as applicable; real provider configuration"
+      ],
+      "executed": false
+    },
+    {
+      "id": "B69-HOST-06",
+      "scenario": "Late expense approval and explicit owner-controlled financial reopening",
+      "status": "BLOCKED",
+      "prerequisites": [
+        "Owner-approved exclusive I-WAY staging database and restricted runtime",
+        "Approved canonical identities, tenant/fleet/employment mappings",
+        "Approved individually controlled deployment access",
+        "Existing A01-A12 approvals as applicable; real provider configuration"
+      ],
+      "executed": false
+    },
+    {
+      "id": "B69-HOST-07",
+      "scenario": "Unapproved identity, impersonation and cross-tenant denial",
+      "status": "BLOCKED",
+      "prerequisites": [
+        "Owner-approved exclusive I-WAY staging database and restricted runtime",
+        "Approved canonical identities, tenant/fleet/employment mappings",
+        "Approved individually controlled deployment access",
+        "Existing A01-A12 approvals as applicable; real provider configuration"
+      ],
+      "executed": false
+    },
+    {
+      "id": "B69-HOST-08",
+      "scenario": "Mobile keyboard, screen-reader and native review-dialog task flows",
+      "status": "BLOCKED",
+      "prerequisites": [
+        "Owner-approved exclusive I-WAY staging database and restricted runtime",
+        "Approved canonical identities, tenant/fleet/employment mappings",
+        "Approved individually controlled deployment access",
+        "Existing A01-A12 approvals as applicable; real provider configuration"
+      ],
+      "executed": false
+    }
+  ],
+  "excluded": [
+    "Sensitive uploads without approved storage/access/retention/deletion contracts",
+    "Real payments or payment-status certification without approved provider and verified evidence"
+  ]
+}

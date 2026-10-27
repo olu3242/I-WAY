@@ -1,0 +1,15 @@
+{
+  "scope": "Reviewed explicit assertions already executed by the named browser test; not control discovery",
+  "mappings": [
+    {
+      "test": "approved pay PDF download is private, audited and available to its driver",
+      "source": "tests/browser/pdf-downloads.spec.mjs",
+      "sha256": "372858060998b568be99f51b107ab17dd11e76ca382754f8f0051db7527c1fe5",
+      "assertion": "await expect(page.getByRole('status')).toContainText('Earnings period updated')",
+      "keys": [
+        "form:earnings-period",
+        "button:Show earnings period"
+      ]
+    }
+  ]
+}

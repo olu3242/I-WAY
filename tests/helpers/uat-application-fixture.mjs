@@ -6,10 +6,10 @@ import {addUser} from '../../server/operations-auth.mjs';
 import {createIdentityVerifier} from '../../server/operations-identity.mjs';
 import {createOperationsFeatures} from '../../domain/operations-features.mjs';
 import {createIntegratedUatApplication} from '../../server/operations-uat-application.mjs';
-export async function uatApplicationFixture(t,{fullPermissions=false,googleAssurance}={}){
+export async function uatApplicationFixture(t,{fullPermissions=false,googleAssurance,platformPermissions=['platform:audit']}={}){
  const native=await fixture(t,createOperationsFeatures()),governance=randomUUID();
  native.store.db.prepare('INSERT INTO tenants VALUES(?,?,?)').run(governance,'Illustrative governance namespace','UTC');
- const platform=addUser(native.store,{tenantId:governance,username:syntheticRoster[0].email,name:'Illustrative Platform',role:'platform',identityOnly:true,permissions:['platform:audit']});
+ const platform=addUser(native.store,{tenantId:governance,username:syntheticRoster[0].email,name:'Illustrative Platform',role:'platform',identityOnly:true,permissions:platformPermissions});
  const driver=native.store.get('driver',native.driver.id,native.driver.tenantId);native.store.update('driver',driver.id,driver.tenantId,driver.version,{fleetId:native.fleet.id});
  // Seed matching synthetic vehicle ownership before assignment; never move
  // hosted equipment or employment through this test-only fixture.

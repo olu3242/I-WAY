@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 
 const projectId='prj_7uof3CdmN1QvzKxETkXvHjlrLjVm';
 const orgId='team_zNHlJbJHa4YZFwN4p9lcHzEH';
-const assets=['InterVariable.woff2','Inter-LICENSE.txt','maintenance.js','offline.html','driver-sw.js','driver-offline.mjs','financial.js','admin.html','admin.js','extended.js','i-way-logo.svg','index.html','intelligence.js','login.html','login.js','ops.css','ops.js'];
+const assets=['InterVariable.ttf','platform-workspace.js','onboarding.js','expenses.js','load-wizard.js','InterVariable.woff2','Inter-LICENSE.txt','maintenance.js','offline.html','driver-sw.js','driver-offline.mjs','financial.js','admin.html','admin.js','extended.js','i-way-logo.svg','index.html','intelligence.js','login.html','login.js','ops.css','ops.js'];
 const intelligence=['lib/intelligence/policy-lifecycle.mjs','lib/intelligence/decision-plane.mjs'];
 const sha256=value=>createHash('sha256').update(value).digest('hex');
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
@@ -27,11 +27,11 @@ async function assertOutput(source,output){
   try{if((await lstat(current)).isSymbolicLink())throw Error('PACKAGE_OUTPUT_SYMLINK');}catch(error){if(error.code!=='ENOENT')throw error;}
  }
 }
-function dependencySubset(lock){
+function dependencySubset(lock,names){
  if(lock.lockfileVersion!==3||!lock.packages?.['node_modules/pg'])throw Error('PACKAGE_PG_LOCK_REQUIRED');
  const version=lock.packages['node_modules/pg'].version;
  if(!/^\d+\.\d+\.\d+$/.test(version))throw Error('PACKAGE_PG_VERSION_INVALID');
- const manifest={name:'iway-uat-staging',private:true,type:'module',engines:{node:'24.x'},dependencies:{pg:version}};
+ const manifest={name:'iway-uat-staging',private:true,type:'module',engines:{node:'24.x'},dependencies:Object.fromEntries(names.map(name=>{const v=lock.packages['node_modules/'+name]?.version;if(!/^\d+\.\d+\.\d+$/.test(v??''))throw Error('PACKAGE_DEPENDENCY_VERSION_INVALID');return [name,v];}))};
  const packages={'':{name:manifest.name,engines:manifest.engines,dependencies:manifest.dependencies}};
  function collect(path){
   if(packages[path])return;
@@ -43,7 +43,7 @@ function dependencySubset(lock){
    collect(lock.packages[nested]?nested:flat);
   }
  }
- collect('node_modules/pg');
+ for(const name of names)collect('node_modules/'+name);
  return {manifest,lock:{name:manifest.name,lockfileVersion:3,requires:true,packages:Object.fromEntries(Object.entries(packages).sort(([a],[b])=>a.localeCompare(b,'en')))}};
 }
 const json=value=>Buffer.from(JSON.stringify(value,null,2)+'\n');
@@ -75,7 +75,7 @@ export async function packageUatStaging({source=root,output=resolve(source,'dist
  }
  function dependency(path,specifier){
   if(specifier.startsWith('node:'))return;
-  if(!specifier.startsWith('.')){if(specifier!=='pg')throw Error('PACKAGE_BARE_DEPENDENCY_NOT_ALLOWLISTED');bare.add(specifier);return;}
+  if(!specifier.startsWith('.')){if(!['pg','pdfkit','fontkit'].includes(specifier))throw Error('PACKAGE_BARE_DEPENDENCY_NOT_ALLOWLISTED');bare.add(specifier);return;}
   collect(posix.normalize(posix.join(posix.dirname(path),specifier)));
  }
  function collect(path){
@@ -96,7 +96,7 @@ export async function packageUatStaging({source=root,output=resolve(source,'dist
  const config=JSON.parse(blob('deploy/uat-staging/vercel.json'));
  if(config.framework!==null||config.outputDirectory!=='public'||config.git?.deploymentEnabled!==false||config.functions?.['api/index.mjs']?.includeFiles!=='{server,domain,lib/intelligence,apps/operations}/**')throw Error('PACKAGE_VERCEL_ISOLATION_REQUIRED');
  files.set('vercel.json',json(config));
- const subset=dependencySubset(JSON.parse(blob('package-lock.json')));
+ const subset=dependencySubset(JSON.parse(blob('package-lock.json')),[...bare].sort());
  if(!bare.has('pg'))throw Error('PACKAGE_PG_RUNTIME_NOT_REACHED');
  files.set('package.json',json(subset.manifest));files.set('package-lock.json',json(subset.lock));
  files.set('.vercel/project.json',json({projectId,orgId,projectName:'iway-auth-staging'}));

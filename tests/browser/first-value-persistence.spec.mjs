@@ -41,12 +41,12 @@ for(const width of [390,1440])test(`guided first value through ${durable?'Postgr
   await page.getByRole('button',{name:'First load guide',exact:true}).click();
   await page.getByRole('button',{name:'Create guided load',exact:true}).click();
   await page.getByLabel('Load reference',{exact:true}).fill(reference);
-  await page.getByLabel('Customer / broker',{exact:true}).fill('Illustrative persistence customer');
+  await page.getByLabel('Customer / broker name',{exact:true}).fill('Illustrative persistence customer');
   await page.getByLabel('Responsible dispatcher',{exact:true}).selectOption(f.dispatcher.id);
   await page.getByLabel('Commodity',{exact:true}).fill('Illustrative goods');
-  await page.getByLabel('Pickup location',{exact:true}).fill('Illustrative San Antonio');
-  await page.getByLabel('Delivery location',{exact:true}).fill('Illustrative Austin');
-  await page.getByRole('button',{name:'Create draft load',exact:true}).click();
+  await page.getByRole('button',{name:'Next step',exact:true}).click();await page.getByLabel('Stop 1 location').fill('Illustrative San Antonio');await page.getByLabel('Stop 1 appointment (UTC)').fill('2026-11-02T10:00');
+  await page.getByLabel('Stop 2 location',{exact:true}).fill('Illustrative Austin');
+  await page.getByLabel('Stop 2 appointment (UTC)').fill('2026-11-03T10:00');await page.getByRole('button',{name:'Next step',exact:true}).click();await page.getByLabel('Agreed payment terms').fill('Illustrative agreed terms');await page.getByRole('button',{name:'Next step',exact:true}).click();await page.getByRole('checkbox').check();await page.getByRole('button',{name:'Submit reviewed load',exact:true}).click();
   await expect(page.locator('h1')).toHaveText(reference);
   await page.getByRole('button',{name:'Validate load',exact:true}).click();
   await page.getByLabel('Driver',{exact:true}).selectOption(f.driver.id);

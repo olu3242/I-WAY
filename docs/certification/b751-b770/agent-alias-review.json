@@ -1,0 +1,57 @@
+{
+  "requested": [
+    {
+      "alias": "MAX",
+      "status": "BLOCKED_MAPPING",
+      "approvedOwner": null,
+      "canonicalImplementation": null
+    },
+    {
+      "alias": "PULSE",
+      "status": "BLOCKED_MAPPING",
+      "approvedOwner": null,
+      "canonicalImplementation": null
+    },
+    {
+      "alias": "CLARA",
+      "status": "BLOCKED_MAPPING",
+      "approvedOwner": null,
+      "canonicalImplementation": null
+    },
+    {
+      "alias": "GUARDIAN",
+      "status": "BLOCKED_MAPPING",
+      "approvedOwner": null,
+      "canonicalImplementation": null
+    },
+    {
+      "alias": "FINN",
+      "status": "BLOCKED_MAPPING",
+      "approvedOwner": null,
+      "canonicalImplementation": null
+    },
+    {
+      "alias": "SAGE",
+      "status": "BLOCKED_MAPPING",
+      "approvedOwner": null,
+      "canonicalImplementation": null
+    },
+    {
+      "alias": "ATLAS",
+      "status": "BLOCKED_MAPPING",
+      "approvedOwner": null,
+      "canonicalImplementation": null
+    }
+  ],
+  "actualPreservedRegistry": [
+    "dispatch:summary",
+    "tracking:summary",
+    "documents:summary",
+    "exceptions:summary",
+    "finance:readiness"
+  ],
+  "provider": "none",
+  "autonomy": "advisory; consequential actions require existing human authorization",
+  "source": "domain/operations-runtime.mjs",
+  "hostedCapabilityClaimed": false
+}

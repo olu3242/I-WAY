@@ -7,7 +7,7 @@ for(const role of ['platform','carrier','fleet','driver'])test('approved brand t
   await page.evaluate(()=>document.fonts.load('700 16px Inter'));
   const typography=await page.evaluate(()=>({family:getComputedStyle(document.documentElement).fontFamily,loaded:[...document.fonts].some(f=>f.family==='Inter'&&f.status==='loaded')}));
   expect(typography.family).toContain('Inter');expect(typography.loaded).toBe(true);
-  const logo=page.getByRole('img',{name:'I-way',exact:true});await expect(logo).toHaveAttribute('src','/assets/i-way-logo.svg');
+  const logo=page.getByRole('img',{name:'Iway',exact:true});await expect(logo).toHaveAttribute('src','/assets/i-way-logo.svg');
   expect(await logo.evaluate(el=>getComputedStyle(el.closest('.logo-chip')).backgroundColor)).toBe('rgb(255, 255, 255)');
   const surface=page.locator('.card,.stat').first();expect(await surface.evaluate(el=>getComputedStyle(el).borderRadius)).toBe('20px');
   if(role==='driver'){await page.locator('#nav [data-tab=loads]').click();await page.getByRole('button',{name:'Open',exact:true}).first().click();expect(await page.getByRole('button',{name:'Accept assignment',exact:true}).evaluate(el=>el.getBoundingClientRect().height)).toBeGreaterThanOrEqual(52);}

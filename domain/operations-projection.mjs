@@ -1,3 +1,5 @@
+import {onboardingProjection} from './operations-onboarding.mjs';
+import {expenseProjection} from './operations-expenses.mjs';
 import {financialProjection} from './operations-settlements.mjs';
 import {authorize} from './authorization.mjs';
 import {requireValue} from './operations-errors.mjs';
@@ -5,6 +7,10 @@ const pick=(object,keys)=>Object.fromEntries(keys.filter(k=>object[k]!==undefine
 export function projectResult(ops,actor,value){
  if(Array.isArray(value))return value.map(v=>projectResult(ops,actor,v));
  if(!value||typeof value!=='object')return value;
+ if(value.kind==='onboarding')return onboardingProjection(ops,actor,value);
+ if(value.kind==='expense')return expenseProjection(ops,actor,value);
+ if(value.kind==='loaddraft')ops.guard(actor,'load:create',value);
+ if(value.kind==='directoryentry')ops.guard(actor,'customer:manage',value);
  if(['settlement','driverpay','settlementdispute','settlementapproval'].includes(value.kind))return financialProjection(ops,actor,value);
  if(value.kind&&value.loadId){const related=ops.read('load',value.loadId,actor,'load:view');ops.guard(actor,({document:'document:view',pod:'document:view',invoice:actor.role==='customer'?'invoice:view':'finance:manage',payment:'billing:manage',operationcost:'cost:manage',measurement:'cost:manage',routeevaluation:'intelligence:view',risk:'intelligence:view',capacityproposal:'intelligence:view',orchestration:'orchestration:manage',connectorjob:'connector:request',integrationreceipt:'connector:request',integrationjob:'connector:request',providerrecommendation:'intelligence:view'})[value.kind]??'load:view',related);}
  if(['retentionpolicy','retentionpreview','governanceexport'].includes(value.kind))ops.guard(actor,'governance:manage',{tenantId:value.tenantId});
@@ -21,7 +27,7 @@ export function projectResult(ops,actor,value){
   const load=value.kind==='load'?ops.store.get('load',value.id,actor.tenantId):ops.store.get('load',value.loadId,actor.tenantId);
   ops.guard(actor,'load:view',load);
   if(actor.role==='customer')return pick(value,['id','kind','tenantId','version','loadId','reference','commodity','weightLb','status','stops','createdAt','deliveredAt','lifecycleState','readyAt','closedAt']);
-  if(['driver','fleet'].includes(actor.role)){const {rateCents,charges,customer,customerId,factorName,factored,...safe}=value;return safe;}
+  if(['driver','fleet'].includes(actor.role)){const {rateCents,charges,customer,customerId,factorName,factored,billTo,paymentTerms,privateNotes,...safe}=value;return {...safe,stops:safe.stops?.map(({privateNotes,...stop})=>stop)};}
  }
  if(value.kind==='connectorjob'&&value.capability==='accounting'||value.kind==='connectorresult'&&value.snapshot?.invoiceId||value.kind==='agentdecision'&&value.role==='finance'){ops.guard(actor,'billing:manage',ops.read('load',value.loadId,actor));}
  if(value.kind==='document'){const {content,extracted,extractedFields,...safe}=value;return safe;}

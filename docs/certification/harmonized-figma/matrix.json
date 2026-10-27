@@ -1,0 +1,1762 @@
+{
+  "schemaVersion": 1,
+  "issue": "https://github.com/olu3242/I-WAY/issues/20",
+  "authority": [
+    "Verified implementation and security contracts",
+    "Approved PRD/BRD/Brand Kit",
+    "Checked-in prototype flow structure; legacy styling superseded"
+  ],
+  "sourceHashEncoding": "SHA-256 of UTF-8 LF text",
+  "sourceHashes": {
+    "apps/operations/admin.js": "37ae785572fd7ef180d3ec6b760c18bfa01205dfc056fefbe5d0ae168ea36669",
+    "apps/operations/driver-offline.mjs": "a6e68c3c29ef7d80274ade08a293c056da9836af808f1d309f00d8c85cbbc7d0",
+    "apps/operations/expenses.js": "3d9e1e447f2c8467f00289daa40509c4a8b704d1e7e41bec982d04d244960460",
+    "apps/operations/extended.js": "7d1b295030466b790b18f94d6b961e29fcb15d7150163a1e10541ac1dd26d766",
+    "apps/operations/financial.js": "f8558842283e6f88b162466b96885d17fb117cd0984df7f2045dde64d3e8c665",
+    "apps/operations/intelligence.js": "d8ecf46ea1e3b42a8a7bea4872c576999f2103d98009d65c7d8f1b4cd51d7b1d",
+    "apps/operations/load-wizard.js": "92d63aa6c4cc3aaaa87e230c5de3907d82ca5998d157f02da5e6e4ecedc23585",
+    "apps/operations/ops.css": "d6e8d22c815922b3448a9c9936374c2dfcbdc8b70469311eeb13820aa96453e7",
+    "apps/operations/ops.js": "aa3eadcd143e8d2fc12bc899e0c894eda6600194b5de517394f06af2ad6cb9eb",
+    "apps/operations/platform-workspace.js": "91f76ed4a41570a3fa3f786e7aa94fdd7a4128e8f7cf47be7b5db9d4275d9404",
+    "docs/BRD.md": "c03b20939ecc8c570311c2eaf63258eeebbff8832299ec3cc94b573d564b38cc",
+    "docs/PRD.md": "7e061a04d352f374e07edeb4ca3f3167c55e6f5fea6462432514f0fb35e568aa",
+    "docs/brand/tokens/iway-tokens.json": "189c8753569676a29c6581afde6d9e6b843c6ec62f75983245e72c96c8484d84",
+    "domain/authorization.mjs": "b7ed518f04c2a5b88a0bbf4f1f7662e4ff42484733346df18ca03180652eb4a0",
+    "domain/operations-intelligence.mjs": "9ff827a87ddf1a44cef156274da6508c9ea1f4b69dd3c36f1b1168420a496cf0",
+    "domain/operations.mjs": "d9878d6248e488870e9c61fb1064b1b4330fe45f7bdddc598cfa36c3d1dea9d0",
+    "reference/README.md": "725853eb2677d927a3070da6f6daae00ab3018c500e5b3e0b389303c8984749a",
+    "reference/figma-make-prototype/src/components/CarrierAdmin.tsx": "aff1f49c2c6a98227758854848fc93d95cb7e018b46d18912bab1b1e9d7255f2",
+    "reference/figma-make-prototype/src/components/DriverApp.tsx": "9a6994d6c1a99fde14e25fac347a62762c53d2657329f9062174374c99849e89",
+    "reference/figma-make-prototype/src/components/FleetPortal.tsx": "5a1900444ed60673b8b2cdf804969667d174051eef8fdab5fd9d55712a7722c3",
+    "reference/figma-make-prototype/src/components/PlatformAdmin.tsx": "cadc023a5c718b6635b4114fde5061151ee1a3d2175ab2eed2c61c14e4cdb137",
+    "server/operations-admin.mjs": "12f2e9f7d9b144846a6a6cfc76c8a9c4f5aee419d488b7c2d04deaa345473113",
+    "server/operations-identity.mjs": "0c8435060dafd6415374e7f6139ea257585ce460db683f9773d00cfc4629d3f2",
+    "server/operations-owner-profiles.mjs": "da541e8201672a7f376928b34aa8a2d81673d43ad972ad675129e28bc2a11cf3",
+    "server/operations-platform-workspace.mjs": "529bbdabc9adaec4792955d0894765bf7f368c1f32cfc5c4706f4233aab26985",
+    "server/operations-uat-application.mjs": "8343632f250add492877c89f482f6bf15a389baf7599d49922096bddbe4ff390",
+    "tests/browser/administration.spec.mjs": "11a2425b2d00e44b05862c7487dd88f83e9e52b1fe980986f5481b66bcd60c8e",
+    "tests/browser/b681-load-wizard.spec.mjs": "53b83a955b8d07ab58874a9da8cc907d319ebf2ab644024986fdd704e8e4177d",
+    "tests/browser/b691-expenses.spec.mjs": "a4d542bad85c4eb9c5935fa5176ab7d30669a5bf35bea7619194a5c311c759c0",
+    "tests/browser/b751-b770.spec.mjs": "7dee4de81985f67fc188f61dd7c5359ec1c18725a182d8e631b6f16fc9cf09a6",
+    "tests/browser/directories.spec.mjs": "6eb5e0796f2c5c2acb080e95a34fa32239e461b8b5a2bf52df8343df7aa206d1",
+    "tests/browser/driver-offline.spec.mjs": "8924899f1829e29389cea1dbde6c4f7411c06462f235e78874fbce80a336ce63",
+    "tests/browser/expenses.spec.mjs": "70316e58b6a30409f60908abc97f6b1e3de3bee3354b8ec9d94ac1e004199f4b",
+    "tests/browser/fleet-pay-models.spec.mjs": "515ead2c91fbf6b103df91099d44a6f73f1b67f1809274ba8b158cadefe32af4",
+    "tests/browser/load-search-rejection.spec.mjs": "a914c08e618463ecf11b66106ca73f3180d859f88066fbfb942ca9aee08e03f6",
+    "tests/browser/load-wizard-recovery.spec.mjs": "3a256c2579b4ed8001d8183619e8fe8f4a434051490ad655b5717982c58aeb49",
+    "tests/browser/maintenance.spec.mjs": "5b31f6b6cdfdf3193bdbb37cb7f98d5e6b0525564df257ee779e25f29efc53b5",
+    "tests/browser/onboarding.spec.mjs": "473b5a0d408f559b688142d72e0c5ad3a0aa4eb814c2fe1c6e3ee8a5c8834497",
+    "tests/browser/operations.spec.mjs": "7dd8d1109f9d18c740fdb478625731deb17679aeb40e056fa251125bac0bfd28",
+    "tests/browser/owner-profiles.spec.mjs": "11186f0dd569b27fd9dc45ddd790ec5038e4f6c21d8e88f9a9d72cc5391f5769",
+    "tests/browser/pdf-downloads.spec.mjs": "372858060998b568be99f51b107ab17dd11e76ca382754f8f0051db7527c1fe5",
+    "tests/browser/platform-workspace.spec.mjs": "71165f692ab8058614c504832c420e361c643749b2b7ea1f58a147f1fc296f9c",
+    "tests/browser/responsive-personas.spec.mjs": "883933d5fe8b8875878e6785a38c63ed22db9f6736c28d2207be107c6699eb61",
+    "tests/browser/settlements.spec.mjs": "e34671b5988578203f9d050c0e3413864b363946e22a7b54d26b1faf3209e788",
+    "tests/browser/uat-application.spec.mjs": "02f7601b6991e7d1892a5702fa460b656bf5fdf451caa6f499911ea2946ece61"
+  },
+  "primaryScreenCount": 35,
+  "screens": [
+    {
+      "id": "carrier:dashboard",
+      "persona": "carrier",
+      "screen": "dashboard",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "overview",
+        "analytics"
+      ],
+      "permissions": [
+        "load:view",
+        "analytics:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Persisted visible loads and measured operations totals",
+      "remaining": "Prototype finance/compliance KPI layout and complete fleet breakdown are not implemented",
+      "testFiles": [
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 88
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "carrier:load-manager",
+      "persona": "carrier",
+      "screen": "load-manager",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "loads",
+        "load-wizard"
+      ],
+      "permissions": [
+        "load:view",
+        "load:create",
+        "load:dispatch"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Four-step creation, durable drafts, review, confirmation, safe retry, dispatch and execution",
+      "remaining": "Specialized equipment types need an approved contract; live map/provider absent",
+      "testFiles": [
+        "tests/browser/b681-load-wizard.spec.mjs",
+        "tests/browser/load-wizard-recovery.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 89
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "carrier:dispatchers",
+      "persona": "carrier",
+      "screen": "dispatchers",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "people"
+      ],
+      "permissions": [
+        "user:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Tenant-scoped accounts and bounded permission delegation",
+      "remaining": "Dispatcher pay/reporting and sensitive onboarding policy remain incomplete",
+      "testFiles": [
+        "tests/browser/administration.spec.mjs",
+        "tests/browser/onboarding.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 90
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "carrier:fleet-resources",
+      "persona": "carrier",
+      "screen": "fleet-resources",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "maintenance"
+      ],
+      "permissions": [
+        "asset:view",
+        "asset:manage",
+        "driver:approve",
+        "vehicle:approve"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Owned assets, employment and independent carrier eligibility holds",
+      "remaining": "Full truck detail, sensitive attachments and specialized equipment contract",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 91
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "carrier:directory",
+      "persona": "carrier",
+      "screen": "directory",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "directories",
+        "customers"
+      ],
+      "permissions": [
+        "customer:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Persisted typed broker/customer/factor/facility records and relationships",
+      "remaining": "Approved external book of record and delivery remain blocked",
+      "testFiles": [
+        "tests/browser/directories.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 92
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "carrier:onboarding",
+      "persona": "carrier",
+      "screen": "onboarding",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "onboarding",
+        "people"
+      ],
+      "permissions": [
+        "user:manage",
+        "driver:approve"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Typed local onboarding submissions, needs-information and activation gates",
+      "remaining": "No real identities or invitations; approved delivery and sensitive storage absent",
+      "testFiles": [
+        "tests/browser/onboarding.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 93
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "carrier:compliance",
+      "persona": "carrier",
+      "screen": "compliance",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "documents",
+        "onboarding"
+      ],
+      "permissions": [
+        "driver:approve",
+        "vehicle:approve",
+        "document:review"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Carrier holds, expiry eligibility, shipping-document review and onboarding status",
+      "remaining": "Complete identity/equipment document packages, reminders and storage policy",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs",
+        "tests/browser/onboarding.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 94
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "carrier:accounting",
+      "persona": "carrier",
+      "screen": "accounting",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "settlements",
+        "billing",
+        "finance"
+      ],
+      "permissions": [
+        "settlement:manage",
+        "billing:manage",
+        "finance:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Integer-cent statements, invoice readiness, approved PDFs and receivable evidence",
+      "remaining": "Payment provider and approved delivery absent; approval never means transferred money",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs",
+        "tests/browser/b691-expenses.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 95
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "carrier:reports",
+      "persona": "carrier",
+      "screen": "reports",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "analytics",
+        "settlements"
+      ],
+      "permissions": [
+        "analytics:view",
+        "settlement:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Measured operational summaries and governed statement PDFs",
+      "remaining": "Full accounting report catalog and exports incomplete",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 96
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "carrier:settings",
+      "persona": "carrier",
+      "screen": "settings",
+      "status": "partial",
+      "route": "/admin",
+      "navigation": [],
+      "permissions": [
+        "governance:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Existing company settings and deny-only configuration at /admin",
+      "remaining": "Separate /admin route retained; no silent permission expansion",
+      "testFiles": [
+        "tests/browser/administration.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/CarrierAdmin.tsx",
+        "line": 97
+      },
+      "api": [
+        "GET /api/ops/admin/settings",
+        "POST /api/ops/admin/settings",
+        "GET /api/ops/admin/audit"
+      ],
+      "implementation": [
+        "apps/operations/admin.js",
+        "server/operations-admin.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "fleet:dashboard",
+      "persona": "fleet",
+      "screen": "dashboard",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "overview"
+      ],
+      "permissions": [
+        "load:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own loads/assets/approved statements projected by server",
+      "remaining": "Complete period/payment/maintenance dashboard incomplete",
+      "testFiles": [
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 73
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "fleet:drivers",
+      "persona": "fleet",
+      "screen": "drivers",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "people",
+        "onboarding"
+      ],
+      "permissions": [
+        "asset:view",
+        "employment:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own employment and local profile lifecycle; carrier approval independent",
+      "remaining": "Hosted accounts and full sensitive document package blocked",
+      "testFiles": [
+        "tests/browser/onboarding.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 74
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "fleet:equipment",
+      "persona": "fleet",
+      "screen": "equipment",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "maintenance"
+      ],
+      "permissions": [
+        "asset:manage",
+        "asset:service"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Owned equipment edits/service history retain carrier holds",
+      "remaining": "Specialized trailer/type and removal policy incomplete",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 75
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "fleet:loads",
+      "persona": "fleet",
+      "screen": "loads",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "loads"
+      ],
+      "permissions": [
+        "load:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own assigned loads; commercial rates and foreign assignments withheld",
+      "remaining": "Original visual comparison blocked; live tracking not connected",
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 76
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "fleet:maintenance",
+      "persona": "fleet",
+      "screen": "maintenance",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "maintenance"
+      ],
+      "permissions": [
+        "asset:service"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Owner service review, odometer reports, explicit intervals and due warnings",
+      "remaining": "Automatic distance/location and vendor/cost scheduling absent",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 77
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "fleet:settlements",
+      "persona": "fleet",
+      "screen": "settlements",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "settlements"
+      ],
+      "permissions": [
+        "settlement:view",
+        "settlement:dispute"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own approved carrier statements, immutable disputes and PDF downloads",
+      "remaining": "Acknowledgment/dispute resolution and actual payment are incomplete",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 78
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "fleet:driver-pay",
+      "persona": "fleet",
+      "screen": "driver-pay",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "driver-pay"
+      ],
+      "permissions": [
+        "payroll:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Explicit six-model terms, approval/revision, source budget and expense allocation",
+      "remaining": "No invented employment terms or payment execution",
+      "testFiles": [
+        "tests/browser/fleet-pay-models.spec.mjs",
+        "tests/browser/b691-expenses.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 79
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "fleet:escrow",
+      "persona": "fleet",
+      "screen": "escrow",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "settlements"
+      ],
+      "permissions": [
+        "settlement:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Read-only approved escrow contributions",
+      "remaining": "Full debit/refund/claim/opening/closing ledger requires approved contract",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 80
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "fleet:compliance",
+      "persona": "fleet",
+      "screen": "compliance",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "onboarding"
+      ],
+      "permissions": [
+        "asset:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own eligibility/approval states; fleet cannot clear carrier holds",
+      "remaining": "Full compliance document packages/reminder contract not complete",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs",
+        "tests/browser/onboarding.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/FleetPortal.tsx",
+        "line": 81
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "driver:loads",
+      "persona": "driver",
+      "screen": "loads",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "loads"
+      ],
+      "permissions": [
+        "load:view",
+        "load:execute",
+        "pod:record"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own assignment acceptance/rejection, ordered stops, pickup/transit/delivery and bounded acknowledgments",
+      "remaining": "Arrival/geofence/maps and signed-image storage need approved contracts",
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/load-search-rejection.spec.mjs",
+        "tests/browser/driver-offline.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 227
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "driver:truck",
+      "persona": "driver",
+      "screen": "truck",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "assets",
+        "maintenance"
+      ],
+      "permissions": [
+        "asset:view",
+        "asset:service"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Assigned equipment and durable service reports",
+      "remaining": "Registration/insurance/lease storage and live odometer integration absent",
+      "testFiles": [
+        "tests/browser/maintenance.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 228
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "driver:documents",
+      "persona": "driver",
+      "screen": "documents",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "loads",
+        "onboarding"
+      ],
+      "permissions": [
+        "document:view",
+        "document:manage"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Authorized reviewed shipping metadata/revisions, summaries and owned profile states",
+      "remaining": "No sensitive uploads, signature images or identity-document storage",
+      "testFiles": [
+        "tests/browser/operations.spec.mjs",
+        "tests/browser/onboarding.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 229
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "driver:pay",
+      "persona": "driver",
+      "screen": "pay",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "settlements",
+        "expenses"
+      ],
+      "permissions": [
+        "settlement:view",
+        "payroll:view"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Own approved earnings, period summaries/PDFs and governed expenses",
+      "remaining": "Full payment evidence/provider and policy-dependent ledger cases blocked",
+      "testFiles": [
+        "tests/browser/settlements.spec.mjs",
+        "tests/browser/expenses.spec.mjs",
+        "tests/browser/b691-expenses.spec.mjs",
+        "tests/browser/pdf-downloads.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 230
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "driver:chat",
+      "persona": "driver",
+      "screen": "chat",
+      "status": "design-only",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "No real dispatcher chat or call adapter",
+      "remaining": "Approved contact model, consent, delivery provider and authorization contract required",
+      "testFiles": [],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 231
+      },
+      "api": [],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "driver:profile",
+      "persona": "driver",
+      "screen": "profile",
+      "status": "partial",
+      "route": "/app",
+      "navigation": [
+        "onboarding",
+        "notifications"
+      ],
+      "permissions": [
+        "notification:preferences"
+      ],
+      "authorization": "Role + stored permission + tenant + relationship + resource ownership; server is authoritative",
+      "workingScope": "Owned onboarding profile and persisted notification preferences",
+      "remaining": "PIN/biometrics/trusted-device contract and sensitive banking/storage absent",
+      "testFiles": [
+        "tests/browser/onboarding.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/DriverApp.tsx",
+        "line": 232
+      },
+      "api": [
+        "GET /api/ops/state",
+        "POST /api/ops/commands"
+      ],
+      "implementation": [
+        "apps/operations/ops.js",
+        "apps/operations/extended.js",
+        "domain/authorization.mjs",
+        "domain/operations.mjs"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:dashboard",
+      "persona": "platform",
+      "screen": "dashboard",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Governance-only workspace retained",
+      "remaining": "Prototype cross-tenant operational metrics cannot be reintroduced without scoped authority",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 78
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:carriers",
+      "persona": "platform",
+      "screen": "carriers",
+      "status": "partial",
+      "route": null,
+      "navigation": [],
+      "permissions": [
+        "platform:invite"
+      ],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Canonical invitation contract and local management fixtures exist",
+      "remaining": "Carrier lifecycle and subscription management surface incomplete",
+      "testFiles": [
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 79
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:fleet-cos",
+      "persona": "platform",
+      "screen": "fleet-cos",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "No operational tenant reader granted",
+      "remaining": "Owner-approved scoped management reader, independent approval/reason/expiry required",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 80
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:drivers",
+      "persona": "platform",
+      "screen": "drivers",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "No global driver PII reader granted",
+      "remaining": "Owner-approved management scope and privacy policy required",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 81
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:loads",
+      "persona": "platform",
+      "screen": "loads",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Platform operational access explicitly denied",
+      "remaining": "Prototype global loads/impersonation must not bypass tenant isolation",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs",
+        "tests/browser/operations.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 82
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:payments",
+      "persona": "platform",
+      "screen": "payments",
+      "status": "design-only",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "No platform payment execution or monitoring claimed",
+      "remaining": "Approved isolated billing/provider contract absent",
+      "testFiles": [],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 83
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:cases",
+      "persona": "platform",
+      "screen": "cases",
+      "status": "partial",
+      "route": "/uat/control",
+      "navigation": [
+        "#platform-workspace"
+      ],
+      "permissions": [
+        "platform:cases"
+      ],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Persisted cases with owner, transitions, reasons, versions and replay-safe commands",
+      "remaining": "Hosted governance identities and real external support delivery blocked",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 84
+      },
+      "api": [
+        "POST /api/ops/platform",
+        "POST /api/ops/platform/workspace"
+      ],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:compliance",
+      "persona": "platform",
+      "screen": "compliance",
+      "status": "obsolete-in-design",
+      "route": null,
+      "navigation": [],
+      "permissions": [],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Operational compliance remains with carrier owner",
+      "remaining": "Global compliance view requires explicitly scoped management contract",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 85
+      },
+      "api": [],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:config",
+      "persona": "platform",
+      "screen": "config",
+      "status": "partial",
+      "route": "/uat/control",
+      "navigation": [
+        "#platform-config"
+      ],
+      "permissions": [
+        "platform:configure"
+      ],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Governed case-response configuration with reason/audit",
+      "remaining": "Global override/delegation catalog absent",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 86
+      },
+      "api": [
+        "POST /api/ops/platform",
+        "POST /api/ops/platform/workspace"
+      ],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    },
+    {
+      "id": "platform:audit",
+      "persona": "platform",
+      "screen": "audit",
+      "status": "partial",
+      "route": "/uat/control",
+      "navigation": [
+        "#audit-action"
+      ],
+      "permissions": [
+        "platform:audit"
+      ],
+      "authorization": "AAL2 + platform permission + isolated governance namespace; no operational tenant access",
+      "workingScope": "Governance audit read and isolated activity viewer",
+      "remaining": "Cross-tenant operational audit needs explicit scoped grant",
+      "testFiles": [
+        "tests/browser/platform-workspace.spec.mjs",
+        "tests/browser/responsive-personas.spec.mjs",
+        "tests/browser/uat-application.spec.mjs"
+      ],
+      "reference": {
+        "file": "reference/figma-make-prototype/src/components/PlatformAdmin.tsx",
+        "line": 87
+      },
+      "api": [
+        "POST /api/ops/platform",
+        "POST /api/ops/platform/workspace"
+      ],
+      "implementation": [
+        "server/operations-uat-application.mjs",
+        "server/operations-platform-workspace.mjs",
+        "apps/operations/platform-workspace.js"
+      ],
+      "localEvidence": {
+        "status": "NOT_RUN",
+        "meaning": "Test-file links are regression candidates, never proof of a complete prototype screen"
+      },
+      "visual": {
+        "status": "BLOCKED_REFERENCE",
+        "percentage": null
+      },
+      "hosted": {
+        "status": "BLOCKED",
+        "executed": 0
+      }
+    }
+  ],
+  "secondaryPrototypeControls": [
+    {
+      "persona": "fleet",
+      "label": "Documents",
+      "status": "design-only",
+      "reason": "Prototype footer button has no navigation handler; current authorization is authoritative"
+    },
+    {
+      "persona": "fleet",
+      "label": "Reports",
+      "status": "design-only",
+      "reason": "Prototype footer button has no navigation handler; current authorization is authoritative"
+    },
+    {
+      "persona": "fleet",
+      "label": "Users",
+      "status": "design-only",
+      "reason": "Prototype footer button has no navigation handler; current authorization is authoritative"
+    },
+    {
+      "persona": "fleet",
+      "label": "Settings",
+      "status": "design-only",
+      "reason": "Prototype footer button has no navigation handler; current authorization is authoritative"
+    },
+    {
+      "persona": "platform",
+      "label": "Risk",
+      "status": "design-only",
+      "reason": "Prototype footer button has no navigation handler; current authorization is authoritative"
+    },
+    {
+      "persona": "platform",
+      "label": "Settlements",
+      "status": "design-only",
+      "reason": "Prototype footer button has no navigation handler; current authorization is authoritative"
+    },
+    {
+      "persona": "platform",
+      "label": "Platform Billing",
+      "status": "design-only",
+      "reason": "Prototype footer button has no navigation handler; current authorization is authoritative"
+    },
+    {
+      "persona": "platform",
+      "label": "Users & Access",
+      "status": "design-only",
+      "reason": "Prototype footer button has no navigation handler; current authorization is authoritative"
+    },
+    {
+      "persona": "platform",
+      "label": "System",
+      "status": "design-only",
+      "reason": "Prototype footer button has no navigation handler; current authorization is authoritative"
+    }
+  ],
+  "preservedImplementationExtensions": [
+    {
+      "capability": "Four-step load wizard and guarded corrections",
+      "files": [
+        "apps/operations/load-wizard.js",
+        "domain/operations-load-wizard.mjs"
+      ],
+      "reason": "Preserve newer durable drafts, versioning and retry contracts"
+    },
+    {
+      "capability": "Driver expense corrections, employer reviews and reimbursement integrity",
+      "files": [
+        "apps/operations/expenses.js",
+        "domain/operations-expenses.mjs"
+      ],
+      "reason": "Not removed because the prototype omits this workflow"
+    },
+    {
+      "capability": "Offline driver replay and recovery",
+      "files": [
+        "apps/operations/driver-offline.mjs",
+        "domain/driver-offline-replay.mjs"
+      ],
+      "reason": "Keep bounded device queue, session binding, exactly-once receipts and logout purge"
+    },
+    {
+      "capability": "Advisory agents and human approval boundaries",
+      "files": [
+        "apps/operations/intelligence.js",
+        "domain/operations-intelligence.mjs"
+      ],
+      "reason": "Preserve current role/tool surfaces; MAX/PULSE/CLARA/GUARDIAN/FINN/SAGE/ATLAS labels do not establish live providers"
+    },
+    {
+      "capability": "Onboarding, pay models, governed PDFs and platform cases",
+      "files": [
+        "apps/operations/onboarding.js",
+        "apps/operations/financial.js",
+        "server/operations-pdf.mjs",
+        "server/operations-platform-workspace.mjs"
+      ],
+      "reason": "Current persisted business contracts outrank demo behavior"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "H01",
+      "decision": "Keep current permission-filtered workspace tabs and all newer capabilities; do not replace server-backed workflows with static prototype cards"
+    },
+    {
+      "id": "H02",
+      "decision": "Retain canonical i-way-logo.svg asset filenames; brand display text is independent of filesystem paths; logo bytes remain unmodified by this work"
+    },
+    {
+      "id": "H03",
+      "decision": "Integrated PR #19 (893f7f56d39d3e1a46c8bddadb71265216b30ae1), including PR #18 (a2090b9d8ad70329eb2412a1af4befbac241b918), preserves server-verified owner-profile selection, current memberships, AAL2, rotated cookie/CSRF and owner-attributed audit. No real profile grants were created. Prototype app selection never grants authority"
+    },
+    {
+      "id": "H04",
+      "decision": "Existing platform governance is not a global operational portal; obsolete prototype tenant readers remain denied"
+    },
+    {
+      "id": "H05",
+      "decision": "Original Figma URL/version/exports are absent; captures compare current responsive/token behavior only. No visual or functional conformity percentage is certified"
+    }
+  ],
+  "coverageBoundary": "All root Screen/Tab identifiers and known inert footer navigation mapped; nested panels, dialogs, permutations and all PRD clauses still require separate acceptance review. This is not complete screen/state conformity.",
+  "conformity": {
+    "functionalityPercentage": null,
+    "visualPercentage": null,
+    "status": "NOT_CERTIFIED"
+  },
+  "hosted": "BLOCKED"
+}
