@@ -1,6 +1,6 @@
 # I-WAY unified activation — current approval register
 
-Starting SHA: `887eeddb33f381733092569fb5d0f2f393b02920`. A01–A12 below retain their exact historical identifiers, targets, dependencies and review procedures from B781–B800. B821–B840 adds explicit owner approval for reviewed feature-branch pushes to PR #21 solely for CI. That publication does not authorize hosted configuration, identity, migration, deployment or access changes. Historical dispositions below the preserved-record boundary remain unchanged.
+Starting SHA: `887eeddb33f381733092569fb5d0f2f393b02920`. A01–A12 below retain their exact historical identifiers, targets, dependencies and review procedures from B781–B800. B821–B840 adds explicit owner approval for reviewed feature-branch pushes to the same feature branch solely for CI (now draft follow-up PR #23 after the independent merge of #21). That publication does not authorize hosted configuration, identity, migration, deployment or access changes. Historical dispositions below the preserved-record boundary remain unchanged.
 
 ## Superseding owner finding
 
@@ -12,7 +12,7 @@ The code currently pins the excluded project in database endpoint validators, is
 
 | Action | Current exact authorization | Remaining owner decision |
 |---|---|---|
-| A01 | APPROVED — reviewed B791–B840 feature-branch pushes for CI only | Exact branch `work/b751-b770-harmonization-20261026`, PR #21; no force push, merge or automatic deployment. `c5998b3` published after trigger inspection. Final reviewed SHA and CI recorded in B821 receipt/sidecar. |
+| A01 | APPROVED — reviewed B791–B840 feature-branch pushes for CI only | Exact branch `work/b751-b770-harmonization-20261026`, PR #23 follow-up to independently merged #21; no force push, merge or automatic deployment. `c5998b3` published after trigger inspection. Final reviewed SHA and CI recorded in B821 receipt/sidecar. |
 | A02 | BLOCKED; optional repair not approved | No current staging Git repair is needed; public mutations are excluded by the latest request. Any new change needs exact owner review. |
 | A03 | BLOCKED; old database target is excluded | Project owner designates exclusive staging project, database/version, administrator and private restricted-credential handoff. Review role/grant differences for the actual target. |
 | A04 | BLOCKED; no migration execution approved | Database owner reviews broker checksums and rollback against the designated target after A03. |

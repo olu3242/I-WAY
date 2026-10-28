@@ -11,7 +11,7 @@
   "counts": {
     "PASS": 0,
     "FAIL": 0,
-    "BLOCKED": 94,
+    "BLOCKED": 95,
     "NOT_RUN": 0
   },
   "deploymentId": null,
@@ -1864,6 +1864,28 @@
         "APPROVED_FEEDBACK_OPT_IN_AND_BASE_AUTHORITY",
         "PROTECTED_PREVIEW_TESTER_ENTRY_AND_CERTIFIED_DEPLOYMENT"
       ]
+    },
+    {
+      "case": "B821-ONBOARDING-ACTIVATION",
+      "persona": "carrier",
+      "method": "approved_application_session",
+      "scenario": "activation_receipt_and_reload",
+      "route_or_control": "/api/ops/commands",
+      "prerequisites": [
+        "Owner-approved synthetic resource with no active assignments",
+        "Independent profile review and actual approved verification reference",
+        "Approved isolated target, identity/MFA and protected entry"
+      ],
+      "expected": "Prior success clears before prompts; no completion announcement until receipt; cancellation unchanged; confirmed activation survives reload without new identities",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPROVED_EXCLUSIVE_STAGING_DATABASE",
+        "VERIFIED_REAL_IDENTITY_HIERARCHY_AND_MFA",
+        "PROTECTED_PREVIEW_TESTER_ENTRY_AND_CERTIFIED_DEPLOYMENT"
+      ]
     }
-  ]
+  ],
+  "prior5deeCandidateCasesPreserved": 94,
+  "addedOnboardingCases": 1
 }

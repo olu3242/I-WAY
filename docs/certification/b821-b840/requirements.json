@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "startingCommit": "c5998b3ada6121ff7de91f81f71a5cba886f2f5b",
-  "sourceDigest": "36c14e1ac73d4f43d443bc9b35ae2c558a4101f483d1b4fcf798510d1ec1006a",
+  "sourceDigest": "9f16a955adca185e356432e8236455293f2f9f7ef17d84c86c5940bd3253819b",
   "batches": [
     {
       "id": "B821",
@@ -115,13 +115,13 @@
       "id": "B839",
       "status": "BLOCKED",
       "scope": "hosted execution",
-      "evidence": "94 hosted cases blocked, 0 executed. Database/secret-policy/identity/delivery/protection prerequisites prevent deployment; candidate deployment ID/URL null."
+      "evidence": "95 hosted cases blocked, 0 executed. Database/secret-policy/identity/delivery/protection prerequisites prevent deployment; candidate deployment ID/URL null."
     },
     {
       "id": "B840",
       "status": "PASS",
       "scope": "reviewed local release package",
-      "evidence": "Consolidated source-bound evidence, risk/approval registers, exact changed-file manifest and local commit prepared. Final SHA/package/push/CI state is verified in the post-commit sidecar."
+      "evidence": "Consolidated source-bound evidence, risk/approval registers, exact changed-file manifest and local commit prepared. Final SHA/package/push/CI state is verified in the post-commit sidecar. Review reference reconciled to draft PR #23 after independently observed PR #21 merge; tested runtime code unchanged."
     }
   ]
 }

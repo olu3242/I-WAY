@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "startingCommit": "c5998b3ada6121ff7de91f81f71a5cba886f2f5b",
-  "endingCommit": "Exact value in Git and dist/b821-b840/post-commit-verification.json; self-referential SHA deliberately excluded",
+  "endingCommit": "Exact value in Git and dist/b821-b840/review-handoff/post-commit-verification.json; runtime source unchanged from tested 21caa645",
   "branch": "work/b751-b770-harmonization-20261026",
-  "pullRequest": "https://github.com/olu3242/I-WAY/pull/21",
-  "sourceDigest": "36c14e1ac73d4f43d443bc9b35ae2c558a4101f483d1b4fcf798510d1ec1006a",
+  "pullRequest": "https://github.com/olu3242/I-WAY/pull/23",
+  "sourceDigest": "9f16a955adca185e356432e8236455293f2f9f7ef17d84c86c5940bd3253819b",
   "sourceHashEncoding": "SHA-256, UTF-8 LF; raw font binaries",
   "results": {
     "repository": {
@@ -14,14 +14,14 @@
       "skipped": 0
     },
     "generalBrowser": {
-      "total": 186,
-      "passed": 186,
+      "total": 187,
+      "passed": 187,
       "failed": 0,
       "skipped": 0
     },
     "postgresBrowser": {
-      "total": 74,
-      "passed": 74,
+      "total": 75,
+      "passed": 75,
       "failed": 0,
       "skipped": 0
     },
@@ -45,9 +45,9 @@
       "skipped": 0
     },
     "axe": {
-      "primaryScans": 423,
+      "primaryScans": 425,
       "restartScans": 1,
-      "totalScans": 424,
+      "totalScans": 426,
       "violations": 0,
       "humanScripts": 48,
       "humanExecuted": 0,
@@ -108,7 +108,7 @@
     "hosted": {
       "PASS": 0,
       "FAIL": 0,
-      "BLOCKED": 94,
+      "BLOCKED": 95,
       "NOT_RUN": 0
     },
     "humanAcceptance": {
@@ -127,7 +127,7 @@
   },
   "secretReview": {
     "status": "PASS",
-    "candidateRegularFilesScanned": 996,
+    "candidateRegularFilesScanned": 997,
     "unchangedGitlinksExcluded": [
       ".worktrees/b245-b256",
       ".worktrees/hosted-registration",
@@ -147,105 +147,184 @@
   "deployed": false,
   "hostedAuthenticationCertified": false,
   "remoteCI": {
-    "baseline": "c5998b3 PR Verify and Identity workflows passed",
-    "finalCandidate": "See post-commit-verification.json; not claimed before commit"
+    "runtimeSourceCommit": "21caa6452a761b8b423479cae5622c8fe66c40b5",
+    "pushVerify": {
+      "status": "PASS",
+      "runId": 40542296614
+    },
+    "pushIdentity": {
+      "status": "PASS",
+      "runId": 40542296628
+    },
+    "finalDocumentationCommit": "Verified after publication in review-handoff/post-commit-verification.json"
   },
   "artifactEvidence": [
     {
-      "path": "dist/b821-b840/verify-final.log",
-      "sha256": "9a2df08161c075bca2b74bb494bfbea78b112792e3893eeb1f70ee8a48bbf5df"
+      "path": "dist/b821-b840/final/verify-final.log",
+      "sha256": "36fc63ba85c7b951352a774f218b769630b6de6c64e44d9c4ba4cc94612bf709"
     },
     {
-      "path": "dist/b821-b840/support-integration-final.log",
-      "sha256": "c57ab50e1745f870f20f23aeea75f8679b3f26cd8c6490d2c53057396b0130ea"
+      "path": "dist/b821-b840/final/support-integration-final.log",
+      "sha256": "a0cd882f91e55e6ce8f404a0c9f777a6fe0500b37972cff6200ef4bf70216f0a"
     },
     {
-      "path": "dist/b821-b840/feedback-unit-final-2.log",
-      "sha256": "efbe3541c51d78907fa436cf8ccdf4f84895f073fdc2b3f51537b3cd240f00a7"
+      "path": "dist/b821-b840/final/feedback-unit-final-2.log",
+      "sha256": "9acf57f3c2491dcf31783ecbba0c23f1b036daa3dcd25be3a2d95911394ea7ca"
     },
     {
-      "path": "dist/b821-b840/package-tests.log",
-      "sha256": "11d8e9de0026df29d5f1ecbfb1ecfe396721df206d0b347e59f4806f232019f0"
+      "path": "dist/b821-b840/final/package-tests.log",
+      "sha256": "31a37b9eb8f4e79249ba20631cf53db3a7e8eb1abf3fbc17f25e4b89fcfb6663"
     },
     {
-      "path": "dist/b821-b840/browser-final/browser-evidence.json",
-      "sha256": "f9116f752d87dd774e9801207e469e6aac838c2af223716bd8fc88bcc56c2fb0"
+      "path": "dist/b821-b840/final/browser-final/browser-evidence.json",
+      "sha256": "034756a047e8c3f06d34bed3bb595a402ec130b08aee07f3fce422ff20a7d54a"
     },
     {
-      "path": "dist/b821-b840/browser-final/mvp-control-evidence.json",
-      "sha256": "1a9f2a63194be3a8281deb8aca32a8f10560be2fb92b298f171ee69bac012049"
+      "path": "dist/b821-b840/final/browser-final/mvp-control-evidence.json",
+      "sha256": "6a0d0ed7c85280172cc4c2ef250b84d454f472740e1ab5f45326d1f396d81013"
     },
     {
-      "path": "dist/b821-b840/browser-final/mvp-coverage.json",
-      "sha256": "b17a262cfc3c30550f44f19d913971a16435820ca0196007b9eba242159ac5cd"
+      "path": "dist/b821-b840/final/browser-final/mvp-coverage.json",
+      "sha256": "ca5a663c1a23c20147712fa35e5cd356ccc6f666d1354ebb31bd0573c3d252dd"
     },
     {
-      "path": "dist/b821-b840/postgres-browser/browser-evidence.json",
-      "sha256": "ca683d0ddb584f4433eee73d76f509eaa9de405889d4bd95995e2e885ef0b62a"
+      "path": "dist/b821-b840/final/postgres-browser/browser-evidence.json",
+      "sha256": "a9c623a953517fb947b489e11c986993fcc0b15a1632a398cd515324285a69f2"
     },
     {
-      "path": "dist/b821-b840/postgres/postgres17-compatibility.json",
-      "sha256": "0e77389fe08f11014a853a2573c35aa0e25ced56eed0379ed1411cc07e3e50dc"
+      "path": "dist/b821-b840/final/postgres/postgres17-compatibility.json",
+      "sha256": "46b0533ca8c0a572014b7dd0ea8ed0a83a29411a0eacfca9fc8276a76673276f"
     },
     {
-      "path": "dist/b821-b840/postgres-http-recovery.log",
-      "sha256": "ab7fb225dde988c54f09d43b4a54930df8aff387ba979710ba2968b54bc6fa56"
+      "path": "dist/b821-b840/final/postgres-http-recovery.log",
+      "sha256": "033b097c1e21f0971dac0675b5e1838608f7fd85656dff6b77d4b58a5f46280f"
     },
     {
-      "path": "dist/b821-b840/feedback-physical-restart-final/browser-evidence.json",
-      "sha256": "68fdf9146d23762083b11250d4b617f0bdde1faa40faadbdd51ae285faf9e125"
+      "path": "dist/b821-b840/final/feedback-physical-restart-final/browser-evidence.json",
+      "sha256": "217ece2c62f414345f88eb224139d488673b1f44796582d2192e696530456186"
     },
     {
-      "path": "dist/b821-b840/pg-restart-tests/feedback-restart.spec.mjs",
-      "sha256": "06af41e420838265ca761b726155aeecbbdb21793ecca2f1d4c4bf5479dd00bf"
+      "path": "dist/b821-b840/final/pg-restart-tests/feedback-restart.spec.mjs",
+      "sha256": "5ae8fd06449c22f0f47ac5a7b06e58769f898872bd11301a7d19fd8e88fb2a4d"
     },
     {
-      "path": "dist/b821-b840/pg-restart.config.mjs",
+      "path": "dist/b821-b840/final/pg-restart.config.mjs",
       "sha256": "3ca9740d09a94187fda61b9c68ad9d25c0f5517cc9ba33ac0077f13a638b68be"
     },
     {
-      "path": "dist/b821-b840/performance.json",
-      "sha256": "aa1d6d858998ca2c65049aaf2296e1f7805244b33d8fdc56c554aa77a7b5086e"
+      "path": "dist/b821-b840/final/performance.json",
+      "sha256": "ef05edf2f201d615a675670c0bc24a9a8242b8aa8f69178a70020975c96f8a12"
     },
     {
-      "path": "dist/b821-b840/recovery.json",
-      "sha256": "380592ec621aca75d4b9ce2968a8405810048a7fc5c7461a8126c5bbe0b37ae5"
+      "path": "dist/b821-b840/final/recovery.json",
+      "sha256": "53273660f6d03728888c805cc20d1dc6ca2345a8081c4f726c58372e637ab6e5"
     },
     {
-      "path": "dist/b821-b840/local-postgres-http-latency.json",
-      "sha256": "ab3a0d030cae4cbcd6478eda056429fe452c80ca4b567315a125f84d24bb548e"
+      "path": "dist/b821-b840/final/local-postgres-http-latency.json",
+      "sha256": "c1100dc862f35bff704a0f719e0fe354a7bc0c335d77d26d90dbf492f6b9ec20"
     },
     {
-      "path": "dist/b821-b840/npm-audit.json",
+      "path": "dist/b821-b840/final/npm-audit.json",
       "sha256": "352c05d2e69b568aeef394e8f0b42d609fcc4c763cbd15e4cd0cf30238b813ce"
     },
     {
-      "path": "dist/b821-b840/secret-review-final.json",
-      "sha256": "4fd4de40bad2010b2f715f53d82c73775c70b12114332b9f86d1cef298d15494"
+      "path": "dist/b821-b840/final/secret-review-final.json",
+      "sha256": "d7672df9c700601c3f42f0deac513ebbceb7993ec3373e271c19df5c32f5a910"
     },
     {
-      "path": "dist/b821-b840/baseline-integrity.json",
+      "path": "dist/b821-b840/final/baseline-integrity.json",
       "sha256": "b2ed24ce691b285f37137210b089e73d9d5c807fe9df6829af8f605b4282f844"
     },
     {
-      "path": "dist/b821-b840/baseline-ci.json",
+      "path": "dist/b821-b840/final/baseline-ci.json",
       "sha256": "91cd17e238b1451a17b6dce3cfb966ad237c3b4eaf635fd3d99922dd7af832bf"
     },
     {
-      "path": "dist/b821-b840/project-metadata.json",
+      "path": "dist/b821-b840/final/project-metadata.json",
       "sha256": "5aaee41f183db9428720304c2d824beaab12e741bcc1c2b16a534e7b5534581e"
     },
     {
-      "path": "dist/b821-b840/environment-contract.json",
+      "path": "dist/b821-b840/final/environment-contract.json",
       "sha256": "8aca44d6642b1b220e463d06217639909edb103bcc0396d8c7b3270ac32b7c78"
     },
     {
-      "path": "dist/b821-b840/vercel-plan.json",
+      "path": "dist/b821-b840/final/vercel-plan.json",
       "sha256": "845ab5ae7fbe8b3a795078e1c31be3151cc64cdf055a6340e8513d72cbd5c21e"
     },
     {
-      "path": "dist/b821-b840/write-certification.mjs",
-      "sha256": "9575ca8764e371f565ba1a9d3fe37aec61cf56a8e3a079b90a20aea9a6e0860f"
+      "path": "dist/b821-b840/final/run-local-pipeline.mjs",
+      "sha256": "338e0a060247b16df4860ff306c77ab8d10b0aeb446301277c92e07a53d9104e"
+    },
+    {
+      "path": "dist/b821-b840/final/scripts/operations-benchmark.mjs",
+      "sha256": "8fe2570243015c16d5811a1db954bd586994d63a8576b7db98d3d670d296aaab"
+    },
+    {
+      "path": "dist/b821-b840/final/scripts/operations-recovery-rehearsal.mjs",
+      "sha256": "caee222424586a311dffb8213d4ffbcd411795e68f1311500483d481e645e8f0"
+    },
+    {
+      "path": "dist/b821-b840/final/local-pipeline.json",
+      "sha256": "20295ce037f9b0c7ccdd2b10fa6c272ad7fde2d283455a0bf77ea3bfb1ebfe5b"
+    },
+    {
+      "path": "dist/b821-b840/final/ci-onboarding-failure.json",
+      "sha256": "ae0c35568237b4439af491ee252ebf290947787271af482c6fefbce7d80ad5b3"
+    },
+    {
+      "path": "dist/b821-b840/final/onboarding-before-fix-2/browser-evidence.json",
+      "sha256": "55f5c393d20fe29a94fdcb644a830898c74c6c656cbd48c53a911c96bf62ead4"
+    },
+    {
+      "path": "dist/b821-b840/final/onboarding-targeted/browser-evidence.json",
+      "sha256": "717090b0fe8ca9c0b3b9358fa484e8e91352fb862c215971e593aa78fd4993cb"
+    },
+    {
+      "path": "dist/b821-b840/final/write-certification.mjs",
+      "sha256": "25e97aa1a92acc280d5980fa9869f1ba58473e6b61486c17fe393df5b33e75e3"
+    },
+    {
+      "path": "dist/b821-b840/review-handoff/external-pr21-merge.json",
+      "sha256": "f9e21858163e014efde2f7b7750f71370ec19c97b5ef901199024149d1bd30c8"
+    },
+    {
+      "path": "dist/b821-b840/review-handoff/review-state.json",
+      "sha256": "4596f283a38f05165af4a2eb98cc5f14f5cf7bcd8398236ef3ec04a654b5443c"
+    },
+    {
+      "path": "dist/b821-b840/review-handoff/reconcile-review.mjs",
+      "sha256": "8dcb7c9e4913bcfacc53cffd2e6a992b3f6096f574d76d684524792d31910105"
+    },
+    {
+      "path": "dist/b821-b840/review-handoff/secret-review.json",
+      "sha256": "d7672df9c700601c3f42f0deac513ebbceb7993ec3373e271c19df5c32f5a910"
     }
-  ]
+  ],
+  "reviewHandoff": {
+    "priorPullRequest": {
+      "number": 21,
+      "state": "closed",
+      "merged": true,
+      "mergedAt": "2026-10-27T15:52:25Z",
+      "mergedBy": "olu3242",
+      "mergeCommit": "9dd0e51ba432166cb1e1692aaa0f28e5f3e423fb",
+      "headSha": "5dee665e9e42cbcb35e92b1fe46d202e426e59e9",
+      "baseBranch": "work/first-value-demo-20261025",
+      "url": "https://github.com/olu3242/I-WAY/pull/21"
+    },
+    "performedByThisExecution": false,
+    "followUp": {
+      "number": 23,
+      "url": "https://github.com/olu3242/I-WAY/pull/23",
+      "draft": true,
+      "base": "work/first-value-demo-20261025",
+      "runtimeSourceCommit": "21caa6452a761b8b423479cae5622c8fe66c40b5"
+    },
+    "sourceChanged": false
+  },
+  "documentationReconciliation": {
+    "runtimeSourceChanged": false,
+    "observedAt": "2026-10-27T17:01:34.159Z",
+    "script": "dist/b821-b840/review-handoff/reconcile-review.mjs"
+  }
 }
