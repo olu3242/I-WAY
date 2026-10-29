@@ -163,5 +163,19 @@ test('dispatcher lookup uses only the tenant-scoped minimal directory projection
  const sql=readFileSync(new URL('../supabase/migrations/20261011221000_operations_dispatcher_directory.sql',import.meta.url),'utf8');
  assert.match(sql,/FORCE ROW LEVEL SECURITY/);assert.match(sql,/SECURITY INVOKER/);
  assert.match(sql,/data->>'role'='carrier'/);assert.match(sql,/data->'permissions' \? 'load:create'/);
- assert.doesNotMatch(sql,/SECURITY DEFINER|DROP POLICY|GRANT /i);
+ // The provisioner role has an explicit, narrowly reviewed grant allowlist.
+ const statements=sql.replace(/--[^\n]*/g,'');
+ assert.doesNotMatch(statements,/SECURITY DEFINER|DROP POLICY/i);
+ const grants=[...statements.matchAll(/\bGRANT\s+[^;]+;/gi)].map(m=>m[0].replace(/\s+/g,' ').trim());
+ assert.deepEqual(grants,[
+  'GRANT USAGE ON SCHEMA operations_private TO iway_dispatcher_provisioner;',
+  'GRANT SELECT ON operations_private.users TO iway_dispatcher_provisioner;',
+  'GRANT SELECT, INSERT, UPDATE ON operations_private.dispatcher_directory TO iway_dispatcher_provisioner;'
+ ]);
+ assert.match(statements,/CREATE ROLE iway_dispatcher_provisioner NOLOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS/);
+ assert.match(statements,/Unsafe existing dispatcher provisioner role/);
+ assert.doesNotMatch(statements,/GRANT\s+iway_dispatcher_provisioner\s+TO\s+/i);
+ for(const action of ['select','insert','update']){
+  assert.match(statements,new RegExp('CREATE POLICY dispatcher_directory_provision_'+action+'[^;]+TO iway_dispatcher_provisioner[^;]+tenant_id=nullif'));
+ }
 });
