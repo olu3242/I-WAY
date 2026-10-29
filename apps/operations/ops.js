@@ -233,7 +233,13 @@ view.addEventListener('click',async event=>{
  }catch(error){alertMessage(error.message,true);}finally{btn.disabled=false;}
 });
 view.addEventListener('submit',async event=>{
- event.preventDefault();if(typeof handleExtendedSubmit==='function'&&await handleExtendedSubmit(event))return;
+ event.preventDefault();
+ // Claim expense submissions synchronously before other async delegates can yield.
+ // This ensures expenseBusy fences rapid requestSubmit retries of an ambiguous response.
+ if((event.target.id==='expense-submit'||event.target.id==='expense-filter')&&typeof expenseSubmit==='function'){
+  await expenseSubmit(event);return;
+ }
+ if(typeof handleExtendedSubmit==='function'&&await handleExtendedSubmit(event))return;
  event.preventDefault();const form=event.target,button=form.querySelector('button[type=submit],button');button.disabled=true;
  const values=Object.fromEntries(new FormData(form)),load=state.loads.find(l=>l.id===selected);
  try{

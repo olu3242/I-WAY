@@ -20,7 +20,10 @@ function expenseView(){
 }
 async function expenseSubmit(event){
  if(event.target.id==='expense-filter'){event.preventDefault();expenseCapture();const v=Object.fromEntries(new FormData(event.target));if(v.expenseFrom&&v.expenseTo&&v.expenseFrom>v.expenseTo){alertMessage('The expense date range must end on or after it starts.',true);return true;}expenseFilters={status:v.expenseStatus,category:v.expenseFilterCategory,load:v.expenseFilterLoad,reimbursement:v.expenseReimbursement,from:v.expenseFrom,to:v.expenseTo};showView();alertMessage('Expense history filtered.');return true;}
- if(event.target.id!=='expense-submit')return false;event.preventDefault();if(expenseBusy)return true;expenseBusy=true;const b=event.submitter??event.target.querySelector('[type=submit]');b.disabled=true;
+ if(event.target.id!=='expense-submit')return false;event.preventDefault();if(expenseBusy)return true;
+ // A previous validation alert must not masquerade as this submission's response.
+ message.textContent='';message.className='';message.role='status';message.ariaLive='polite';
+ expenseBusy=true;const b=event.submitter??event.target.querySelector('[type=submit]');b.disabled=true;
  try{expenseCapture();const v=expenseFormValues,payload={loadId:v.expenseLoad,category:v.expenseCategory,amountCents:Number(v.expenseAmount),incurredAt:new Date(v.expenseAt+'Z').toISOString(),evidenceReference:v.expenseEvidence,note:v.expenseNote};
  if(expenseEditingId)await command('expense:update',state.expenses.find(r=>r.id===expenseEditingId),{data:payload,reason:v.expenseCorrection});else await command(b.value==='draft'?'expense:draft':'expense:submit',null,payload);
  const corrected=!!expenseEditingId;expenseEditingId=null;expenseFormValues={};showView();alertMessage(corrected?'Expense correction saved. Review it before resubmitting.':b.value==='draft'?'Expense draft saved.':'Expense submitted for employer review.');
