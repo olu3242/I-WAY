@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {resolveSupabaseStagingConfig} from '../server/operations-supabase-staging-config.experimental.mjs';
-const base={IWAY_SUPABASE_STAGE_ENABLED:'true',IWAY_SUPABASE_PROJECT_REF:'vnoxdinldneeczxibicp',IWAY_SUPABASE_URL:'https://vnoxdinldneeczxibicp.supabase.co',IWAY_SUPABASE_AUTH_REDIRECT:'https://qa.example.org/auth/callback',IWAY_SUPABASE_APPROVED_REDIRECT:'https://qa.example.org/auth/callback'};
+const base={IWAY_SUPABASE_STAGE_ENABLED:'true',IWAY_SUPABASE_PROJECT_REF:'zolwjyhbfsxbdwyiwkbt',IWAY_SUPABASE_URL:'https://zolwjyhbfsxbdwyiwkbt.supabase.co',IWAY_SUPABASE_AUTH_REDIRECT:'https://qa.example.org/auth/callback',IWAY_SUPABASE_APPROVED_REDIRECT:'https://qa.example.org/auth/callback'};
 test('B450 staging config must be explicitly enabled and project pinned',()=>{
  assert.throws(()=>resolveSupabaseStagingConfig({...base,IWAY_SUPABASE_STAGE_ENABLED:'false'}),/STAGING_DISABLED/);
  assert.throws(()=>resolveSupabaseStagingConfig({...base,IWAY_SUPABASE_PROJECT_REF:'other'}),/PROJECT_MISMATCH/);

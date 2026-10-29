@@ -1,3 +1,4 @@
+import {uatProject,uatOrigin} from './operations-uat-target.mjs';
 // Reviewed candidate assembly only. The deployed entrypoint does not import this.
 // No auto-enable, schema creation, account provisioning, linking or mail setup.
 import {resolveAuthRuntimeConfig} from './operations-auth-runtime.mjs';
@@ -17,9 +18,9 @@ export function resolveUatRuntimeConfig(env){
  const auth=resolveAuthRuntimeConfig(env);
  if(env.IWAY_UAT_ENABLED!=='true'||env.IWAY_UAT_SCHEMA_APPROVED!=='b574-candidate-v1'||env.IWAY_AUTH_PROVIDER!=='google')throw Error('UAT_ACTIVATION_NOT_APPROVED');
  let url;try{url=new URL(env.IWAY_UAT_DATABASE_URL);}catch{throw Error('UAT_DATABASE_TARGET_INVALID');}
- const direct=url.hostname==='db.vnoxdinldneeczxibicp.supabase.co',pooled=/^aws-[a-z0-9-]+\.pooler\.supabase\.com$/.test(url.hostname);
+ const direct=url.hostname==='db.'+uatProject+'.supabase.co',pooled=/^aws-[a-z0-9-]+\.pooler\.supabase\.com$/.test(url.hostname);
  const user=decodeURIComponent(url.username);
- if(!['postgres:','postgresql:'].includes(url.protocol)||(!direct&&!pooled)||user!==(direct?'iway_uat_runtime':'iway_uat_runtime.vnoxdinldneeczxibicp')||url.pathname!=='/postgres'||!url.password||url.search||url.hash||!['','5432'].includes(url.port))throw Error('UAT_DATABASE_TARGET_INVALID');
+ if(!['postgres:','postgresql:'].includes(url.protocol)||(!direct&&!pooled)||user!==(direct?'iway_uat_runtime':'iway_uat_runtime.'+uatProject)||url.pathname!=='/postgres'||!url.password||url.search||url.hash||!['','5432'].includes(url.port))throw Error('UAT_DATABASE_TARGET_INVALID');
  return {auth,broker:{host:url.hostname,port:5432,database:'postgres',user,password:decodeURIComponent(url.password),ssl:postgresTlsOptions(url.hostname),max:4,connectionTimeoutMillis:2000,statement_timeout:3000,query_timeout:4000,application_name:'iway-uat-staging'}};
 }
 export async function createUatCandidateRuntime({env=process.env,roster,verifier,authenticateAdministrator,authorizeIssuance,issuer,deliver,controlPlaneMembership,verifyRelationships,PoolClass,fetchImpl=fetch,application,ownerUserIds=[]}={}){
@@ -33,7 +34,7 @@ export async function createUatCandidateRuntime({env=process.env,roster,verifier
   const store=createUatPostgresStore({pool:brokerPool,cipher}),sessions=createPostgresOpaqueSessionStore({query:(sql,args)=>authPool.query(sql,args),cipher});
   const transactions=createPostgresPkceTransactionStore({query:(sql,args)=>authPool.query(sql,args),cipher});
   const provider=createUatSupabaseProvider({apiKey:config.auth.apiKey,verifier,fetchImpl});
-  const googleProvider=createSupabaseProvider({url:'https://vnoxdinldneeczxibicp.supabase.co',apiKey:config.auth.apiKey,provider:'google',redirectTo:config.auth.origin+'/auth/callback',fetchImpl});
+  const googleProvider=createSupabaseProvider({url:uatOrigin,apiKey:config.auth.apiKey,provider:'google',redirectTo:config.auth.origin+'/auth/callback',fetchImpl});
   const authorize=createPrivateResourceAuthorizer({pool:authPool});
   async function lookupMembership(userId){
    const entry=entries.find(e=>e.userId===userId);if(!entry||!await verifyRelationships(entry))return null;

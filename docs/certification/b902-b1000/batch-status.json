@@ -1,0 +1,42 @@
+[
+  {
+    "range": "B902–B920",
+    "status": "PASS_LOCAL_LAB / BLOCKED_FULL_MANAGED_PARITY",
+    "work": "Separate pinned V2, actual health/loopback, managed catalog and COPY comparison"
+  },
+  {
+    "range": "B921–B940",
+    "status": "PASS_LOGICAL_RESTORE / BLOCKED_FULL_DISASTER_RECOVERY",
+    "work": "Original backups/hash checks, 31 empty COPY counts, FK validation, transaction rollback; prior 3+5 forward recovery preserved"
+  },
+  {
+    "range": "B941–B950",
+    "status": "PASS_LOCAL_MIGRATIONS / BLOCKED_FRESH_HOSTED_DRY_RUN",
+    "work": "Eight exact migrations on restored 17.11; guarded fresh CLI 403; no hosted migration applied"
+  },
+  {
+    "range": "B951–B960",
+    "status": "PASS_LOCAL_INTEGRATION / BLOCKED_HOSTED_ACTIVATION",
+    "work": "Approved project source pins, strict TLS probe, combined four-schema chain; separate management/storage/provider gates"
+  },
+  {
+    "range": "B961–B970",
+    "status": "PASS_LOCAL_PROTOCOL_AND_FIXTURES / BLOCKED_HOSTED_AUTH",
+    "work": "Actual local GoTrue password/refresh/TOTP/logout; synthetic application role/session tests; real roster mapping remains unverified"
+  },
+  {
+    "range": "B971–B980",
+    "status": "PASS_COVERED_LOCAL_WORKFLOWS / BLOCKED_HOSTED_E2E",
+    "work": "Four-persona logistics/finance/offline/governance/feedback/navigation regression; no new unsupported product rules"
+  },
+  {
+    "range": "B981–B990",
+    "status": "PASS_LOCAL_REGRESSION_WITH_LIMITATIONS",
+    "work": "Repository, PostgreSQL, browser, axe, security, performance, recovery; human AT NOT RUN"
+  },
+  {
+    "range": "B991–B1000",
+    "status": "APPROVAL_READY_CANDIDATE / HOSTED_NO_GO",
+    "work": "Consolidated artifacts, risks, runbook, exact SQL/configuration approval package; no production/public mutation"
+  }
+]

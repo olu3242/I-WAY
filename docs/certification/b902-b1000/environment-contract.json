@@ -1,0 +1,78 @@
+{
+  "projectId": "prj_7uof3CdmN1QvzKxETkXvHjlrLjVm",
+  "databaseProjectId": "zolwjyhbfsxbdwyiwkbt",
+  "environment": "preview",
+  "namesOnly": true,
+  "required": [
+    {
+      "name": "IWAY_AUTH_ENABLED",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_AUTH_SCHEMA_APPROVED",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_STAGING_VERCEL_PROJECT_ID",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_AUTH_ORIGIN",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_AUTH_APPROVED_ORIGIN",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_AUTH_DATABASE_URL",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_AUTH_PROVIDER",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_SUPABASE_PUBLISHABLE_KEY",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_SESSION_ENCRYPTION_KEY",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_UAT_ENABLED",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_UAT_SCHEMA_APPROVED",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_UAT_DATABASE_URL",
+      "previewPresent": true,
+      "valueCertified": false
+    },
+    {
+      "name": "IWAY_OPERATIONS_DATABASE_URL",
+      "previewPresent": true,
+      "valueCertified": false
+    }
+  ],
+  "missing": [],
+  "privilegedPreviewNamePresent": true,
+  "productionMutationPermitted": false,
+  "googleProviderCallback": "https://zolwjyhbfsxbdwyiwkbt.supabase.co/auth/v1/callback",
+  "applicationCallback": "Owner-approved protected Preview origin + /auth/callback; exact origin still requires owner verification"
+}

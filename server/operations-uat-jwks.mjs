@@ -1,6 +1,6 @@
 import {createPublicKey} from 'node:crypto';
 import {createIdentityVerifier} from './operations-identity.mjs';
-const issuer='https://vnoxdinldneeczxibicp.supabase.co/auth/v1';
+import {uatIssuer as issuer} from './operations-uat-target.mjs';
 // Public asymmetric keys only; legacy shared JWT secrets are never loaded here.
 export async function loadHostedUatVerifier({fetchImpl=fetch}={}){
  try{

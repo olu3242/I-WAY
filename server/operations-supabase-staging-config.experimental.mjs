@@ -1,6 +1,6 @@
 // B450: fail-closed staging configuration. This module does not send invites.
 export function resolveSupabaseStagingConfig(env=process.env){
- const projectRef='vnoxdinldneeczxibicp';
+ const projectRef='zolwjyhbfsxbdwyiwkbt';
  const url=`https://${projectRef}.supabase.co`;
  if(env.IWAY_SUPABASE_STAGE_ENABLED!=='true')throw Error('IWAY_SUPABASE_STAGING_DISABLED');
  if(env.IWAY_SUPABASE_PROJECT_REF!==projectRef)throw Error('IWAY_SUPABASE_PROJECT_MISMATCH');

@@ -7,7 +7,7 @@ import {createSupabaseProvider} from './operations-supabase-provider.mjs';
 import {createPrivateResourceAuthorizer} from './operations-auth-authorization.mjs';
 import {createAuthApplication} from './operations-auth-application.mjs';
 import {postgresTlsOptions} from './postgres-tls.mjs';
-const project='vnoxdinldneeczxibicp';
+import {uatProject as project} from './operations-uat-target.mjs';
 export function resolveAuthRuntimeConfig(env){
  if(env.VERCEL_ENV!=='preview'||env.IWAY_AUTH_ENABLED!=='true'||env.IWAY_AUTH_SCHEMA_APPROVED!=='b512-v4'||
     env.VERCEL_PROJECT_ID!=='prj_7uof3CdmN1QvzKxETkXvHjlrLjVm'||env.VERCEL_PROJECT_ID!==env.IWAY_STAGING_VERCEL_PROJECT_ID||

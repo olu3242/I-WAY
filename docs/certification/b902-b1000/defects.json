@@ -1,0 +1,62 @@
+{
+  "fixed": [
+    {
+      "id": "PUBLIC_UAT_PINS",
+      "severity": "P0",
+      "change": "Twelve active adapters/probes plus future staging guard and fixtures now use approved UAT; central server target shared; public registration services unchanged"
+    },
+    {
+      "id": "TLS_FALSE_PASS",
+      "severity": "P1",
+      "change": "Connection probe now requires encrypted and authorized client stream plus explicit false privilege flags"
+    },
+    {
+      "id": "LOCAL_BINDING",
+      "severity": "P1",
+      "change": "CLI network defaults overridden; V2 gateway/database/mail recreated with actual loopback publication and original volumes/configuration preserved"
+    },
+    {
+      "id": "RESTORE_COMPATIBILITY",
+      "severity": "P1",
+      "change": "Digit-bearing COPY names supported; inert managed role bootstrapped transactionally; recovery management identity separated from actual runtime checks"
+    }
+  ],
+  "remaining": [
+    {
+      "id": "CLI_ACCOUNT",
+      "severity": "P0",
+      "finding": "CLI project list does not include approved UAT; login-role endpoint returns HTTP403, while OLU MCP can read UAT"
+    },
+    {
+      "id": "MANAGED_RECOVERY",
+      "severity": "P0",
+      "finding": "Original logical backup restores; full managed parity/populated service/object recovery remains uncertified"
+    },
+    {
+      "id": "HOSTED_SCHEMA",
+      "severity": "P0",
+      "finding": "Hosted migration history and application tables absent"
+    },
+    {
+      "id": "CONFIGURATION",
+      "severity": "P0",
+      "finding": "13Preview names exist; values and restricted credential installation uncertified; privileged key name remains in Preview"
+    },
+    {
+      "id": "IDENTITIES_AND_ENTRY",
+      "severity": "P0",
+      "finding": "Two unconfirmed email Auth users appeared externally; roster mappings and MFA are unverified; protected entry not granted"
+    },
+    {
+      "id": "INVITATION_DELIVERY",
+      "severity": "P1",
+      "finding": "Approved invitation provider, sender and owner not established"
+    },
+    {
+      "id": "HUMAN_AND_DESIGN",
+      "severity": "P1",
+      "finding": "Human AT and acceptance unexecuted; original Figma exports unavailable"
+    }
+  ],
+  "earlierFailedAttemptsPreserved": true
+}

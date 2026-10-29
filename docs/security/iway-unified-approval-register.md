@@ -1,3 +1,11 @@
+# Current B902–B1000 disposition — October 29, 2026
+
+The owner has designated zolwjyhbfsxbdwyiwkbt as the exclusive UAT project. The earlier unassigned-project finding below is historical. Current source pins consistently use UAT; public services remain independently configured. This designation does not authorize hosted mutations.
+
+See [the current exact-target A01–A12 addendum](../certification/b902-b1000/activation-package.md). Original identifiers and historical actions below are preserved. Fresh CLI migration dry-run is blocked by login-role endpoint HTTP 403. Eight migrations passed on restored local V2; full managed parity, hosted identity/session/E2E and human acceptance remain uncertified. Final UAT inspection found two unconfirmed email identities and no verified MFA; their roster mappings are unverified and the original empty backup does not cover them. No hosted identities were created by this execution. No hosted schema/settings/account/invitation/access operation is authorized by this implementation request.
+
+---
+
 # I-WAY unified activation — current approval register
 
 Starting SHA: `887eeddb33f381733092569fb5d0f2f393b02920`. A01–A12 below retain their exact historical identifiers, targets, dependencies and review procedures from B781–B800. B821–B840 adds explicit owner approval for reviewed feature-branch pushes to the same feature branch solely for CI (now draft follow-up PR #23 after the independent merge of #21). That publication does not authorize hosted configuration, identity, migration, deployment or access changes. Historical dispositions below the preserved-record boundary remain unchanged.

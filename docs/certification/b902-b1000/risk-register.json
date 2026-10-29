@@ -1,0 +1,63 @@
+{
+  "localFunctionalDecision": "GO_TESTED_CONTRACTS_ONLY",
+  "hostedDecision": "NO_GO",
+  "productionDecision": "NO_GO",
+  "blockers": [
+    {
+      "severity": "P0",
+      "id": "CLI_ACCOUNT",
+      "owner": "Supabase UAT owner",
+      "finding": "CLI project list does not include approved UAT; login-role endpoint returns HTTP403, while OLU MCP can read UAT",
+      "action": "Authenticate an owner-approved correct CLI account/profile privately; do not broaden application privileges",
+      "evidence": "Fresh guarded exact-project dry-run lists all eight files without applying them"
+    },
+    {
+      "severity": "P0",
+      "id": "MANAGED_RECOVERY",
+      "owner": "Database/recovery owner",
+      "finding": "Original logical backup restores; full managed parity/populated service/object recovery remains uncertified",
+      "action": "Approve compatible recovery target/strategy, responsible operator and RPO/RTO; resolve Storage managed constraint drift through supported service version",
+      "evidence": "Independent populated restore, account/session/object checks, security and restore/cutover rollback proof"
+    },
+    {
+      "severity": "P0",
+      "id": "HOSTED_SCHEMA",
+      "owner": "Database owner",
+      "finding": "Hosted migration history and application tables absent",
+      "action": "Approve exact eight-migration set and separately reviewed current Auth/broker/engine/management prerequisites after recovery gates",
+      "evidence": "Exact history/hash/catalog/grant/RLS postflight using real restricted logins"
+    },
+    {
+      "severity": "P0",
+      "id": "CONFIGURATION",
+      "owner": "Credential and Vercel owners",
+      "finding": "13Preview names exist; values and restricted credential installation uncertified; privileged key name remains in Preview",
+      "action": "Approve scoped Preview configuration and privileged-key cleanup; keep Production untouched",
+      "evidence": "Actual role identity/TLS/security checks and exact approved callback/origin; fail-closed runtime"
+    },
+    {
+      "severity": "P0",
+      "id": "IDENTITIES_AND_ENTRY",
+      "owner": "Provisioning/identity/access owners",
+      "finding": "Two unconfirmed email Auth users appeared externally; roster mappings and MFA are unverified; protected entry not granted",
+      "action": "Approve exact identities, tenant/fleet/employment/permissions, privileged MFA and individual Vercel access",
+      "evidence": "Four real login/session lifecycles, fifth-user denial, cross-tenant denial and revocation"
+    },
+    {
+      "severity": "P1",
+      "id": "INVITATION_DELIVERY",
+      "owner": "Management/delivery owner [TBC]",
+      "finding": "Approved invitation provider, sender and owner not established",
+      "action": "Select approved provider/sender and isolated management connection; authorize one exact issuance",
+      "evidence": "Single-use expiry/revocation/idempotent delivery without proof/token leakage"
+    },
+    {
+      "severity": "P1",
+      "id": "HUMAN_AND_DESIGN",
+      "owner": "QA/accessibility/design owners",
+      "finding": "Human AT and acceptance unexecuted; original Figma exports unavailable",
+      "action": "Run preserved48+3manual tasks and four human acceptances after hosted gates; provide canonical design exports",
+      "evidence": "Human task records and screen-by-screen comparisons; no estimated conformance percentage"
+    }
+  ]
+}

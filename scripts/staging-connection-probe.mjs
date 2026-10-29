@@ -2,7 +2,7 @@
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
 import {postgresTlsOptions} from '../server/postgres-tls.mjs';
-const project='vnoxdinldneeczxibicp';
+import {uatProject as project} from '../server/operations-uat-target.mjs';
 export function connectionConfig(value,kind){
  const role='iway_'+kind.toLowerCase()+'_runtime';
  let url;try{url=new URL(value);}catch{throw Error('CONNECTION_FORMAT_INVALID');}
@@ -43,11 +43,10 @@ export async function probeConnections({env=process.env,Client,direct=false}={})
     EXISTS(SELECT 1 FROM pg_stat_ssl WHERE pid=pg_backend_pid() AND ssl) AS tls
     FROM pg_roles WHERE rolname=current_user`);
    const r=rows[0];
-   const valid=r?.login===role&&r.actor===role&&r.rolcanlogin&&r.readonly==='on'&&r.tls&&
-    !['rolsuper','rolbypassrls','rolcreaterole','rolcreatedb','rolinherit','rolreplication'].some(k=>r[k]);
    const checks={sessionRoleMatches:r?.login===role,currentRoleMatches:r?.actor===role,loginEnabled:r?.rolcanlogin===true,
     readOnly:r?.readonly==='on',databaseLegTls:r?.tls===true,clientLegTls:client.connection?.stream?.encrypted===true&&client.connection?.stream?.authorized===true,
-    restrictedFlags:!['rolsuper','rolbypassrls','rolcreaterole','rolcreatedb','rolinherit','rolreplication'].some(k=>r?.[k])};
+    restrictedFlags:['rolsuper','rolbypassrls','rolcreaterole','rolcreatedb','rolinherit','rolreplication'].every(k=>r?.[k]===false)};
+   const valid=Object.values(checks).every(value=>value===true);
    connections.push({name,status:valid?'PASS_READONLY_LOGIN_TLS_ROLE':'ROLE_OR_TLS_CHECK_FAILED',checks});
   }catch(e){
    const code=e?.code,text=String(e?.message??'').toLowerCase();

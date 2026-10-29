@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 1,
+  "source": "docs/certification/b821-b840/manual-accessibility.json",
+  "scripts": [
+    {
+      "case": "AT-001",
+      "persona": "platform",
+      "area": "authentication",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-002",
+      "persona": "platform",
+      "area": "authentication",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-003",
+      "persona": "platform",
+      "area": "screen_reader_entry",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-004",
+      "persona": "platform",
+      "area": "keyboard_skip_navigation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-005",
+      "persona": "platform",
+      "area": "role_navigation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-006",
+      "persona": "platform",
+      "area": "form_validation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-007",
+      "persona": "platform",
+      "area": "native_decisions",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-008",
+      "persona": "platform",
+      "area": "async_error_recovery",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-009",
+      "persona": "platform",
+      "area": "zoom_spacing",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-010",
+      "persona": "platform",
+      "area": "mobile_input",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-011",
+      "persona": "platform",
+      "area": "session_transition",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-012",
+      "persona": "platform",
+      "area": "persona_workflow",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-013",
+      "persona": "carrier",
+      "area": "authentication",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-014",
+      "persona": "carrier",
+      "area": "authentication",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-015",
+      "persona": "carrier",
+      "area": "screen_reader_entry",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-016",
+      "persona": "carrier",
+      "area": "keyboard_skip_navigation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-017",
+      "persona": "carrier",
+      "area": "role_navigation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-018",
+      "persona": "carrier",
+      "area": "form_validation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-019",
+      "persona": "carrier",
+      "area": "native_decisions",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-020",
+      "persona": "carrier",
+      "area": "async_error_recovery",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-021",
+      "persona": "carrier",
+      "area": "zoom_spacing",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-022",
+      "persona": "carrier",
+      "area": "mobile_input",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-023",
+      "persona": "carrier",
+      "area": "session_transition",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-024",
+      "persona": "carrier",
+      "area": "persona_workflow",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-025",
+      "persona": "fleet",
+      "area": "authentication",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-026",
+      "persona": "fleet",
+      "area": "authentication",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-027",
+      "persona": "fleet",
+      "area": "screen_reader_entry",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-028",
+      "persona": "fleet",
+      "area": "keyboard_skip_navigation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-029",
+      "persona": "fleet",
+      "area": "role_navigation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-030",
+      "persona": "fleet",
+      "area": "form_validation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-031",
+      "persona": "fleet",
+      "area": "native_decisions",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-032",
+      "persona": "fleet",
+      "area": "async_error_recovery",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-033",
+      "persona": "fleet",
+      "area": "zoom_spacing",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-034",
+      "persona": "fleet",
+      "area": "mobile_input",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-035",
+      "persona": "fleet",
+      "area": "session_transition",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-036",
+      "persona": "fleet",
+      "area": "persona_workflow",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-037",
+      "persona": "driver",
+      "area": "authentication",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-038",
+      "persona": "driver",
+      "area": "authentication",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-039",
+      "persona": "driver",
+      "area": "screen_reader_entry",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-040",
+      "persona": "driver",
+      "area": "keyboard_skip_navigation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-041",
+      "persona": "driver",
+      "area": "role_navigation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-042",
+      "persona": "driver",
+      "area": "form_validation",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-043",
+      "persona": "driver",
+      "area": "native_decisions",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-044",
+      "persona": "driver",
+      "area": "async_error_recovery",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-045",
+      "persona": "driver",
+      "area": "zoom_spacing",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-046",
+      "persona": "driver",
+      "area": "mobile_input",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-047",
+      "persona": "driver",
+      "area": "session_transition",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    },
+    {
+      "case": "AT-048",
+      "persona": "driver",
+      "area": "persona_workflow",
+      "status": "NOT_RUN",
+      "sourceScriptPreserved": true
+    }
+  ],
+  "additionalFeedbackTasks": 3,
+  "additionalFeedbackStatus": "NOT_RUN",
+  "testers": [
+    {
+      "persona": "platform",
+      "hostedAuthentication": "BLOCKED",
+      "humanAcceptance": "NOT_RUN",
+      "canonicalAuthUUID": null,
+      "googleSubject": null,
+      "tenantId": null,
+      "fleetId": null,
+      "employmentId": null,
+      "sourceRoster": "docs/security/uat-provisioning-manifest.json"
+    },
+    {
+      "persona": "carrier",
+      "hostedAuthentication": "BLOCKED",
+      "humanAcceptance": "NOT_RUN",
+      "canonicalAuthUUID": null,
+      "googleSubject": null,
+      "tenantId": null,
+      "fleetId": null,
+      "employmentId": null,
+      "sourceRoster": "docs/security/uat-provisioning-manifest.json"
+    },
+    {
+      "persona": "fleet",
+      "hostedAuthentication": "BLOCKED",
+      "humanAcceptance": "NOT_RUN",
+      "canonicalAuthUUID": null,
+      "googleSubject": null,
+      "tenantId": null,
+      "fleetId": null,
+      "employmentId": null,
+      "sourceRoster": "docs/security/uat-provisioning-manifest.json"
+    },
+    {
+      "persona": "driver",
+      "hostedAuthentication": "BLOCKED",
+      "humanAcceptance": "NOT_RUN",
+      "canonicalAuthUUID": null,
+      "googleSubject": null,
+      "tenantId": null,
+      "fleetId": null,
+      "employmentId": null,
+      "sourceRoster": "docs/security/uat-provisioning-manifest.json"
+    }
+  ],
+  "personalTesterInformationCopied": false
+}

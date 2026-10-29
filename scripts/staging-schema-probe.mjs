@@ -1,3 +1,4 @@
+import {uatProject} from '../server/operations-uat-target.mjs';
 // Explicit protected Preview diagnostic; executes read-only runtime readiness checks.
 import {Client} from 'pg';
 import {connectionConfig} from './staging-connection-probe.mjs';
@@ -14,7 +15,7 @@ if(env.VERCEL_ENV!=='preview'||env.VERCEL_PROJECT_ID!=='prj_7uof3CdmN1QvzKxETkXv
   try{
    const name='IWAY_'+kind+'_DATABASE_URL';
    const parsed=connectionConfig(env[name],kind);
-   const config=kind==='OPERATIONS'?buildOperationsPgConfig({databaseUrl:env[name],projectRef:'vnoxdinldneeczxibicp',endpoint:parsed.host,databaseName:'postgres',loginRole:'iway_operations_runtime'}):parsed;
+   const config=kind==='OPERATIONS'?buildOperationsPgConfig({databaseUrl:env[name],projectRef:uatProject,endpoint:parsed.host,databaseName:'postgres',loginRole:'iway_operations_runtime'}):parsed;
    client=new Client(config);client.on('error',()=>{});await client.connect();await client.query('BEGIN READ ONLY');
    const pool={query:(...args)=>client.query(...args),connect:async()=>Object.assign(client,{release(){}})};
    if(kind==='AUTH')await assertAuthDatabaseReady(pool);

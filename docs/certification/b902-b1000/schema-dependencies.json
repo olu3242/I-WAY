@@ -1,0 +1,37 @@
+[
+  {
+    "path": "db/review-only/iway_auth_role_b513.sql",
+    "sha256": "cc1590f0eae671cbf0b83465b491144341b41f28f292c47613ca2612098f133a",
+    "hostedStatus": "APPROVAL_REQUIRED_NOT_APPLIED"
+  },
+  {
+    "path": "docs/certification/b446-supabase-auth-tenant-roles-staging.sql",
+    "sha256": "f117faa2407ca715927733d804e4953839f9e31eeb749e9c0ed5a50dbe732057",
+    "hostedStatus": "APPROVAL_REQUIRED_NOT_APPLIED"
+  },
+  {
+    "path": "db/review-only/iway_private_auth_sessions_b512.sql",
+    "sha256": "8747c83a473133a949faa3e056f30b67628498da7aa1ab3ee6e82ddba3a403eb",
+    "hostedStatus": "APPROVAL_REQUIRED_NOT_APPLIED"
+  },
+  {
+    "path": "db/review-only/b631-broker-remediation.sql",
+    "sha256": "d3abceff2b9c838804bbe53d12c5102d4bf64bf6166e52ff60397cbd25900652",
+    "hostedStatus": "APPROVAL_REQUIRED_NOT_APPLIED"
+  },
+  {
+    "path": "db/review-only/b631-broker-verify.sql",
+    "sha256": "cb9e2ec3d62adfa4c1502b408384c28e135dd5bb1389b6be48ad65732f213f70",
+    "hostedStatus": "APPROVAL_REQUIRED_NOT_APPLIED"
+  },
+  {
+    "path": "db/review-only/b662-operations-engine.sql",
+    "sha256": "d9729b458df3becf3afa8974321cf644dc69ea849a08c5d7ce81bfbaab66bc7b",
+    "hostedStatus": "APPROVAL_REQUIRED_NOT_APPLIED"
+  },
+  {
+    "path": "db/review-only/b710-uat-management.sql",
+    "sha256": "ac569d7200bd180828aaf25db4becb2c7c962616a99930fa61252fde6a42d448",
+    "hostedStatus": "APPROVAL_REQUIRED_NOT_APPLIED"
+  }
+]

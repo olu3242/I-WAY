@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {generateKeyPairSync,randomUUID,sign} from 'node:crypto';
 import {loadHostedUatBindings} from '../server/operations-uat-hosted-bindings.mjs';
 import {loadHostedUatVerifier} from '../server/operations-uat-jwks.mjs';
-const issuer='https://vnoxdinldneeczxibicp.supabase.co/auth/v1';
+const issuer='https://zolwjyhbfsxbdwyiwkbt.supabase.co/auth/v1';
 function synthetic(){
  const tenantId=randomUUID(),fleetId=randomUUID();
  return {platformNamespaceId:randomUUID(),roster:Object.entries({platform:'oadeyemo306@gmail.com',carrier:'martin@tm88investments.com',fleet:'info@tm88investments.com',driver:'cassiomey@gmail.com'}).map(([role,email])=>({role,email,userId:randomUUID(),principalId:randomUUID(),googleSubject:'synthetic-google-'+randomUUID(),permissions:[],tenantId:role==='platform'?null:tenantId,fleetId:['fleet','driver'].includes(role)?fleetId:null}))};

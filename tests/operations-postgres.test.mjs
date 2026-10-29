@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {randomUUID} from 'node:crypto';
 import {buildOperationsPgConfig,AsyncOperationsPgStore,operationsPostgresReadiness} from '../server/operations-postgres.mjs';
 
-const expected={projectRef:'vnoxdinldneeczxibicp',endpoint:'aws-1-us-west-2.pooler.supabase.com',databaseName:'postgres',loginRole:'iway_operations_fixture'};
+const expected={projectRef:'zolwjyhbfsxbdwyiwkbt',endpoint:'aws-1-us-west-2.pooler.supabase.com',databaseName:'postgres',loginRole:'iway_operations_fixture'};
 const options=()=>({...expected,databaseUrl:'postgresql://'+expected.loginRole+'.'+expected.projectRef+':illustrative-test-password@'+expected.endpoint+':5432/postgres'});
 const scope=()=>({tenantId:randomUUID(),actorId:randomUUID()});
 function harness({health={},query,parameters={},stream={},connectError,principal=true}={}){

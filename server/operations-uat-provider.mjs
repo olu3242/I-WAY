@@ -1,7 +1,7 @@
 // Candidate server-only Supabase REST adapter. No admin key, signup, email sender,
 // automatic linking or OAuth token decoding without signature verification.
 import {verifyIdentityProof} from './operations-identity.mjs';
-const projectOrigin='https://vnoxdinldneeczxibicp.supabase.co';
+import {uatOrigin as projectOrigin} from './operations-uat-target.mjs';
 // Supabase Auth serializes provider_id as `id`; identity_id is the database UUID.
 // See supabase/auth internal/models/identity.go and auth-js UserIdentity.
 export function verifiedGoogleSubjects(user){

@@ -4,7 +4,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {createUatWorkflow,validateUatRoster} from './operations-uat-workflow.mjs';
 import {createUatRecoveryIssuer,verifiedGoogleSubjects} from './operations-uat-provider.mjs';
 const projectId='prj_7uof3CdmN1QvzKxETkXvHjlrLjVm';
-const projectOrigin='https://vnoxdinldneeczxibicp.supabase.co';
+import {uatOrigin as projectOrigin} from './operations-uat-target.mjs';
 const uuid=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const deny=()=>{throw Error('UAT_MANAGEMENT_DENIED');};
