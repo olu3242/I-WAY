@@ -9,7 +9,7 @@ import {packageAuthStaging} from '../scripts/package-auth-staging.mjs';
 const valid={VERCEL_ENV:'preview',IWAY_AUTH_ENABLED:'true',IWAY_AUTH_SCHEMA_APPROVED:'b512-v4',
  VERCEL_PROJECT_ID:'prj_7uof3CdmN1QvzKxETkXvHjlrLjVm',IWAY_STAGING_VERCEL_PROJECT_ID:'prj_7uof3CdmN1QvzKxETkXvHjlrLjVm',
  IWAY_AUTH_ORIGIN:'https://synthetic.example.org',IWAY_AUTH_APPROVED_ORIGIN:'https://synthetic.example.org',
- IWAY_AUTH_DATABASE_URL:'postgresql://iway_auth_runtime:synthetic@db.vnoxdinldneeczxibicp.supabase.co:5432/postgres',
+ IWAY_AUTH_DATABASE_URL:'postgresql://iway_auth_runtime:synthetic@db.zolwjyhbfsxbdwyiwkbt.supabase.co:5432/postgres',
  IWAY_SESSION_ENCRYPTION_KEY:Buffer.alloc(32,7).toString('base64url')};
 test('runtime requires isolated preview, approved origin, pinned database and TLS',()=>{
  const result=resolveAuthRuntimeConfig(valid);assert.equal(result.db.ssl.rejectUnauthorized,true);assert.ok(result.db.ssl.ca);
@@ -18,7 +18,7 @@ test('runtime requires isolated preview, approved origin, pinned database and TL
   {VERCEL_PROJECT_ID:'prj_0vutnbiNCYaxhdrbLfktrsHAvxty',IWAY_STAGING_VERCEL_PROJECT_ID:'prj_0vutnbiNCYaxhdrbLfktrsHAvxty'},
   {IWAY_AUTH_ORIGIN:'https://other.example.org'},{IWAY_AUTH_DATABASE_URL:valid.IWAY_AUTH_DATABASE_URL+'?sslmode=disable'},
   {IWAY_AUTH_DATABASE_URL:valid.IWAY_AUTH_DATABASE_URL.replace('iway_auth_runtime','postgres')},
-  {IWAY_AUTH_DATABASE_URL:valid.IWAY_AUTH_DATABASE_URL.replace('vnoxdinldneeczxibicp','otherproject')}])assert.throws(()=>resolveAuthRuntimeConfig({...valid,...patch}));
+  {IWAY_AUTH_DATABASE_URL:valid.IWAY_AUTH_DATABASE_URL.replace('zolwjyhbfsxbdwyiwkbt','otherproject')}])assert.throws(()=>resolveAuthRuntimeConfig({...valid,...patch}));
 });
 test('runtime denies elevated roles and excessive table rights before accepting requests',async()=>{
  for(const elevated of [true,false]){

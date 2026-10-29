@@ -82,9 +82,9 @@ test('confidential transport timeout aborts the request and redacts its outcome'
  await assert.rejects(deliver({entry:{email:'synthetic@illustrative.invalid'},token:'a'.repeat(43),requestId:randomUUID(),purpose:'setup'}),/CONFIDENTIAL_DELIVERY_UNAVAILABLE/);assert.equal(signal.aborted,true);
 });
 test('separate management database config pins restricted identity/project and verified TLS',()=>{
- const url='postgresql://iway_uat_management_runtime:synthetic-test-password@db.vnoxdinldneeczxibicp.supabase.co:5432/postgres';
+ const url='postgresql://iway_uat_management_runtime:synthetic-test-password@db.zolwjyhbfsxbdwyiwkbt.supabase.co:5432/postgres';
  const config=resolveUatManagementDatabaseConfig(url);assert.equal(config.ssl.rejectUnauthorized,true);assert.equal(config.user,'iway_uat_management_runtime');
- for(const bad of [url.replace('iway_uat_management_runtime','postgres'),url.replace('vnoxdinldneeczxibicp','anotherproject0000000'),url+'?sslmode=disable',url.replace(':5432',':6543')])assert.throws(()=>resolveUatManagementDatabaseConfig(bad));
+ for(const bad of [url.replace('iway_uat_management_runtime','postgres'),url.replace('zolwjyhbfsxbdwyiwkbt','anotherproject0000000'),url+'?sslmode=disable',url.replace(':5432',':6543')])assert.throws(()=>resolveUatManagementDatabaseConfig(bad));
 });
 test('broker revocation is checked before privileged provider generation',async t=>{
  const f=uatFixture();t.after(()=>f.db.close());const m=managementFixture(f),r=request(f);f.store.revoke(r.userId,{deactivate:true});

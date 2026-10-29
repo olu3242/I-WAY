@@ -1,0 +1,50 @@
+[
+  {
+    "file": "20261011055816_iway_early_access.sql",
+    "sha256": "9fa5d4ac82f51dad6fb25bbeeb5fe927eed30254d6cd1142b6a00f1e477f9d1e",
+    "lfSha256": "4d2b7c2922bea6ab4a40cb32a5576236e9442dcc24cb33b6368076f1edbfdaf5",
+    "transaction": false
+  },
+  {
+    "file": "20261011060000_registration_role_prerequisites.sql",
+    "sha256": "d598edc42cdd401d51bc1d01bfc9b6ad134cb5a4b59cfc437a89f676e0ddd31d",
+    "lfSha256": "e9222dcf91f9f70ddaf6acc76049a2bf972bbfa2fa66bc17a7b2d1c746aaf973",
+    "transaction": true
+  },
+  {
+    "file": "20261011062148_registration_login.sql",
+    "sha256": "19830bb33334bf26479c01c65ce5c0928c56a90e078ca7b2d9a524989717c00c",
+    "lfSha256": "ba6c729ad4ba310d84d9731892c7802f0cee4f44c0f5df7b9a5e0652bbc68cfd",
+    "transaction": true
+  },
+  {
+    "file": "20261011174100_operations_persistence_readiness.sql",
+    "sha256": "1c5c0260e37f6756171cce4436b661c40cd58bdf695cb47b59bec296e96e15a7",
+    "lfSha256": "0f2bf75c58ab0af6cc7a245f092e29da2943a8316611e8aa85deb699d3436c81",
+    "transaction": true
+  },
+  {
+    "file": "20261011210552_operations_active_principal_rls.sql",
+    "sha256": "86cd1bcf212bdc1ecde42041787d576e4cd38b573f1eaf4d070c0f07e7fa6596",
+    "lfSha256": "0e18a93c613a977010bfaa481318033087a9687b2c086f7d5fe66746f9dc2ef9",
+    "transaction": true
+  },
+  {
+    "file": "20261011220000_operations_actor_evidence.sql",
+    "sha256": "2578e24d4cebcda6c30c6011c85da168d7618c12f8f096ec0e75ee24e19338c5",
+    "lfSha256": "96969f98e7af15b7ba26527ab92764642e7eb8ebe2711921fe321a4b2ca8527e",
+    "transaction": true
+  },
+  {
+    "file": "20261011221000_operations_dispatcher_directory.sql",
+    "sha256": "154394bda7329a6ae77dc40e099172bd92787dff9d134505fc880aa9782f5690",
+    "lfSha256": "c237974df821c055a6a21a0e3ecbf135fe05c64510f0303cfd38b2b11273f0ef",
+    "transaction": true
+  },
+  {
+    "file": "20261011222000_operations_runtime_read_role.sql",
+    "sha256": "187ce21f90863496187faf91efb8e974abfa97ab680be414779e0ad1ef2dca09",
+    "lfSha256": "882d88a0bb142313d8483a4b76fbe8059f0724a748c897c1e6617b577a6c435a",
+    "transaction": true
+  }
+]

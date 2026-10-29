@@ -1,3 +1,4 @@
+import {uatProject} from './operations-uat-target.mjs';
 // Isolated Preview assembly. No schema creation, seeded principals, email delivery or admin credentials.
 import {resolveUatRuntimeConfig,createUatCandidateRuntime} from './operations-uat-runtime.mjs';
 import {buildOperationsPgConfig} from './operations-postgres.mjs';
@@ -8,7 +9,7 @@ import {loadHostedUatVerifier} from './operations-uat-jwks.mjs';
 export function resolveHostedOperationsConfig(env){
  resolveUatRuntimeConfig(env); // Genuine Preview/project gates precede every database connection.
  let url;try{url=new URL(env.IWAY_OPERATIONS_DATABASE_URL);}catch{throw Error('UAT_OPERATIONS_DATABASE_REQUIRED');}
- try{return buildOperationsPgConfig({databaseUrl:env.IWAY_OPERATIONS_DATABASE_URL,projectRef:'vnoxdinldneeczxibicp',endpoint:url.hostname,databaseName:'postgres',loginRole:'iway_operations_runtime'});}catch{throw Error('UAT_OPERATIONS_DATABASE_REJECTED');}
+ try{return buildOperationsPgConfig({databaseUrl:env.IWAY_OPERATIONS_DATABASE_URL,projectRef:uatProject,endpoint:url.hostname,databaseName:'postgres',loginRole:'iway_operations_runtime'});}catch{throw Error('UAT_OPERATIONS_DATABASE_REJECTED');}
 }
 export async function createHostedUatRuntime({env=process.env,PoolClass,fetchImpl=fetch,clock=()=>Date.now()}={}){
  const config=resolveHostedOperationsConfig(env),Pool=PoolClass??(await import('pg')).Pool;

@@ -1,3 +1,4 @@
+import {uatProject} from '../server/operations-uat-target.mjs';
 // Protected Preview build probe. Uses the existing restricted Operations login.
 import {Client} from 'pg';
 import {buildOperationsPgConfig} from '../server/operations-postgres.mjs';
@@ -8,7 +9,7 @@ let client,result;
 try{
  if(env.VERCEL_ENV!=='preview'||env.VERCEL_PROJECT_ID!==project||env.IWAY_STAGING_VERCEL_PROJECT_ID!==project)throw Error();
  const url=new URL(env.IWAY_OPERATIONS_DATABASE_URL);
- const config=buildOperationsPgConfig({databaseUrl:env.IWAY_OPERATIONS_DATABASE_URL,projectRef:'vnoxdinldneeczxibicp',endpoint:url.hostname,databaseName:'postgres',loginRole:'iway_operations_runtime'});
+ const config=buildOperationsPgConfig({databaseUrl:env.IWAY_OPERATIONS_DATABASE_URL,projectRef:uatProject,endpoint:url.hostname,databaseName:'postgres',loginRole:'iway_operations_runtime'});
  client=new Client(config);client.on('error',()=>{});await client.connect();await client.query('BEGIN READ ONLY');
  const pool={query:(...args)=>client.query(...args),connect:async()=>Object.assign(client,{release(){}})};
  const engine=new DurableOperationsPgEngine({pool,config});await engine.health();

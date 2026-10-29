@@ -1,3 +1,4 @@
+import {uatProject} from './operations-uat-target.mjs';
 // Separate management metadata identity. No Auth administration or mail credentials.
 import {randomUUID} from 'node:crypto';
 import {postgresTlsOptions} from './postgres-tls.mjs';
@@ -5,7 +6,7 @@ const role='iway_uat_management_runtime';
 // Explicit server-owned input for the separate management process, never a Preview key.
 export function resolveUatManagementDatabaseConfig(databaseUrl){
  try{
-  const u=new URL(databaseUrl),project='vnoxdinldneeczxibicp',direct=u.hostname==='db.'+project+'.supabase.co';
+  const u=new URL(databaseUrl),project=uatProject,direct=u.hostname==='db.'+project+'.supabase.co';
   if(!['postgres:','postgresql:'].includes(u.protocol)||!direct&&!/^aws-[0-9]+-[a-z0-9-]+\.pooler\.supabase\.com$/.test(u.hostname)||u.port!=='5432'||u.pathname!=='/postgres'||u.search||u.hash||decodeURIComponent(u.username)!==(direct?role:role+'.'+project)||decodeURIComponent(u.password).length<12)throw Error();
   return {host:u.hostname,port:5432,database:'postgres',user:decodeURIComponent(u.username),password:decodeURIComponent(u.password),ssl:postgresTlsOptions(u.hostname),max:2,connectionTimeoutMillis:8000,statement_timeout:3000,query_timeout:4000,application_name:'iway-uat-management'};
  }catch{throw Error('UAT_MANAGEMENT_DATABASE_REJECTED');}

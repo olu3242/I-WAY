@@ -9,7 +9,7 @@ const validEnvironment=()=>({
  IWAY_AUTH_ORIGIN:'https://synthetic-uat.invalid',IWAY_AUTH_APPROVED_ORIGIN:'https://synthetic-uat.invalid',IWAY_AUTH_PROVIDER:'google',
  IWAY_SUPABASE_PUBLISHABLE_KEY:'sb_publishable_synthetic_public_fixture_only',IWAY_SESSION_ENCRYPTION_KEY:randomBytes(32).toString('base64url'),
  IWAY_UAT_ENABLED:'true',IWAY_UAT_SCHEMA_APPROVED:'b574-candidate-v1',
- ...Object.fromEntries(['AUTH','UAT','OPERATIONS'].map(name=>['IWAY_'+name+'_DATABASE_URL','postgresql://iway_'+name.toLowerCase()+'_runtime:synthetic_fixture_only@db.vnoxdinldneeczxibicp.supabase.co:5432/postgres']))
+ ...Object.fromEntries(['AUTH','UAT','OPERATIONS'].map(name=>['IWAY_'+name+'_DATABASE_URL','postgresql://iway_'+name.toLowerCase()+'_runtime:synthetic_fixture_only@db.zolwjyhbfsxbdwyiwkbt.supabase.co:5432/postgres']))
 });
 test('all thirteen Preview contracts validate offline without disclosing configuration values',()=>{
  const env=validEnvironment(),result=validateUatEnvironment(env);
@@ -30,7 +30,7 @@ test('Production targets, public projects, origin injection and runtime identity
  ]){const result=validateUatEnvironment({...env,...patch});assert.equal(result.status,'BLOCKED');assert.ok(!JSON.stringify(result).includes('invalid-sensitive-marker'));}
 });
 test('secret API credentials are rejected while pinned anon compatibility keys remain explicitly public',()=>{
- const env=validEnvironment(),jwt=role=>'e30.'+Buffer.from(JSON.stringify({role,ref:'vnoxdinldneeczxibicp'})).toString('base64url')+'.synthetic';
+ const env=validEnvironment(),jwt=role=>'e30.'+Buffer.from(JSON.stringify({role,ref:'zolwjyhbfsxbdwyiwkbt'})).toString('base64url')+'.synthetic';
  assert.equal(validateUatEnvironment({...env,IWAY_SUPABASE_PUBLISHABLE_KEY:jwt('anon')}).status,'PASS_OFFLINE_CONFIGURATION_ONLY');
  for(const key of ['sb_secret_synthetic_private_fixture',jwt('service_role'),'invalid-sensitive-marker']){
   const result=validateUatEnvironment({...env,IWAY_SUPABASE_PUBLISHABLE_KEY:key});assert.ok(result.issues.includes('PUBLISHABLE_API_KEY_INVALID'));assert.ok(!JSON.stringify(result).includes(key));
@@ -63,7 +63,7 @@ test('blank runtime credentials remain missing in both name and login reports',(
 
 test('database diagnostics explain API URL mistakes without echoing supplied values',()=>{
  const env=validEnvironment();
- for(const name of ['IWAY_AUTH_DATABASE_URL','IWAY_UAT_DATABASE_URL','IWAY_OPERATIONS_DATABASE_URL'])env[name]='https://vnoxdinldneeczxibicp.supabase.co?private=never-echo-this';
+ for(const name of ['IWAY_AUTH_DATABASE_URL','IWAY_UAT_DATABASE_URL','IWAY_OPERATIONS_DATABASE_URL'])env[name]='https://zolwjyhbfsxbdwyiwkbt.supabase.co?private=never-echo-this';
  const result=validateUatEnvironment(env);
  assert.equal(result.status,'BLOCKED');
  for(const item of result.databaseConnections)assert.deepEqual(item.issues,['API_URL_INSTEAD_OF_POSTGRES_CONNECTION']);
@@ -76,7 +76,7 @@ test('database diagnostics isolate wrong roles, ports, passwords and malformed i
   [valid.replace(':5432',':6543'),'SESSION_PORT_5432_REQUIRED'],
   [valid.replace('synthetic_fixture_only',''),'ROLE_PASSWORD_REQUIRED'],
   [valid.replace('synthetic_fixture_only','short'),'OPERATIONS_PASSWORD_TOO_SHORT'],
-  [valid.replace('db.vnoxdinldneeczxibicp.supabase.co','other.invalid'),'PINNED_DATABASE_HOST_REQUIRED'],
+  [valid.replace('db.zolwjyhbfsxbdwyiwkbt.supabase.co','other.invalid'),'PINNED_DATABASE_HOST_REQUIRED'],
   [valid.replace('/postgres','/other'),'POSTGRES_DATABASE_REQUIRED'],
   [valid+'?sslmode=disable','QUERY_AND_FRAGMENT_NOT_ALLOWED'],
   ['not a connection string','MALFORMED_CONNECTION_STRING']
@@ -91,7 +91,7 @@ test('session pooler custom roles pass format checks without claiming a live log
  const env=validEnvironment();
  for(const kind of ['AUTH','UAT','OPERATIONS']){
   const name='IWAY_'+kind+'_DATABASE_URL';
-  env[name]=env[name].replace('_runtime:','_runtime.vnoxdinldneeczxibicp:').replace('db.vnoxdinldneeczxibicp.supabase.co','aws-0-us-east-1.pooler.supabase.com');
+  env[name]=env[name].replace('_runtime:','_runtime.zolwjyhbfsxbdwyiwkbt:').replace('db.zolwjyhbfsxbdwyiwkbt.supabase.co','aws-0-us-east-1.pooler.supabase.com');
  }
  for(const item of databaseConnectionDiagnostics(env)){assert.equal(item.status,'FORMAT_VALID_ONLY');assert.deepEqual(item.issues,[]);}
  assert.equal(validateUatEnvironment(env).hostedCertified,false);

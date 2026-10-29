@@ -1,0 +1,1251 @@
+{
+  "schemaVersion": 1,
+  "source": "docs/certification/b821-b840/hosted-uat-results.json",
+  "sourceSha256": "0cefc6b66297d205472797ad0d65e0d2077aeb1588b62b63b5d86231d11db6b8",
+  "projectId": "zolwjyhbfsxbdwyiwkbt",
+  "hostedExecuted": 0,
+  "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "BLOCKED": 95,
+    "NOT_RUN": 0
+  },
+  "scope": "Actual hosted application execution; local GoTrue/synthetic workflows never become hosted PASS",
+  "scenarios": [
+    {
+      "case": "HOST-001",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "entry_and_login",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-002",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "identity_mapping",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-003",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "workspace_scope",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-004",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "refresh_and_mutation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-005",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "logout_and_replay",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-006",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "tenant_resource_denial",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-007",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "mvp_workflow",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-008",
+      "persona": "platform",
+      "method": "google",
+      "scenario": "privileged_mfa",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-009",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "entry_and_login",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-010",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "identity_mapping",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-011",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "workspace_scope",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-012",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "refresh_and_mutation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-013",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "logout_and_replay",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-014",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "tenant_resource_denial",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-015",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "mvp_workflow",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-016",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "privileged_mfa",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-017",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "entry_and_login",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-018",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "identity_mapping",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-019",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "workspace_scope",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-020",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "refresh_and_mutation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-021",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "logout_and_replay",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-022",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "tenant_resource_denial",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-023",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "mvp_workflow",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-024",
+      "persona": "carrier",
+      "method": "google",
+      "scenario": "privileged_mfa",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-025",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "entry_and_login",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-026",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "identity_mapping",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-027",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "workspace_scope",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-028",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "refresh_and_mutation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-029",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "logout_and_replay",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-030",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "tenant_resource_denial",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-031",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "mvp_workflow",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-032",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "privileged_mfa",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-033",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "entry_and_login",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-034",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "identity_mapping",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-035",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "workspace_scope",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-036",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "refresh_and_mutation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-037",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "logout_and_replay",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-038",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "tenant_resource_denial",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-039",
+      "persona": "fleet",
+      "method": "google",
+      "scenario": "mvp_workflow",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-040",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "entry_and_login",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-041",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "identity_mapping",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-042",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "workspace_scope",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-043",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "refresh_and_mutation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-044",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "logout_and_replay",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-045",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "tenant_resource_denial",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-046",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "mvp_workflow",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-047",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "entry_and_login",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-048",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "identity_mapping",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-049",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "workspace_scope",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-050",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "refresh_and_mutation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-051",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "logout_and_replay",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-052",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "tenant_resource_denial",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-053",
+      "persona": "driver",
+      "method": "google",
+      "scenario": "mvp_workflow",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-054",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "entry_and_login",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-055",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "identity_mapping",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-056",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "workspace_scope",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-057",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "refresh_and_mutation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-058",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "logout_and_replay",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-059",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "tenant_resource_denial",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-060",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "mvp_workflow",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-061",
+      "persona": "platform",
+      "method": "password",
+      "scenario": "one_time_setup",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-062",
+      "persona": "carrier",
+      "method": "password",
+      "scenario": "one_time_setup",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-063",
+      "persona": "fleet",
+      "method": "password",
+      "scenario": "one_time_setup",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-064",
+      "persona": "driver",
+      "method": "password",
+      "scenario": "one_time_setup",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-065",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "fifth_identity",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-066",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "wrong_google_subject",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-067",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "wrong_canonical_uuid",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-068",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "pkce_state_mismatch",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-069",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "callback_replay",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-070",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "revoked_invitation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-071",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "expired_session",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-072",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "membership_revocation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-073",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "native_revocation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-074",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "binding_role_drift",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-075",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "employment_change",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-076",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "csrf_and_origin",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-077",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "duplicate_submission",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-078",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "invalid_fields_recovery",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-079",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "provider_refresh_failure",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-080",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "protected_share_revocation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-081",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "direct_origin",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-082",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "runtime_identity",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-083",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "rls_tenant_isolation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "HOST-084",
+      "persona": "negative",
+      "method": "both",
+      "scenario": "recovery_revocation",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B791-UAT-01",
+      "persona": "platform",
+      "method": "approved_google_or_password_with_mfa",
+      "scenario": "configuration_48_reload_and_fresh_session",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B791-UAT-02",
+      "persona": "platform",
+      "method": "approved_google_or_password_with_mfa",
+      "scenario": "adjacent_forms_fenced_during_pending_save",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B791-UAT-03",
+      "persona": "platform",
+      "method": "approved_google_or_password_with_mfa",
+      "scenario": "configuration_lost_receipt_exact_retry",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B791-UAT-04",
+      "persona": "platform",
+      "method": "approved_google_or_password_with_mfa",
+      "scenario": "governance_reconstruction_and_operational_kind_denial",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B825-PLATFORM",
+      "persona": "platform",
+      "method": "approved_application_session",
+      "scenario": "platform",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B825-CARRIER",
+      "persona": "carrier",
+      "method": "approved_application_session",
+      "scenario": "carrier",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B825-FLEET",
+      "persona": "fleet",
+      "method": "approved_application_session",
+      "scenario": "fleet",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B825-DRIVER",
+      "persona": "driver",
+      "method": "approved_application_session",
+      "scenario": "driver",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B825-TRIAGE_RETEST",
+      "persona": "fleet_driver",
+      "method": "approved_application_session",
+      "scenario": "triage_retest",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B825-LOST_RESPONSE",
+      "persona": "driver",
+      "method": "approved_application_session",
+      "scenario": "lost_response",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    },
+    {
+      "case": "B821-ONBOARDING-ACTIVATION",
+      "persona": "carrier",
+      "method": "approved_application_session",
+      "scenario": "activation_receipt_and_reload",
+      "status": "BLOCKED",
+      "executed": false,
+      "blockedBy": [
+        "APPLICATION_SCHEMA_NOT_APPLIED",
+        "REAL_CANONICAL_IDENTITIES_AND_HIERARCHY_NOT_PROVISIONED",
+        "PROTECTED_PREVIEW_AND_INDIVIDUAL_ENTRY_NOT_APPROVED"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "database": {
+    "approvedUat": "zolwjyhbfsxbdwyiwkbt",
+    "excludedPublicWaitlist": "vnoxdinldneeczxibicp",
+    "hostedVersion": "17.11",
+    "initialHostedAuthUsers": 0,
+    "hostedAuthUsers": 2,
+    "confirmedNonanonymousUsers": 0,
+    "verifiedMfaFactors": 0,
+    "hostedApplicationSchemas": "ABSENT_READ_ONLY_VERIFIED",
+    "managementConnection": "MCP read-only postgres; private CLI owner/account connection unresolved"
+  },
+  "localRecovery": {
+    "path": "C:/IWAY-Recovery-Lab-V2",
+    "postgres": "17.11.0.006",
+    "gotrue": "v2.197.0",
+    "storage": "v1.84.19",
+    "network": "iway-recovery-v2",
+    "publishedPorts": "127.0.0.1 only; database60422/gateway60421/mail60424",
+    "originalLabModified": false
+  },
+  "application": {
+    "server": "server/operations-uat-hosted-handler.mjs -> operations-uat-hosted-runtime.mjs -> durable PostgreSQL tenant engine",
+    "session": "server-only encrypted opaque sessions; PKCE/state; canonical UUID and Google subject; verified MFA for privileged access",
+    "management": "separate guarded management plane; no default application invitation issuer or delivery",
+    "authorization": "role + permission + tenant + relationship + ownership; no email-only grants",
+    "agents": "existing durable bounded/advisory workflows regression tested; no live provider activation or new agent-name claims",
+    "documents": "evidence references implemented; sensitive uploads/storage/retention/payment execution remain approval/contract gated"
+  },
+  "conformity": {
+    "functionalReference": "reference/figma-make-prototype",
+    "visualAuthority": "docs/brand",
+    "originalFigmaFileAndExports": "BLOCKED_REFERENCE",
+    "figmaFunctionalityPercentage": null,
+    "visualConformityPercentage": null,
+    "apiIntegrationCoveragePercentage": null,
+    "reason": "No verified complete approved design/API denominator; percentages are not estimated"
+  }
+}

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {generateKeyPairSync,sign} from 'node:crypto';
 import {createIdentityVerifier} from '../server/operations-identity.mjs';
 import {createUatSupabaseProvider,createUatRecoveryIssuer} from '../server/operations-uat-provider.mjs';
-const id='90000000-0000-4000-8000-000000000001',origin='https://vnoxdinldneeczxibicp.supabase.co';
+const id='90000000-0000-4000-8000-000000000001',origin='https://zolwjyhbfsxbdwyiwkbt.supabase.co';
 function fixture(){
  const now=Date.now(),keys=generateKeyPairSync('ec',{namedCurve:'prime256v1'}),requests=[];
  const verifier=createIdentityVerifier({issuer:origin+'/auth/v1',audience:'authenticated',requireMfa:false,keys:[{kid:'synthetic',algorithm:'ES256',publicKey:keys.publicKey}]});

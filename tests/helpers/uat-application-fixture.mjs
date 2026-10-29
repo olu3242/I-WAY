@@ -24,7 +24,7 @@ export async function uatApplicationFixture(t,{fullPermissions=false,googleAssur
   const actor={...actors[i],identityOnly:true,permissions:[...roster[i].permissions],fleetId:roster[i].fleetId};
   native.store.db.prepare('UPDATE users SET data=?,password=? WHERE id=?').run(JSON.stringify(actor),'federated-only',actor.id);
  }
- const {publicKey,privateKey}=generateKeyPairSync('ec',{namedCurve:'prime256v1'}),issuer='https://vnoxdinldneeczxibicp.supabase.co/auth/v1';
+ const {publicKey,privateKey}=generateKeyPairSync('ec',{namedCurve:'prime256v1'}),issuer='https://zolwjyhbfsxbdwyiwkbt.supabase.co/auth/v1';
  const verifier=createIdentityVerifier({issuer,audience:'authenticated',requireMfa:false,keys:[{kid:'synthetic-app',algorithm:'ES256',publicKey}]});
  const encode=x=>Buffer.from(JSON.stringify(x)).toString('base64url');
  const uat=uatFixture({roster,signAccessToken:({userId,assurance,now})=>{

@@ -1,3 +1,4 @@
+import {uatProject as project} from '../server/operations-uat-target.mjs';
 // Read-only, names-only report. Never serialize env values or connection errors.
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
@@ -26,7 +27,7 @@ export const uatEnvironmentContract=Object.freeze([
 // Pure, offline validation. Only fixed codes and variable names leave this boundary.
 // Runtime resolvers remain authoritative; this never opens a pool or contacts a provider.
 export function databaseConnectionDiagnostics(env={}){
- const project='vnoxdinldneeczxibicp';
+
  return ['AUTH','UAT','OPERATIONS'].map(kind=>{
   const name='IWAY_'+kind+'_DATABASE_URL',role='iway_'+kind.toLowerCase()+'_runtime',value=env[name];
   const issues=[];
@@ -66,7 +67,7 @@ export function validateUatEnvironment(env={}){
   if(/^sb_publishable_[A-Za-z0-9_-]{20,}$/.test(key))return true;
   if(!/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(key))return false;
   const claims=JSON.parse(Buffer.from(key.split('.')[1],'base64url'));
-  return claims.role==='anon'&&claims.ref==='vnoxdinldneeczxibicp';
+  return claims.role==='anon'&&claims.ref===project;
  });
  return {status:missing.length||issues.length?'BLOCKED':'PASS_OFFLINE_CONFIGURATION_ONLY',missing,issues,databaseConnections,networkRequests:0,hostedCertified:false};
 }

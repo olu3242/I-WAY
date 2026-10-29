@@ -1,8 +1,9 @@
+import {uatOrigin} from './operations-uat-target.mjs';
 // Supported Supabase Auth REST contract; only the pinned project is reachable.
 const uuid=value=>typeof value==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 const token=value=>typeof value==='string'&&value.length>0&&value.length<=16384&&!/[\r\n]/.test(value);
 export function createSupabaseProvider({url,apiKey,provider,redirectTo,fetchImpl=fetch,clock=()=>Date.now(),timeoutMs=8000}={}){
- if(url!=='https://vnoxdinldneeczxibicp.supabase.co'||!token(apiKey)||!['google','github','azure'].includes(provider)||
+ if(url!==uatOrigin||!token(apiKey)||!['google','github','azure'].includes(provider)||
     !Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>10000)throw Error('AUTH_PROVIDER_CONFIGURATION_INVALID');
  const callback=new URL(redirectTo);
  if(callback.protocol!=='https:'||callback.username||callback.password||callback.pathname!=='/auth/callback'||callback.search||callback.hash)

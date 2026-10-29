@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {resolveHostedOperationsConfig,createHostedUatRuntime} from '../server/operations-uat-hosted-runtime.mjs';
-const project='vnoxdinldneeczxibicp',projectId='prj_7uof3CdmN1QvzKxETkXvHjlrLjVm';
+const project='zolwjyhbfsxbdwyiwkbt',projectId='prj_7uof3CdmN1QvzKxETkXvHjlrLjVm';
 const url=role=>'postgresql://'+role+':synthetic-fixture-password@db.'+project+'.supabase.co:5432/postgres';
 const base={VERCEL_ENV:'preview',VERCEL_PROJECT_ID:projectId,IWAY_STAGING_VERCEL_PROJECT_ID:projectId,IWAY_AUTH_ENABLED:'true',IWAY_AUTH_SCHEMA_APPROVED:'b512-v4',IWAY_AUTH_ORIGIN:'https://fixture.example.invalid',IWAY_AUTH_APPROVED_ORIGIN:'https://fixture.example.invalid',IWAY_AUTH_DATABASE_URL:url('iway_auth_runtime'),IWAY_AUTH_PROVIDER:'google',IWAY_UAT_ENABLED:'true',IWAY_UAT_SCHEMA_APPROVED:'b574-candidate-v1',IWAY_UAT_DATABASE_URL:url('iway_uat_runtime'),IWAY_OPERATIONS_DATABASE_URL:url('iway_operations_runtime')};
 test('B672 hosted Operations requires its own pinned restricted identity after genuine Preview gates',()=>{

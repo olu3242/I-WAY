@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createSupabaseProvider} from '../server/operations-supabase-provider.mjs';
 const user='11111111-1111-4111-8111-111111111111';
-const options={url:'https://vnoxdinldneeczxibicp.supabase.co',apiKey:'synthetic-key',provider:'github',redirectTo:'https://staging.example.org/auth/callback'};
+const options={url:'https://zolwjyhbfsxbdwyiwkbt.supabase.co',apiKey:'synthetic-key',provider:'github',redirectTo:'https://staging.example.org/auth/callback'};
 const json=body=>new Response(JSON.stringify(body),{headers:{'content-type':'application/json'}});
 test('provider uses pinned PKCE exchange and independently verifies identity',async()=>{
  const requests=[];

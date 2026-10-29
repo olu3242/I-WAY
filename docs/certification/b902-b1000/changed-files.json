@@ -1,0 +1,277 @@
+{
+  "startingCommit": "cf6fdbf7c675059596633fbcc7237df7c04af505",
+  "files": [
+    {
+      "path": "docs/certification/b902-b1000/activation-package.md",
+      "sha256": "d9288b665b4e49ba0fcb2bda0515a04d482378cdd82cb70cd78a54c6853107aa",
+      "lfSha256": "d9288b665b4e49ba0fcb2bda0515a04d482378cdd82cb70cd78a54c6853107aa"
+    },
+    {
+      "path": "docs/certification/b902-b1000/architecture-and-gaps.json",
+      "sha256": "f08de08a7dcc16b13abe0152fed0a3cc563b4abed8e71d488ab1f9c4ee702fa3",
+      "lfSha256": "f08de08a7dcc16b13abe0152fed0a3cc563b4abed8e71d488ab1f9c4ee702fa3"
+    },
+    {
+      "path": "docs/certification/b902-b1000/batch-status.json",
+      "sha256": "3f65298ad2ad3ef74a3a0f1bdd5a1467b8ce528c96049a1292e7857253d8ca85",
+      "lfSha256": "3f65298ad2ad3ef74a3a0f1bdd5a1467b8ce528c96049a1292e7857253d8ca85"
+    },
+    {
+      "path": "docs/certification/b902-b1000/certification-report.md",
+      "sha256": "41e003d81ce882e7c9a5b6b52cd407da748fcf42645f9b1a867a9b3e19175750",
+      "lfSha256": "41e003d81ce882e7c9a5b6b52cd407da748fcf42645f9b1a867a9b3e19175750"
+    },
+    {
+      "path": "docs/certification/b902-b1000/changed-files.json",
+      "sha256": null,
+      "lfSha256": null
+    },
+    {
+      "path": "docs/certification/b902-b1000/defects.json",
+      "sha256": "4439491360619e472ae5b0155808a2fbcff2ec3cdcf5b78dfd21543b24714db1",
+      "lfSha256": "4439491360619e472ae5b0155808a2fbcff2ec3cdcf5b78dfd21543b24714db1"
+    },
+    {
+      "path": "docs/certification/b902-b1000/environment-contract.json",
+      "sha256": "13e3c71529c6a23c1cc5007f9ab54a550537e83ea5276fc33b022a101bbe1378",
+      "lfSha256": "13e3c71529c6a23c1cc5007f9ab54a550537e83ea5276fc33b022a101bbe1378"
+    },
+    {
+      "path": "docs/certification/b902-b1000/hosted-uat-results.json",
+      "sha256": "9601cd59dac9827108bc638015212022e80affdcdc9eb544f3fdcddfda53c89c",
+      "lfSha256": "9601cd59dac9827108bc638015212022e80affdcdc9eb544f3fdcddfda53c89c"
+    },
+    {
+      "path": "docs/certification/b902-b1000/human-acceptance.json",
+      "sha256": "2c9f4ed5acb1c8fac2ec1557d65390cafce70b7b64653f71b5447b014d8136a9",
+      "lfSha256": "2c9f4ed5acb1c8fac2ec1557d65390cafce70b7b64653f71b5447b014d8136a9"
+    },
+    {
+      "path": "docs/certification/b902-b1000/migration-manifest.json",
+      "sha256": "556a22efd50f457a2bba6d2b0702c9dbf8772a1bfab683720847ff38f690ef91",
+      "lfSha256": "556a22efd50f457a2bba6d2b0702c9dbf8772a1bfab683720847ff38f690ef91"
+    },
+    {
+      "path": "docs/certification/b902-b1000/receipt.json",
+      "sha256": "8240462cd0328baab62029834edaba7dc786b3ea80f9c7a0a0fab8a03dab7526",
+      "lfSha256": "8240462cd0328baab62029834edaba7dc786b3ea80f9c7a0a0fab8a03dab7526"
+    },
+    {
+      "path": "docs/certification/b902-b1000/recovery-runbook.md",
+      "sha256": "45bd96f2a30a12a5981d05f2afd5ffb1fb233084fb8049cd660fb7ec1003811f",
+      "lfSha256": "45bd96f2a30a12a5981d05f2afd5ffb1fb233084fb8049cd660fb7ec1003811f"
+    },
+    {
+      "path": "docs/certification/b902-b1000/risk-register.json",
+      "sha256": "397d8465bc300cf10c65e9cec90748b09e552dc471a667fc32868c15795a5538",
+      "lfSha256": "397d8465bc300cf10c65e9cec90748b09e552dc471a667fc32868c15795a5538"
+    },
+    {
+      "path": "docs/certification/b902-b1000/schema-dependencies.json",
+      "sha256": "00dd3c6785b048f03bd9082b90eabe0418fb525e0893b8e4a69599cde81a0474",
+      "lfSha256": "00dd3c6785b048f03bd9082b90eabe0418fb525e0893b8e4a69599cde81a0474"
+    },
+    {
+      "path": "docs/security/iway-unified-approval-register.md",
+      "sha256": "fd579b957b93eb4566a7c3b08bfe2466901a16def22fc46601475cc306c42955",
+      "lfSha256": "34086c948485ec837a0670da0f9b2f7f5d38c62cc4262786d59ef118fe91df4b"
+    },
+    {
+      "path": "scripts/certify-local-gotrue-v2.mjs",
+      "sha256": "108d7a79d660a0cf7d4b614bcd7e78809b3ed4ce08d21b8983bf214e5ac7aa18",
+      "lfSha256": "108d7a79d660a0cf7d4b614bcd7e78809b3ed4ce08d21b8983bf214e5ac7aa18"
+    },
+    {
+      "path": "scripts/certify-recovery-v2.mjs",
+      "sha256": "0387beeb83fc8094cc00e9e5a5242e3db8e61cb3f6a21a4944f0a0cd93914394",
+      "lfSha256": "0387beeb83fc8094cc00e9e5a5242e3db8e61cb3f6a21a4944f0a0cd93914394"
+    },
+    {
+      "path": "scripts/lib/recovery-v2.mjs",
+      "sha256": "e372e7ae86ac2874c42d680e13c02735a4df649afba99a311fdc7342d34c550f",
+      "lfSha256": "e372e7ae86ac2874c42d680e13c02735a4df649afba99a311fdc7342d34c550f"
+    },
+    {
+      "path": "scripts/recovery-lab-v2.mjs",
+      "sha256": "21b5de46f3297ccc1d0c0c81fab0abf7208e511bd98355b3a8cec83e7e63168c",
+      "lfSha256": "21b5de46f3297ccc1d0c0c81fab0abf7208e511bd98355b3a8cec83e7e63168c"
+    },
+    {
+      "path": "scripts/recovery-v2-loopback.mjs",
+      "sha256": "5fbec6fcc6adc20db36bf400bc36b6a0a3138f86d786b7aecf38a7be091bdc1b",
+      "lfSha256": "5fbec6fcc6adc20db36bf400bc36b6a0a3138f86d786b7aecf38a7be091bdc1b"
+    },
+    {
+      "path": "scripts/staging-connection-probe.mjs",
+      "sha256": "4dfd79c9aee6c75678a68eac8c4553176b10cee6b81af67e3de6d7f6a15e4296",
+      "lfSha256": "fcafa489b5cb5fe3de750fecd26ced74250428b8ce35a841eacbedafc69d9f8a"
+    },
+    {
+      "path": "scripts/staging-onboarding-probe.mjs",
+      "sha256": "ce8ae726bce25f20a84f07b35131d9aec684647884204cadb5b7d244aac79281",
+      "lfSha256": "76c19a30ecbb1f75f04b453f5c76864f0d84213c35687111c0ec5dbefb41bafb"
+    },
+    {
+      "path": "scripts/staging-schema-probe.mjs",
+      "sha256": "383e5dc1300f48baec1d94e824d4d293ebab39cf9e437454564706d7cafcd447",
+      "lfSha256": "60aabcc69b4a550afebaf17eb62853a1d80d9619319edbdefc488bf66f5bcfa9"
+    },
+    {
+      "path": "scripts/uat-handoff-preflight.mjs",
+      "sha256": "1de7a0afad6c9a5b67fd2b5793e8ad21143ab25a5a050f3d1fd743a206c73f90",
+      "lfSha256": "ecf8e97e44e3c8f7b8e66ae3f00e792e946bcb1661a8dfaf51e6f1ee86b13d69"
+    },
+    {
+      "path": "scripts/uat-migration-dry-run.mjs",
+      "sha256": "3d39110ce0d3460ff60e4732c7285e443ed42b524ec39af5654812390d738d2d",
+      "lfSha256": "3d39110ce0d3460ff60e4732c7285e443ed42b524ec39af5654812390d738d2d"
+    },
+    {
+      "path": "server/operations-auth-runtime.mjs",
+      "sha256": "3f741ac3d26b5326168b8a47e613f1f6602c399395890cce5d5cbe951109b0dc",
+      "lfSha256": "2cf324477b8d2b04a6bddd1129b305228b4811323ab7f0dfd0a9e82b67e6c265"
+    },
+    {
+      "path": "server/operations-supabase-provider.mjs",
+      "sha256": "0804b3ee3f1534b0e0a412360d3542fa8797dc67f34da1242e100767dc9321f8",
+      "lfSha256": "e8ef28dc5f7c27f4f8b10d0cc8fcba389e211e52bcfd98429bab39cad83ff039"
+    },
+    {
+      "path": "server/operations-supabase-staging-config.experimental.mjs",
+      "sha256": "f0d8486f9ad24e3e3e3796bfa96d8982dbcc6b40aaffa1e5ed7e88f20362db06",
+      "lfSha256": "869694fb2788d859141b262c7c7279a281d4a381985b3a9018603019aefc1fc7"
+    },
+    {
+      "path": "server/operations-uat-hosted-runtime.mjs",
+      "sha256": "444d1d7dd01529f6b6541324a0ceb9766dbc67cb5761e2762d1beccbc91eef71",
+      "lfSha256": "667cf7931fda7a697b0a972f4bc34006d5a5bfde356a6cbb5eb21ea40595bcce"
+    },
+    {
+      "path": "server/operations-uat-jwks.mjs",
+      "sha256": "cbc696e88752b508e668e2dd5cb6498593a4158e70491081c7345e1eec81e314",
+      "lfSha256": "d8df089c78f84bf9ec66e539d6bdc53ccabf96c3db8a78f6364318d449228afc"
+    },
+    {
+      "path": "server/operations-uat-management-postgres.mjs",
+      "sha256": "e8b2c47647446ef7282293a1c112194af6012c1afdd2d7bb512f7c6ec6c020a7",
+      "lfSha256": "1f900db65fa3a8fe22e779b16e41116f4e7442d4a9f928c734308dd4dd34ee7f"
+    },
+    {
+      "path": "server/operations-uat-management.mjs",
+      "sha256": "ddd236998d047ee910f1c97cafe68077fec8501538e7f1928c52ce75d6852384",
+      "lfSha256": "4934d80496f7faeb4c806941eb7997701e8674303c703303c774a2850ccf32b7"
+    },
+    {
+      "path": "server/operations-uat-provider.mjs",
+      "sha256": "7b8b673cce96c55906bbb0ce6c59af49f6df114c51f2e6d036f838928475f8db",
+      "lfSha256": "e83fff0ca4a6b461c1557320c43fcffad6ffad0fae0dbe07cab7b4329839b5aa"
+    },
+    {
+      "path": "server/operations-uat-runtime.mjs",
+      "sha256": "45833d0e6e210dd4b04bb52284490654a89cba816967dee7a1318c63533eea8e",
+      "lfSha256": "616333867921861d831516b476fbec757b00b87b1b385e1cbf3f9f1e8150b638"
+    },
+    {
+      "path": "server/operations-uat-target.mjs",
+      "sha256": "a137f103365ff188cb3cddf4803699ab08454a9e7289e3ba6bcf5e5ce84076b2",
+      "lfSha256": "a137f103365ff188cb3cddf4803699ab08454a9e7289e3ba6bcf5e5ce84076b2"
+    },
+    {
+      "path": "server/postgres-tls.mjs",
+      "sha256": "8b9bbf4185c27e06ca3597a80fffa3f0c3abc57aac80e6645ab446c9496112e8",
+      "lfSha256": "a89e06d8927f01938788fcab7bcb44b56a576b191ad09801be90e3af421c4d33"
+    },
+    {
+      "path": "tests/helpers/uat-application-fixture.mjs",
+      "sha256": "ad4daf8fa426d3191ee270a8d81c7447272c9f67d9124e5976a7b0e120826808",
+      "lfSha256": "ba079f0f3d31a7b8d0bda7478da3337e009b627c300b2ff0f76f2b5b845e0ccb"
+    },
+    {
+      "path": "tests/helpers/uat-management-fixture.mjs",
+      "sha256": "4b3125f002908814d60bac4bd592376db3c970915631fd3d56b548e2b53dfe2d",
+      "lfSha256": "2753c27443cf959c99e3a4698be0ffe56ebd64e06085ab07ce57a712592e487c"
+    },
+    {
+      "path": "tests/local/recovery-uat-chain.postgres.mjs",
+      "sha256": "abf36035a937c37ca95b16a908d94ce3ace23ef8a82d8ea1192549e4320c6eb1",
+      "lfSha256": "abf36035a937c37ca95b16a908d94ce3ace23ef8a82d8ea1192549e4320c6eb1"
+    },
+    {
+      "path": "tests/operations-auth-provider.test.mjs",
+      "sha256": "6418bd6a0484c2f335c8a7aa07574edbfdd28800ee365e590d9887511d7ce807",
+      "lfSha256": "597ee3c39ed3e72b39dffeb798d556ed3597d656dfd9144d6aa5cb498e94d1ac"
+    },
+    {
+      "path": "tests/operations-auth-runtime.test.mjs",
+      "sha256": "e5f9b71615f8cdb5ade70157a32c19d1d9ce0ecfd602bfd206a876ab4350cc83",
+      "lfSha256": "38d1cf30e6e35c3723585c1a76faf46be47a8d9a74367cf9e569971c0beaf79d"
+    },
+    {
+      "path": "tests/operations-postgres.test.mjs",
+      "sha256": "7f89485b0eba63689b292d193c255d7c1a39ce8d3d470e8ff22fdc75a50bc19c",
+      "lfSha256": "6a0cbf600897a1bcd6a3dadca627ebd9ee6c361683f9c15bdebe875e1931e31b"
+    },
+    {
+      "path": "tests/operations-supabase-staging-config-experimental.test.mjs",
+      "sha256": "885ef81b163c4f19c8d46cb2e33c54e76257c5aff353b3953e0509f0c880da1b",
+      "lfSha256": "df24c405a1e65aa40c6647fcd48d39d4f5a959f3e8ac044bd696d672b827f8e8"
+    },
+    {
+      "path": "tests/operations-uat-provider.test.mjs",
+      "sha256": "7cccf87358598b997b2d11759c8b33fa6f68686fa3841ed4dcfc773f6dbadb14",
+      "lfSha256": "0770e73227ccc5c7a0545bd0d4a36cd58f0581b5c0aaf08cd8c508de68c5096e"
+    },
+    {
+      "path": "tests/operations-uat-runtime.test.mjs",
+      "sha256": "faca7dafd4cbc21dd2b173cb228ecdf582217708c5a6b3e5e9de4a1ac713f914",
+      "lfSha256": "bd25828d8b64e3f7b62269a35afebdbbe86dc496e6666eb1dc4cff1583234a31"
+    },
+    {
+      "path": "tests/recovery-v2.test.mjs",
+      "sha256": "fb650a0e8f43de0b53a80a6e1d4eafb4974ad4a5532cd5c10af844eaf535d089",
+      "lfSha256": "fb650a0e8f43de0b53a80a6e1d4eafb4974ad4a5532cd5c10af844eaf535d089"
+    },
+    {
+      "path": "tests/staging-connection-probe.test.mjs",
+      "sha256": "8359d8b04d29fc6a4e0df6106ee8a0c21bb7d5241a332c5a05a3e8ab369c81f9",
+      "lfSha256": "f68a5305270301509d01750dd961061623c1b6c793cc3dde5718e1e63bdc1ecb"
+    },
+    {
+      "path": "tests/uat-handoff-preflight.test.mjs",
+      "sha256": "421ff76a818bfa0ba2f5f7cfac9506760a6cd57ff4bd8e3c64c0bac4a64c2f30",
+      "lfSha256": "f0f3434148dbb1d994bc05fefde7da342cc583f16002166d22623fafab0dabda"
+    },
+    {
+      "path": "tests/uat-hosted-bindings.test.mjs",
+      "sha256": "9ce24cfc568efcd17572cdb8cc71c14978118893c88dcfdc621f4b01390539e0",
+      "lfSha256": "db14f5f4ef3b704827d3a38b870827c55ce84d03a5c1463070d36fe9e18fac17"
+    },
+    {
+      "path": "tests/uat-hosted-runtime.test.mjs",
+      "sha256": "9ec12386414d5fedaa044e410ede7093495e9609d925029ca4bc7e1a04fae48e",
+      "lfSha256": "d143529dd762611ed629f6b405a8be4e27321601d408ff67e7d0b20bcdb3eb65"
+    },
+    {
+      "path": "tests/uat-management.test.mjs",
+      "sha256": "25205961cec35e41e6926b4106da6f24f333cd9d2c6d9322504d1473597a95a8",
+      "lfSha256": "92fb641a6c53a023f17644ad0e390e804f8d9b6e7b6d96a1e2cd53eb5d569062"
+    },
+    {
+      "path": "tests/uat-migration-dry-run.test.mjs",
+      "sha256": "2b193cbd894516eda1670fce395ad603c16d9b1864aa97f11fa26929930f751f",
+      "lfSha256": "2b193cbd894516eda1670fce395ad603c16d9b1864aa97f11fa26929930f751f"
+    },
+    {
+      "path": "tests/uat-project-isolation.test.mjs",
+      "sha256": "d46bbff167ab095372a57f39339988aea5301cc34dc5f5ddbd0b8454b4f830d8",
+      "lfSha256": "d46bbff167ab095372a57f39339988aea5301cc34dc5f5ddbd0b8454b4f830d8"
+    },
+    {
+      "path": "vercel.json",
+      "sha256": "c0ae197b187820f21605e3acbea64ebb348d12214878e137e5dc52585aba2261",
+      "lfSha256": "c0ae197b187820f21605e3acbea64ebb348d12214878e137e5dc52585aba2261"
+    }
+  ],
+  "hashEncoding": "sha256=raw worktree bytes; lfSha256=UTF8 LF for Git blob comparison",
+  "selfHashExcluded": true
+}
