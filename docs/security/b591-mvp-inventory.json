@@ -17,7 +17,7 @@
     "apps/operations/feedback.js": "b601c03235f9bd9daf6d0e3fadb7bcb5281320e325aa1a10edfacd076977367a",
     "server/operations-feedback.mjs": "e79b38894b03e235edc37b5f68469b9a51dfa395880c545a83b5f9907e650361",
     "apps/operations/load-wizard.js": "92d63aa6c4cc3aaaa87e230c5de3907d82ca5998d157f02da5e6e4ecedc23585",
-    "apps/operations/expenses.js": "3d9e1e447f2c8467f00289daa40509c4a8b704d1e7e41bec982d04d244960460",
+    "apps/operations/expenses.js": "f3fbb50f592d57e36e6212b52cebc90d8ad0a2b945ed9d15ed1aa60e9253bf2f",
     "apps/operations/onboarding.js": "7a08b383dfc16c914bb634f216b35a182544ff00f0ed4085ad38b84761dcbf6e",
     "apps/operations/platform-workspace.js": "0c594ef3852b3cf0ece2c0405a6d303013d2ed9071fc373b0755664a8da56482",
     "server/operations-platform-workspace.mjs": "529bbdabc9adaec4792955d0894765bf7f368c1f32cfc5c4706f4233aab26985",
@@ -30,7 +30,7 @@
     "apps/operations/index.html": "978035987ba98600321ff79768461c25ed77f12412e2782fea3d313c68d8212d",
     "apps/operations/login.html": "7db8389d9f3d1438c3661f14374759dacda2d73092cf795acc891a0896876402",
     "apps/operations/admin.html": "ce83e841d9cadcb8560bed3a8bc4ecb5ce484e155cee4126a2f74252d33de898",
-    "apps/operations/ops.js": "aa3eadcd143e8d2fc12bc899e0c894eda6600194b5de517394f06af2ad6cb9eb",
+    "apps/operations/ops.js": "79bc17194fbdb1058ea9d5d8def168559bbaaccef06df94291f840d772d94622",
     "apps/operations/extended.js": "7d1b295030466b790b18f94d6b961e29fcb15d7150163a1e10541ac1dd26d766",
     "apps/operations/intelligence.js": "d8ecf46ea1e3b42a8a7bea4872c576999f2103d98009d65c7d8f1b4cd51d7b1d",
     "apps/operations/admin.js": "37ae785572fd7ef180d3ec6b760c18bfa01205dfc056fefbe5d0ae168ea36669",
@@ -994,7 +994,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 30
+          "line": 33
         },
         {
           "path": "apps/operations/financial.js",
@@ -2269,7 +2269,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 34
+          "line": 37
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3444,7 +3444,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 39
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3495,7 +3495,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 39
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3508,7 +3508,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 39
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3547,7 +3547,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 39
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3560,7 +3560,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 39
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3573,7 +3573,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 39
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3612,7 +3612,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 39
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3625,7 +3625,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 39
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
@@ -3638,7 +3638,7 @@
       "locations": [
         {
           "path": "apps/operations/expenses.js",
-          "line": 39
+          "line": 42
         }
       ],
       "verification": "NOT_CERTIFIED_BY_DISCOVERY"
